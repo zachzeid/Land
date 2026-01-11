@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="LocationData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/location_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+location_id = "thornhaven_town_square"
+display_name = "Thornhaven - Town Square"
+region = "Western Valley"
+area = "Thornhaven Village"
+scene_path = "res://scenes/game_world.tscn"
+is_interior = false
+spawn_points = {
+	"default": "Center of town square",
+	"from_gregor_shop": "Outside Gregor's shop entrance",
+	"from_tavern": "Outside the tavern entrance",
+	"from_blacksmith": "Outside the smithy entrance",
+	"from_village_gate": "Near the village gate"
+}

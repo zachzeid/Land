@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bqno1ux3yq8cg"]
+
+[node name="Main" type="Node"]
+
+[node name="Label" type="Label" parent="."]
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 500.0
+offset_bottom = 150.0
+text = "Land - AI-Driven JRPG
+Project initialized successfully!
+
+Open this project in Godot to continue development."

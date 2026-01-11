@@ -1,0 +1,174 @@
+[gd_scene load_steps=2 format=3 uid="uid://quest_journal_ui"]
+
+[ext_resource type="Script" path="res://scripts/ui/quest_journal.gd" id="1_journal"]
+
+[node name="QuestJournal" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_journal")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -275.0
+offset_right = 400.0
+offset_bottom = 275.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" type="HBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 8.0
+offset_right = -16.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="TitleIcon" type="Label" parent="Panel/Header"]
+layout_mode = 2
+text = ""
+theme_override_font_sizes/font_size = 24
+
+[node name="TitleLabel" type="Label" parent="Panel/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = " Quest Journal"
+theme_override_colors/font_color = Color(0.94, 0.75, 0.25, 1)
+theme_override_font_sizes/font_size = 20
+
+[node name="CloseButton" type="Button" parent="Panel/Header"]
+layout_mode = 2
+text = "X"
+theme_override_font_sizes/font_size = 16
+
+[node name="TabBar" type="HBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 48.0
+offset_right = -16.0
+offset_bottom = 80.0
+grow_horizontal = 2
+
+[node name="ActiveTab" type="Button" parent="Panel/TabBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Active (0)"
+theme_override_font_sizes/font_size = 14
+
+[node name="CompletedTab" type="Button" parent="Panel/TabBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Completed (0)"
+theme_override_font_sizes/font_size = 14
+
+[node name="DiscoveredTab" type="Button" parent="Panel/TabBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Discovered (0)"
+theme_override_font_sizes/font_size = 14
+
+[node name="Separator" type="HSeparator" parent="Panel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 84.0
+offset_right = -16.0
+offset_bottom = 88.0
+grow_horizontal = 2
+
+[node name="Content" type="HSplitContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 96.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = -250
+
+[node name="QuestListScroll" type="ScrollContainer" parent="Panel/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+horizontal_scroll_mode = 0
+
+[node name="QuestList" type="VBoxContainer" parent="Panel/Content/QuestListScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="DetailScroll" type="ScrollContainer" parent="Panel/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.6
+horizontal_scroll_mode = 0
+
+[node name="DetailContent" type="VBoxContainer" parent="Panel/Content/DetailScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="QuestTitle" type="Label" parent="Panel/Content/DetailScroll/DetailContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="QuestTypeBadge" type="Label" parent="Panel/Content/DetailScroll/DetailContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+
+[node name="Spacer1" type="Control" parent="Panel/Content/DetailScroll/DetailContent"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+
+[node name="DescriptionHeader" type="Label" parent="Panel/Content/DetailScroll/DetailContent"]
+layout_mode = 2
+text = "DESCRIPTION"
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 11
+
+[node name="QuestDescription" type="RichTextLabel" parent="Panel/Content/DetailScroll/DetailContent"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+theme_override_font_sizes/normal_font_size = 13
+
+[node name="Spacer2" type="Control" parent="Panel/Content/DetailScroll/DetailContent"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="ObjectivesContainer" type="VBoxContainer" parent="Panel/Content/DetailScroll/DetailContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ObjectivesHeader" type="Label" parent="Panel/Content/DetailScroll/DetailContent/ObjectivesContainer"]
+layout_mode = 2
+text = "OBJECTIVES"
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 11
+
+[node name="NoQuestLabel" type="Label" parent="Panel/Content/DetailScroll/DetailContent"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "No active quests.
+
+Talk to the villagers to discover new quests."
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_font_sizes/font_size = 14

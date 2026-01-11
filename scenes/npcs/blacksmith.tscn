@@ -1,0 +1,71 @@
+[gd_scene load_steps=7 format=3 uid="uid://dxyi0l9o4r5vj"]
+
+[ext_resource type="Script" path="res://scripts/npcs/blacksmith.gd" id="1_blacksmith_script"]
+[ext_resource type="Script" path="res://scripts/world/generatable_character.gd" id="2_gen_char"]
+[ext_resource type="Resource" uid="uid://bjorn_personality" path="res://resources/npc_personalities/bjorn_blacksmith.tres" id="3_personality"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(36, 52)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_interaction"]
+size = Vector2(80, 80)
+
+[node name="Blacksmith" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 12
+script = ExtResource("1_blacksmith_script")
+npc_id = "bjorn_blacksmith_001"
+npc_name = "Bjorn"
+personality_resource = ExtResource("3_personality")
+home_location = "thornhaven_blacksmith"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -26)
+scale = Vector2(0.8, 0.8)
+
+[node name="GeneratableCharacter" type="Node" parent="."]
+script = ExtResource("2_gen_char")
+character_id = "bjorn_blacksmith"
+auto_generate = true
+placeholder_color = Color(0.4, 0.35, 0.3, 1)
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -30.0
+offset_top = -60.0
+offset_right = 30.0
+offset_bottom = -50.0
+theme_override_colors/font_color = Color(1, 1, 0.8, 1)
+theme_override_font_sizes/font_size = 12
+text = "Bjorn"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -26)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 1
+monitoring = true
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(0, -26)
+shape = SubResource("RectangleShape2D_interaction")
+debug_color = Color(0, 0.647059, 0.184314, 0.270588)
+
+[node name="InteractionPrompt" type="Label" parent="."]
+visible = false
+offset_left = -40.0
+offset_top = 18.0
+offset_right = 40.0
+offset_bottom = 33.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 14
+text = "[E] Talk"
+horizontal_alignment = 1
+
+[connection signal="body_entered" from="InteractionArea" to="." method="_on_interaction_area_body_entered"]
+[connection signal="body_exited" from="InteractionArea" to="." method="_on_interaction_area_body_exited"]

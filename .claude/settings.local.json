@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(grep:*)",
+      "Bash(curl:*)",
+      "Bash(godot --headless --script:*)",
+      "Bash(ls:*)",
+      "Bash(/Applications/Godot.app/Contents/MacOS/Godot:*)",
+      "Bash(unzip:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

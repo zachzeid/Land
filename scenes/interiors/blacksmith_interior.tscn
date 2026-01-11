@@ -1,0 +1,249 @@
+[gd_scene load_steps=14 format=3 uid="uid://dz0yl5o1r4xti"]
+
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="2_scene_trigger"]
+[ext_resource type="PackedScene" uid="uid://dxyi0l9o4r5vj" path="res://scenes/npcs/blacksmith.tscn" id="4_blacksmith"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="5_dialogue_ui"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/blacksmith_forge.png" id="6_forge"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/blacksmith_anvil.png" id="7_anvil"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/blacksmith_workbench.png" id="8_workbench"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/crates_barrels.png" id="9_crates"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
+size = Vector2(1024, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_v"]
+size = Vector2(40, 944)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door_trigger"]
+size = Vector2(80, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_forge_collision"]
+size = Vector2(180, 140)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_anvil_collision"]
+size = Vector2(80, 80)
+
+[node name="BlacksmithInterior" type="Node2D"]
+
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+color = Color(0.2, 0.18, 0.18, 1)
+
+[node name="StoneFloor" type="ColorRect" parent="Floor"]
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 984.0
+offset_bottom = 984.0
+color = Color(0.3, 0.28, 0.28, 1)
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, -492)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/North"]
+shape = SubResource("RectangleShape2D_wall_h")
+
+[node name="Visual" type="ColorRect" parent="Walls/North"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+color = Color(0.35, 0.3, 0.28, 1)
+
+[node name="South" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, 492)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/South"]
+shape = SubResource("RectangleShape2D_wall_h")
+
+[node name="Visual" type="ColorRect" parent="Walls/South"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+color = Color(0.35, 0.3, 0.28, 1)
+
+[node name="West" type="StaticBody2D" parent="Walls"]
+position = Vector2(-492, 0)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/West"]
+shape = SubResource("RectangleShape2D_wall_v")
+
+[node name="Visual" type="ColorRect" parent="Walls/West"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+color = Color(0.35, 0.3, 0.28, 1)
+
+[node name="East" type="StaticBody2D" parent="Walls"]
+position = Vector2(492, 0)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/East"]
+shape = SubResource("RectangleShape2D_wall_v")
+
+[node name="Visual" type="ColorRect" parent="Walls/East"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+color = Color(0.35, 0.3, 0.28, 1)
+
+[node name="Furniture" type="Node2D" parent="."]
+z_index = 5
+
+[node name="Forge" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-300, -320)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Forge"]
+scale = Vector2(2, 2)
+texture = ExtResource("6_forge")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Forge"]
+shape = SubResource("RectangleShape2D_forge_collision")
+
+[node name="Anvil" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-50, -150)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Anvil"]
+scale = Vector2(2, 2)
+texture = ExtResource("7_anvil")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Anvil"]
+shape = SubResource("RectangleShape2D_anvil_collision")
+
+[node name="Workbench" type="Sprite2D" parent="Furniture"]
+position = Vector2(280, -280)
+scale = Vector2(2, 2)
+texture = ExtResource("8_workbench")
+
+[node name="Crates1" type="Sprite2D" parent="Furniture"]
+position = Vector2(350, 100)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("9_crates")
+
+[node name="Crates2" type="Sprite2D" parent="Furniture"]
+position = Vector2(-350, 200)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("9_crates")
+
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(0, 460)
+collision_layer = 32
+collision_mask = 1
+script = ExtResource("2_scene_trigger")
+target_location = "thornhaven_town_square"
+target_spawn_point = "from_blacksmith"
+require_input = false
+prompt_text = "Exit"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+shape = SubResource("RectangleShape2D_door_trigger")
+
+[node name="DoorVisual" type="ColorRect" parent="Exit"]
+offset_left = -40.0
+offset_top = -10.0
+offset_right = 40.0
+offset_bottom = 30.0
+color = Color(0.25, 0.2, 0.18, 1)
+
+[node name="ExitLabel" type="Label" parent="Exit"]
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = -10.0
+text = "Exit"
+horizontal_alignment = 1
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 350)
+
+[node name="from_exterior" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 350)
+
+[node name="Blacksmith" parent="." groups=["npcs"] instance=ExtResource("4_blacksmith")]
+position = Vector2(-100, -50)
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("5_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

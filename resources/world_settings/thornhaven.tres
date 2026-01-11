@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="WorldSettings" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/world_settings.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+zone_size = Vector2(1024, 1024)
+grid_unit = 32
+recraft_style = "digital_illustration"
+recraft_size = Vector2i(1024, 1024)
+global_style_prefix = "2D top-down game scene, bird's eye view at slight angle, medieval fantasy RPG style, painterly hand-drawn look, warm earth tones, soft diffused lighting, complete scene composition, consistent perspective"
+zone_style = "rustic medieval village, weathered wooden buildings, thatched roofs, cobblestone paths, cozy lived-in feel, autumn afternoon lighting"
+scene_template = "2D top-down game scene, bird's eye view, {location_name}, showing {elements}, with clear paths for character movement, {details}, cohesive single-image composition, 1024x1024"
+building_template = "2D top-down game building sprite, bird's eye view, {size} medieval {type}, {details}, transparent background, isolated single building, clear silhouette, shadow beneath, no ground texture"
+tree_template = "2D top-down game tree sprite, bird's eye view, {size} {type} tree, {details}, transparent background, full canopy visible from above, isolated single tree, shadow beneath"
+prop_template = "2D top-down game prop sprite, bird's eye view, {details}, transparent background, medieval village prop, isolated object, shadow beneath"
+character_template = "2D top-down game character sprite, bird's eye view, medieval {type}, {details}, standing pose visible from above"
+color_ground = Color(0.219608, 0.309804, 0.180392, 1)
+color_path = Color(0.478431, 0.419608, 0.341176, 1)
+color_square = Color(0.419608, 0.380392, 0.321569, 1)
+color_wood = Color(0.360784, 0.290196, 0.239216, 1)
+color_thatch = Color(0.545098, 0.45098, 0.333333, 1)
+color_slate = Color(0.290196, 0.290196, 0.290196, 1)
+color_foliage = Color(0.290196, 0.478431, 0.227451, 1)
+color_accent_gold = Color(0.768627, 0.639216, 0.352941, 1)
+color_accent_rust = Color(0.545098, 0.270588, 0.0745098, 1)

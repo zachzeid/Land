@@ -1,0 +1,145 @@
+[gd_scene load_steps=2 format=3 uid="uid://cx3j8vk7mlbxn"]
+
+[ext_resource type="Script" path="res://scripts/ui/debug_interaction_panel.gd" id="1_1"]
+
+[node name="DebugInteractionPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_1")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -300.0
+offset_right = 250.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "🧪 DEBUG: Test Interactions"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Dimensions" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="DimensionsTitle" type="Label" parent="VBoxContainer/Dimensions"]
+layout_mode = 2
+text = "Current Dimensions:"
+
+[node name="TrustLabel" type="Label" parent="VBoxContainer/Dimensions"]
+layout_mode = 2
+text = "Trust: 0"
+
+[node name="RespectLabel" type="Label" parent="VBoxContainer/Dimensions"]
+layout_mode = 2
+text = "Respect: 0"
+
+[node name="AffectionLabel" type="Label" parent="VBoxContainer/Dimensions"]
+layout_mode = 2
+text = "Affection: 0"
+
+[node name="FearLabel" type="Label" parent="VBoxContainer/Dimensions"]
+layout_mode = 2
+text = "Fear: 0"
+
+[node name="FamiliarityLabel" type="Label" parent="VBoxContainer/Dimensions"]
+layout_mode = 2
+text = "Familiarity: 0"
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="PositiveInteractions" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="PositiveTitle" type="Label" parent="VBoxContainer/PositiveInteractions"]
+layout_mode = 2
+text = "✅ Positive Interactions:"
+
+[node name="QuestButton" type="Button" parent="VBoxContainer/PositiveInteractions"]
+layout_mode = 2
+text = "Complete Quest (+15 Trust, +10 Respect, +8 Affection)"
+
+[node name="GiftButton" type="Button" parent="VBoxContainer/PositiveInteractions"]
+layout_mode = 2
+text = "Give Thoughtful Gift (+15 Affection, +8 Trust)"
+
+[node name="SupportButton" type="Button" parent="VBoxContainer/PositiveInteractions"]
+layout_mode = 2
+text = "Provide Emotional Support (+8 Trust, +10 Affection)"
+
+[node name="DangerButton" type="Button" parent="VBoxContainer/PositiveInteractions"]
+layout_mode = 2
+text = "Fight Together (+20 Trust, +15 Respect, +10 Affection, -10 Fear)"
+
+[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="NegativeInteractions" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="NegativeTitle" type="Label" parent="VBoxContainer/NegativeInteractions"]
+layout_mode = 2
+text = "❌ Negative Interactions:"
+
+[node name="BetrayalButton" type="Button" parent="VBoxContainer/NegativeInteractions"]
+layout_mode = 2
+text = "Betray Trust (-30 Trust, -20 Respect, -25 Affection)"
+
+[node name="InsultButton" type="Button" parent="VBoxContainer/NegativeInteractions"]
+layout_mode = 2
+text = "Insult NPC (-15 Respect, -10 Affection)"
+
+[node name="TheftButton" type="Button" parent="VBoxContainer/NegativeInteractions"]
+layout_mode = 2
+text = "Steal (Witnessed) (-20 Trust, +10 Fear)"
+
+[node name="HSeparator4" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="RomanticInteractions" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="RomanticTitle" type="Label" parent="VBoxContainer/RomanticInteractions"]
+layout_mode = 2
+text = "💕 Romantic Interactions:"
+
+[node name="GestureButton" type="Button" parent="VBoxContainer/RomanticInteractions"]
+layout_mode = 2
+text = "Romantic Gesture (+15 Affection, +10 Trust)"
+
+[node name="ConfessionButton" type="Button" parent="VBoxContainer/RomanticInteractions"]
+layout_mode = 2
+text = "Confess Feelings (+30 Affection, +15 Trust)"
+
+[node name="HSeparator5" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Close (ESC)"

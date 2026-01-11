@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="LocationData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/location_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+location_id = "thornhaven_gregor_shop"
+display_name = "Gregor's Supplies"
+region = "Western Valley"
+area = "Thornhaven Village"
+scene_path = "res://scenes/interiors/gregor_shop_interior.tscn"
+is_interior = true
+spawn_points = {
+	"default": "Shop entrance",
+	"from_exterior": "Just inside the door"
+}

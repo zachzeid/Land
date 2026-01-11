@@ -1,0 +1,977 @@
+[gd_scene load_steps=31 format=3 uid="uid://dwvjq7m8xnh2p"]
+
+[ext_resource type="PackedScene" uid="uid://c2kqr5m8vnh1p" path="res://scenes/player/player.tscn" id="1_player"]
+[ext_resource type="TileSet" path="res://assets/generated/tilesets/terrain_tileset.tres" id="12_terrain_tileset"]
+[ext_resource type="PackedScene" uid="uid://c3y8vn0m8w2qh" path="res://scenes/npcs/elena_daughter.tscn" id="3_elena"]
+[ext_resource type="PackedScene" uid="uid://aldric_peacekeeper_scene" path="res://scenes/npcs/aldric_peacekeeper.tscn" id="14_aldric"]
+[ext_resource type="PackedScene" uid="uid://elder_mathias_scene" path="res://scenes/npcs/elder_mathias.tscn" id="15_mathias"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="3_dialogue_ui"]
+[ext_resource type="PackedScene" uid="uid://cx3j8vk7mlbxn" path="res://scenes/ui/debug_interaction_panel.tscn" id="4_debug_panel"]
+[ext_resource type="PackedScene" uid="uid://bk3j9vk8mlcxo" path="res://scenes/ui/debug_console.tscn" id="5_debug_console"]
+[ext_resource type="PackedScene" uid="uid://quest_journal_ui" path="res://scenes/ui/quest_journal.tscn" id="16_quest_journal"]
+[ext_resource type="PackedScene" uid="uid://quest_notifications_ui" path="res://scenes/ui/quest_notifications.tscn" id="17_quest_notifications"]
+[ext_resource type="Script" path="res://scripts/world/building_asset_manager.gd" id="6_asset_manager"]
+[ext_resource type="Script" path="res://scripts/world/generatable_asset.gd" id="7_generatable_asset"]
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="8_world_solid"]
+[ext_resource type="Script" path="res://scripts/world/world_obstacle.gd" id="9_world_obstacle"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="10_scene_trigger"]
+[ext_resource type="Script" path="res://scripts/debug/layout_debug_overlay.gd" id="11_layout_debug"]
+[ext_resource type="Script" path="res://scripts/world/terrain_painter.gd" id="13_terrain_painter"]
+[ext_resource type="Script" path="res://scripts/world/game_world.gd" id="18_game_world"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gregor_shop"]
+size = Vector2(160, 128)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door_trigger"]
+size = Vector2(60, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tavern"]
+size = Vector2(192, 160)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_blacksmith"]
+size = Vector2(160, 128)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_house"]
+size = Vector2(128, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_well"]
+size = Vector2(80, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
+size = Vector2(160, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tree_trunk"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_town_boundary_h"]
+size = Vector2(1084, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_town_boundary_v"]
+size = Vector2(40, 1084)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_barrel"]
+size = Vector2(48, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_crate"]
+size = Vector2(48, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bench"]
+size = Vector2(48, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lamppost"]
+size = Vector2(20, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cart"]
+size = Vector2(72, 72)
+
+[node name="GameWorld" type="Node2D"]
+script = ExtResource("18_game_world")
+
+[node name="BuildingAssetManager" type="Node" parent="."]
+script = ExtResource("6_asset_manager")
+
+[node name="TerrainLayer" type="TileMapLayer" parent="."]
+z_index = -10
+tile_set = ExtResource("12_terrain_tileset")
+
+[node name="TerrainPainter" type="Node" parent="."]
+script = ExtResource("13_terrain_painter")
+
+[node name="Ground" type="ColorRect" parent="."]
+visible = false
+z_index = -10
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+color = Color(0.22, 0.31, 0.18, 1)
+
+[node name="TownSquare" type="ColorRect" parent="."]
+visible = false
+z_index = -9
+offset_left = -160.0
+offset_top = -96.0
+offset_right = 160.0
+offset_bottom = 160.0
+color = Color(0.42, 0.38, 0.32, 1)
+
+[node name="MainPathNorth" type="ColorRect" parent="."]
+visible = false
+z_index = -9
+offset_left = -48.0
+offset_top = -288.0
+offset_right = 48.0
+offset_bottom = -96.0
+color = Color(0.48, 0.42, 0.34, 1)
+
+[node name="MainPathSouth" type="ColorRect" parent="."]
+visible = false
+z_index = -9
+offset_left = -48.0
+offset_top = 160.0
+offset_right = 48.0
+offset_bottom = 432.0
+color = Color(0.48, 0.42, 0.34, 1)
+
+[node name="WestPath" type="ColorRect" parent="."]
+visible = false
+z_index = -9
+offset_left = -400.0
+offset_top = -16.0
+offset_right = -160.0
+offset_bottom = 48.0
+color = Color(0.48, 0.42, 0.34, 1)
+
+[node name="EastPath" type="ColorRect" parent="."]
+visible = false
+z_index = -9
+offset_left = 160.0
+offset_top = -16.0
+offset_right = 400.0
+offset_bottom = 48.0
+color = Color(0.48, 0.42, 0.34, 1)
+
+[node name="GregorShop" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(-240, -304)
+script = ExtResource("8_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GregorShop"]
+shape = SubResource("RectangleShape2D_gregor_shop")
+
+[node name="Building" type="ColorRect" parent="GregorShop"]
+offset_left = -80.0
+offset_top = -64.0
+offset_right = 80.0
+offset_bottom = 64.0
+color = Color(0.5, 0.35, 0.25, 1)
+
+[node name="Roof" type="ColorRect" parent="GregorShop"]
+offset_left = -88.0
+offset_top = -72.0
+offset_right = 88.0
+offset_bottom = -48.0
+color = Color(0.55, 0.45, 0.33, 1)
+
+[node name="Sign" type="Label" parent="GregorShop"]
+z_index = 5
+offset_left = -60.0
+offset_top = -40.0
+offset_right = 60.0
+offset_bottom = -20.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Gregor's Supplies"
+horizontal_alignment = 1
+
+[node name="Asset" type="Node" parent="GregorShop"]
+script = ExtResource("7_generatable_asset")
+asset_id = "gregor_shop"
+generation_prompt = "isometric 2D game building, 3/4 view showing front and right side, medieval merchant shop, two-story timber-frame construction, plastered white walls with dark wood beams, shingled roof at isometric angle with small dormer window, large front window display, hanging wooden sign bracket, worn stone doorstep, busy village commerce feel, cream and dark brown colors, shadow to bottom-right"
+asset_type = "building"
+
+[node name="DoorTrigger" type="Area2D" parent="GregorShop"]
+position = Vector2(0, 80)
+script = ExtResource("10_scene_trigger")
+target_location = "thornhaven_gregor_shop"
+target_spawn_point = "from_exterior"
+prompt_text = "Enter Shop"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GregorShop/DoorTrigger"]
+shape = SubResource("RectangleShape2D_door_trigger")
+
+[node name="InteractionPrompt" type="Label" parent="GregorShop/DoorTrigger"]
+z_index = 10
+visible = false
+offset_left = -50.0
+offset_top = -40.0
+offset_right = 50.0
+offset_bottom = -15.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Enter Shop"
+horizontal_alignment = 1
+
+[node name="Tavern" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(240, -304)
+script = ExtResource("8_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tavern"]
+shape = SubResource("RectangleShape2D_tavern")
+
+[node name="Building" type="ColorRect" parent="Tavern"]
+offset_left = -96.0
+offset_top = -80.0
+offset_right = 96.0
+offset_bottom = 80.0
+color = Color(0.55, 0.4, 0.3, 1)
+
+[node name="Roof" type="ColorRect" parent="Tavern"]
+offset_left = -104.0
+offset_top = -88.0
+offset_right = 104.0
+offset_bottom = -64.0
+color = Color(0.35, 0.2, 0.15, 1)
+
+[node name="Sign" type="Label" parent="Tavern"]
+z_index = 5
+offset_left = -60.0
+offset_top = -50.0
+offset_right = 60.0
+offset_bottom = -30.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "The Rusty Nail"
+horizontal_alignment = 1
+
+[node name="Asset" type="Node" parent="Tavern"]
+script = ExtResource("7_generatable_asset")
+asset_id = "tavern"
+generation_prompt = "isometric 2D game building, 3/4 view showing front and right side, large medieval tavern, two-story stone and timber construction, wide welcoming entrance on front face, multiple chimneys with smoke, warm light glowing from windows, barrel storage visible on side wall, wooden sign post, inviting and well-maintained, amber and gray stone colors, shadow to bottom-right"
+asset_type = "building"
+
+[node name="DoorTrigger" type="Area2D" parent="Tavern"]
+position = Vector2(0, 96)
+script = ExtResource("10_scene_trigger")
+target_location = "thornhaven_tavern"
+target_spawn_point = "from_exterior"
+prompt_text = "Enter Tavern"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tavern/DoorTrigger"]
+shape = SubResource("RectangleShape2D_door_trigger")
+
+[node name="InteractionPrompt" type="Label" parent="Tavern/DoorTrigger"]
+z_index = 10
+visible = false
+offset_left = -50.0
+offset_top = -40.0
+offset_right = 50.0
+offset_bottom = -15.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Enter Tavern"
+horizontal_alignment = 1
+
+[node name="Blacksmith" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(-336, 16)
+script = ExtResource("8_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blacksmith"]
+shape = SubResource("RectangleShape2D_blacksmith")
+
+[node name="Building" type="ColorRect" parent="Blacksmith"]
+offset_left = -80.0
+offset_top = -64.0
+offset_right = 80.0
+offset_bottom = 64.0
+color = Color(0.35, 0.3, 0.3, 1)
+
+[node name="Roof" type="ColorRect" parent="Blacksmith"]
+offset_left = -88.0
+offset_top = -72.0
+offset_right = 88.0
+offset_bottom = -48.0
+color = Color(0.25, 0.2, 0.2, 1)
+
+[node name="Sign" type="Label" parent="Blacksmith"]
+z_index = 5
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = -20.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Smithy"
+horizontal_alignment = 1
+
+[node name="Asset" type="Node" parent="Blacksmith"]
+script = ExtResource("7_generatable_asset")
+asset_id = "blacksmith"
+generation_prompt = "isometric 2D game building, 3/4 view showing front and right side, medieval blacksmith forge, open-air covered workspace, prominent stone chimney with heavy smoke, anvil visible under awning, weapon racks on exterior wall, coal and metal storage, water barrel nearby, industrial working atmosphere, dark iron and red brick colors, shadow to bottom-right"
+asset_type = "building"
+
+[node name="DoorTrigger" type="Area2D" parent="Blacksmith"]
+position = Vector2(0, 80)
+script = ExtResource("10_scene_trigger")
+target_location = "thornhaven_blacksmith"
+target_spawn_point = "from_exterior"
+prompt_text = "Enter Smithy"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blacksmith/DoorTrigger"]
+shape = SubResource("RectangleShape2D_door_trigger")
+
+[node name="InteractionPrompt" type="Label" parent="Blacksmith/DoorTrigger"]
+z_index = 10
+visible = false
+offset_left = -50.0
+offset_top = -40.0
+offset_right = 50.0
+offset_bottom = -15.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Enter Smithy"
+horizontal_alignment = 1
+
+[node name="House1" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(336, 16)
+script = ExtResource("8_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="House1"]
+shape = SubResource("RectangleShape2D_house")
+
+[node name="Building" type="ColorRect" parent="House1"]
+offset_left = -64.0
+offset_top = -48.0
+offset_right = 64.0
+offset_bottom = 48.0
+color = Color(0.52, 0.42, 0.32, 1)
+
+[node name="Roof" type="ColorRect" parent="House1"]
+offset_left = -72.0
+offset_top = -56.0
+offset_right = 72.0
+offset_bottom = -32.0
+color = Color(0.55, 0.45, 0.33, 1)
+
+[node name="Asset" type="Node" parent="House1"]
+script = ExtResource("7_generatable_asset")
+asset_id = "village_house_1"
+generation_prompt = "isometric 2D game building, 3/4 view showing front and right side, small single-story cottage, wooden plank walls with visible grain, steep thatched roof angled for isometric view, single wooden door on front face, one shuttered window on side, chimney with light smoke, flower box under window, rustic medieval village style, warm browns and golden thatch, shadow to bottom-right"
+asset_type = "building"
+
+[node name="House2" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(-240, 304)
+script = ExtResource("8_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="House2"]
+shape = SubResource("RectangleShape2D_house")
+
+[node name="Building" type="ColorRect" parent="House2"]
+offset_left = -64.0
+offset_top = -48.0
+offset_right = 64.0
+offset_bottom = 48.0
+color = Color(0.48, 0.40, 0.35, 1)
+
+[node name="Roof" type="ColorRect" parent="House2"]
+offset_left = -72.0
+offset_top = -56.0
+offset_right = 72.0
+offset_bottom = -32.0
+color = Color(0.32, 0.22, 0.15, 1)
+
+[node name="Asset" type="Node" parent="House2"]
+script = ExtResource("7_generatable_asset")
+asset_id = "village_house_2"
+generation_prompt = "isometric 2D game building, 3/4 view showing front and right side, small single-story cottage, rough wooden plank walls, thatched roof at isometric angle with moss patches, small wooden door on front face, tiny window on side, smoking brick chimney, rustic farmhouse style, weathered browns and earthy tones, shadow to bottom-right"
+asset_type = "building"
+
+[node name="House3" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(240, 304)
+script = ExtResource("8_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="House3"]
+shape = SubResource("RectangleShape2D_house")
+
+[node name="Building" type="ColorRect" parent="House3"]
+offset_left = -64.0
+offset_top = -48.0
+offset_right = 64.0
+offset_bottom = 48.0
+color = Color(0.55, 0.45, 0.38, 1)
+
+[node name="Roof" type="ColorRect" parent="House3"]
+offset_left = -72.0
+offset_top = -56.0
+offset_right = 72.0
+offset_bottom = -32.0
+color = Color(0.40, 0.30, 0.22, 1)
+
+[node name="Asset" type="Node" parent="House3"]
+script = ExtResource("7_generatable_asset")
+asset_id = "village_house_3"
+generation_prompt = "isometric 2D game building, 3/4 view showing front and right side, tudor style cottage, dark timber frame with white plaster walls, steep shingled roof at isometric angle, arched wooden door on front face, diamond-pane windows on side, small herb garden by door, prosperous village home style, cream white and dark brown colors, shadow to bottom-right"
+asset_type = "building"
+
+[node name="Well" type="StaticBody2D" parent="."]
+position = Vector2(0, 16)
+script = ExtResource("8_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Well"]
+shape = SubResource("RectangleShape2D_well")
+
+[node name="Base" type="ColorRect" parent="Well"]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+color = Color(0.4, 0.4, 0.45, 1)
+
+[node name="Water" type="ColorRect" parent="Well"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(0.2, 0.3, 0.5, 1)
+
+[node name="Asset" type="Node" parent="Well"]
+script = ExtResource("7_generatable_asset")
+asset_id = "well"
+generation_prompt = "isometric 2D game prop, 3/4 view from above, medieval stone village well, circular stone wall construction, wooden roof structure with depth, rope and bucket mechanism, cobblestone base platform visible, shadow to bottom-right, central village gathering point, gray stone with wood brown roof"
+asset_type = "prop"
+
+[node name="VillageGate" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(0, 432)
+script = ExtResource("8_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VillageGate"]
+shape = SubResource("RectangleShape2D_gate")
+
+[node name="LeftPost" type="ColorRect" parent="VillageGate"]
+offset_left = -80.0
+offset_top = -48.0
+offset_right = -48.0
+offset_bottom = 48.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="RightPost" type="ColorRect" parent="VillageGate"]
+offset_left = 48.0
+offset_top = -48.0
+offset_right = 80.0
+offset_bottom = 48.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="Arch" type="ColorRect" parent="VillageGate"]
+offset_left = -80.0
+offset_top = -64.0
+offset_right = 80.0
+offset_bottom = -40.0
+color = Color(0.45, 0.35, 0.25, 1)
+
+[node name="GateSign" type="Label" parent="VillageGate"]
+z_index = 5
+offset_left = -80.0
+offset_top = -90.0
+offset_right = 80.0
+offset_bottom = -60.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 16
+text = "Thornhaven"
+horizontal_alignment = 1
+
+[node name="Asset" type="Node" parent="VillageGate"]
+script = ExtResource("7_generatable_asset")
+asset_id = "village_gate"
+generation_prompt = "isometric 2D game building, 3/4 view showing front and right side, medieval village entrance gate, two tall stone pillars with wooden beam arch, heavy oak gate doors at isometric angle, iron hinges and bands, cobblestone path underneath, welcoming village entrance, gray stone pillars with warm brown wood, shadow to bottom-right"
+asset_type = "building"
+
+[node name="Tree1" type="StaticBody2D" parent="."]
+z_index = 30
+position = Vector2(-432, -432)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tree1"]
+shape = SubResource("RectangleShape2D_tree_trunk")
+
+[node name="Canopy" type="ColorRect" parent="Tree1"]
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+color = Color(0.25, 0.45, 0.2, 1)
+
+[node name="Asset" type="Node" parent="Tree1"]
+script = ExtResource("7_generatable_asset")
+asset_id = "tree_oak_1"
+generation_prompt = "isometric 2D game tree, 3/4 view from above, single large oak tree, thick gnarled trunk visible at base, full rounded canopy with depth, individual leaf clusters visible, natural asymmetric shape, shadow to bottom-right, trunk clearly separated from foliage at bottom, forest green canopy with yellow-green highlights"
+asset_type = "tree"
+
+[node name="Tree2" type="StaticBody2D" parent="."]
+z_index = 30
+position = Vector2(432, -432)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tree2"]
+shape = SubResource("RectangleShape2D_tree_trunk")
+
+[node name="Canopy" type="ColorRect" parent="Tree2"]
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+color = Color(0.2, 0.42, 0.18, 1)
+
+[node name="Asset" type="Node" parent="Tree2"]
+script = ExtResource("7_generatable_asset")
+asset_id = "tree_pine_1"
+generation_prompt = "isometric 2D game tree, 3/4 view from above, tall conifer pine tree, straight narrow trunk visible, triangular layered branches with depth, dark green needles, pointed top silhouette, clear trunk base visible at bottom, shadow to bottom-right, deep forest green color"
+asset_type = "tree"
+
+[node name="Tree3" type="StaticBody2D" parent="."]
+z_index = 30
+position = Vector2(-432, 176)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tree3"]
+shape = SubResource("RectangleShape2D_tree_trunk")
+
+[node name="Canopy" type="ColorRect" parent="Tree3"]
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+color = Color(0.28, 0.48, 0.22, 1)
+
+[node name="Asset" type="Node" parent="Tree3"]
+script = ExtResource("7_generatable_asset")
+asset_id = "tree_willow_1"
+generation_prompt = "isometric 2D game tree, 3/4 view from above, weeping willow tree, graceful drooping branches reaching down with depth, long slender leaves, thick trunk visible at center, cascading foliage forming dome shape, shadow to bottom-right, soft green with silver highlights, peaceful village tree"
+asset_type = "tree"
+
+[node name="Tree4" type="StaticBody2D" parent="."]
+z_index = 30
+position = Vector2(432, 176)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tree4"]
+shape = SubResource("RectangleShape2D_tree_trunk")
+
+[node name="Canopy" type="ColorRect" parent="Tree4"]
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+color = Color(0.22, 0.40, 0.18, 1)
+
+[node name="Asset" type="Node" parent="Tree4"]
+script = ExtResource("7_generatable_asset")
+asset_id = "tree_birch_1"
+generation_prompt = "isometric 2D game tree, 3/4 view from above, elegant birch tree, distinctive white bark with dark markings, slender graceful trunk visible, delicate leaf clusters with depth, airy open canopy, shadow to bottom-right, light yellow-green foliage, natural woodland beauty, white and pale green colors"
+asset_type = "tree"
+
+[node name="Tree5" type="StaticBody2D" parent="."]
+z_index = 30
+position = Vector2(-144, 432)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tree5"]
+shape = SubResource("RectangleShape2D_tree_trunk")
+
+[node name="Canopy" type="ColorRect" parent="Tree5"]
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+color = Color(0.3, 0.5, 0.25, 1)
+
+[node name="Asset" type="Node" parent="Tree5"]
+script = ExtResource("7_generatable_asset")
+asset_id = "tree_maple_1"
+generation_prompt = "isometric 2D game tree, 3/4 view from above, autumn maple tree, broad spreading canopy with depth, distinctive maple leaf shapes visible, fiery red-orange autumn colors, sturdy trunk visible at base, shadow to bottom-right, fallen leaves scattered at base, warm harvest season feel, brilliant red and orange foliage"
+asset_type = "tree"
+
+[node name="Tree6" type="StaticBody2D" parent="."]
+z_index = 30
+position = Vector2(144, 432)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tree6"]
+shape = SubResource("RectangleShape2D_tree_trunk")
+
+[node name="Canopy" type="ColorRect" parent="Tree6"]
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+color = Color(0.26, 0.46, 0.2, 1)
+
+[node name="Asset" type="Node" parent="Tree6"]
+script = ExtResource("7_generatable_asset")
+asset_id = "tree_apple_1"
+generation_prompt = "isometric 2D game tree, 3/4 view from above, fruit-bearing apple tree, rounded compact canopy with depth, visible red apples among green leaves, gnarled productive trunk visible at base, shadow to bottom-right, well-tended orchard tree, village garden style, green foliage with bright red fruit spots"
+asset_type = "tree"
+
+[node name="Barrel1" type="StaticBody2D" parent="."]
+position = Vector2(-112, -176)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barrel1"]
+shape = SubResource("RectangleShape2D_barrel")
+
+[node name="Visual" type="ColorRect" parent="Barrel1"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(0.45, 0.32, 0.2, 1)
+
+[node name="Asset" type="Node" parent="Barrel1"]
+script = ExtResource("7_generatable_asset")
+asset_id = "barrel_1"
+generation_prompt = "isometric 2D game prop, 3/4 view from above, wooden storage barrel, vertical wood planks with metal bands, slightly weathered with stains, showing top and side, shadow to bottom-right, medieval village storage item, brown wood with iron gray bands"
+asset_type = "prop"
+
+[node name="Barrel2" type="StaticBody2D" parent="."]
+position = Vector2(-176, -176)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barrel2"]
+shape = SubResource("RectangleShape2D_barrel")
+
+[node name="Visual" type="ColorRect" parent="Barrel2"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(0.42, 0.30, 0.18, 1)
+
+[node name="Asset" type="Node" parent="Barrel2"]
+script = ExtResource("7_generatable_asset")
+asset_id = "barrel_2"
+generation_prompt = "isometric 2D game prop, 3/4 view from above, wooden storage barrel, vertical wood planks with metal bands, slightly weathered with stains, showing top and side, shadow to bottom-right, medieval village storage item, brown wood with iron gray bands"
+asset_type = "prop"
+
+[node name="Crate1" type="StaticBody2D" parent="."]
+position = Vector2(112, -176)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Crate1"]
+shape = SubResource("RectangleShape2D_crate")
+
+[node name="Visual" type="ColorRect" parent="Crate1"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(0.5, 0.38, 0.25, 1)
+
+[node name="Asset" type="Node" parent="Crate1"]
+script = ExtResource("7_generatable_asset")
+asset_id = "crate_1"
+generation_prompt = "isometric 2D game prop, 3/4 view from above, wooden shipping crate, rough planks nailed together, showing top and two visible sides, rope handles, stamped marking, shadow to bottom-right, trade goods container style, pale unfinished wood color"
+asset_type = "prop"
+
+[node name="Crate2" type="StaticBody2D" parent="."]
+position = Vector2(176, -176)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Crate2"]
+shape = SubResource("RectangleShape2D_crate")
+
+[node name="Visual" type="ColorRect" parent="Crate2"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(0.48, 0.36, 0.23, 1)
+
+[node name="Asset" type="Node" parent="Crate2"]
+script = ExtResource("7_generatable_asset")
+asset_id = "crate_2"
+generation_prompt = "isometric 2D game prop, 3/4 view from above, wooden shipping crate, rough planks nailed together, showing top and two visible sides, rope handles, stamped marking, shadow to bottom-right, trade goods container style, pale unfinished wood color"
+asset_type = "prop"
+
+[node name="Cart" type="StaticBody2D" parent="."]
+position = Vector2(-208, 16)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cart"]
+shape = SubResource("RectangleShape2D_cart")
+
+[node name="Visual" type="ColorRect" parent="Cart"]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+color = Color(0.48, 0.35, 0.22, 1)
+
+[node name="Asset" type="Node" parent="Cart"]
+script = ExtResource("7_generatable_asset")
+asset_id = "cart_1"
+generation_prompt = "isometric 2D game prop, 3/4 view from above, wooden merchant cart, two large spoked wheels at isometric angle, open cargo area visible from above, pull handles at front, weathered from travel, shadow to bottom-right, trade caravan style, warm brown aged wood"
+asset_type = "prop"
+
+[node name="Bench1" type="StaticBody2D" parent="."]
+position = Vector2(-80, 112)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bench1"]
+shape = SubResource("RectangleShape2D_bench")
+
+[node name="Visual" type="ColorRect" parent="Bench1"]
+offset_left = -32.0
+offset_top = -16.0
+offset_right = 32.0
+offset_bottom = 16.0
+color = Color(0.42, 0.3, 0.2, 1)
+
+[node name="Asset" type="Node" parent="Bench1"]
+script = ExtResource("7_generatable_asset")
+asset_id = "bench_1"
+generation_prompt = "isometric 2D game prop, 3/4 view from above, simple wooden bench, thick plank seat at isometric angle, sturdy leg supports visible, slightly worn from use, shadow to bottom-right, village square seating, plain functional design, weathered gray-brown wood"
+asset_type = "prop"
+
+[node name="Bench2" type="StaticBody2D" parent="."]
+position = Vector2(80, 112)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bench2"]
+shape = SubResource("RectangleShape2D_bench")
+
+[node name="Visual" type="ColorRect" parent="Bench2"]
+offset_left = -32.0
+offset_top = -16.0
+offset_right = 32.0
+offset_bottom = 16.0
+color = Color(0.40, 0.28, 0.18, 1)
+
+[node name="Asset" type="Node" parent="Bench2"]
+script = ExtResource("7_generatable_asset")
+asset_id = "bench_2"
+generation_prompt = "isometric 2D game prop, 3/4 view from above, simple wooden bench, thick plank seat at isometric angle, sturdy leg supports visible, slightly worn from use, shadow to bottom-right, village square seating, plain functional design, weathered gray-brown wood"
+asset_type = "prop"
+
+[node name="Lamppost1" type="StaticBody2D" parent="."]
+position = Vector2(-128, -48)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lamppost1"]
+shape = SubResource("RectangleShape2D_lamppost")
+
+[node name="Visual" type="ColorRect" parent="Lamppost1"]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(0.3, 0.25, 0.2, 1)
+
+[node name="Asset" type="Node" parent="Lamppost1"]
+script = ExtResource("7_generatable_asset")
+asset_id = "lamppost_1"
+generation_prompt = "isometric 2D game prop, 3/4 view from above, medieval iron street lamp, tall wrought iron post, ornate hanging lantern with warm candle glow effect, decorative scrollwork, shadow to bottom-right, village night lighting, black iron with amber glass"
+asset_type = "prop"
+
+[node name="Lamppost2" type="StaticBody2D" parent="."]
+position = Vector2(128, -48)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lamppost2"]
+shape = SubResource("RectangleShape2D_lamppost")
+
+[node name="Visual" type="ColorRect" parent="Lamppost2"]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(0.3, 0.25, 0.2, 1)
+
+[node name="Asset" type="Node" parent="Lamppost2"]
+script = ExtResource("7_generatable_asset")
+asset_id = "lamppost_2"
+generation_prompt = "isometric 2D game prop, 3/4 view from above, medieval iron street lamp, tall wrought iron post, ornate hanging lantern with warm candle glow effect, decorative scrollwork, shadow to bottom-right, village night lighting, black iron with amber glass"
+asset_type = "prop"
+
+[node name="Lamppost3" type="StaticBody2D" parent="."]
+position = Vector2(-128, 128)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lamppost3"]
+shape = SubResource("RectangleShape2D_lamppost")
+
+[node name="Visual" type="ColorRect" parent="Lamppost3"]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(0.3, 0.25, 0.2, 1)
+
+[node name="Asset" type="Node" parent="Lamppost3"]
+script = ExtResource("7_generatable_asset")
+asset_id = "lamppost_3"
+generation_prompt = "isometric 2D game prop, 3/4 view from above, medieval iron street lamp, tall wrought iron post, ornate hanging lantern with warm candle glow effect, decorative scrollwork, shadow to bottom-right, village night lighting, black iron with amber glass"
+asset_type = "prop"
+
+[node name="Lamppost4" type="StaticBody2D" parent="."]
+position = Vector2(128, 128)
+script = ExtResource("9_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lamppost4"]
+shape = SubResource("RectangleShape2D_lamppost")
+
+[node name="Visual" type="ColorRect" parent="Lamppost4"]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(0.3, 0.25, 0.2, 1)
+
+[node name="Asset" type="Node" parent="Lamppost4"]
+script = ExtResource("7_generatable_asset")
+asset_id = "lamppost_4"
+generation_prompt = "isometric 2D game prop, 3/4 view from above, medieval iron street lamp, tall wrought iron post, ornate hanging lantern with warm candle glow effect, decorative scrollwork, shadow to bottom-right, village night lighting, black iron with amber glass"
+asset_type = "prop"
+
+[node name="TownBoundary" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="TownBoundary"]
+position = Vector2(0, -532)
+script = ExtResource("8_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TownBoundary/North"]
+shape = SubResource("RectangleShape2D_town_boundary_h")
+
+[node name="South" type="StaticBody2D" parent="TownBoundary"]
+position = Vector2(0, 532)
+script = ExtResource("8_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TownBoundary/South"]
+shape = SubResource("RectangleShape2D_town_boundary_h")
+
+[node name="West" type="StaticBody2D" parent="TownBoundary"]
+position = Vector2(-532, 0)
+script = ExtResource("8_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TownBoundary/West"]
+shape = SubResource("RectangleShape2D_town_boundary_v")
+
+[node name="East" type="StaticBody2D" parent="TownBoundary"]
+position = Vector2(532, 0)
+script = ExtResource("8_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TownBoundary/East"]
+shape = SubResource("RectangleShape2D_town_boundary_v")
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 80)
+
+[node name="from_gregor_shop" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-240, -176)
+
+[node name="from_tavern" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(240, -176)
+
+[node name="from_blacksmith" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-208, 16)
+
+[node name="from_village_gate" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 352)
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+z_index = 10
+position = Vector2(0, 80)
+
+[node name="ElenaDaughter" parent="." groups=["npcs"] instance=ExtResource("3_elena")]
+z_index = 10
+position = Vector2(64, 48)
+
+[node name="CaptainAldric" parent="." groups=["npcs", "peacekeepers", "allies"] instance=ExtResource("14_aldric")]
+z_index = 10
+position = Vector2(48, 280)
+
+[node name="ElderMathias" parent="." groups=["npcs", "council", "allies"] instance=ExtResource("15_mathias")]
+z_index = 10
+position = Vector2(-48, 80)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(1.5, 1.5)
+position_smoothing_enabled = true
+position_smoothing_speed = 5.0
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("3_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[node name="DebugInteractionPanel" parent="DialogueUI" instance=ExtResource("4_debug_panel")]
+visible = false
+
+[node name="DebugConsole" parent="." instance=ExtResource("5_debug_console")]
+
+[node name="QuestJournal" parent="." instance=ExtResource("16_quest_journal")]
+
+[node name="QuestNotifications" parent="." instance=ExtResource("17_quest_notifications")]
+
+[node name="LayoutDebugOverlay" type="Node2D" parent="."]
+script = ExtResource("11_layout_debug")
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

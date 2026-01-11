@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://quest_notifications_ui"]
+
+[ext_resource type="Script" path="res://scripts/ui/quest_notifications.gd" id="1_script"]
+
+[node name="QuestNotifications" type="CanvasLayer"]
+layer = 15
+script = ExtResource("1_script")
+
+[node name="NotificationContainer" type="VBoxContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -370.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 300.0
+grow_horizontal = 0
+theme_override_constants/separation = 8

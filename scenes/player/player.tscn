@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://c2kqr5m8vnh1p"]
+
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/world/generatable_character.gd" id="2_gen_char"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(32, 48)
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 1
+collision_mask = 14
+script = ExtResource("1_player")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -24)
+scale = Vector2(0.75, 0.75)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_player")
+
+[node name="GeneratableCharacter" type="Node" parent="."]
+script = ExtResource("2_gen_char")
+character_id = "player"
+appearance_prompt = "pixel art fantasy adventurer hero, young adult, leather armor, brown cloak, sword at hip, determined expression, top-down RPG style"
+auto_generate = true
+placeholder_color = Color(0.2, 0.6, 1, 1)

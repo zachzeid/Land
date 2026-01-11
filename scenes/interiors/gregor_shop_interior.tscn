@@ -1,0 +1,303 @@
+[gd_scene load_steps=15 format=3 uid="uid://dw8xk3m9pq2vn"]
+
+[ext_resource type="PackedScene" uid="uid://bvxh8k7m2p3tn" path="res://scenes/npcs/gregor_merchant.tscn" id="1_gregor"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="2_dialogue_ui"]
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="3_world_solid"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="4_scene_trigger"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/shop_counter.png" id="5_counter"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/shop_shelves.png" id="6_shelves"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/crates_barrels.png" id="7_crates"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="8_story_item"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
+size = Vector2(1024, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_v"]
+size = Vector2(40, 944)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_counter"]
+size = Vector2(200, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door_trigger"]
+size = Vector2(80, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_shelves"]
+size = Vector2(140, 180)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ledger"]
+size = Vector2(40, 30)
+
+[node name="GregorShopInterior" type="Node2D"]
+
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+color = Color(0.32, 0.25, 0.18, 1)
+
+[node name="WoodFloor" type="ColorRect" parent="Floor"]
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 984.0
+offset_bottom = 984.0
+color = Color(0.42, 0.34, 0.26, 1)
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, -492)
+collision_layer = 4
+script = ExtResource("3_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/North"]
+shape = SubResource("RectangleShape2D_wall_h")
+
+[node name="Visual" type="ColorRect" parent="Walls/North"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+color = Color(0.38, 0.28, 0.2, 1)
+
+[node name="South" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, 492)
+collision_layer = 4
+script = ExtResource("3_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/South"]
+shape = SubResource("RectangleShape2D_wall_h")
+
+[node name="Visual" type="ColorRect" parent="Walls/South"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+color = Color(0.38, 0.28, 0.2, 1)
+
+[node name="West" type="StaticBody2D" parent="Walls"]
+position = Vector2(-492, 0)
+collision_layer = 4
+script = ExtResource("3_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/West"]
+shape = SubResource("RectangleShape2D_wall_v")
+
+[node name="Visual" type="ColorRect" parent="Walls/West"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+color = Color(0.38, 0.28, 0.2, 1)
+
+[node name="East" type="StaticBody2D" parent="Walls"]
+position = Vector2(492, 0)
+collision_layer = 4
+script = ExtResource("3_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/East"]
+shape = SubResource("RectangleShape2D_wall_v")
+
+[node name="Visual" type="ColorRect" parent="Walls/East"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+color = Color(0.38, 0.28, 0.2, 1)
+
+[node name="Furniture" type="Node2D" parent="."]
+z_index = 5
+
+[node name="Counter" type="StaticBody2D" parent="Furniture"]
+position = Vector2(0, -200)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Counter"]
+scale = Vector2(2, 2)
+texture = ExtResource("5_counter")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Counter"]
+shape = SubResource("RectangleShape2D_counter")
+
+[node name="ShelvesLeft" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-380, -280)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/ShelvesLeft"]
+scale = Vector2(2, 2)
+texture = ExtResource("6_shelves")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/ShelvesLeft"]
+shape = SubResource("RectangleShape2D_shelves")
+
+[node name="ShelvesRight" type="StaticBody2D" parent="Furniture"]
+position = Vector2(380, -280)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/ShelvesRight"]
+scale = Vector2(2, 2)
+texture = ExtResource("6_shelves")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/ShelvesRight"]
+shape = SubResource("RectangleShape2D_shelves")
+
+[node name="Crates1" type="Sprite2D" parent="Furniture"]
+position = Vector2(320, 200)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("7_crates")
+
+[node name="Crates2" type="Sprite2D" parent="Furniture"]
+position = Vector2(-320, 200)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("7_crates")
+
+[node name="SecretLedger" type="Area2D" parent="Furniture"]
+z_index = 6
+position = Vector2(-280, 160)
+script = ExtResource("8_story_item")
+interaction_name = "Examine Ledger"
+flag_to_set = "ledger_found"
+discovery_text = "[b]You found a hidden ledger![/b]
+
+Tucked behind the crates, you discover a worn leather-bound book. Inside are meticulous records of payments made to someone called 'The Iron Hand' - large sums of gold, dates going back months.
+
+The handwriting is unmistakably Gregor's. Names of villages raided by bandits appear alongside the payment dates. This is damning evidence."
+reexamine_text = "The ledger is still here. Its contents weigh heavily on your mind - proof of Gregor's dealings with bandits."
+one_time_only = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/SecretLedger"]
+shape = SubResource("RectangleShape2D_ledger")
+
+[node name="Visual" type="ColorRect" parent="Furniture/SecretLedger"]
+offset_left = -16.0
+offset_top = -12.0
+offset_right = 16.0
+offset_bottom = 12.0
+color = Color(0.35, 0.25, 0.15, 1)
+
+[node name="Binding" type="ColorRect" parent="Furniture/SecretLedger"]
+offset_left = -18.0
+offset_top = -12.0
+offset_right = -14.0
+offset_bottom = 12.0
+color = Color(0.55, 0.35, 0.2, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Furniture/SecretLedger"]
+z_index = 10
+visible = false
+offset_left = -60.0
+offset_top = -40.0
+offset_right = 60.0
+offset_bottom = -15.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Examine Ledger"
+horizontal_alignment = 1
+
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(0, 460)
+collision_layer = 32
+collision_mask = 1
+script = ExtResource("4_scene_trigger")
+target_location = "thornhaven_town_square"
+target_spawn_point = "from_gregor_shop"
+require_input = false
+prompt_text = "Exit"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+shape = SubResource("RectangleShape2D_door_trigger")
+
+[node name="DoorVisual" type="ColorRect" parent="Exit"]
+offset_left = -40.0
+offset_top = -10.0
+offset_right = 40.0
+offset_bottom = 30.0
+color = Color(0.28, 0.2, 0.14, 1)
+
+[node name="ExitLabel" type="Label" parent="Exit"]
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = -10.0
+text = "Exit"
+horizontal_alignment = 1
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 350)
+
+[node name="from_exterior" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 350)
+
+[node name="GregorMerchant" parent="." groups=["npcs"] instance=ExtResource("1_gregor")]
+position = Vector2(0, -100)
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("2_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

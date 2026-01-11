@@ -1,0 +1,20 @@
+# Godot-generated files
+.import/
+*.import
+.godot/
+
+# Environment and secrets
+.env
+
+# ChromaDB data
+chroma_data/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

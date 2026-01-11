@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="MemoryConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memory_config.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+
+# Context Budget
+max_memory_chars = 3000
+max_pinned_memories = 5
+max_important_memories = 3
+max_regular_memories = 5
+
+# Milestone Event Types (auto-pinned)
+milestone_event_types = Array[String]([
+	"first_meeting",
+	"first_gift",
+	"first_quest",
+	"betrayal",
+	"saved_life",
+	"romance_confession",
+	"romance_rejection",
+	"witnessed_kill",
+	"shared_danger",
+	"secret_revealed",
+	"family_death"
+])
+
+# Pinned Event Types
+pinned_event_types = Array[String]([
+	"betrayal",
+	"saved_life",
+	"romance_confession",
+	"romance_rejection",
+	"witnessed_kill",
+	"shared_danger",
+	"secret_revealed",
+	"family_death",
+	"first_meeting",
+	"first_gift",
+	"first_quest"
+])
+
+# Important Event Types
+important_event_types = Array[String]([
+	"quest_completed",
+	"quest_failed",
+	"defended_npc",
+	"gift_received",
+	"protected_from_threat",
+	"emotional_support",
+	"romantic_gesture"
+])
+
+# Tier promotion threshold
+importance_threshold_for_tier = 8
+
+# Claude Analysis Settings
+use_claude_for_tier_detection = true
+
+claude_pinned_interactions = Array[String]([
+	"betrayal",
+	"romance_confession",
+	"romance_rejection",
+	"life_saved",
+	"secret_shared"
+])
+
+claude_important_interactions = Array[String]([
+	"emotional_support",
+	"romantic_gesture",
+	"threat_made",
+	"gift_given",
+	"quest_related"
+])
+
+# Consolidation Settings
+consolidation_age_days = 7
+consolidation_min_count = 3
+auto_consolidate = true

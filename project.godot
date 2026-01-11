@@ -1,0 +1,74 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Land"
+config/description="AI-driven open-world JRPG where player choices shape the world"
+config/version="0.1.0"
+run/main_scene="uid://dwvjq7m8xnh2p"
+config/features=PackedStringArray("4.5", "GL Compatibility")
+config/icon="res://icon.svg"
+
+[autoload]
+
+EventBus="*res://scripts/world_state/event_bus.gd"
+WorldState="*res://scripts/world_state/world_state.gd"
+WorldKnowledge="*res://scripts/world_state/world_knowledge.gd"
+WorldEvents="*res://scripts/world_state/world_events.gd"
+DialogueManager="*res://scripts/dialogue/dialogue_manager.gd"
+Config="*res://scripts/core/config.gd"
+AssetGenerator="*res://scripts/generation/asset_generator_manager.gd"
+SceneManager="*res://scripts/world/scene_manager.gd"
+AssetPreloader="*res://scripts/loading/asset_preloader.gd"
+SceneAnalyzer="*res://scripts/generation/scene_analyzer.gd"
+CharacterGen="*res://scripts/generation/character_generator.gd"
+InteractionDebug="*res://scripts/debug/interaction_debug_overlay.gd"
+DynamicNPCRegistry="*res://scripts/world_state/dynamic_npc_registry.gd"
+DynamicNPCGen="*res://scripts/generation/dynamic_npc_generator.gd"
+VoiceManager="*res://scripts/audio/voice_manager.gd"
+QuestManager="*res://scripts/quests/quest_manager.gd"
+SampleQuests="*res://scripts/quests/sample_quests.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=2
+window/stretch/mode="canvas_items"
+
+[input]
+
+interact={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":69,"key_label":0,"unicode":101,"location":0,"echo":false,"script":null)
+]
+}
+open_journal={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":74,"key_label":0,"unicode":106,"location":0,"echo":false,"script":null)
+]
+}
+
+[layer_names]
+
+2d_physics/layer_1="player"
+2d_physics/layer_2="npc"
+2d_physics/layer_3="world_solid"
+2d_physics/layer_4="world_obstacle"
+2d_physics/layer_5="interactable"
+2d_physics/layer_6="trigger"
+2d_physics/layer_7="projectile"
+2d_physics/layer_8="water"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

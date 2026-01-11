@@ -1,0 +1,375 @@
+[gd_scene load_steps=15 format=3 uid="uid://iron_hollow_camp"]
+
+[ext_resource type="PackedScene" uid="uid://c2kqr5m8vnh1p" path="res://scenes/player/player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://scenes/npcs/varn_bandit.tscn" id="2_varn"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="3_dialogue_ui"]
+[ext_resource type="PackedScene" uid="uid://cx3j8vk7mlbxn" path="res://scenes/ui/debug_interaction_panel.tscn" id="4_debug_panel"]
+[ext_resource type="PackedScene" uid="uid://bk3j9vk8mlcxo" path="res://scenes/ui/debug_console.tscn" id="5_debug_console"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="6_scene_trigger"]
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="7_world_solid"]
+[ext_resource type="Script" path="res://scripts/world/world_obstacle.gd" id="8_world_obstacle"]
+[ext_resource type="Script" path="res://scripts/world/generatable_asset.gd" id="9_generatable_asset"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tent_large"]
+size = Vector2(128, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tent_small"]
+size = Vector2(80, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_campfire"]
+size = Vector2(64, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tree_trunk"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit_trigger"]
+size = Vector2(80, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_boundary_h"]
+size = Vector2(600, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_boundary_v"]
+size = Vector2(40, 600)
+
+[node name="IronHollow" type="Node2D"]
+
+[node name="SceneBackground" type="Node2D" parent="."]
+z_index = -10
+
+[node name="ForestFloor" type="ColorRect" parent="SceneBackground"]
+offset_left = -300.0
+offset_top = -300.0
+offset_right = 300.0
+offset_bottom = 300.0
+color = Color(0.15, 0.22, 0.12, 1)
+
+[node name="CampClearing" type="ColorRect" parent="SceneBackground"]
+z_index = 1
+offset_left = -160.0
+offset_top = -120.0
+offset_right = 160.0
+offset_bottom = 140.0
+color = Color(0.25, 0.20, 0.15, 1)
+
+[node name="Asset" type="Node" parent="SceneBackground"]
+script = ExtResource("9_generatable_asset")
+asset_id = "iron_hollow_camp"
+generation_prompt = "pixel art bandit camp clearing in dark forest, top-down RPG view, hidden forest hollow, worn dirt paths, scattered campfires, crude wooden structures and tents, weapon racks with stolen weapons, supply crates and barrels, shadowy intimidating atmosphere, 16-bit SNES style, fantasy outlaw hideout"
+asset_type = "terrain"
+generation_seed = 2000
+analyze_after_generation = true
+
+[node name="CommandTent" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(0, -80)
+script = ExtResource("7_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CommandTent"]
+shape = SubResource("RectangleShape2D_tent_large")
+
+[node name="Tent" type="ColorRect" parent="CommandTent"]
+offset_left = -64.0
+offset_top = -48.0
+offset_right = 64.0
+offset_bottom = 48.0
+color = Color(0.35, 0.25, 0.18, 1)
+
+[node name="TentRoof" type="ColorRect" parent="CommandTent"]
+offset_left = -72.0
+offset_top = -56.0
+offset_right = 72.0
+offset_bottom = -32.0
+color = Color(0.25, 0.18, 0.12, 1)
+
+[node name="Sign" type="Label" parent="CommandTent"]
+z_index = 5
+offset_left = -50.0
+offset_top = -30.0
+offset_right = 50.0
+offset_bottom = -10.0
+theme_override_colors/font_color = Color(0.8, 0.6, 0.4, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "Command Tent"
+horizontal_alignment = 1
+
+[node name="Asset" type="Node" parent="CommandTent"]
+script = ExtResource("9_generatable_asset")
+asset_id = "bandit_command_tent"
+generation_prompt = "isometric 2D game building, 3/4 view showing front and right side, large bandit leader tent, weathered canvas stretched over wooden frame, crude but imposing entrance flap, stolen tapestries hanging, weapon rack outside, barrels of loot, shadow to bottom-right, dark brown and faded red colors"
+asset_type = "building"
+
+[node name="BarracksTent1" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(-140, 40)
+script = ExtResource("7_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarracksTent1"]
+shape = SubResource("RectangleShape2D_tent_small")
+
+[node name="Tent" type="ColorRect" parent="BarracksTent1"]
+offset_left = -40.0
+offset_top = -32.0
+offset_right = 40.0
+offset_bottom = 32.0
+color = Color(0.32, 0.24, 0.16, 1)
+
+[node name="Asset" type="Node" parent="BarracksTent1"]
+script = ExtResource("9_generatable_asset")
+asset_id = "bandit_tent_1"
+generation_prompt = "isometric 2D game tent, 3/4 view, small bandit sleeping tent, patched canvas, crude wooden stakes, bedroll visible through opening, shadow to bottom-right, dirty brown-green colors"
+asset_type = "building"
+
+[node name="BarracksTent2" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(140, 40)
+script = ExtResource("7_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarracksTent2"]
+shape = SubResource("RectangleShape2D_tent_small")
+
+[node name="Tent" type="ColorRect" parent="BarracksTent2"]
+offset_left = -40.0
+offset_top = -32.0
+offset_right = 40.0
+offset_bottom = 32.0
+color = Color(0.30, 0.22, 0.15, 1)
+
+[node name="Asset" type="Node" parent="BarracksTent2"]
+script = ExtResource("9_generatable_asset")
+asset_id = "bandit_tent_2"
+generation_prompt = "isometric 2D game tent, 3/4 view, small bandit sleeping tent, patched canvas, crude wooden stakes, bedroll visible through opening, shadow to bottom-right, dirty brown-green colors"
+asset_type = "building"
+
+[node name="Campfire" type="StaticBody2D" parent="."]
+position = Vector2(0, 48)
+script = ExtResource("7_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Campfire"]
+shape = SubResource("RectangleShape2D_campfire")
+
+[node name="FirePit" type="ColorRect" parent="Campfire"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(0.3, 0.25, 0.2, 1)
+
+[node name="Fire" type="ColorRect" parent="Campfire"]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(0.9, 0.4, 0.1, 1)
+
+[node name="Asset" type="Node" parent="Campfire"]
+script = ExtResource("9_generatable_asset")
+asset_id = "bandit_campfire"
+generation_prompt = "isometric 2D game prop, 3/4 view from above, large campfire with stone ring, burning logs with orange flames and smoke, surrounded by log seats, cooking pot on spit, shadow to bottom-right, warm fire glow"
+asset_type = "prop"
+
+[node name="Tree1" type="StaticBody2D" parent="."]
+z_index = 30
+position = Vector2(-220, -180)
+script = ExtResource("8_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tree1"]
+shape = SubResource("RectangleShape2D_tree_trunk")
+
+[node name="Canopy" type="ColorRect" parent="Tree1"]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+color = Color(0.15, 0.30, 0.12, 1)
+
+[node name="Tree2" type="StaticBody2D" parent="."]
+z_index = 30
+position = Vector2(220, -180)
+script = ExtResource("8_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tree2"]
+shape = SubResource("RectangleShape2D_tree_trunk")
+
+[node name="Canopy" type="ColorRect" parent="Tree2"]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+color = Color(0.12, 0.28, 0.10, 1)
+
+[node name="Tree3" type="StaticBody2D" parent="."]
+z_index = 30
+position = Vector2(-240, 120)
+script = ExtResource("8_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tree3"]
+shape = SubResource("RectangleShape2D_tree_trunk")
+
+[node name="Canopy" type="ColorRect" parent="Tree3"]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+color = Color(0.14, 0.32, 0.11, 1)
+
+[node name="Tree4" type="StaticBody2D" parent="."]
+z_index = 30
+position = Vector2(240, 120)
+script = ExtResource("8_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tree4"]
+shape = SubResource("RectangleShape2D_tree_trunk")
+
+[node name="Canopy" type="ColorRect" parent="Tree4"]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+color = Color(0.16, 0.35, 0.13, 1)
+
+[node name="CampBoundary" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="CampBoundary"]
+position = Vector2(0, -290)
+script = ExtResource("7_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CampBoundary/North"]
+shape = SubResource("RectangleShape2D_boundary_h")
+
+[node name="South" type="StaticBody2D" parent="CampBoundary"]
+position = Vector2(0, 290)
+script = ExtResource("7_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CampBoundary/South"]
+shape = SubResource("RectangleShape2D_boundary_h")
+
+[node name="West" type="StaticBody2D" parent="CampBoundary"]
+position = Vector2(-290, 0)
+script = ExtResource("7_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CampBoundary/West"]
+shape = SubResource("RectangleShape2D_boundary_v")
+
+[node name="East" type="StaticBody2D" parent="CampBoundary"]
+position = Vector2(290, 0)
+script = ExtResource("7_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CampBoundary/East"]
+shape = SubResource("RectangleShape2D_boundary_v")
+
+[node name="ExitToForest" type="Area2D" parent="."]
+position = Vector2(0, 220)
+script = ExtResource("6_scene_trigger")
+target_location = "thornhaven_exterior"
+target_spawn_point = "from_iron_hollow"
+prompt_text = "Leave Camp"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitToForest"]
+shape = SubResource("RectangleShape2D_exit_trigger")
+
+[node name="InteractionPrompt" type="Label" parent="ExitToForest"]
+z_index = 10
+visible = false
+offset_left = -50.0
+offset_top = -40.0
+offset_right = 50.0
+offset_bottom = -15.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Leave Camp"
+horizontal_alignment = 1
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 160)
+
+[node name="from_forest" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 180)
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+z_index = 10
+position = Vector2(0, 160)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(1.5, 1.5)
+position_smoothing_enabled = true
+position_smoothing_speed = 5.0
+
+[node name="VarnBandit" parent="." groups=["npcs", "bandits", "enemies"] instance=ExtResource("2_varn")]
+z_index = 10
+position = Vector2(0, 0)
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("3_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[node name="DebugInteractionPanel" parent="DialogueUI" instance=ExtResource("4_debug_panel")]
+visible = false
+
+[node name="DebugConsole" parent="." instance=ExtResource("5_debug_console")]
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]
