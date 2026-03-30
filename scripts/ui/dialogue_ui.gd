@@ -57,6 +57,15 @@ func _on_npc_dialogue_started(npc_id: String):
 func _on_npc_response_ready(npc_id: String, response: String):
 	print("[DialogueUI] NPC response ready: ", npc_id, " - ", response.substr(0, 50))
 	if active_npc and active_npc.npc_id == npc_id:
+		# Remove thinking indicator (replace last line)
+		var current_text = dialogue_text.get_parsed_text()
+		if "is thinking..." in current_text:
+			dialogue_text.clear()
+			var lines = current_text.split("\n")
+			for i in range(lines.size() - 2):  # Skip last 2 lines (thinking + blank)
+				if lines[i].strip_edges() != "":
+					dialogue_text.append_text(lines[i] + "\n")
+
 		dialogue_text.append_text("[color=yellow][b]%s:[/b][/color] %s\n\n" % [active_npc.npc_name, response])
 		player_input.editable = true
 		player_input.grab_focus()
@@ -99,6 +108,9 @@ func _send_message():
 	player_input.text = ""
 	player_input.editable = false
 	
+	# Show thinking indicator
+	dialogue_text.append_text("[color=gray][i]%s is thinking...[/i][/color]\n" % active_npc.npc_name)
+
 	# Send to NPC
 	active_npc.respond_to_player(message)
 

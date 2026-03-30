@@ -128,6 +128,25 @@ var recent_triggers: Array[String] = []
 ## FULL SYSTEM PROMPT GENERATION
 ## ============================================================================
 
+## ============================================================================
+## AUTONOMOUS AGENT (Goals, schedules, and agent behavior)
+## ============================================================================
+
+@export_group("Agent Behavior")
+
+## NPC goals with priorities: [{goal: String, priority: int, description: String}]
+@export var goals: Array[Dictionary] = []
+
+## Daily schedule: [{time_period: String, location: String, activity: String}]
+## time_period: "dawn", "morning", "noon", "evening", "night"
+@export var daily_schedule: Array[Dictionary] = []
+
+## How likely the NPC is to spread information (0.0 = secretive, 1.0 = gossips freely)
+@export_range(0.0, 1.0) var gossip_tendency: float = 0.5
+
+## How proactively the NPC pursues goals (0.0 = passive, 1.0 = highly driven)
+@export_range(0.0, 1.0) var initiative_level: float = 0.5
+
 ## The detailed personality prompt (for backward compatibility and complex scenarios)
 @export_group("Legacy")
 @export_multiline var full_system_prompt: String = ""

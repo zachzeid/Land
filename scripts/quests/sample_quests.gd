@@ -34,7 +34,7 @@ func _create_gregor_conspiracy_quest():
 	# Use typed arrays
 	quest.discovery_intents.append_array(["revelation", "confession", "secret_shared"])
 	quest.discovery_topics.append_array(["conspiracy", "ledger", "secret dealings"])
-	quest.discovery_npc = "gregor_001"
+	quest.discovery_npc = "gregor_merchant_001"
 
 	# Availability - always available from start (no flags needed)
 
@@ -42,7 +42,7 @@ func _create_gregor_conspiracy_quest():
 	var obj1 = QuestObjectiveScript.new()
 	obj1.objective_id = "gain_gregor_trust"
 	obj1.description = "Earn Gregor's trust through conversation"
-	obj1.complete_on_relationship = {"gregor_001": 60.0}
+	obj1.complete_on_relationship = {"gregor_merchant_001": 60.0}
 	obj1.order = 1
 	quest.objectives.append(obj1)
 
@@ -50,7 +50,7 @@ func _create_gregor_conspiracy_quest():
 	obj2.objective_id = "learn_about_ledger"
 	obj2.description = "Learn about the mysterious ledger"
 	obj2.complete_on_topics.append("ledger")
-	obj2.requires_npc = "gregor_001"
+	obj2.requires_npc = "gregor_merchant_001"
 	obj2.order = 2
 	quest.objectives.append(obj2)
 
@@ -58,14 +58,14 @@ func _create_gregor_conspiracy_quest():
 	obj3.objective_id = "discover_conspiracy"
 	obj3.description = "Uncover the conspiracy"
 	obj3.complete_on_intent = "revelation"
-	obj3.requires_npc = "gregor_001"
+	obj3.requires_npc = "gregor_merchant_001"
 	obj3.order = 3
 	quest.objectives.append(obj3)
 
 	# Context hints for NPCs when quest is active
 	quest.npc_context_hints = {
-		"gregor_001": "The player is investigating rumors of conspiracy. If trust is high enough, you might share what you know about the ledger and secret dealings.",
-		"elena_001": "You've heard whispers that your father knows something dangerous. You're worried about him."
+		"gregor_merchant_001": "The player is investigating rumors of conspiracy. If trust is high enough, you might share what you know about the ledger and secret dealings.",
+		"elena_daughter_001": "You've heard whispers that your father knows something dangerous. You're worried about him."
 	}
 	quest.global_context_hint = "Tensions are high in town. People speak in hushed tones about secrets."
 
@@ -134,7 +134,7 @@ func _create_elena_request_quest():
 	quest.npc_context_hints = {
 		"elena_daughter_001": "You're deeply worried about your father. He's been distant, having secret meetings at night. You suspect something is wrong but he won't tell you anything.",
 		"gregor_merchant_001": "Your daughter Elena has been asking questions. You want to protect her from the truth about the bandits, but your secrecy is hurting her.",
-		"mira_001": "You've noticed Elena looking troubled lately. Poor girl - she doesn't know what her father is mixed up in."
+		"mira_tavern_keeper_001": "You've noticed Elena looking troubled lately. Poor girl - she doesn't know what her father is mixed up in."
 	}
 
 	# Completion

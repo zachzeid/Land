@@ -29,5 +29,14 @@ signal npc_response_generated(npc_id: String, response_data: Dictionary)
 signal player_entered_area(area_id: String)
 signal player_exited_area(area_id: String)
 
+# NPC Agent signals (autonomous behavior)
+signal npc_action_taken(npc_id: String, action_data: Dictionary)
+signal npc_moved(npc_id: String, from_location: String, to_location: String)
+signal npc_communicated(from_npc: String, to_npc: String, info_packet: Dictionary)
+signal npc_goal_changed(npc_id: String, old_goal: String, new_goal: String)
+
+# Time signals
+signal time_period_changed(new_period: String, old_period: String)
+
 func _ready():
 	print("EventBus initialized")

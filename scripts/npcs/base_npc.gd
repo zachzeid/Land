@@ -59,14 +59,95 @@ var kpi_tracker: Node = null  # PersonalityKPITracker instance
 ## System prompt loaded from personality resource
 var system_prompt: String = ""
 
+## Movement System
+@export var movement_speed: float = 80.0  # Pixels per second
+var nav_agent: NavigationAgent2D = null
+var _move_target: Vector2 = Vector2.ZERO
+var _is_moving: bool = false
+var _facing_direction: Vector2 = Vector2.DOWN
+
+## Movement states
+enum MoveState { IDLE, MOVING, ARRIVING, CONVERSING }
+var move_state: MoveState = MoveState.IDLE
+
+## Information / Gossip
+var information_buffer: Array = []  # InfoPackets this NPC knows about
+
 ## Initialization state tracking
 var _is_initialized: bool = false
 var _is_initializing: bool = false
 
 func _ready():
-	# Don't auto-initialize in _ready for NPCs created in code
-	# Call initialize() manually after creation
-	pass
+	# Set up NavigationAgent2D if not already a child
+	_setup_navigation_agent()
+
+func _setup_navigation_agent():
+	nav_agent = get_node_or_null("NavigationAgent2D")
+	if nav_agent == null:
+		nav_agent = NavigationAgent2D.new()
+		nav_agent.name = "NavigationAgent2D"
+		add_child(nav_agent)
+
+	nav_agent.path_desired_distance = 8.0
+	nav_agent.target_desired_distance = 16.0
+	nav_agent.avoidance_enabled = true
+	nav_agent.radius = 16.0
+	nav_agent.neighbor_distance = 200.0
+	nav_agent.max_neighbors = 10
+	nav_agent.max_speed = movement_speed
+	nav_agent.velocity_computed.connect(_on_velocity_computed)
+
+func _physics_process(delta: float):
+	if not _is_initialized or not is_alive:
+		return
+	if move_state == MoveState.CONVERSING:
+		return
+	if not _is_moving or nav_agent == null:
+		return
+
+	if nav_agent.is_navigation_finished():
+		_is_moving = false
+		velocity = Vector2.ZERO
+		move_state = MoveState.IDLE
+		return
+
+	var next_pos = nav_agent.get_next_path_position()
+	var direction = global_position.direction_to(next_pos)
+	var desired_velocity = direction * movement_speed
+
+	# Update facing direction for animation
+	if direction.length() > 0.1:
+		_facing_direction = direction
+
+	# Arrive behavior: slow down near target
+	var distance_to_target = global_position.distance_to(nav_agent.target_position)
+	if distance_to_target < 32.0:
+		desired_velocity *= (distance_to_target / 32.0)
+		move_state = MoveState.ARRIVING
+	else:
+		move_state = MoveState.MOVING
+
+	# Use ORCA avoidance
+	nav_agent.velocity = desired_velocity
+
+func _on_velocity_computed(safe_velocity: Vector2):
+	velocity = safe_velocity
+	move_and_slide()
+
+## Command the NPC to walk to a world position
+func move_to_position(target: Vector2):
+	if nav_agent == null:
+		return
+	nav_agent.target_position = target
+	_move_target = target
+	_is_moving = true
+	move_state = MoveState.MOVING
+
+## Stop the NPC's movement
+func stop_movement():
+	_is_moving = false
+	velocity = Vector2.ZERO
+	move_state = MoveState.IDLE
 
 ## Initialize NPC manually (call this after creating NPC in code)
 ## use_chromadb: Whether to use ChromaDB or in-memory storage
@@ -142,6 +223,18 @@ func initialize(use_chromadb: bool = true, enable_kpi_tracking: bool = false) ->
 	
 	# Check states of known NPCs (async)
 	await _check_known_npc_states()
+
+	# Connect to EventBus for witnessing world events
+	if not EventBus.npc_witnessed_event.is_connected(_on_witnessed_event):
+		EventBus.npc_witnessed_event.connect(_on_witnessed_event)
+
+	# Attach agent loop for autonomous behavior (if not already present)
+	if not get_node_or_null("NPCAgentLoop"):
+		var AgentLoopScript = load("res://scripts/npcs/npc_agent_loop.gd")
+		if AgentLoopScript:
+			var agent_loop = AgentLoopScript.new()
+			agent_loop.name = "NPCAgentLoop"
+			add_child(agent_loop)
 
 	_is_initialized = true
 	_is_initializing = false
@@ -325,6 +418,8 @@ func start_conversation():
 
 	print("[%s] Starting conversation..." % npc_name)
 	is_in_conversation = true
+	stop_movement()
+	move_state = MoveState.CONVERSING
 	current_conversation_history = []
 	dialogue_started.emit(npc_id)
 
@@ -557,7 +652,21 @@ func respond_to_player(player_message: String):
 			# Phase 5: Clamp delta values to prevent importance saturation
 			var clamped_deltas = _clamp_relationship_deltas(analysis)
 
-			# Apply clamped dimension changes from analysis
+			# Apply personality sensitivity modifiers before applying deltas
+			if personality_resource and personality_resource.has_method("apply_personality_modifiers"):
+				var modifier_input = {
+					"trust": clamped_deltas.get("trust_change", 0),
+					"respect": clamped_deltas.get("respect_change", 0),
+					"affection": clamped_deltas.get("affection_change", 0),
+					"fear": clamped_deltas.get("fear_change", 0),
+				}
+				var modified = personality_resource.apply_personality_modifiers(modifier_input)
+				clamped_deltas["trust_change"] = modified.get("trust", clamped_deltas.get("trust_change", 0))
+				clamped_deltas["respect_change"] = modified.get("respect", clamped_deltas.get("respect_change", 0))
+				clamped_deltas["affection_change"] = modified.get("affection", clamped_deltas.get("affection_change", 0))
+				clamped_deltas["fear_change"] = modified.get("fear", clamped_deltas.get("fear_change", 0))
+
+			# Apply clamped + personality-modified dimension changes from analysis
 			relationship_trust += clamped_deltas.get("trust_change", 0)
 			relationship_respect += clamped_deltas.get("respect_change", 0)
 			relationship_affection += clamped_deltas.get("affection_change", 0)
@@ -650,6 +759,7 @@ func end_conversation():
 		return
 
 	is_in_conversation = false
+	move_state = MoveState.IDLE
 
 	# Generate KPI report if tracking enabled
 	if kpi_tracker != null:
@@ -1105,7 +1215,42 @@ func _infer_emotion() -> String:
 	else:
 		return "hostile"
 
-## React to witnessed event (called by world event system)
+## Receive an InfoPacket from the gossip system
+func receive_information(packet_dict: Dictionary):
+	# Avoid duplicates
+	for existing in information_buffer:
+		if existing.get("id", "") == packet_dict.get("id", ""):
+			return
+	information_buffer.append(packet_dict)
+
+## Get information this NPC would share with a specific target
+func get_shareable_info(target_npc_id: String) -> Array:
+	var gossip_mgr = get_node_or_null("/root/GossipManager")
+	if gossip_mgr:
+		return gossip_mgr.get_shareable_info(npc_id, target_npc_id, relationship_trust)
+	return []
+
+## Handle EventBus npc_witnessed_event signal
+## Only processes events targeted at this NPC or events at this NPC's location
+func _on_witnessed_event(target_npc_id: String, event_data: Dictionary):
+	# Skip if this event is targeted at a specific NPC and it's not us
+	if target_npc_id != "" and target_npc_id != npc_id:
+		# Check if we're at the same location as the event (overhearing)
+		var event_location = event_data.get("location", "")
+		if event_location == "" or event_location != current_location:
+			return
+
+	if not _is_initialized or not is_alive:
+		return
+
+	var description = event_data.get("description", "Something happened")
+	var event_type = event_data.get("event_type", "world_change")
+	var importance = event_data.get("importance", 5)
+
+	print("[%s] Witnessed event: %s (type: %s, importance: %d)" % [npc_name, description, event_type, importance])
+	witness_event(description, event_type, importance)
+
+## React to witnessed event (called by world event system or _on_witnessed_event)
 func witness_event(event_description: String, event_type: String, importance: int):
 	# Store in RAG memory
 	rag_memory.store_witnessed_event(

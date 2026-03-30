@@ -270,6 +270,20 @@ func _build_world_state_section(world_state: Dictionary) -> String:
 					# Fallback to generic formatting
 					section += "- %s\n" % flag.replace("_", " ").capitalize()
 
+	# Evidence the player possesses that is relevant to this NPC
+	var npc_id = world_state.get("npc_id", "")
+	var player = get_tree().get_first_node_in_group("player") if get_tree() else null
+	if player and player.has_node("Inventory"):
+		var inv = player.get_node("Inventory")
+		var presentable = inv.get_presentable_evidence(npc_id)
+		if presentable.size() > 0:
+			section += "\n### PLAYER'S EVIDENCE (they may present this to you)\n"
+			section += "The player possesses evidence that relates to you:\n"
+			for item in presentable:
+				section += "- **%s**: %s\n" % [item.display_name, item.description]
+			section += "If the player mentions or presents this evidence, react authentically "
+			section += "based on your personality and relationship with the player.\n\n"
+
 	section += "\n"
 	return section
 

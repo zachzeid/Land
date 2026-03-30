@@ -4,13 +4,26 @@ extends Node
 
 const CHROMA_CLI_PATH = "res://chroma_cli.py"
 const PYTHON_CMD = "python3"
+const TIMEOUT_MS = 5000  # 5 second timeout for ChromaDB operations
 
 signal memory_stored(collection_name: String, memory_id: String)
 signal memories_retrieved(collection_name: String, memories: Array)
 signal error_occurred(error_message: String)
 
+var _chroma_available: bool = true
+
 func _ready():
 	print("ChromaClient initialized (CLI mode with PersistentClient)")
+	_check_chroma_availability()
+
+func _check_chroma_availability():
+	var output = []
+	var exit_code = OS.execute(PYTHON_CMD, [ProjectSettings.globalize_path(CHROMA_CLI_PATH), "list_collections"], output, true)
+	if exit_code != 0:
+		push_warning("ChromaDB not available — falling back to in-memory mode")
+		_chroma_available = false
+	else:
+		print("ChromaDB connection verified")
 
 ## Create or get a collection for an NPC's memories
 ## collection_name: Unique name like "npc_aldric_memories"
