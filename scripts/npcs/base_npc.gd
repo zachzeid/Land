@@ -930,11 +930,22 @@ func _get_world_state() -> Dictionary:
 			if not quest_context.is_empty():
 				world_state["quest_context"] = quest_context
 
+	# What their craft tells them where they stand (a ranger's creatures, herbs and weather). Generics
+	# get it in their GenericManager prompt block
+	var craft = [] if is_in_group("generics") else CharacterTypesScript.craft_lines(character_kind(), get_current_location(), _game_minute())
+	if not craft.is_empty():
+		var lore = "What your craft tells you here: %s" % " ".join(craft)
+		world_state["quest_context"] = (str(world_state.get("quest_context", "")) + "\n" + lore).strip_edges()
+
 	# Add scene awareness - who else is present in this location
 	world_state["present_npcs"] = _get_present_npcs()
 	world_state["present_npc_names"] = _get_present_npc_names()
 
 	return world_state
+
+func _game_minute() -> int:
+	var ws = get_node_or_null("/root/WorldState")
+	return int(ws.game_minutes) if ws and "game_minutes" in ws else 0
 
 ## Get list of NPC IDs currently present in the same scene
 func _get_present_npcs() -> Array:
@@ -2050,6 +2061,7 @@ signal called_for_help(npc_id: String, foe_key: String)
 
 const CombatAIScript = preload("res://scripts/combat/combat_ai.gd")
 const LoadoutsScript = preload("res://scripts/combat/loadouts.gd")
+const CharacterTypesScript = preload("res://scripts/npcs/character_types.gd")
 const BASE_HEALTH = 100.0
 const STAGGER_MS = 800
 const SPARE_MS = 8000              # a yielded person left unhit this long has been let go
@@ -2075,6 +2087,12 @@ var staggered_until_ms: int = 0
 var _fight: Dictionary = {}         # {foe_key, band, harm_recorded, help_recorded, last_hit_ms}
 var _deciding: bool = false
 var _attack_cooldown: float = 0.0
+## Ranged fighting: arrows left (-1 = not yet counted out from the loadout), and whether the sidearm
+## is drawn (a bow is no use at arm's length or with an empty quiver)
+var arrows: int = -1
+var wielding_sidearm: bool = false
+const SIDEARM_BACK_OFF = 1.8       # the bow comes back out once the foe is this many close_ranges away
+const MINOR_IN_LINE = 20.0         # pixels: a child this near the line of a shot holds the shot
 
 ## Combat key: npc key for the roster ("bjorn"), the instance id for generics
 func combat_key() -> String:
@@ -2090,13 +2108,44 @@ func is_staggered() -> bool:
 ## What Combat resolves hits on this body with (weapon, armour, resistances, poise, health, minor).
 ## Weapon and armour: the scene body's own when set, else the loadout (resources/combat/loadouts.json);
 ## a minor's are always empty
+## The weapon in hand is the sidearm once it is drawn (closed on, or out of arrows); skills come from
+## the character type (resources/characters/character_types.json), ordinary folk have none
 func get_combat_profile() -> Dictionary:
 	var minor = CombatAIScript.is_minor(combat_key())
 	var kit = combat_loadout(minor)
 	var own = not minor  # a child carries nothing, whatever the body was given
-	return {"weapon": combat_weapon if own and combat_weapon != "fists" else str(kit.weapon),
+	var main = combat_weapon if own and combat_weapon != "fists" else str(kit.weapon)
+	var kind = character_kind() if own else CharacterTypesScript.neutral()
+	return {"weapon": sidearm_id() if own and wielding_sidearm else main, "main_weapon": main,
 		"armour": combat_armour.duplicate() if own and not combat_armour.is_empty() else kit.armour.duplicate(),
-		"resist": get_resistances(), "poise": BASE_POISE, "health": max_health, "skills": {}, "difficulty": 1.0, "minor": minor}
+		"resist": get_resistances(), "poise": BASE_POISE, "health": max_health, "skills": kind.skills.duplicate(),
+		"difficulty": 1.0, "minor": minor}
+
+## What kind of person this is (CharacterTypes): a main NPC by world.json key. GenericNPC answers by
+## its archetype's type
+func character_kind() -> Dictionary:
+	return CharacterTypesScript.of_key(combat_key())
+
+## The melee weapon drawn when the bow is no use (loadout `sidearm`, else fists)
+func sidearm_id() -> String:
+	var s = str(combat_loadout(CombatAIScript.is_minor(combat_key())).get("sidearm", ""))
+	return s if s != "" else "fists"
+
+## Arrows left for the bow (Combat asks before a shot and spends one after it)
+func arrows_left() -> int:
+	if arrows < 0:
+		arrows = int(combat_loadout(CombatAIScript.is_minor(combat_key())).get("arrows", 0))
+	return arrows
+
+func spend_arrow() -> void:
+	arrows = maxi(arrows_left() - 1, 0)
+
+## The main weapon is a bow or sling (weapons.json kind ranged)
+func has_ranged_weapon() -> bool:
+	var combat = get_node_or_null("/root/Combat") if is_inside_tree() else null
+	if combat == null or not combat.has_method("get_weapon_def"):
+		return false
+	return str(combat.get_weapon_def(str(get_combat_profile().get("main_weapon", "fists"))).get("kind", "")) == "ranged"
 
 ## This person's loadout by roster key (GenericNPC answers by archetype). Minors carry nothing
 func combat_loadout(minor: bool = false) -> Dictionary:
@@ -2197,6 +2246,7 @@ func end_fight(how: String = "over", tell_combat: bool = true) -> void:
 	combat_foe = null
 	combat_side = ""
 	_fight = {}
+	wielding_sidearm = false  # the bow goes back on the shoulder; the quiver stays as it is
 	velocity = Vector2.ZERO
 	morale = maxf(morale, CombatAIScript.WAVER)
 	combat_state_changed.emit(npc_id, "")
@@ -2285,13 +2335,10 @@ func combat_tick(delta: float) -> void:
 				return
 			if is_staggered():
 				pass
-			elif to_foe.length() > COMBAT_REACH:
-				velocity = to_foe.normalized() * COMBAT_SPEED
-			elif _attack_cooldown <= 0.0 and CombatAIScript.can_target(foe_key):
-				_attack_cooldown = NPC_ATTACK_SECONDS
-				var combat = get_node_or_null("/root/Combat")
-				if combat and combat.has_method("attack"):
-					combat.attack(self, combat_foe, "light")
+			elif has_ranged_weapon():
+				ranged_step(to_foe, foe_key)
+			else:
+				_melee_step(to_foe, foe_key)
 		"flee":
 			if to_foe.length() > FIGHT_LEAVE_DISTANCE:
 				end_fight("fled")
@@ -2307,3 +2354,59 @@ func combat_tick(delta: float) -> void:
 				return
 	if velocity != Vector2.ZERO and is_inside_tree():
 		move_and_slide()
+
+## Close and strike with what is in hand
+func _melee_step(to_foe: Vector2, foe_key: String) -> void:
+	if to_foe.length() > COMBAT_REACH:
+		velocity = to_foe.normalized() * COMBAT_SPEED
+	elif _attack_cooldown <= 0.0 and CombatAIScript.can_target(foe_key):
+		_attack_cooldown = NPC_ATTACK_SECONDS
+		var combat = get_node_or_null("/root/Combat")
+		if combat and combat.has_method("attack"):
+			combat.attack(self, combat_foe, "light")
+
+## One step of a fight with a bow (tactics from the character type, CharacterTypes.DEFAULT_TACTICS
+## for anyone else): hold the foe between keep_range[0] and keep_range[1], close in to get a clear
+## line (walls on world_solid block it), loose when the draw is ready, never with a child in the line
+## of the shot; draw the sidearm when closed on (close_range) or the quiver is empty, and put it away
+## again once there is room. Returns what it did: shoot | hold | close | back_off | draw_sidearm |
+## draw_bow | melee | wait
+func ranged_step(to_foe: Vector2, foe_key: String) -> String:
+	var kind = character_kind()
+	var t = CharacterTypesScript.tactics(kind)
+	var d = to_foe.length()
+	var close = float(t.close_range)
+	if wielding_sidearm:
+		if arrows_left() > 0 and d > close * SIDEARM_BACK_OFF:
+			wielding_sidearm = false
+			_attack_cooldown = maxf(_attack_cooldown, float(t.switch_seconds))
+			return "draw_bow"
+		_melee_step(to_foe, foe_key)
+		return "melee"
+	if d <= close or arrows_left() <= 0:
+		wielding_sidearm = true
+		_attack_cooldown = maxf(_attack_cooldown, float(t.switch_seconds))
+		return "draw_sidearm"
+	var combat = get_node_or_null("/root/Combat") if is_inside_tree() else null
+	var keep: Array = t.keep_range
+	var reach = float(combat.get_weapon_def(str(get_combat_profile().main_weapon)).get("reach", 400)) if combat else 400.0
+	var clear = combat != null and combat.has_method("has_line_of_sight") and combat.has_line_of_sight(self, combat_foe)
+	var did = "wait"
+	if not clear or d > minf(float(keep[1]), reach):
+		velocity = to_foe.normalized() * COMBAT_SPEED
+		did = "close"
+	elif d < float(keep[0]) and CharacterTypesScript.has_trait(kind, "keeps_distance"):
+		velocity = -to_foe.normalized() * COMBAT_SPEED  # give ground while drawing
+		did = "back_off"
+	if not clear or d > reach or _attack_cooldown > 0.0 or not CombatAIScript.can_target(foe_key):
+		return did
+	if combat.has_method("minor_in_line") and combat.minor_in_line(self, combat_foe, MINOR_IN_LINE):
+		return "hold"  # a child between them and the foe: no shot is worth that
+	var shot = combat.attack(self, combat_foe, "shoot")
+	if shot.has("projectile"):
+		_attack_cooldown = CharacterTypesScript.shoot_seconds(kind)
+		return "shoot"
+	if str(shot.get("refused", "")) == "no_ammo":
+		wielding_sidearm = true
+		return "draw_sidearm"
+	return did

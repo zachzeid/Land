@@ -123,6 +123,9 @@ func attack(attacker: Node, target: Node, action: String) -> Dictionary:
 	var ammo = str(weapon.get("ammo", ""))
 	if action == "shoot" and ammo != "" and _is_player(attacker) and not _inventory_has(ammo):
 		return _refuse(attacker, action, "no_ammo")
+	# An NPC body that counts its arrows (BaseNPC.arrows_left) shoots only what it carries
+	if action == "shoot" and ammo != "" and not _is_player(attacker) and attacker.has_method("arrows_left") and int(attacker.arrows_left()) <= 0:
+		return _refuse(attacker, action, "no_ammo")
 	if action != "shoot" and target == null:
 		var found = targets_in_arc(attacker, weapon)
 		var open = found.filter(func(n): return can_target_node(n, attacker))
@@ -139,6 +142,8 @@ func attack(attacker: Node, target: Node, action: String) -> Dictionary:
 	if action == "shoot":
 		if ammo != "" and _is_player(attacker):
 			_inventory().remove(ammo, 1)
+		elif ammo != "" and attacker.has_method("spend_arrow"):
+			attacker.spend_arrow()
 		return {"action": "shoot", "stamina": cost, "projectile": shoot(attacker, weapon, target)}
 	if target == null or not in_reach(attacker, target, weapon):
 		return {}
@@ -478,6 +483,31 @@ func in_reach(attacker: Node, target: Node, weapon: Dictionary) -> bool:
 		if not attacker.get_world_2d().direct_space_state.intersect_ray(query).is_empty():
 			return false
 	return true
+
+## Nothing on world_solid (walls, buildings) between two bodies: a shot or a look can pass
+func has_line_of_sight(a: Node, b: Node) -> bool:
+	if not (a is Node2D and b is Node2D) or not a.is_inside_tree():
+		return false
+	var query = PhysicsRayQueryParameters2D.create(a.global_position, b.global_position, SOLID_MASK)
+	query.collide_with_areas = false
+	return a.get_world_2d().direct_space_state.intersect_ray(query).is_empty()
+
+## A minor stands within `margin` pixels of the line from shooter to target, between them: an NPC
+## holds the shot (the arrow would pass a child by, but nobody looses past a child)
+func minor_in_line(shooter: Node, target: Node, margin: float = 20.0) -> bool:
+	if not (shooter is Node2D and target is Node2D) or not shooter.is_inside_tree():
+		return false
+	var from: Vector2 = shooter.global_position
+	var to: Vector2 = target.global_position
+	for node in fighters():
+		if node == shooter or node == target or not is_minor_node(node):
+			continue
+		var p: Vector2 = node.global_position
+		var seg = to - from
+		var along = clampf((p - from).dot(seg) / maxf(seg.length_squared(), 0.001), 0.0, 1.0)
+		if along > 0.0 and along < 1.0 and p.distance_to(from + seg * along) <= margin:
+			return true
+	return false
 
 func facing_of(node: Node) -> Vector2:
 	if node.has_method("get_facing_vector"):

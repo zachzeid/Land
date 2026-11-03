@@ -1,11 +1,12 @@
 extends RefCounted
 ## Loadouts - what each person fights with (resources/combat/loadouts.json; docs/PLAYER_SYSTEMS.md §3)
-## By world.json npc key for the main cast, by archetype id for generics. {weapon, armour}: a
-## weapons.json id ("fists" when none) and armour.json ids. Minors always come back empty-handed,
-## whatever the data says. BaseNPC.get_combat_profile reads it
+## By world.json npc key for the main cast, by archetype id for generics. {weapon, armour, sidearm,
+## arrows}: a weapons.json id ("fists" when none), armour.json ids, the melee weapon drawn when a bow
+## is no use ("" = none: fists) and the arrows carried for a bow. Minors always come back
+## empty-handed, whatever the data says. BaseNPC.get_combat_profile reads it
 
 const DATA_PATH = "res://resources/combat/loadouts.json"
-const NONE = {"weapon": "fists", "armour": []}
+const NONE = {"weapon": "fists", "armour": [], "sidearm": "", "arrows": 0}
 
 static var _data: Dictionary = {}
 
@@ -28,7 +29,8 @@ static func _shape(row) -> Dictionary:
 	var armour: Array = []
 	for a in row.get("armour", []):
 		armour.append(str(a))
-	return {"weapon": w if w != "" else "fists", "armour": armour}
+	return {"weapon": w if w != "" else "fists", "armour": armour, "sidearm": str(row.get("sidearm", "")),
+		"arrows": maxi(int(row.get("arrows", 0)), 0)}
 
 ## A main NPC's loadout by world.json key ("bjorn")
 static func for_npc(key: String, minor: bool = false) -> Dictionary:

@@ -7,6 +7,8 @@ extends RefCounted
 # - Agency is limited to `converse:` with personal-scope effects
 # - ## Life holds 1-2 small arcs whose result flags start with the literal `{id}_`
 # Voice variants: bullet lines in ## Voice (prose before them is shared by every variant)
+# Optional `type: <id>` header: a character type (resources/characters/character_types.json) whose
+# base traits and skills every instance has
 
 const PERSONAL_EFFECTS = ["agenda", "move_npc", "adjust_relationship", "shift_want", "spread_rumor"]
 const SLOTS = ["{name}", "{home}", "{region}", "{id}"]
@@ -15,6 +17,7 @@ var id: String = ""
 var title: String = ""             # "# ARCHETYPE: Farmer" / "# SOUL: Farmer" title, else id capitalised
 var regions: Array = []            # region ids ("*" or "any" = everywhere)
 var sprite: String = ""            # optional `sprite:` header (pregenerated character id)
+var character_type_id: String = "" # optional `type:` header (CharacterTypes id)
 var essence: String = ""
 var voice_shared: String = ""      # Voice prose shared by every variant
 var voice_variants: Array = []     # Voice bullet lines; the seed picks one
@@ -77,6 +80,8 @@ func parse(text: String) -> void:
 						regions.append(region)
 			elif lower.begins_with("sprite:"):
 				sprite = line.substr(7).strip_edges()
+			elif lower.begins_with("type:"):
+				character_type_id = line.substr(5).strip_edges().to_lower()
 			elif lower.begins_with("npc:"):
 				errors.append("archetypes use `archetype:`, not `npc:`")
 			continue
@@ -196,5 +201,5 @@ static func fill_slots(text: String, slots: Dictionary) -> String:
 func to_debug_dict() -> Dictionary:
 	return {
 		"id": id, "title": title, "regions": regions, "wants": want_order.map(func(w): return "%s %d-%d" % [w, wants[w].lo, wants[w].hi]),
-		"converse": converse, "voice_variants": voice_variants.size(), "life_arcs": life_arc_count, "errors": errors
+		"type": character_type_id, "converse": converse, "voice_variants": voice_variants.size(), "life_arcs": life_arc_count, "errors": errors
 	}
