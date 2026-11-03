@@ -1,0 +1,334 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/puzzles/room_old_workings.gd" id="room"]
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="solid"]
+[ext_resource type="Script" path="res://scripts/world/physics/flammable.gd" id="flammable"]
+[ext_resource type="Script" path="res://scripts/world/physics/pressure_plate.gd" id="pressure_plate"]
+[ext_resource type="Script" path="res://scripts/world/physics/rope.gd" id="rope"]
+[ext_resource type="Script" path="res://scripts/world/physics/lamp.gd" id="lamp"]
+[ext_resource type="Script" path="res://scripts/world/physics/basin.gd" id="basin"]
+[ext_resource type="Script" path="res://scripts/world/physics/metal.gd" id="metal"]
+
+[sub_resource type="RectangleShape2D" id="Rect_1024x40"]
+size = Vector2(1024, 40)
+
+[sub_resource type="RectangleShape2D" id="Rect_40x944"]
+size = Vector2(40, 944)
+
+[sub_resource type="RectangleShape2D" id="Rect_90x60"]
+size = Vector2(90, 60)
+
+[sub_resource type="RectangleShape2D" id="Rect_160x30"]
+size = Vector2(160, 30)
+
+[node name="OldWorkings" type="Node2D"]
+script = ExtResource("room")
+
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+color = Color(0.18, 0.17, 0.16, 1)
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, -492)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/North"]
+shape = SubResource("Rect_1024x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/North"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+color = Color(0.24, 0.22, 0.2, 1)
+
+[node name="South" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, 492)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/South"]
+shape = SubResource("Rect_1024x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/South"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+color = Color(0.24, 0.22, 0.2, 1)
+
+[node name="West" type="StaticBody2D" parent="Walls"]
+position = Vector2(-492, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/West"]
+shape = SubResource("Rect_40x944")
+
+[node name="Visual" type="ColorRect" parent="Walls/West"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+color = Color(0.24, 0.22, 0.2, 1)
+
+[node name="East" type="StaticBody2D" parent="Walls"]
+position = Vector2(492, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/East"]
+shape = SubResource("Rect_40x944")
+
+[node name="Visual" type="ColorRect" parent="Walls/East"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+color = Color(0.24, 0.22, 0.2, 1)
+
+[node name="Title" type="Label" parent="."]
+offset_left = -200.0
+offset_top = -460.0
+offset_right = 200.0
+offset_bottom = -436.0
+text = "The old workings, above the seventh level"
+horizontal_alignment = 1
+
+[node name="Parts" type="Node2D" parent="."]
+
+[node name="BrakePlate" type="Area2D" parent="Parts"]
+position = Vector2(-220, 120)
+script = ExtResource("pressure_plate")
+weight_needed = 60.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/BrakePlate"]
+shape = SubResource("Rect_90x60")
+
+[node name="Visual" type="ColorRect" parent="Parts/BrakePlate"]
+offset_left = -45.0
+offset_top = -30.0
+offset_right = 45.0
+offset_bottom = 30.0
+color = Color(0.42, 0.36, 0.28, 1)
+
+[node name="Label" type="Label" parent="Parts/BrakePlate"]
+offset_left = -200.0
+offset_top = 34.0
+offset_right = 200.0
+offset_bottom = 58.0
+text = "Winch brake treadle"
+horizontal_alignment = 1
+
+[node name="WinchChain" type="Node2D" parent="Parts"]
+position = Vector2(-100, 20)
+script = ExtResource("metal")
+
+[node name="Visual" type="ColorRect" parent="Parts/WinchChain"]
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = 30.0
+color = Color(0.35, 0.35, 0.38, 1)
+
+[node name="Label" type="Label" parent="Parts/WinchChain"]
+offset_left = -200.0
+offset_top = 34.0
+offset_right = 200.0
+offset_bottom = 58.0
+text = "Winch"
+horizontal_alignment = 1
+
+[node name="CageRope" type="Node2D" parent="Parts"]
+position = Vector2(0, -60)
+script = ExtResource("rope")
+
+[node name="Visual" type="ColorRect" parent="Parts/CageRope"]
+offset_left = -4.0
+offset_top = -70.0
+offset_right = 4.0
+offset_bottom = 70.0
+color = Color(0.55, 0.45, 0.3, 1)
+
+[node name="Label" type="Label" parent="Parts/CageRope"]
+offset_left = -200.0
+offset_top = 74.0
+offset_right = 200.0
+offset_bottom = 98.0
+text = "Cage rope"
+horizontal_alignment = 1
+
+[node name="Winze" type="Node2D" parent="Parts"]
+position = Vector2(0, -180)
+
+[node name="Visual" type="ColorRect" parent="Parts/Winze"]
+offset_left = -70.0
+offset_top = -60.0
+offset_right = 70.0
+offset_bottom = 60.0
+color = Color(0.05, 0.05, 0.05, 1)
+
+[node name="Label" type="Label" parent="Parts/Winze"]
+offset_left = -200.0
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 54.0
+text = "The old winze"
+horizontal_alignment = 1
+
+[node name="CageDown" type="Node2D" parent="Parts"]
+position = Vector2(0, -180)
+visible = false
+
+[node name="Visual" type="ColorRect" parent="Parts/CageDown"]
+offset_left = -50.0
+offset_top = -40.0
+offset_right = 50.0
+offset_bottom = 40.0
+color = Color(0.3, 0.25, 0.2, 1)
+
+[node name="CageJammed" type="Node2D" parent="Parts"]
+position = Vector2(0, -150)
+visible = false
+
+[node name="Visual" type="ColorRect" parent="Parts/CageJammed"]
+offset_left = -60.0
+offset_top = -20.0
+offset_right = 60.0
+offset_bottom = 20.0
+color = Color(0.4, 0.2, 0.15, 1)
+
+[node name="Label" type="Label" parent="Parts/CageJammed"]
+offset_left = -200.0
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 54.0
+text = "The cage, jammed"
+horizontal_alignment = 1
+
+[node name="WayDown" type="Node2D" parent="Parts"]
+position = Vector2(0, -250)
+visible = false
+
+[node name="Label" type="Label" parent="Parts/WayDown"]
+offset_left = -200.0
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 54.0
+text = "Down to the old fall"
+horizontal_alignment = 1
+
+[node name="Adit" type="Node2D" parent="Parts"]
+position = Vector2(330, -300)
+
+[node name="Visual" type="ColorRect" parent="Parts/Adit"]
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = 60.0
+color = Color(0.06, 0.06, 0.06, 1)
+
+[node name="Label" type="Label" parent="Parts/Adit"]
+offset_left = -200.0
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 54.0
+text = "The old adit"
+horizontal_alignment = 1
+
+[node name="Barricade" type="Node2D" parent="Parts"]
+position = Vector2(330, -220)
+script = ExtResource("flammable")
+owner_key = "dagna"
+burn_seconds = 20.0
+
+[node name="Visual" type="ColorRect" parent="Parts/Barricade"]
+offset_left = -80.0
+offset_top = -15.0
+offset_right = 80.0
+offset_bottom = 15.0
+color = Color(0.45, 0.33, 0.2, 1)
+
+[node name="Label" type="Label" parent="Parts/Barricade"]
+offset_left = -200.0
+offset_top = 19.0
+offset_right = 200.0
+offset_bottom = 43.0
+text = "Rotten timbers"
+horizontal_alignment = 1
+
+[node name="AditBlock" type="StaticBody2D" parent="Parts"]
+position = Vector2(330, -220)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/AditBlock"]
+shape = SubResource("Rect_160x30")
+
+[node name="Visual" type="ColorRect" parent="Parts/AditBlock"]
+offset_left = -80.0
+offset_top = -15.0
+offset_right = 80.0
+offset_bottom = 15.0
+color = Color(0.45, 0.33, 0.2, 1)
+
+[node name="Lamp" type="Node2D" parent="Parts"]
+position = Vector2(-300, 300)
+script = ExtResource("lamp")
+
+[node name="Visual" type="ColorRect" parent="Parts/Lamp"]
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+color = Color(0.9, 0.75, 0.3, 1)
+
+[node name="Label" type="Label" parent="Parts/Lamp"]
+offset_left = -200.0
+offset_top = 14.0
+offset_right = 200.0
+offset_bottom = 38.0
+text = "Miner's lamp"
+horizontal_alignment = 1
+
+[node name="Sump" type="Node2D" parent="Parts"]
+position = Vector2(250, 200)
+script = ExtResource("basin")
+
+[node name="Visual" type="ColorRect" parent="Parts/Sump"]
+offset_left = -60.0
+offset_top = -35.0
+offset_right = 60.0
+offset_bottom = 35.0
+color = Color(0.15, 0.2, 0.25, 1)
+
+[node name="Label" type="Label" parent="Parts/Sump"]
+offset_left = -200.0
+offset_top = 39.0
+offset_right = 200.0
+offset_bottom = 63.0
+text = "Sump"
+horizontal_alignment = 1
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 400)
+
+[node name="from_travel" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 430)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.9, 0.9)

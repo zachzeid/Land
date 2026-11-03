@@ -1,0 +1,43 @@
+{
+  "id": "tally_sticks",
+  "type": "lore",
+  "title": "The Tally Sticks",
+  "storyline": "ferrisford_toll",
+  "location": "ferrisford",
+  "summary": "Oskar's hazel sticks keep a notch for every Hollow barge he has carried, the end of each burned with a day. The Capitol harbour-master keeps his own book of what comes in after curfew.",
+  "question": "Lay the notches against the harbour-master's register, night by night. Where do the Hollow's barges come in?",
+  "requires": ["oskar_tally_seen"],
+  "clues": [
+    {"id": "TallySticks", "kind": "story_item", "scene": "res://scenes/exterior/ferrisford.tscn", "flag": "oskar_tally_seen",
+      "note": "A notch for every barge taken across for the Hollow men, three years of them, each stick-end burned with a day, a cargo, a name overheard."},
+    {"id": "BargeRegister", "kind": "story_item", "scene": "res://scenes/capitol/capitol_docks.tscn",
+      "note": "After curfew, a handful each month: 'Guild barge, from Ferrisford, toll paid at the crossing', and beside each the ferryman's mark, O."},
+    {"id": "SplitCrate", "kind": "story_item", "scene": "res://scenes/capitol/capitol_docks.tscn",
+      "note": "Stencilled on a sprung crate on the wharf: WOOL. FERRISFORD. FOR WAREHOUSE SEVEN."},
+    {"id": "CargoBales", "kind": "story_item", "scene": "res://scenes/exterior/ferrisford.tscn", "flag": "ferrisford_unmarked_cargo_seen",
+      "note": "Wool and crated ironwork waiting on the Ferrisford quay with no guild seal and no tithe stamp, iron wire round every knot."}
+  ],
+  "answer": {
+    "shape": "choose",
+    "options": [
+      {"id": "warehouse_seven", "label": "The Guild's wharf, for Warehouse Seven"},
+      {"id": "cathedral_almonry", "label": "The Cathedral's almoners"},
+      {"id": "fort_ashguard", "label": "Fort Ashguard's stores"},
+      {"id": "warrens_steps", "label": "The Warrens steps"}
+    ],
+    "correct": "warehouse_seven",
+    "wrong": {
+      "cathedral_almonry": "The register writes every one of those nights down as a Guild barge. Whatever reaches the Cathedral, it does not come off the deck there.",
+      "fort_ashguard": "Ashguard is a march fort, not a river wharf. The register has no barge for the fort.",
+      "warrens_steps": "The register books them in at the Guild's wharf. What goes on to the Warrens goes later, by another door."
+    }
+  },
+  "hints": [
+    {"min_lore": 0, "text": "Every burned day on a stick has a night in the register, and every night carries the same small O."},
+    {"min_lore": 20, "text": "The register never says what they carried. A split crate on the wharf does."}
+  ],
+  "difficulty": 1.2,
+  "flag": "tally_matched_to_register",
+  "about": ["oskar", "hollis"],
+  "solved_summary": "matched Oskar's tally notches to the Capitol register: the Hollow's barges come in as Guild barges for Warehouse Seven"
+}

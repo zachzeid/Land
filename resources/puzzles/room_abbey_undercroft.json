@@ -1,0 +1,26 @@
+{
+  "id": "abbey_undercroft",
+  "type": "room",
+  "title": "The Abbey Undercroft",
+  "location": "brackenmoor_abbey",
+  "scene": "res://scenes/puzzles/abbey_undercroft.tscn",
+  "summary": "Below Brackenmoor's archive, the undercroft keeps the books nobody reads: chronicles of dead abbots, saints' days. An old aumbry behind an iron grate opens only to two penitents kneeling at once.",
+  "components": {
+    "kneeler_north": "pressure_plate",
+    "kneeler_south": "pressure_plate",
+    "lamp_rope": "rope",
+    "hanging_lamp": "lamp",
+    "dull_shelves": "flammable",
+    "aumbry_grate": "metal",
+    "font": "basin"
+  },
+  "ways": [
+    "Weigh both kneeling stones at once (yourself and the iron-bound reliquary chest, or two people) and the grate lifts on its counterweight.",
+    "Light the hanging lamp to read the spines; the book of saints' days is the dullest on the shelf."
+  ],
+  "failure": "Cut the lamp rope while the lamp burns and it falls into the old books; if the shelf of dull books burns, the letters in its binding burn with it.",
+  "flag": "salt_letters_second_set_found",
+  "about": ["anselm"],
+  "solved_summary": "found Brother Anselm's second set of the salt letters in the binding of a book of saints' days in Brackenmoor's undercroft",
+  "reward": "The second set of the salt letters, and Anselm's copy of the receipt."
+}

@@ -1,0 +1,46 @@
+{
+  "id": "makers_marks",
+  "type": "lore",
+  "title": "The Maker's Marks",
+  "storyline": "smiths_oath",
+  "location": "thornhaven_blacksmith",
+  "summary": "A second set of lot tiles carries Bjorn's hammer and pine. Bjorn's own card counts every tile he ever cast, and none to spare.",
+  "question": "Whose hands poured the spare set of tiles in Gregor's strongbox?",
+  "requires": ["duplicate_tiles_found"],
+  "clues": [
+    {"id": "Strongbox", "kind": "story_item", "scene": "res://scenes/interiors/gregor_shop_interior.tscn", "flag": "duplicate_tiles_found",
+      "note": "The spare set: the same grey iron as the chapel's, the same square letters, Bjorn's hammer and pine on every back."},
+    {"id": "TileMould", "kind": "story_item", "scene": "res://scenes/interiors/blacksmith_interior.tscn",
+      "note": "Bjorn's mould, and below his card a tally of how many tiles he cast each year: one for every name the council counted, and no more."},
+    {"id": "HerbCurtain", "kind": "story_item", "scene": "res://scenes/interiors/healer_hut.tscn", "flag": "davin_found",
+      "note": "Davin, the smith's boy, with a smith's shoulders gone thin."},
+    {"id": "SeamWall", "kind": "story_item", "scene": "res://scenes/interiors/the_pit.tscn", "flag": "pit_seam_names_seen",
+      "note": "DAVIN, cut in the seam with a line struck through it and the word RAN."}
+  ],
+  "answer": {
+    "shape": "name",
+    "correct": "davin",
+    "names": {
+      "davin": {"aliases": ["davin", "the smith's boy", "bjorn's apprentice", "the apprentice"]},
+      "bjorn": {"aliases": ["bjorn", "the smith", "the blacksmith"], "truth": "false",
+        "reason": "Bjorn's card counts every tile he cast, one to a name. He did not make a spare set, and he never knew there was one."},
+      "gregor": {"aliases": ["gregor", "the merchant", "gregor stoneheart"], "near_miss": true,
+        "reason": "Gregor kept the tiles in his strongbox. Kept is not poured. Who had the run of Bjorn's forge and knew his mould?"},
+      "elena": {"aliases": ["elena"], "truth": "false",
+        "reason": "She recut one tile with an unpractised hand. Whoever poured these knew a mould."},
+      "mira": {"aliases": ["mira", "the widow"], "truth": "false",
+        "reason": "Nothing in the iron says a tavern keeper's hand was ever near Bjorn's mould."},
+      "mathias": {"aliases": ["mathias", "the elder", "elder mathias"], "truth": "false",
+        "reason": "The elder holds the urn's key, not a smith's ladle."}
+    }
+  },
+  "hints": [
+    {"min_lore": 0, "text": "The mark on the back means Bjorn's mould. Bjorn's tally means Bjorn's hand did not fill it twice."},
+    {"min_lore": 25, "text": "A mould needs a hot forge and someone who knows it. Who learned that forge at Bjorn's side?"}
+  ],
+  "difficulty": 1.5,
+  "flag": "spare_tiles_traced_to_davin",
+  "accuses": "the spare lot tiles in Gregor's strongbox",
+  "about": ["davin", "gregor"],
+  "solved_summary": "matched the spare lot tiles to Bjorn's mould and worked out that his apprentice Davin poured them"
+}

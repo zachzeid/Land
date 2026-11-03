@@ -762,7 +762,12 @@
     "davin_found": "The player found Davin, Bjorn's apprentice taken in the second Tithe, alive and hiding at Old Maud's hut",
     "pit_seam_names_seen": "The player saw names cut into the Pit's seam wall, Hesk Marlow's among them, by the people the Tithe took",
     "pit_tally_book_found": "The player found the Pit's tally book, its columns of salt and names kept in a neat, practised hand",
-    "tithe_drawing_known": "Word reached the stranger that Elder Mathias had drawn Elena's name for the Tithe"
+    "tithe_drawing_known": "Word reached the stranger that Elder Mathias had drawn Elena's name for the Tithe",
+    "spare_tiles_traced_to_davin": "The player matched the spare lot tiles in Gregor's strongbox to Bjorn's mould and worked out whose hands poured them while Bjorn was at market: Davin, his apprentice",
+    "ledger_names_decoded": "The player read Gregor's ledger back from its sums to its names: five autumns of the Tithe, Corin Ashby, Davin, Hesk Marlow, Willa Brand, and Ada Fenn written in and struck through",
+    "tally_matched_to_register": "The player laid Oskar's tally notches against the Capitol harbour-master's register: every Hollow barge across the Ferris came in after curfew as a Guild barge and unloaded for the Guild's Warehouse Seven",
+    "old_workings_way_found": "The player found an old winze in Greystone's abandoned workings above the seventh level that comes down past Dagna's boards to the old fall, a way to the Pit's back-seam the Hollow does not watch",
+    "salt_letters_second_set_found": "The player found Brother Anselm's second set of the salt letters, and his copy of the receipt, in the binding of a book of saints' days in Brackenmoor's undercroft"
   },
   "relationship_decay": {
     "note": "Points per game day without contact, moving toward baseline 0 (familiarity floor 5 once met).",
