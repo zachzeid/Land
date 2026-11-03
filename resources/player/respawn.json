@@ -1,0 +1,7 @@
+{
+  "_doc": "Where the player wakes after a death when they have not slept in a bed (docs/PLAYER_SYSTEMS.md §2): the nearest inn by the routes graph",
+  "inns": [
+    {"location": "thornhaven_tavern", "spawn_point": "default"},
+    {"location": "kingsroad_waystation", "spawn_point": "default"}
+  ]
+}
