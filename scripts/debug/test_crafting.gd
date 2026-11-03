@@ -81,6 +81,17 @@ class FakeInventory extends RefCounted:
 		if equipped.has(slot):
 			equipped[slot].durability = float(equipped[slot].get("durability", 0)) - amount
 		return {"broke": false}
+	## Inventory.repair: the most worn record, broken first, fully
+	func repair(item_id: String, _amount: float = -1.0) -> bool:
+		var mine = records.filter(func(r): return r.id == item_id and float(r.durability) < float(r.max_durability))
+		if mine.is_empty():
+			return false
+		mine.sort_custom(func(a, b): return float(a.durability) < float(b.durability))
+		mine[0].durability = mine[0].max_durability
+		mine[0].erase("broken")
+		return true
+	func get_definition(item_id: String) -> Dictionary:
+		return {"id": item_id, "kind": "weapon" if item_id in ["arming_sword", "fighting_knife"] else "material"}
 	func clear() -> void:
 		records.clear()
 
@@ -363,13 +374,13 @@ func _quality_and_deeds() -> void:
 	_check("A knife is forged", plain.ok and inv.count("knife") == 1 and inv.count("steel_bar") == 0)
 	_check("...taking the recipe's game minutes", world_state.get_game_minutes() - t0 == int(r.minutes))
 	_check("...using smithing", stats.calls.size() == calls + 1 and stats.calls.back().skill == "smithing")
-	_check("...durability set by quality", plain.item.max_durability == roundf(60 * (0.5 + plain.quality / 100.0)) and plain.item.durability == plain.item.max_durability)
+	_check("...durability left to Inventory (the item definition, by quality)", not plain.item.has("durability"))
 	_check("...no maker's mark without the perk", plain.item.maker == "")
 	var crafted_ev = _last_event("crafted")
 	_check("A crafted deed, seen by Bjorn", "bjorn_blacksmith_001" in crafted_ev.get("witnesses", []) and "knife" in crafted_ev.summary)
 	_check("...plain work is no feat", not plain.events.any(func(id): return pe.get_event(id).kind == "feat"))
 	stats.skills["smithing"] = 100.0
-	stats.perks = ["makers_mark"]
+	stats.perks = ["smithing_50_makers_mark"]
 	inv.add("steel_bar", 1, {"quality": 95})
 	inv.add("wood", 1, {"quality": 90})
 	var fine = crafting.craft("forge_knife", "bjorn_forge")
@@ -471,6 +482,12 @@ func _commissions() -> void:
 	var gift = pe.get_event(d.events[kinds.find("gift")])
 	_check("...the gift carries its quality and the maker", d.quality == 92 and "masterwork" in gift.summary and "own make" in gift.summary)
 	_check("...the promise kept", pe.get_event(c.event_id).status == "kept" and crafting.get_commissions("delivered").size() == 1)
+	inv.add("fighting_knife", 1, {"quality": 60})
+	var g = crafting.give_item("varn", "fighting_knife")
+	var help = g.events.map(func(id): return pe.get_event(id)).filter(func(e): return e.kind == "help")
+	_check("A blade given to Varn is a gift and a help about him (arming the Hollow)", g.ok and help.size() == 1 and help[0].about.has("varn"))
+	inv.add("wood", 1)
+	_check("...wood is only a gift", crafting.give_item("varn", "wood").events.size() == 1)
 
 func _save_load() -> void:
 	print("\nSave / load")
