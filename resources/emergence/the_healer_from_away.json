@@ -1,0 +1,160 @@
+{
+  "id": "the_healer_from_away",
+  "title": "The Healer from Away",
+  "summary": "Word that the player helped someone back to health reaches those with the fever in the house. They come to ask, pass the word, or wait on the Cathedral; Sister Ysolde, if she hears, wants to know what was given.",
+  "trigger": {
+    "event": {
+      "kind": "help"
+    }
+  },
+  "roles": {
+    "patient": {
+      "from": "event_about",
+      "prefer": "nearest"
+    },
+    "asker": {
+      "from": "heard_event",
+      "tiers": [
+        "generic"
+      ],
+      "prefer": "affection_desc"
+    },
+    "infirmarian": {
+      "from": "npc:ysolde",
+      "min_fidelity": 0.3,
+      "optional": true
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 1,
+  "expires_days": 5,
+  "location": "{asker.home}",
+  "hooks": [
+    {
+      "id": "fever_in_the_house",
+      "type": "react",
+      "eligible_role": "asker",
+      "trigger": "on_open",
+      "situation": "You heard {player} {event.summary}, and {patient} is the better for it. Your youngest has had the fever three nights, and Old Maud cannot walk to every bed.",
+      "options": [
+        {
+          "id": "ask_for_a_remedy",
+          "label": "Go and ask the stranger for a remedy",
+          "appeal": {
+            "trust": 0.5,
+            "affection": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{asker}",
+              "text": "Ask {player} for whatever did {patient} good, for your youngest with the fever. Offer what you have: pennies, a hen."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{asker}",
+              "dimension": "trust",
+              "delta": 5
+            }
+          ]
+        },
+        {
+          "id": "tell_the_sick",
+          "label": "Tell the other houses with fever where help might be",
+          "appeal": {
+            "trust": 0.3,
+            "familiarity": 0.3
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "wait_on_the_sisters",
+          "label": "Wait for the Cathedral's sisters; strangers' cures kill as often",
+          "appeal": {
+            "trust": -0.5
+          },
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "the_infirmary_hears",
+      "type": "react",
+      "eligible_role": "infirmarian",
+      "trigger": "on_open",
+      "situation": "Word reached the infirmary: {player} {event.summary}. The Cathedral rations what cure there is. A stranger giving freely is a fraud or the answer to a prayer.",
+      "options": [
+        {
+          "id": "ask_what_they_gave",
+          "label": "Send for the stranger and ask what they gave",
+          "appeal": {
+            "trust": 0.4,
+            "respect": 0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{infirmarian}",
+              "text": "Ask {player} what they gave {patient}, how it was made, and whether they would show the infirmary."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{infirmarian}",
+              "dimension": "respect",
+              "delta": 5
+            },
+            {
+              "type": "shift_want",
+              "npc": "{infirmarian}",
+              "want": "free_the_cure",
+              "delta": 1
+            }
+          ]
+        },
+        {
+          "id": "warn_them_quietly",
+          "label": "Warn them the bishops call unlicensed cures fraud",
+          "appeal": {
+            "affection": 0.3,
+            "fear": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{infirmarian}",
+              "text": "Warn {player} quietly that the Cathedral calls unlicensed cures fraud, and that the bishops have long memories."
+            }
+          ]
+        },
+        {
+          "id": "doubt_it",
+          "label": "Doubt it; a fever lifts by itself sometimes",
+          "appeal": {
+            "trust": -0.4
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{infirmarian}",
+              "dimension": "trust",
+              "delta": -3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:asker",
+    "talked_to:infirmarian",
+    "expired"
+  ]
+}

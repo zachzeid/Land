@@ -1,0 +1,249 @@
+{
+  "id": "buyer_for_the_blades",
+  "title": "Buyer for the Blades",
+  "summary": "The player armed Iron Hollow. The Hollow's buyer comes back for more; Aldric's watch and Bjorn, who have spent years against Hollow steel, notice.",
+  "trigger": {
+    "event": {
+      "kind": "help",
+      "about": [
+        "faction:iron_hollow"
+      ]
+    }
+  },
+  "roles": {
+    "buyer": {
+      "from": "event_about",
+      "prefer": "respect_desc"
+    },
+    "watch": {
+      "from": "faction:peacekeepers",
+      "min_fidelity": 0.3,
+      "prefer": "trust_asc",
+      "optional": true
+    },
+    "smith": {
+      "from": "npc:bjorn",
+      "min_fidelity": 0.3,
+      "optional": true
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 1,
+  "expires_days": 5,
+  "location": "{buyer.home}",
+  "hooks": [
+    {
+      "id": "more_of_the_same",
+      "type": "react",
+      "eligible_role": "buyer",
+      "trigger": "on_open",
+      "situation": "{player} {event.summary}. Iron Hollow never has enough steel, and a seller who asks no questions is worth more than a smith who does.",
+      "options": [
+        {
+          "id": "come_back_for_more",
+          "label": "Go back for more, and name a price in marks",
+          "appeal": {
+            "trust": 0.5,
+            "respect": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{buyer}",
+              "text": "Ask {player} for more of the same: a dozen blades by week's end, paid in marks, no questions either way."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{buyer}",
+              "dimension": "trust",
+              "delta": 6
+            }
+          ]
+        },
+        {
+          "id": "tell_the_camp",
+          "label": "Let the camp know the stranger can be bought",
+          "appeal": {
+            "respect": -0.4
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{buyer}",
+              "dimension": "respect",
+              "delta": -5
+            }
+          ]
+        },
+        {
+          "id": "keep_the_source",
+          "label": "Keep the source to yourself",
+          "appeal": {
+            "familiarity": 0.3,
+            "trust": 0.2
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{buyer}",
+              "dimension": "trust",
+              "delta": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_watch_hears",
+      "type": "react",
+      "eligible_role": "watch",
+      "trigger": "on_open",
+      "situation": "Word reached the watch: {player} {event.summary}. Hollow hands, valley steel, and the gate to hold on Collection Night.",
+      "options": [
+        {
+          "id": "have_it_out",
+          "label": "Have it out with the stranger",
+          "appeal": {
+            "trust": -0.5,
+            "fear": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{watch}",
+              "text": "Ask {player} to their face whose side they are on: steel for the Hollow is steel at the gate on Collection Night."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{watch}",
+              "dimension": "trust",
+              "delta": -12
+            }
+          ]
+        },
+        {
+          "id": "arm_the_gate_instead",
+          "label": "Ask them to arm the gate instead",
+          "appeal": {
+            "trust": 0.3,
+            "respect": 0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{watch}",
+              "text": "Ask {player} to bring their next blades to the gate for Aldric's farmers, and say what the watch can pay."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{watch}",
+              "dimension": "trust",
+              "delta": -3
+            }
+          ]
+        },
+        {
+          "id": "watch_them",
+          "label": "Say nothing; watch who they sell to next",
+          "appeal": {
+            "fear": 0.3,
+            "familiarity": 0.1
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{watch}",
+              "dimension": "trust",
+              "delta": -6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_smith_hears",
+      "type": "react",
+      "eligible_role": "smith",
+      "trigger": "on_open",
+      "situation": "You heard {player} {event.summary}. You know what Hollow hands do with steel; you have spent years undoing what your own forge once sold them.",
+      "options": [
+        {
+          "id": "say_it_to_their_face",
+          "label": "Say it to their face",
+          "appeal": {
+            "trust": -0.5,
+            "affection": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{smith}",
+              "text": "Tell {player} to their face that every blade sold to the Hollow comes back up the ridge trail behind a cart."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{smith}",
+              "dimension": "affection",
+              "delta": -10
+            },
+            {
+              "type": "shift_want",
+              "npc": "{smith}",
+              "want": "atone_for_the_steel",
+              "delta": 1
+            }
+          ]
+        },
+        {
+          "id": "go_cold",
+          "label": "Go cold on them",
+          "appeal": {
+            "affection": -0.6
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{smith}",
+              "dimension": "trust",
+              "delta": -12
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{smith}",
+              "dimension": "affection",
+              "delta": -8
+            }
+          ]
+        },
+        {
+          "id": "ask_them_why",
+          "label": "Ask them why, and hear the answer first",
+          "appeal": {
+            "trust": 0.4,
+            "familiarity": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{smith}",
+              "text": "Ask {player} why they armed the Hollow, and listen to the whole answer before you judge it."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:buyer",
+    "talked_to:watch",
+    "talked_to:smith",
+    "expired"
+  ]
+}

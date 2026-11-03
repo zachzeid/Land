@@ -1,0 +1,189 @@
+{
+  "id": "rival_smith",
+  "title": "Another Hand at the Anvil",
+  "summary": "Bjorn saw the player do true work at a forge. His soul answers it: respect, rivalry, or an offer to work the gate's steel together. Whoever else saw it carries the tale.",
+  "memory": "Bjorn watched the stranger at the forge: {event.summary}",
+  "trigger": {
+    "event": {
+      "kind": "feat",
+      "location": [
+        "thornhaven_blacksmith",
+        "greystone_mines",
+        "fort_ashguard"
+      ]
+    }
+  },
+  "roles": {
+    "smith": {
+      "from": "npc:bjorn",
+      "min_fidelity": 0.9
+    },
+    "talker": {
+      "from": "event_witness",
+      "tiers": [
+        "generic"
+      ],
+      "prefer": "familiarity_desc",
+      "optional": true
+    }
+  },
+  "cooldown_days": 3,
+  "max_active": 1,
+  "expires_days": 4,
+  "location": "{smith.home}",
+  "hooks": [
+    {
+      "id": "smith_to_smith",
+      "type": "react",
+      "eligible_role": "smith",
+      "trigger": "on_open",
+      "situation": "You watched {player} {event.summary}, with your own eyes, at a forge. Twenty years at the anvil and you know true work when you see it, and what it means for yours.",
+      "options": [
+        {
+          "id": "give_it_its_due",
+          "label": "Give the work its due, smith to smith",
+          "appeal": {
+            "respect": 0.6,
+            "affection": 0.2
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{smith}",
+              "dimension": "respect",
+              "delta": 10
+            },
+            {
+              "type": "agenda",
+              "npc": "{smith}",
+              "text": "Tell {player} plainly it was true work, and ask where they learned to hold the iron like that."
+            }
+          ]
+        },
+        {
+          "id": "show_whose_forge",
+          "label": "Show them whose forge this is",
+          "appeal": {
+            "respect": -0.4,
+            "affection": -0.4,
+            "fear": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{smith}",
+              "text": "Tell {player} the next piece gets made side by side at your anvil, and the valley can judge whose holds."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{smith}",
+              "dimension": "affection",
+              "delta": -6
+            },
+            {
+              "type": "shift_want",
+              "npc": "{smith}",
+              "want": "honest_steel",
+              "delta": 1
+            }
+          ]
+        },
+        {
+          "id": "offer_the_second_anvil",
+          "label": "Offer them the second anvil, for the gate's steel",
+          "appeal": {
+            "trust": 0.5,
+            "affection": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{smith}",
+              "text": "Offer {player} the second anvil: Aldric's farmers need steel for the gate, and two pairs of hands make it in time."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{smith}",
+              "dimension": "trust",
+              "delta": 6
+            },
+            {
+              "type": "shift_want",
+              "npc": "{smith}",
+              "want": "arm_the_resistance",
+              "delta": 1
+            }
+          ]
+        },
+        {
+          "id": "keep_your_counsel",
+          "label": "Say nothing; watch what they make next",
+          "appeal": {
+            "familiarity": 0.2
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{smith}",
+              "dimension": "respect",
+              "delta": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "talk_of_the_smithy",
+      "type": "react",
+      "eligible_role": "talker",
+      "trigger": "on_open",
+      "situation": "You saw {player} {event.summary}, and Bjorn saw it too. Someone will tell it at the well by nightfall.",
+      "options": [
+        {
+          "id": "tell_it_round",
+          "label": "Tell it at the well before anyone else does",
+          "appeal": {
+            "respect": 0.4,
+            "familiarity": 0.2
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "needle_the_smith",
+          "label": "Tell Bjorn the square says he has a rival",
+          "appeal": {
+            "respect": 0.3,
+            "affection": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{smith}",
+              "text": "Hear from {talker} that the square is saying the stranger can match you at the anvil."
+            }
+          ]
+        },
+        {
+          "id": "keep_it_to_yourself",
+          "label": "Keep it to yourself",
+          "appeal": {
+            "fear": 0.4
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:smith",
+    "expired"
+  ]
+}

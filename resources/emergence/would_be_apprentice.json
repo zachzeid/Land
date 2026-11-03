@@ -1,0 +1,193 @@
+{
+  "id": "would_be_apprentice",
+  "title": "Someone Wants to Learn",
+  "summary": "A young recruit or courier who saw or heard of the player's skill wants to learn it. Whether they ask, boast of it or hang back is their own soul's choice; teaching them is help.",
+  "trigger": {
+    "event": {
+      "kind": "feat"
+    }
+  },
+  "roles": {
+    "recruit": {
+      "from": "faction:peacekeepers",
+      "tiers": [
+        "generic"
+      ],
+      "min_fidelity": 0.3,
+      "prefer": "respect_desc",
+      "optional": true
+    },
+    "courier": {
+      "from": "faction:the_crown",
+      "tiers": [
+        "generic"
+      ],
+      "min_fidelity": 0.3,
+      "prefer": "respect_desc",
+      "optional": true
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 1,
+  "expires_days": 5,
+  "location": "{event.location}",
+  "hooks": [
+    {
+      "id": "the_recruit",
+      "type": "aid",
+      "eligible_role": "recruit",
+      "trigger": "on_open",
+      "situation": "You heard {player} {event.summary}. Six weeks of drill and you have never done a thing like that. Learn half of it and you might not run when the Hollow comes.",
+      "options": [
+        {
+          "id": "ask_to_learn",
+          "label": "Ask to learn it from them",
+          "appeal": {
+            "respect": 0.5,
+            "affection": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{recruit}",
+              "text": "Ask {player} to teach you what they did, and offer what you have: a few marks, a strong back, the worst watch of the night."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{recruit}",
+              "dimension": "respect",
+              "delta": 6
+            }
+          ]
+        },
+        {
+          "id": "tell_the_others",
+          "label": "Tell everyone what the stranger can do",
+          "appeal": {
+            "respect": 0.3,
+            "familiarity": 0.3
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{recruit}",
+              "dimension": "respect",
+              "delta": 3
+            }
+          ]
+        },
+        {
+          "id": "ask_someone_older",
+          "label": "Ask someone older whether the stranger is safe to learn from",
+          "appeal": {
+            "trust": -0.4,
+            "fear": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{recruit}",
+              "text": "Ask whoever you answer to whether {player} is safe to learn from, and listen to what they say."
+            }
+          ]
+        },
+        {
+          "id": "never_dare",
+          "label": "Watch from a distance; you would never dare ask",
+          "appeal": {
+            "fear": 0.5
+          },
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "the_courier",
+      "type": "aid",
+      "eligible_role": "courier",
+      "trigger": "on_open",
+      "situation": "On the road you heard {player} {event.summary}. A courier rides alone, and one who could do that would ride the Kingsroad a good deal easier.",
+      "options": [
+        {
+          "id": "ask_to_learn",
+          "label": "Ask to learn it from them",
+          "appeal": {
+            "respect": 0.5,
+            "affection": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{courier}",
+              "text": "Ask {player} to teach you what they did, and offer what you have: a few marks, a strong back, the worst watch of the night."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{courier}",
+              "dimension": "respect",
+              "delta": 6
+            }
+          ]
+        },
+        {
+          "id": "tell_the_others",
+          "label": "Tell everyone what the stranger can do",
+          "appeal": {
+            "respect": 0.3,
+            "familiarity": 0.3
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{courier}",
+              "dimension": "respect",
+              "delta": 3
+            }
+          ]
+        },
+        {
+          "id": "ask_someone_older",
+          "label": "Ask someone older whether the stranger is safe to learn from",
+          "appeal": {
+            "trust": -0.4,
+            "fear": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{courier}",
+              "text": "Ask whoever you answer to whether {player} is safe to learn from, and listen to what they say."
+            }
+          ]
+        },
+        {
+          "id": "never_dare",
+          "label": "Watch from a distance; you would never dare ask",
+          "appeal": {
+            "fear": 0.5
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:recruit",
+    "talked_to:courier",
+    "expired"
+  ]
+}
