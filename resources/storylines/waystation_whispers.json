@@ -131,7 +131,8 @@
                   "npc": "wren",
                   "text": "Tell the stranger the courier rack is not for guests. Say it kindly and do not smile."
                 }
-              ]
+              ],
+              "when": "tonight"
             }
           ]
         },
@@ -1394,7 +1395,8 @@
                   "npc": "rook",
                   "text": "Tell the stranger you are leaving the Warrens with your crew. Ask if they know a barge west that asks no questions."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "sell_it_dearer",

@@ -672,7 +672,8 @@
                   "npc": "elena",
                   "location": "forest_path"
                 }
-              ]
+              ],
+              "when": "night"
             },
             {
               "id": "only_count",
@@ -805,7 +806,8 @@
                   "npc": "gregor",
                   "text": "Tell the stranger, smoothly, that Elena is resting and receives no callers this week."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "the_wagon",
@@ -1190,7 +1192,8 @@
                   "npc": "elena",
                   "text": "Ask the stranger to keep watch on the Fenns' house on Collection Night, and not to ask her why."
                 }
-              ]
+              ],
+              "when": "dawn"
             }
           ]
         },
@@ -1596,7 +1599,8 @@
                   "npc": "elena",
                   "location": "forest_path"
                 }
-              ]
+              ],
+              "when": "night"
             },
             {
               "id": "stitch_and_wait",
@@ -1850,7 +1854,8 @@
                   "npc": "elena",
                   "text": "Tell the stranger Father ran. Ask them to help her keep the shop until the cart comes."
                 }
-              ]
+              ],
+              "when": "morning"
             },
             {
               "id": "go_after_him",
@@ -2340,7 +2345,8 @@
                   "npc": "gregor",
                   "text": "Tell the stranger he did one honest thing for his daughter tonight, and she will hate him for it."
                 }
-              ]
+              ],
+              "when": "night"
             },
             {
               "id": "let_her_carry_it",
@@ -2491,7 +2497,8 @@
                   "npc": "elena",
                   "location": "thornhaven_chapel"
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "ahead_of_the_cart",
@@ -2516,7 +2523,8 @@
                   "npc": "elena",
                   "location": "forest_path"
                 }
-              ]
+              ],
+              "when": "tonight"
             }
           ]
         },
@@ -2553,7 +2561,8 @@
                   "npc": "elena",
                   "location": "forest_path"
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "her_name_goes",
@@ -2681,7 +2690,8 @@
                   "npc": "elena",
                   "text": "Father has a wagon at the gate in the dark. Ask the stranger to tell him, kindly, that you will not get in."
                 }
-              ]
+              ],
+              "when": "dark"
             },
             {
               "id": "sit_up_with_her",
@@ -2819,7 +2829,8 @@
                   "npc": "varn",
                   "text": "Tell the stranger the forest path is his tonight, and anyone on it is his too."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "leave_it_to_the_cart",
@@ -2906,7 +2917,8 @@
                   "npc": "bjorn",
                   "text": "Tell the stranger their boots are shod for the ridge, and ask them to bring the girl home."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "not_his_business",

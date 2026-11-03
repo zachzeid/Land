@@ -99,7 +99,8 @@
                   "flag": "ford_barge_carried",
                   "value": true
                 }
-              ]
+              ],
+              "when": "dark"
             },
             {
               "id": "carry_and_notch",
@@ -119,7 +120,8 @@
                   "npc": "oskar",
                   "text": "Mutter to the stranger that the night barge carried eight bales and four men, then look at the water as if he had said nothing."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "hold_till_dawn",

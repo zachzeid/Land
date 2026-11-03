@@ -632,7 +632,8 @@
                   "npc": "corwin",
                   "text": "Ask the stranger whether anyone in the valley ever heard back from the six petitions their elder sent east."
                 }
-              ]
+              ],
+              "when": "evening"
             },
             {
               "id": "hold",
@@ -1091,7 +1092,8 @@
                   "npc": "aldric",
                   "text": "Ask the stranger to help him watch the holdout farms at night; he cannot spare the men and is posting them anyway."
                 }
-              ]
+              ],
+              "when": "night"
             },
             {
               "id": "hold",

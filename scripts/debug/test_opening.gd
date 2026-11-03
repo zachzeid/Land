@@ -120,6 +120,7 @@ func _init():
 	_test_epilogue()
 	_test_debug_command()
 	_test_time_of_day()
+	_test_story_option_hours()
 
 	opening.reset()
 	opening.player_events = null
@@ -537,5 +538,39 @@ func _test_time_of_day():
 			if not TimeWindow.contains(str(step.get("when", "")), arrive_hour):
 				awake.append("%s/%s" % [key, p.step])
 	_check("At 02:00 a step is taken only in its window, at the hour they arrive (%s)" % [awake], awake.is_empty())
+	_fresh()
+
+
+
+## A story option done at a time of day is decided at once and carried out when its window opens:
+## the first runs had Gregor "stand outside the Fenns' door after dark" at 08:00, and Elena's
+## "You followed your father into the dark" fired at 08:00 because of it
+func _test_story_option_hours():
+	print("Story options at their hour")
+	_fresh()
+	var TimeWindow = load("res://scripts/storyline/time_window.gd")
+	_check("tonight runs 18:00-04:00", TimeWindow.contains("tonight", 18) and TimeWindow.contains("tonight", 3) and not TimeWindow.contains("tonight", 12))
+	_check("next_open: now when open, else the window's first minute", TimeWindow.next_open("dark", 20 * 60) == 20 * 60 and TimeWindow.next_open("dark", 8 * 60) == 19 * 60)
+	var found: Dictionary = director._find_hook("iron_hand", "door_the_substitute")
+	var option: Dictionary = {}
+	for o in found.hook.options:
+		if o.id == "the_fenns":
+			option = o
+	_check("The Fenns' door option says when: after dark", option.get("when", "") == "dark")
+	world_state.reset_calendar(world_state.start_minute + 3 * 24 * 60 - 12 * 60)  # day 4, 08:00
+	world_state.set_world_flag("tithe_drawing_known", true)  # a game past its opening (Elena's beat needs it)
+	director.evaluate_all()
+	var entry: Dictionary = director._carry_out("iron_hand", found.beat, found.hook, "on_flag:tn_day_4", "gregor", director.get_soul("gregor"),
+		{"choice": "the_fenns", "option": option, "effects": option.effects, "mode": "offline"})
+	_check("At 08:00 the decision is made but nothing happens yet", entry.applied.is_empty() and not entry.scheduled.is_empty() and not world_state.get_world_flag("ih_fenn_again"))
+	_check("...it is scheduled for 19:00", entry.scheduled.all(func(x): return int(x.at) == world_state.start_minute + 3 * 24 * 60 - 1 * 60))
+	world_state.advance_time(10 * 60, "test")  # 18:00
+	_check("Still nothing at 18:00", not world_state.get_world_flag("ih_fenn_again"))
+	world_state.advance_time(60, "test")  # 19:00
+	_check("At 19:00 Gregor is at the Fenns' door (ih_fenn_again)", world_state.get_world_flag("ih_fenn_again"))
+	var queued = director.get_decision_queue().any(func(q): return q.hook == "elena_at_the_fenns_door")
+	_check("...and Elena's 'into the dark' hook follows at that hour", queued or director.get_chronicle().any(func(c): return c.get("hook", "") == "elena_at_the_fenns_door"))
+	var saved: Dictionary = director.save()
+	_check("Scheduled acts are saved with the game", saved.has("scheduled"))
 	_fresh()
 

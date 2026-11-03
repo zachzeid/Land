@@ -165,7 +165,7 @@ EVENT_KINDS = {"claim", "promise", "threat", "lie", "insult", "gift", "help", "h
 ARC_RE = re.compile(r"^### Arc: `([a-z][a-z0-9_]*)` \(serves `([a-z][a-z0-9_]*)`\)\s*$")
 STEP_RE = re.compile(r"^- `([a-z][a-z0-9_]*)`: (.+?) \| after: ([a-z0-9_]+) \| needs: ([!a-z0-9_, ]+) \| at: ([a-z0-9_]+) \| takes: (\d+) \| effects: ([a-z_, ]+?)(?: \| when: ([a-z0-9-]+))?(?: \| player: (helps|needed))?\s*$")
 # SOUL.md `when` windows (scripts/storyline/time_window.gd)
-WHEN_WINDOWS = {"waking", "dawn", "morning", "day", "afternoon", "evening", "dark", "night", "any"}
+WHEN_WINDOWS = {"waking", "dawn", "morning", "day", "afternoon", "evening", "dark", "night", "tonight", "any"}
 WHEN_RANGE_RE = re.compile(r"^(\d{1,2})-(\d{1,2})$")
 RESULT_RE = re.compile(r"^- result: `([a-z0-9_{}]+)`: \S.{15,}$")
 FAILS_RE = re.compile(r"^- fails_if: (`[!a-z0-9_]+`(?:, `[!a-z0-9_]+`)*)\s*$")
@@ -578,6 +578,11 @@ def validate_storyline(path, flags_base, souls, all_declared, strict_crossovers)
                         err(ow, f"missing '{f}'")
                 if o.get("aids") is not None and o["aids"] not in NPC_KEYS + ["player"]:
                     err(ow, f"aids '{o['aids']}' unknown")
+                when = o.get("when")
+                if when is not None:
+                    r = WHEN_RANGE_RE.match(str(when))
+                    if when not in WHEN_WINDOWS and not (r and 0 <= int(r.group(1)) <= 23 and 1 <= int(r.group(2)) <= 24 and r.group(1) != r.group(2)):
+                        err(ow, f"when '{when}' is not a window or HH-HH")
                 harms = o.get("harms", [])
                 if not isinstance(harms, list) or any(k not in NPC_KEYS + ["player"] for k in harms):
                     err(ow, f"harms must be a list of NPC keys, got {harms}")

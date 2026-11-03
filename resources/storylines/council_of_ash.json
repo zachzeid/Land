@@ -128,7 +128,8 @@
                   "npc": "mathias",
                   "text": "Tell the stranger the council must decide quickly, before the Hollow decides for it."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "pray_alone",
@@ -1292,7 +1293,8 @@
                   "flag": "cou_barn_burned",
                   "value": true
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "wait_for_the_night",
@@ -1999,7 +2001,8 @@
                   "flag": "cou_martial_law",
                   "value": true
                 }
-              ]
+              ],
+              "when": "dawn"
             },
             {
               "id": "one_more_day",

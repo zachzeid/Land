@@ -375,7 +375,8 @@
                   "flag": "tithe_rangers_arrive",
                   "value": true
                 }
-              ]
+              ],
+              "when": "dawn"
             },
             {
               "id": "ask_the_road",
@@ -1773,7 +1774,8 @@
                   "flag": "tithe_report_sent",
                   "value": true
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "not_yet",

@@ -1123,7 +1123,8 @@
                   "location": "thornhaven_blacksmith"
                 }
               ],
-              "aids": "bjorn"
+              "aids": "bjorn",
+              "when": "dark"
             },
             {
               "id": "stay",
@@ -1631,7 +1632,8 @@
               ],
               "harms": [
                 "bjorn"
-              ]
+              ],
+              "when": "dark"
             },
             {
               "id": "mark_him",

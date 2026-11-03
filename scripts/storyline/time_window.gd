@@ -12,6 +12,7 @@ const WINDOWS = {
 	"evening": [17, 22],
 	"dark": [19, 5],       # "after dark"
 	"night": [21, 5],
+	"tonight": [18, 4],    # "tonight": later this evening or this night
 	"any": [0, 24],
 }
 const DEFAULT = "waking"
@@ -36,3 +37,11 @@ static func _range(when: String) -> Array:
 	var from = int(parts[0])
 	var to = int(parts[1])
 	return [from, to] if from >= 0 and from <= 23 and to >= 1 and to <= 24 and from != to else []
+
+## The first game minute at or after now_minute that falls in the window (now_minute if it is open)
+static func next_open(when: String, now_minute: int) -> int:
+	for step in 24 * 60:
+		var minute = now_minute + step
+		if contains(when, floori((minute % (24 * 60)) / 60.0)):
+			return minute
+	return now_minute

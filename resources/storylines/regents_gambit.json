@@ -654,7 +654,8 @@
                   "flag": "reg_ashdown_offer_made",
                   "value": true
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "draw_back",
@@ -2616,7 +2617,8 @@
                   "flag": "reg_crown_strikes_hollow",
                   "value": true
                 }
-              ]
+              ],
+              "when": "dark"
             },
             {
               "id": "let_them_run",
@@ -2835,7 +2837,8 @@
                   "flag": "reg_hollow_scattered",
                   "value": true
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "give_varn_now",
@@ -3850,7 +3853,8 @@
                   "storyline": "regents_gambit",
                   "beat": "the_regent_answers"
                 }
-              ]
+              ],
+              "when": "dawn"
             },
             {
               "id": "wait",

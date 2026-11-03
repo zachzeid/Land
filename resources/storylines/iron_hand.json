@@ -532,7 +532,8 @@
                   "flag": "ih_fenn_again",
                   "value": true
                 }
-              ]
+              ],
+              "when": "dark"
             },
             {
               "id": "draw_again",
@@ -1330,7 +1331,8 @@
                   "flag": "ih_gregor_fled",
                   "value": true
                 }
-              ]
+              ],
+              "when": "tonight"
             }
           ]
         },
@@ -2187,7 +2189,8 @@
                   "flag": "ih_gregor_fled",
                   "value": true
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "kneel_and_read",
@@ -2483,7 +2486,8 @@
                   "npc": "elena",
                   "text": "Tell the stranger she opened the shop this morning. Somebody has to sell the valley its candles."
                 }
-              ]
+              ],
+              "when": "morning"
             },
             {
               "id": "let_it_go_dark",

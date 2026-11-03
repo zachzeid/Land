@@ -1867,7 +1867,8 @@
               ],
               "harms": [
                 "gregor"
-              ]
+              ],
+              "when": "dawn"
             },
             {
               "id": "quiet_exile",
@@ -1970,7 +1971,8 @@
                   "npc": "corwin",
                   "text": "Tell the stranger their oath will be heard again tomorrow in open court, and ask them to stand by every word of it."
                 }
-              ]
+              ],
+              "when": "tonight"
             }
           ]
         },

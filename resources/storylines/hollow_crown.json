@@ -769,7 +769,8 @@
                   "npc": "mira",
                   "text": "Thank the stranger, shaking, and ask them to tell Captain Aldric nothing yet, for Elena's sake."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "weep_and_wait",
@@ -1135,7 +1136,8 @@
                   "npc": "davin",
                   "location": "thornhaven_blacksmith"
                 }
-              ]
+              ],
+              "when": "dark"
             },
             {
               "id": "stay_in_the_loft",
@@ -1186,7 +1188,8 @@
                   "dimension": "trust",
                   "delta": 10
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "go_to_him",
@@ -1207,7 +1210,8 @@
                   "dimension": "trust",
                   "delta": 6
                 }
-              ]
+              ],
+              "when": "dark"
             }
           ]
         },
@@ -1569,7 +1573,8 @@
               ],
               "harms": [
                 "varn"
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "at_the_gate",
@@ -1969,7 +1974,8 @@
                   "npc": "varn",
                   "text": "Tell the stranger, softly, that widows are sad people and should be left alone. Smile."
                 }
-              ]
+              ],
+              "when": "night"
             },
             {
               "id": "her_problem",
@@ -2135,7 +2141,8 @@
                   "npc": "varn",
                   "text": "Tell the stranger the Hollow has no use now for whoever ran it, and ask, smiling, if they know who that was."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "ride_east",
@@ -2331,7 +2338,8 @@
                   "npc": "elena",
                   "location": "the_pit"
                 }
-              ]
+              ],
+              "when": "dark"
             },
             {
               "id": "count_and_wait",
@@ -2661,7 +2669,8 @@
                   "flag": "hc_varn_ascendant",
                   "value": true
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "call_it_a_lie",
@@ -2837,7 +2846,8 @@
                   "npc": "mathias",
                   "text": "Ask the stranger to stand before the council tonight and say what they know of the widow."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "pray",

@@ -616,7 +616,12 @@ func _carry_out(sid: String, beat: Dictionary, hook: Dictionary, trigger: String
 	var hook_type = str(hook.get("type", ""))
 	var applied: Array = []
 	var dropped: Array = []
+	var scheduled: Array = []
 	var choice = str(decision.get("choice", "pass"))
+	# An option done at a time of day (`"when"`, e.g. "after dark"): decided now, carried out when the
+	# window next opens, through the scheduled effects (saved, and validated again when they land)
+	var when = str(decision.get("option", {}).get("when", "")) if decision.get("option") is Dictionary else ""
+	var act_at = TimeWindowScript.next_open(when, _now()) if when != "" else _now()
 	var option_denial = ""
 	if soul and not decision.get("option", {}).is_empty():
 		option_denial = soul.get_option_denial_reason(decision.option)
@@ -636,6 +641,11 @@ func _carry_out(sid: String, beat: Dictionary, hook: Dictionary, trigger: String
 			dropped.append({"effect": e, "reason": denial})
 			continue
 		var chained = trigger.begins_with("on_flag:") and _flag_player_chain.get(trigger.substr(8), false) == true
+		if act_at > _now():
+			_schedule_effect(act_at, e, npc_key, {"storyline": sid, "hook": str(hook.id), "player_chain": chained},
+				"%s, %s" % [str(decision.get("option", {}).get("label", "")), when])
+			scheduled.append({"effect": e, "at": act_at})
+			continue
 		var result = _apply_effect_as_director(e, npc_key, {"storyline": sid, "hook": str(hook.id), "player_chain": chained})
 		if result.ok:
 			applied.append(e)
@@ -660,6 +670,7 @@ func _carry_out(sid: String, beat: Dictionary, hook: Dictionary, trigger: String
 		"reason": str(decision.get("reason", "")),
 		"applied": applied,
 		"dropped": dropped,
+		"scheduled": scheduled,  # effects waiting for the option's time of day ({effect, at})
 	}
 	_chronicle.append(entry)
 	if _chronicle.size() > MAX_CHRONICLE:

@@ -111,7 +111,8 @@
                   "npc": "ysolde",
                   "text": "Ask the stranger whether they travel west by the Kingsroad, and whether they would carry word to an old monk at Brackenmoor."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "hold",
@@ -1016,7 +1017,8 @@
               ],
               "harms": [
                 "dagna"
-              ]
+              ],
+              "when": "night"
             },
             {
               "id": "hold",

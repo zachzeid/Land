@@ -188,7 +188,7 @@ Path: `resources/storylines/<storyline_id>.json`. One storyline per file.
 | `trigger` | `on_open` (beat opens), `on_resolve` (beat resolved), `on_flag:<flag>` (flag turns true while beat open), `idle` (offered periodically while the beat is open) |
 | `eligible` | NPC keys who may act here. More than one = they compete; first to act wins unless `stack: true` |
 | `situation` | What the NPC perceives, in second person, in-world. This is the agent's prompt |
-| `options` | 2-4 authored choices. Each has `id`, `label`, `serves` (want ids it advances, used by the offline chooser), `effects`, optional `aids`: npc key (refused by souls with `ally:` against them), and optional `harms`: [npc keys] (refused by souls with a matching `harm:` line) |
+| `options` | 2-4 authored choices. Each has `id`, `label`, `serves` (want ids it advances, used by the offline chooser), `effects`, optional `aids`: npc key (refused by souls with `ally:` against them), and optional `harms`: [npc keys] (refused by souls with a matching `harm:` line), and optional `when`: a time-of-day window (§8: `dawn`, `morning`, `evening`, `dark`, `night`, `tonight` 18-04, `HH-HH`...). An option with `when` is decided at once but carried out when the window next opens: its effects are scheduled (saved, re-validated when they land) and the chronicle lists them under `scheduled`. Give it only when the label says when the act happens ("after dark", "at dawn", "tonight"); not for deadlines ("before dawn"), standing policies ("from tonight") or refusals |
 | `allow_freeform` | optional bool. If true a Claude-driven NPC may compose its own effect list instead of picking an option, limited to `freeform_effects` (array of effect types) and its soul's Agency |
 | `once` | optional, default true |
 
@@ -322,7 +322,7 @@ Machine lines (exact shape):
   `| when: <window>` and then `| player: helps|needed`.
   - **`when`** is the hour the step can be taken, checked at the hour the NPC would arrive:
     `dawn` (05-08), `morning` (06-12), `day` (08-18), `afternoon` (12-17), `evening` (17-22),
-    `dark` (19-05), `night` (21-05), `any`, or `HH-HH` (wraps past midnight when the end is
+    `dark` (19-05), `night` (21-05), `tonight` (18-04), `any`, or `HH-HH` (wraps past midnight when the end is
     earlier). Without it a step happens in waking hours (06-22): people sleep, so a step done
     by night, by candle or after dark must say so. Scripts: `scripts/storyline/time_window.gd`.
   - **`effects`** may only use the personal-scope types `agenda`, `move_npc`, `adjust_relationship`,

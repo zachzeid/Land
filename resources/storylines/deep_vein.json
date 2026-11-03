@@ -780,7 +780,8 @@
               ],
               "harms": [
                 "lucan"
-              ]
+              ],
+              "when": "night"
             },
             {
               "id": "send_by_river",
@@ -1652,7 +1653,8 @@
                   "npc": "dagna",
                   "text": "Tell the stranger she has her miners at the boards tonight. Bram died down there. She'll not have a girl die there in chains."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "hold",

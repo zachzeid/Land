@@ -267,7 +267,8 @@
                   "npc": "lucan",
                   "text": "Tell the stranger the armoury is closed to visitors by the crown's order. Offer them supper with the officers instead."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "hide_nothing",

@@ -495,7 +495,8 @@
                   "npc": "mira",
                   "text": "Give the stranger the seat by the fire and a cup on the house, and ask, softly, where they walked in from."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "word_to_varn",
@@ -2064,7 +2065,8 @@
               ],
               "harms": [
                 "davin"
-              ]
+              ],
+              "when": "night"
             },
             {
               "id": "leave_it_buried",
@@ -3268,7 +3270,8 @@
                   "npc": "aldric",
                   "text": "Varn stood across the road at noon and counted his six aloud, slowly, twice, and walked away laughing."
                 }
-              ]
+              ],
+              "when": "11-14"
             }
           ]
         },
@@ -3714,7 +3717,8 @@
                   "npc": "elena",
                   "text": "Ask the stranger to learn the hem tonight. There is less time than she thought."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "say_goodbye",
@@ -4326,7 +4330,8 @@
                   "npc": "aldric",
                   "text": "Tell the stranger the Hollow comes without Varn tonight. If ever the gate can hold, it's now."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "careful",
@@ -6404,7 +6409,8 @@
                   "npc": "varn",
                   "text": "Tell the stranger the Hollow has a new master tonight, and ask what they will do about it."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "hunt_the_stranger",
@@ -6503,7 +6509,8 @@
                   "npc": "gregor",
                   "text": "Ask the stranger to sit with him while he tells Elena where her medicine came from."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "the_last_packet",

@@ -107,7 +107,8 @@
                   "npc": "rook",
                   "text": "Tell the stranger, if they come sniffing, that the Guild sends her nothing and Warehouse Seven is just a warehouse."
                 }
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "let_them_look",
@@ -624,7 +625,8 @@
               ],
               "harms": [
                 "hollis"
-              ]
+              ],
+              "when": "tonight"
             },
             {
               "id": "sell_the_pocket",
@@ -1561,7 +1563,8 @@
                   "value": true
                 }
               ],
-              "aids": "hollis"
+              "aids": "hollis",
+              "when": "tonight"
             },
             {
               "id": "run_for_the_gate",
