@@ -55,6 +55,7 @@ func _ready():
 	EventBus.faction_reputation_changed.connect(_on_faction_reputation_changed)
 	load_calendar()
 	game_minutes = start_minute
+	_read_save_path_arg()
 	load_game()  # Auto-load on startup
 	_setup_autosave()
 	# QuestManager and SceneManager autoload after us: restore their part once everyone is ready
@@ -848,6 +849,14 @@ func _save_held() -> bool:
 		if "story_over" in ui and ui.story_over:
 			return true
 	return false
+
+## --save-path=user://somewhere.json (after --): play from, and save to, another file (dev runs, QA)
+func _read_save_path_arg() -> void:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--save-path="):
+			save_path = arg.substr("--save-path=".length())
+			save_backup_path = save_path.get_basename() + ".bak.json"
+			print("[WorldState] Save file: %s" % save_path)
 
 func _setup_autosave() -> void:
 	var args = OS.get_cmdline_user_args()
