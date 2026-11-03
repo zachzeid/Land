@@ -80,7 +80,7 @@ Prose. What only this soul knows. Never shown to the player directly.
 **Lines I Will Not Cross rule forms** (machine): `harm:<npc_key>`, `effect:<effect_type>` (never
 uses that effect at all), `effect:<effect_type>:<flag>` (never applies that effect to that flag),
 `hook:<hook_type>` (never acts at that hook type), `ally:<npc_key>` (never helps that NPC: refuses any
-option tagged `aids: <npc_key>`). `harm:<npc_key>` refuses any option whose `harms` list names that NPC.
+option tagged `aids: <npc_key>`). `harm:<npc_key>` refuses any option whose `harms` list names that NPC. `crowd` refuses any option tagged `"crowd": true`: leading or joining a mob (§12).
 
 **Agency** grants which hook types the soul engages with and the effect types it may cause there.
 A soul with no Agency line for a hook type always passes at that hook type.
@@ -517,10 +517,25 @@ did.
 ```
 
 - **Triggers** match player events (`kind`, `status`, `about`), reputation thresholds
-  (`{"reputation": {"faction": "iron_hollow", "below": -40}}`), relationship thresholds and flags.
+  (`{"reputation": {"faction": "iron_hollow", "below": -40}}`), relationship thresholds, flags,
+  and **crowds**.
+- **Crowds** (`{"crowd": {"against": "npc"|"player", "min": 3, "hostile": {...}, "target": "<key>"}}`)
+  form from the NPCs themselves, with no plot point. A target draws a crowd when at least `min`
+  souls in its area (not travelling) are hostile to it:
+  - against an NPC, hostility is a Lines `ally:<target>` rule (the soul refuses to help them);
+  - against the player, it is the NPC's own feelings meeting every `hostile` threshold
+    (the shipped template uses trust and affection both below -25, the "don't trust" and
+    "dislike" bands).
+  Souls with `harm:<target>` in the same area are its protectors. Roles bind from
+  `crowd_target`, `crowd_aggrieved` (most hostile first; souls with a `crowd` Line last, so they
+  are not asked to lead) and `crowd_protector`. One crowd per target per game day; none while the
+  world is closed. Options tagged `"crowd": true` (leading or joining a mob) are refused by a soul
+  with the Lines rule `crowd`. Storyline options can carry the tag too (`iron_hand`'s rope).
+  Templates: `crowd_against_a_neighbour`, `crowd_against_the_player`.
 - **Roles** bind to real NPCs at instantiation:
   - `from` is one of `event_witness`, `event_about`, `heard_event`, `faction:<id>`,
-    `near_player` or `npc:<key>`;
+    `near_player`, `npc:<key>`, `trigger_match`, or for crowds `crowd_target`, `crowd_aggrieved`,
+    `crowd_protector`;
   - `prefer` is a dimension with `_asc`/`_desc`, or `nearest`.
   - Generics are eligible too.
 - **The offline chooser** uses `appeal`: the dot product of the coefficients with the bound NPC's

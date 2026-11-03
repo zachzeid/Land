@@ -48,7 +48,8 @@ dying. He is afraid that this is the night he finally fights, and loses everyone
 ## Lines I Will Not Cross
 - `ally:varn`: "I've made bargains with worse men in wartime. Not that one. He walks children up a ridge for a living."
 - `harm:elena`: "I don't hang children for their fathers' sins, and I don't hand them to carts. I've seen armies that did. I left that army."
-- `effect:spread_rumor:gregor_exposed`: "An accusation of rigging goes to the council with evidence, not to the well with gossip. A mob on Collection Night doesn't make justice; it makes a second cart."
+- `effect:spread_rumor:gregor_exposed`: "An accusation of rigging goes to the council with evidence, not to the well with gossip. A mob doesn't make justice; it only makes one more family to mourn."
+- `crowd`: "I've stood in front of a crowd and I've stood in one. A mob doesn't make justice; it only makes one more family to mourn. I'll bring a man in, but I won't lead a rope to his door, and I won't walk behind one."
 - `effect:spread_rumor:resistance_forming`: "Every man who knows who'll stand at the gate is a man the Hollow can make talk. We don't spread it. We recruit one face at a time."
 
 ## Agency

@@ -184,10 +184,93 @@ func evaluate_conditions() -> Array:
 		var conditions = _conditions(t.trigger)
 		if not conditions.ok:
 			continue
-		var inst = try_instantiate(tid, {}, conditions.matches)
+		var inst = try_instantiate(tid, conditions.get("event", {}), conditions.matches)
 		if not inst.is_empty():
 			made.append(inst)
 	return made
+
+# =============================================================================
+# CROWDS (trigger "crowd"): a mob forms from the NPCs themselves, not from a plot point
+# A target with at least `min` hostile souls in its area (not travelling) draws a crowd. Hostility
+# comes from the souls: against an NPC, a Lines `ally:<target>` rule ("he'll get nothing from this
+# forge"); against the player, the NPC's own feelings crossing the template's `hostile` thresholds.
+# Protectors are souls in the area with a `harm:<target>` Line. Roles: crowd_target, crowd_aggrieved
+# (most hostile first), crowd_protector. Who joins, refuses or defends is each soul's own choice
+# (offline appeal or Claude), under its Agency and Lines as always
+# =============================================================================
+
+var _crowd: Dictionary = {}  # the crowd the last "crowd" condition found: {target, aggrieved, protectors}
+var crowd_members: Dictionary = {}  # target -> every soul that was ever in a crowd against it (saved)
+
+func _crowd_condition(spec: Dictionary) -> Dictionary:
+	var need = maxi(int(spec.get("min", 3)), 2)
+	var against = str(spec.get("against", "npc"))
+	var registry = director._registry()
+	if registry == null:
+		return {}
+	var people: Array = []  # [key, area]
+	for key in director.get_soul_keys():
+		if not director._is_npc_alive(key) or director.is_npc_travelling(key):
+			continue
+		var here = director.get_npc_location(key)
+		if here == "" or not registry.has_location(here):
+			continue
+		people.append([key, registry.get_area(here)])
+	people.sort_custom(func(a, b): return a[0] < b[0])
+	if against == "player":
+		var where = director.get_player_location()
+		if where == "" or not registry.has_location(where):
+			return {}
+		var area = registry.get_area(where)
+		var hostile: Array = []
+		for p in people:
+			if p[1] == area and _hostile_to_player(p[0], spec.get("hostile", {})):
+				hostile.append(p[0])
+		if hostile.size() < need:
+			return {}
+		hostile.sort_custom(func(a, b): return _player_hostility(a) > _player_hostility(b))
+		return {"target": "player", "aggrieved": hostile, "protectors": [], "location": where, "area": area}
+	var best: Dictionary = {}
+	var only = str(spec.get("target", ""))  # optional: crowds against one person only
+	for t in people:
+		var target: String = t[0]
+		if only != "" and target != director._npc_key(only):
+			continue
+		var aggrieved: Array = []
+		var protectors: Array = []
+		for p in people:
+			if p[0] == target or p[1] != t[1]:
+				continue
+			var soul = director.get_soul(p[0])
+			if soul == null:
+				continue
+			if soul._forbidding_rule("ally:" + target) != "":
+				aggrieved.append(p[0])
+			elif soul._forbidding_rule("harm:" + target) != "":
+				protectors.append(p[0])
+		# Those whose own Lines refuse crowds (`crowd`) may be in one, but are not the ones asked to lead it
+		aggrieved.sort_custom(func(a, b):
+			var a_refuses = director.get_soul(a)._forbidding_rule("crowd") != ""
+			var b_refuses = director.get_soul(b)._forbidding_rule("crowd") != ""
+			return (not a_refuses and b_refuses) or (a_refuses == b_refuses and a < b))
+		if aggrieved.size() >= need and aggrieved.size() > best.get("aggrieved", []).size():
+			best = {"target": target, "aggrieved": aggrieved, "protectors": protectors,
+				"location": director.get_npc_location(target), "area": t[1]}
+	return best
+
+## Thresholds per dimension on the NPC's feelings toward the player, all of which must hold
+func _hostile_to_player(key: String, thresholds) -> bool:
+	if not thresholds is Dictionary or thresholds.is_empty():
+		return false
+	var dims: Dictionary = director.get_relationship_dims(key)
+	for dim in thresholds:
+		if str(dim) not in DIMENSIONS or not thresholds[dim] is Dictionary or not _threshold(float(dims.get(dim, 0.0)), thresholds[dim]):
+			return false
+	return true
+
+func _player_hostility(key: String) -> float:
+	var dims: Dictionary = director.get_relationship_dims(key)
+	return -float(dims.get("trust", 0.0)) - float(dims.get("affection", 0.0))
 
 ## Does a player event match a trigger's "event" part? kind / status / truth (a value or a list),
 ## about (any overlap; npc keys, npc_ids or faction:<id>), min_fidelity
@@ -277,6 +360,23 @@ func _about_hit(want: String, about: Array) -> bool:
 ## matches are the NPCs a relationship (npc "any") or npc reputation part matched (role from: trigger_match)
 func _conditions(trigger: Dictionary) -> Dictionary:
 	var matches: Array = []
+	var crowd_event: Dictionary = {}
+	if trigger.get("crowd") is Dictionary:
+		_crowd = _crowd_condition(trigger.crowd)
+		if _crowd.is_empty():
+			return {"ok": false, "matches": []}
+		matches.append_array(_crowd.aggrieved)
+		var target_name = director.get_player_name() if _crowd.target == "player" else director.get_display_name(_crowd.target)
+		# A crowd gathers again against the same person only when someone new joins the grievance: the
+		# same people with nothing new do not. Cooldown and max_active cap it as for any template
+		var before: Array = crowd_members.get(_crowd.target, [])
+		var newcomers: Array = _crowd.aggrieved.filter(func(k): return not k in before)
+		if newcomers.is_empty():
+			return {"ok": false, "matches": []}
+		newcomers.sort()
+		crowd_event = {"id": "crowd:%s:%s" % [_crowd.target, ",".join(newcomers)], "kind": "crowd",
+			"summary": "%d people in %s with a grievance against %s" % [_crowd.aggrieved.size(), _crowd.area, target_name],
+			"about": [] if _crowd.target == "player" else [_crowd.target], "location": str(_crowd.location)}
 	var flags: Array = []
 	if trigger.get("flags") is Array:
 		flags.append_array(trigger.flags)
@@ -313,7 +413,7 @@ func _conditions(trigger: Dictionary) -> Dictionary:
 		for key in hits:
 			if key not in matches:
 				matches.append(key)
-	return {"ok": true, "matches": matches}
+	return {"ok": true, "matches": matches, "event": crowd_event}
 
 func _threshold(value: float, part: Dictionary) -> bool:
 	if part.has("below") and not value < float(part.below):
@@ -412,6 +512,12 @@ func try_instantiate(template_id: String, ev: Dictionary = {}, matches: Array = 
 	inst["resolves_on"] = resolves
 	instances[inst.id] = inst
 	instance_order.append(inst.id)
+	if str(ev.get("kind", "")) == "crowd" and not _crowd.is_empty():
+		var known: Array = crowd_members.get(_crowd.target, [])
+		for k in _crowd.aggrieved:
+			if not k in known:
+				known.append(k)
+		crowd_members[_crowd.target] = known
 	template_last[template_id] = now
 	if event_id != "":
 		seen["%s|%s" % [template_id, event_id]] = true
@@ -479,13 +585,20 @@ func role_candidates(spec: Dictionary, ev: Dictionary, matches: Array) -> Array:
 			keys = _event_keys(heard.keys() if heard is Dictionary else heard)
 		elif src == "trigger_match":
 			keys = matches.duplicate()
+		elif src == "crowd_target":
+			keys = [_crowd.target] if _crowd.get("target", "player") != "player" else []
+		elif src == "crowd_aggrieved":
+			keys = _crowd.get("aggrieved", []).duplicate()
+		elif src == "crowd_protector":
+			keys = _crowd.get("protectors", []).duplicate()
 		elif src == "near_player":
 			keys = near_player()
 		elif src.begins_with("faction:"):
 			keys = faction_members(src.substr(8))
 		elif src.begins_with("npc:"):
 			keys = [director._npc_key(src.substr(4))]
-		keys.sort()
+		if src != "crowd_aggrieved":
+			keys.sort()
 		for key in keys:
 			if key not in out:
 				out.append(key)
@@ -672,6 +785,8 @@ func resolved_hook(inst: Dictionary, hook_id: String) -> Dictionary:
 				copy["aids"] = subst(str(option.aids), inst, true)
 			if option.has("harms"):
 				copy["harms"] = _as_list(option.harms).map(func(h): return subst(str(h), inst, true))
+			if option.get("crowd", false) == true:
+				copy["crowd"] = true
 			options.append(copy)
 		return {"id": hook_id, "type": str(hook.get("type", "react")), "trigger": str(hook.get("trigger", "on_open")),
 			"eligible": eligible, "situation": subst(str(hook.get("situation", "")), inst, false), "options": options,
@@ -969,10 +1084,12 @@ func reset() -> void:
 	template_last.clear()
 	seen.clear()
 	events_seen.clear()
+	crowd_members.clear()
 
 func save() -> Dictionary:
 	return {"instances": instances.duplicate(true), "order": instance_order.duplicate(), "seq": seq,
-		"template_last": template_last.duplicate(), "seen": seen.keys(), "events_seen": events_seen.duplicate(true)}
+		"template_last": template_last.duplicate(), "seen": seen.keys(), "events_seen": events_seen.duplicate(true),
+		"crowd_members": crowd_members.duplicate(true)}
 
 func load_from_dict(data: Dictionary) -> void:
 	reset()
@@ -998,3 +1115,5 @@ func load_from_dict(data: Dictionary) -> void:
 		seen[str(k)] = true
 	if data.get("events_seen") is Dictionary:
 		events_seen = data.events_seen.duplicate(true)
+	if data.get("crowd_members") is Dictionary:
+		crowd_members = data.crowd_members.duplicate(true)

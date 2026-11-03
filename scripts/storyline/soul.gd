@@ -627,8 +627,13 @@ func _effect_line_denial(effect: Dictionary) -> String:
 	return ""
 
 ## Option-level checks: ally:<key> refuses options tagged aids: <key>,
-## harm:<key> refuses options whose harms list names <key> (harm: does nothing else)
+## harm:<key> refuses options whose harms list names <key> (harm: does nothing else),
+## crowd refuses options tagged "crowd": true (leading or joining a mob)
 func get_option_denial_reason(option: Dictionary) -> String:
+	if option.get("crowd", false) == true:
+		var crowd_rule = _forbidding_rule("crowd")
+		if crowd_rule != "":
+			return "line 'crowd': %s" % crowd_rule
 	var aids = str(option.get("aids", "")).to_lower()
 	if aids != "":
 		var rule = _forbidding_rule("ally:" + aids)

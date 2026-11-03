@@ -1,0 +1,250 @@
+{
+  "id": "crowd_against_a_neighbour",
+  "title": "A Crowd at {target.name}'s Door",
+  "summary": "Enough people in one place refuse {target} by their own Lines that a crowd forms, for their own reasons, with no plot point behind it. Each decides for themselves whether to lead it, join it, stand in its way or face it.",
+  "memory": "A crowd gathered against {target} at {target.location}",
+  "trigger": {
+    "crowd": {
+      "against": "npc",
+      "min": 3
+    }
+  },
+  "roles": {
+    "target": {
+      "from": "crowd_target"
+    },
+    "ringleader": {
+      "from": "crowd_aggrieved"
+    },
+    "follower": {
+      "from": "crowd_aggrieved"
+    },
+    "straggler": {
+      "from": "crowd_aggrieved",
+      "optional": true
+    },
+    "protector": {
+      "from": "crowd_protector",
+      "optional": true
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 1,
+  "expires_days": 1,
+  "location": "{target.location}",
+  "resolves_on": [
+    "expired"
+  ],
+  "hooks": [
+    {
+      "id": "the_ringleader",
+      "type": "intercept",
+      "eligible_role": "ringleader",
+      "trigger": "on_open",
+      "situation": "{target} is here, and you are not the only one who will not stand for them: {follower} feels it too, and others. A word from you and it becomes a crowd.",
+      "options": [
+        {
+          "id": "rouse_them",
+          "label": "Gather the others and go to {target} together",
+          "harms": [
+            "{target}"
+          ],
+          "appeal": {},
+          "effects": [
+            {
+              "type": "move_npc",
+              "npc": "{ringleader}",
+              "location": "{target.location}"
+            },
+            {
+              "type": "agenda",
+              "npc": "{ringleader}",
+              "text": "Tell {player} the people here have had enough of {target}, and ask whose side they are on."
+            }
+          ],
+          "crowd": true
+        },
+        {
+          "id": "say_it_to_their_face",
+          "label": "Go to {target} alone and say it to their face",
+          "appeal": {},
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{ringleader}",
+              "text": "Tell {player} you said it to {target}'s face yourself, and that you won't be the one to start a crowd."
+            }
+          ]
+        },
+        {
+          "id": "let_it_lie",
+          "label": "Not today; let it lie",
+          "appeal": {},
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "the_follower",
+      "type": "aid",
+      "trigger": "on_open",
+      "situation": "People here have turned against {target}, {ringleader} among them. You have your own reasons to stand with them, or not.",
+      "options": [
+        {
+          "id": "join_them",
+          "label": "Go to {target} with whoever else will",
+          "harms": [
+            "{target}"
+          ],
+          "appeal": {},
+          "effects": [
+            {
+              "type": "move_npc",
+              "npc": "{follower}",
+              "location": "{target.location}"
+            },
+            {
+              "type": "agenda",
+              "npc": "{follower}",
+              "text": "Tell {player} you stood with the others against {target}, and why."
+            }
+          ],
+          "crowd": true
+        },
+        {
+          "id": "hold_back",
+          "label": "Agree with them, and stay where you are",
+          "appeal": {},
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{follower}",
+              "text": "Tell {player} what you think of {target}, but that you want no part in a crowd."
+            }
+          ]
+        }
+      ],
+      "eligible_role": "follower"
+    },
+    {
+      "id": "the_straggler",
+      "type": "aid",
+      "trigger": "on_open",
+      "situation": "People here have turned against {target}, {ringleader} among them. You have your own reasons to stand with them, or not.",
+      "options": [
+        {
+          "id": "join_them",
+          "label": "Go to {target} with whoever else will",
+          "harms": [
+            "{target}"
+          ],
+          "appeal": {},
+          "effects": [
+            {
+              "type": "move_npc",
+              "npc": "{straggler}",
+              "location": "{target.location}"
+            },
+            {
+              "type": "agenda",
+              "npc": "{straggler}",
+              "text": "Tell {player} you stood with the others against {target}, and why."
+            }
+          ],
+          "crowd": true
+        },
+        {
+          "id": "hold_back",
+          "label": "Agree with them, and stay where you are",
+          "appeal": {},
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{straggler}",
+              "text": "Tell {player} what you think of {target}, but that you want no part in a crowd."
+            }
+          ]
+        }
+      ],
+      "eligible_role": "straggler"
+    },
+    {
+      "id": "the_protector",
+      "type": "intercept",
+      "eligible_role": "protector",
+      "trigger": "on_open",
+      "situation": "A crowd is gathering against {target}, led by {ringleader}. You will not see {target} harmed.",
+      "options": [
+        {
+          "id": "stand_between",
+          "label": "Go and stand between {target} and the crowd",
+          "aids": "{target}",
+          "appeal": {},
+          "effects": [
+            {
+              "type": "move_npc",
+              "npc": "{protector}",
+              "location": "{target.location}"
+            },
+            {
+              "type": "agenda",
+              "npc": "{protector}",
+              "text": "Tell {player} you stood in front of {target} when {ringleader}'s crowd came, and ask them to help keep it from turning to blood."
+            }
+          ]
+        },
+        {
+          "id": "warn_them",
+          "label": "Get word to {target} and stay out of it",
+          "aids": "{target}",
+          "appeal": {},
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{protector}",
+              "text": "Ask {player} to warn {target} that {ringleader} has people behind them."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_target",
+      "type": "react",
+      "eligible_role": "target",
+      "trigger": "on_open",
+      "situation": "{ringleader} and others are turning against you here. You can feel it in how they look at you.",
+      "options": [
+        {
+          "id": "face_them",
+          "label": "Stay where you are and face them",
+          "appeal": {},
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{target}",
+              "text": "Tell {player} that {ringleader} has turned people against you, and ask whether they are one of them."
+            }
+          ]
+        },
+        {
+          "id": "go_home",
+          "label": "Go home and bar the door",
+          "appeal": {},
+          "effects": [
+            {
+              "type": "move_npc",
+              "npc": "{target}",
+              "location": "{target.home}"
+            },
+            {
+              "type": "agenda",
+              "npc": "{target}",
+              "text": "Tell {player} you were run off by {ringleader}'s crowd, and that you will not forget whose faces were in it."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

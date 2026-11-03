@@ -133,6 +133,7 @@ func _init():
 	_test_emergence_save_load()
 	_test_shipped_templates()
 	await _test_collection_night_templates()
+	await _test_crowds()
 	_test_inner_voice_parse()
 	await _test_inner_voice_boosts()
 	await _test_inner_voice_claude()
@@ -512,6 +513,99 @@ func _test_collection_night_templates():
 		if shift.is_empty():
 			for e in director.get_chronicle(0).filter(func(x): return x.mode == "emergent"):
 				print("    %s %s dropped=%s" % [e.choice, e.reason, e.dropped])
+	director.relationship_dims_override = {}
+	director.storyline_dir = ""  # _fresh_world reloads the fixtures
+
+## Crowds form from the NPCs' own souls, not from a plot point (trigger "crowd", real souls)
+func _test_crowds():
+	print("Crowds from the souls themselves")
+	director.load_content(director.DEFAULT_STORYLINE_DIR, director.DEFAULT_SOUL_DIR)
+	director.load_emergence("res://resources/emergence")
+	var em = director.get_emergence()
+	var square = "thornhaven_town_square"
+	var refuse = func(target):  # main souls whose Lines refuse to help target (ally:<target>)
+		return director.get_soul_keys().filter(func(k): return k != target and director.get_soul(k)._forbidding_rule("ally:" + target) != "")
+	var reset = func():
+		world_state.world_flags = {}
+		world_state.npc_states = {}
+		world_state.load_calendar()
+		world_state.reset_calendar(world_state.start_minute)  # 20:00, open
+		director.reset_state()
+		em.reset()
+		_dims({})
+	reset.call()
+	var against_varn: Array = refuse.call("varn")
+	_check("Real souls refuse Varn by their Lines (%s)" % [against_varn], against_varn.size() >= 3)
+	world_state.set_npc_location(director._npc_id("varn"), square)
+	for k in against_varn.slice(0, 3):
+		world_state.set_npc_location(director._npc_id(k), square)
+	var made: Array = em.evaluate_conditions().filter(func(i): return i.template == "crowd_against_a_neighbour")
+	_check("A crowd forms against Varn in the square, with no plot flag set", made.size() == 1 and made[0].roles.get("target", "") == "varn")
+	var inst: Dictionary = made[0] if made.size() == 1 else {}
+	_check("...led and followed by souls that refuse him", not inst.is_empty() and inst.roles.ringleader in against_varn and inst.roles.follower in against_varn)
+	_check("...and not led by someone whose own Lines refuse crowds (Aldric)", not inst.is_empty() and inst.roles.ringleader != "aldric")
+	var aldric_rouse = em.choose_by_appeal(director.get_soul("aldric"), "aldric", em.resolved_hook(inst, "the_ringleader")) if not inst.is_empty() else {}
+	_check("Aldric, asked to lead it, refuses by his crowd Line", aldric_rouse.get("choice", "") != "rouse_them")
+	for r in 4:  # one decision per beat per round: the crowd unfolds over a few rounds
+		await director.advance_round("test")
+	var decided = director.get_chronicle(0).filter(func(e): return e.get("emergent", "") == inst.get("id", "-") and e.get("mode", "") == "emergent")
+	_check("Everyone bound decides (%d decisions)" % decided.size(), decided.size() >= 3)
+	var clean = decided.all(func(e): return e.get("dropped", []).is_empty())
+	_check("...and every choice is one their own soul permits (nothing dropped by Agency or Lines)", clean)
+	for e in decided:
+		print("    %s: %s (%s)" % [e.npc, e.choice, e.reason])
+	_check("A second crowd against Varn does not form the same day", em.evaluate_conditions().filter(func(i): return i.template == "crowd_against_a_neighbour").is_empty())
+	world_state.advance_time(5 * 24 * 60, "test")  # well past the cooldown
+	_check("...nor days later, with the same people and nothing new", em.evaluate_conditions().filter(func(i): return i.template == "crowd_against_a_neighbour" and i.roles.get("target", "") == "varn").is_empty())
+	var newcomer = against_varn.filter(func(k): return not k in em.crowd_members.get("varn", []) and not k.begins_with("gen_"))
+	if not newcomer.is_empty():
+		world_state.set_npc_location(director._npc_id(newcomer[0]), square)
+	for i in em.get_instances(false):
+		em.close(i, "resolved")  # the first crowd is over (max_active is 1)
+	_check("...but someone new with a grievance makes it a new crowd (%s)" % [newcomer.slice(0, 1)], newcomer.is_empty() or em.evaluate_conditions().any(func(i): return i.template == "crowd_against_a_neighbour" and i.roles.get("target", "") == "varn"))
+	var saved_members = em.save().get("crowd_members", {})
+	_check("Who was in a crowd is saved", saved_members.has("varn") and not saved_members.varn.is_empty())
+
+	reset.call()
+	_check("Nobody's soul refuses Elena, so no crowd forms against her however many are near", refuse.call("elena").is_empty())
+
+	reset.call()
+	var target = ""
+	for k in director.get_soul_keys():
+		var against: Array = refuse.call(k)
+		var shield = director.get_soul_keys().filter(func(o): return o != k and o not in against and director.get_soul(o)._forbidding_rule("harm:" + k) != "")
+		if against.size() >= 2 and not shield.is_empty():
+			target = k
+			world_state.set_npc_location(director._npc_id(k), square)
+			for o in against.slice(0, 2) + shield.slice(0, 1):
+				world_state.set_npc_location(director._npc_id(o), square)
+			break
+	var found: Dictionary = em._crowd_condition({"against": "npc", "min": 2, "target": target})
+	_check("Protectors come from harm: Lines (%s defended by %s)" % [target, found.get("protectors", [])], target != "" and found.get("target", "") == target and not found.get("protectors", []).is_empty())
+
+	reset.call()
+	director.player_location_override = square
+	var hostile: Array = []
+	for k in ["bjorn", "mathias", "aldric", "elena"]:
+		world_state.set_npc_location(director._npc_id(k), square)
+		hostile.append(k)
+	_dims({"bjorn": {"trust": -60, "affection": -60}, "mathias": {"trust": -50, "affection": -40}, "aldric": {"trust": -40, "affection": -40, "fear": 90}, "elena": {"trust": -10, "affection": -60}})
+	made = em.evaluate_conditions().filter(func(i): return i.template == "crowd_against_the_player")
+	_check("A crowd forms against a player three people here distrust and dislike", made.size() == 1)
+	_check("...Elena dislikes but does not distrust: not one of them", made.size() == 1 and not "elena" in made[0].roles.values())
+	var ring = made[0].roles.get("ringleader", "") if made.size() == 1 else ""
+	_check("...the most hostile leads it (%s)" % ring, ring == "bjorn")
+	var aldric_choice = em.choose_by_appeal(director.get_soul("aldric"), "aldric", em.resolved_hook(made[0], "the_follower" if made[0].roles.get("follower", "") == "aldric" else "the_straggler")) if made.size() == 1 and "aldric" in made[0].roles.values() else {}
+	_check("...and someone afraid of the player holds back", aldric_choice.is_empty() or aldric_choice.get("choice", "") == "hold_back")
+	director.player_location_override = ""
+
+	reset.call()
+	world_state.reset_calendar(world_state.start_minute + 6 * 60)  # 02:00, closed
+	world_state.set_npc_location(director._npc_id("varn"), square)
+	for k in against_varn.slice(0, 3):
+		world_state.set_npc_location(director._npc_id(k), square)
+	await director.advance_round("test")
+	_check("No crowd forms while the world is closed (02:00)", director.get_emergent_instances().filter(func(i): return i.template == "crowd_against_a_neighbour").is_empty())
 	director.relationship_dims_override = {}
 	director.storyline_dir = ""  # _fresh_world reloads the fixtures
 

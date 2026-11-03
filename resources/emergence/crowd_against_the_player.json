@@ -1,0 +1,187 @@
+{
+  "id": "crowd_against_the_player",
+  "title": "The Stranger Is Not Welcome",
+  "summary": "Enough people where the player is distrust and dislike them (both below the 'don't trust' and 'dislike' bands, -25) that a crowd forms, from their own feelings, with no plot point behind it.",
+  "memory": "People gathered against {player} at {event.location}",
+  "trigger": {
+    "crowd": {
+      "against": "player",
+      "min": 3,
+      "hostile": {
+        "trust": {
+          "below": -25
+        },
+        "affection": {
+          "below": -25
+        }
+      }
+    }
+  },
+  "roles": {
+    "ringleader": {
+      "from": "crowd_aggrieved"
+    },
+    "follower": {
+      "from": "crowd_aggrieved"
+    },
+    "straggler": {
+      "from": "crowd_aggrieved",
+      "optional": true
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 1,
+  "expires_days": 1,
+  "location": "{event.location}",
+  "resolves_on": [
+    "expired"
+  ],
+  "hooks": [
+    {
+      "id": "the_ringleader",
+      "type": "intercept",
+      "eligible_role": "ringleader",
+      "trigger": "on_open",
+      "situation": "{player} is here again, and you are not the only one who wants them gone: {follower} feels it too, and others.",
+      "options": [
+        {
+          "id": "rouse_them",
+          "label": "Gather the others and tell the stranger to leave",
+          "harms": [
+            "player"
+          ],
+          "appeal": {
+            "trust": -0.5,
+            "affection": -0.5
+          },
+          "effects": [
+            {
+              "type": "move_npc",
+              "npc": "{ringleader}",
+              "location": "{event.location}"
+            },
+            {
+              "type": "agenda",
+              "npc": "{ringleader}",
+              "text": "Tell {player}, with others at your back, that they are not welcome here and why."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{ringleader}",
+              "dimension": "fear",
+              "delta": -5
+            }
+          ],
+          "crowd": true
+        },
+        {
+          "id": "say_it_to_their_face",
+          "label": "Say it to the stranger yourself, alone",
+          "appeal": {
+            "respect": 0.3,
+            "fear": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{ringleader}",
+              "text": "Tell {player} plainly, alone, what you hold against them."
+            }
+          ]
+        },
+        {
+          "id": "let_it_lie",
+          "label": "Keep your distance and say nothing",
+          "appeal": {
+            "fear": 0.6
+          },
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "the_follower",
+      "type": "aid",
+      "trigger": "on_open",
+      "situation": "People here have turned against {player}, {ringleader} among them. You have your own reasons to stand with them, or not.",
+      "options": [
+        {
+          "id": "join_them",
+          "label": "Go to {player} with whoever else will",
+          "harms": [
+            "player"
+          ],
+          "appeal": {
+            "trust": -0.5,
+            "affection": -0.5
+          },
+          "effects": [
+            {
+              "type": "move_npc",
+              "npc": "{follower}",
+              "location": "{event.location}"
+            },
+            {
+              "type": "agenda",
+              "npc": "{follower}",
+              "text": "Tell {player} you stood with the others against them, and what they did to earn it."
+            }
+          ],
+          "crowd": true
+        },
+        {
+          "id": "hold_back",
+          "label": "Agree, and stay out of it",
+          "appeal": {
+            "fear": 0.5,
+            "familiarity": 0.2
+          },
+          "effects": []
+        }
+      ],
+      "eligible_role": "follower"
+    },
+    {
+      "id": "the_straggler",
+      "type": "aid",
+      "trigger": "on_open",
+      "situation": "People here have turned against {player}, {ringleader} among them. You have your own reasons to stand with them, or not.",
+      "options": [
+        {
+          "id": "join_them",
+          "label": "Go to {player} with whoever else will",
+          "harms": [
+            "player"
+          ],
+          "appeal": {
+            "trust": -0.5,
+            "affection": -0.5
+          },
+          "effects": [
+            {
+              "type": "move_npc",
+              "npc": "{straggler}",
+              "location": "{event.location}"
+            },
+            {
+              "type": "agenda",
+              "npc": "{straggler}",
+              "text": "Tell {player} you stood with the others against them, and what they did to earn it."
+            }
+          ],
+          "crowd": true
+        },
+        {
+          "id": "hold_back",
+          "label": "Agree, and stay out of it",
+          "appeal": {
+            "fear": 0.5,
+            "familiarity": 0.2
+          },
+          "effects": []
+        }
+      ],
+      "eligible_role": "straggler"
+    }
+  ]
+}

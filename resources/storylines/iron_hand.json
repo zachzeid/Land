@@ -30,7 +30,7 @@
     "ih_steel_routed_round": "Mira had the Hollow's steel ordered through a Kingsroad carter, around Gregor's shop",
     "ih_supply_line_cut": "The Hollow's supply line through Gregor's shop was cut, and no more of Bjorn's steel or Gregor's grain went up to the forest",
     "ih_rope_brought": "Neighbours brought a rope to the square for Gregor, with the Fenns and the Brands at the front",
-    "ih_shop_door_held": "Captain Aldric stood in Gregor's shop door and told the square there would be no hanging in Tithe week",
+    "ih_shop_door_held": "Captain Aldric stood in Gregor's shop door and told the square there would be no hanging in Thornhaven",
     "ih_elena_before_the_rope": "Elena stood between her father and the square and said the families would have to go through her",
     "ih_ledger_read_aloud": "Gregor knelt in the square and read his ledger aloud: every year, every tile, every name, and Hesk Marlow's as his own choosing",
     "ih_stood_before_the_rope": "The stranger stood between Gregor and the village's rope and made Thornhaven hear him instead",
@@ -2156,7 +2156,8 @@
               ],
               "harms": [
                 "gregor"
-              ]
+              ],
+              "crowd": true
             },
             {
               "id": "weep_in_the_doorway",
@@ -2269,11 +2270,11 @@
           "eligible": [
             "aldric"
           ],
-          "situation": "Someone has brought a rope. A mob on Collection Night does not make justice; it makes a second cart.",
+          "situation": "Someone has brought a rope. A mob does not make justice; it only makes one more family to mourn.",
           "options": [
             {
               "id": "hold_the_door",
-              "label": "Stand in Gregor's shop door: no hanging in Tithe week",
+              "label": "Stand in Gregor's shop door: no hanging in Thornhaven",
               "serves": [
                 "spare_the_innocent",
                 "win_the_council"

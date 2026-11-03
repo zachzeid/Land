@@ -124,6 +124,7 @@ def validate_soul(path, flags_known):
                 (kind in ("harm", "ally") and len(parts) == 2 and parts[1] in NPC_KEYS)
                 or (kind == "hook" and len(parts) == 2 and parts[1] in SOUL_AGENCY_TYPES)
                 or (kind == "effect" and len(parts) in (2, 3) and parts[1] in EFFECT_PARAMS)
+                or (rule == "crowd")
             )
             if not ok:
                 err(where, f"unknown rule form `{rule}`")
@@ -297,7 +298,7 @@ def validate_population():
                 err(str(names.relative_to(ROOT)), f"region '{r['id']}' needs at least 20 names")
 
 
-ROLE_SOURCES = ("event_witness", "event_about", "heard_event", "near_player")
+ROLE_SOURCES = ("event_witness", "event_about", "heard_event", "near_player", "trigger_match", "crowd_target", "crowd_aggrieved", "crowd_protector")
 
 
 def all_declared_flags():
@@ -357,6 +358,17 @@ def validate_emergence(path, souls, flags_known):
         err(where, f"trigger event kind '{ev['kind']}' unknown")
     if "flag" in trig and trig["flag"].lstrip("!") not in flags_known:
         err(where, f"trigger flag '{trig['flag']}' unknown")
+    if "crowd" in trig:
+        c = trig["crowd"]
+        if not isinstance(c, dict) or c.get("against") not in ("npc", "player") or not isinstance(c.get("min", 3), int) or c.get("min", 3) < 2:
+            err(where, "crowd trigger needs against: npc|player and min >= 2")
+        elif c["against"] == "player":
+            hostile = c.get("hostile")
+            if not isinstance(hostile, dict) or not hostile or any(k not in DIMENSIONS for k in hostile):
+                err(where, "a crowd against the player needs hostile thresholds on relationship dimensions")
+        uses = {r.get("from") for r in t.get("roles", {}).values()}
+        if c.get("against") == "player" and "crowd_target" in uses:
+            err(where, "crowd_target is empty when the crowd is against the player (use {player})")
     if "reputation" in trig:
         fac = trig["reputation"].get("faction")
         if fac not in {f["id"] for f in WORLD.get("factions", [])}:
