@@ -177,6 +177,8 @@ if __name__ == "__main__":
         elif command == "query":
             collection_name = sys.argv[2]
             query_text = sys.argv[3]
+            if query_text.startswith("b64:"):  # ChromaClient encodes queries: they carry player speech
+                query_text = base64.b64decode(query_text[4:]).decode('utf-8')
             n_results = int(sys.argv[4]) if len(sys.argv) > 4 else 5
             min_importance = int(sys.argv[5]) if len(sys.argv) > 5 and sys.argv[5] != "-1" else None
             memory_tier = int(sys.argv[6]) if len(sys.argv) > 6 else None

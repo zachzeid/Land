@@ -4,6 +4,7 @@ extends Node
 
 const CHROMA_CLI_PATH = "res://chroma_cli.py"
 const PYTHON_CMD = "python3"
+const SafeExec = preload("res://scripts/core/safe_exec.gd")
 
 signal memory_stored(collection_name: String, memory_id: String)
 signal memories_retrieved(collection_name: String, memories: Array)
@@ -18,7 +19,7 @@ func _ready():
 func create_collection(collection_name: String) -> Dictionary:
 	var cli_path = ProjectSettings.globalize_path(CHROMA_CLI_PATH)
 	var output = []
-	var exit_code = OS.execute(PYTHON_CMD, [cli_path, "create_collection", collection_name], output, true)
+	var exit_code = SafeExec.execute(PYTHON_CMD, [cli_path, "create_collection", collection_name], output, true)
 	
 	if exit_code != 0:
 		var error = "Failed to create collection: " + str(output)
@@ -55,7 +56,7 @@ func add_memory(memory: Dictionary) -> Dictionary:
 	var metadata_b64 = Marshalls.utf8_to_base64(metadata_json)
 	
 	var output = []
-	var exit_code = OS.execute(PYTHON_CMD, [
+	var exit_code = SafeExec.execute(PYTHON_CMD, [
 		cli_path,
 		"add_memory",
 		memory.collection,
@@ -100,7 +101,7 @@ func query_memories(query_params: Dictionary) -> Array:
 		cli_path,
 		"query",
 		query_params.collection,
-		query_params.query,
+		"b64:" + Marshalls.utf8_to_base64(str(query_params.query)),  # player speech: never raw on a command line
 		str(limit),
 		str(min_importance)  # Always pass, -1 means no filter
 	]
@@ -110,7 +111,7 @@ func query_memories(query_params: Dictionary) -> Array:
 		args.append(str(metadata_filter.memory_tier))
 
 	var output = []
-	var exit_code = OS.execute(PYTHON_CMD, args, output, true)
+	var exit_code = SafeExec.execute(PYTHON_CMD, args, output, true)
 	
 	if exit_code != 0:
 		var error = "Query failed: " + str(output)
@@ -135,7 +136,7 @@ func get_where(collection_name: String, where: Dictionary, limit: int = 10) -> A
 	var cli_path = ProjectSettings.globalize_path(CHROMA_CLI_PATH)
 	var where_b64 = Marshalls.utf8_to_base64(JSON.stringify(where))
 	var output = []
-	var exit_code = OS.execute(PYTHON_CMD, [cli_path, "get_where", collection_name, where_b64, str(limit)], output, true)
+	var exit_code = SafeExec.execute(PYTHON_CMD, [cli_path, "get_where", collection_name, where_b64, str(limit)], output, true)
 	if exit_code != 0:
 		error_occurred.emit("get_where failed: " + str(output))
 		return []
@@ -148,7 +149,7 @@ func get_where(collection_name: String, where: Dictionary, limit: int = 10) -> A
 func delete_collection(collection_name: String) -> Dictionary:
 	var cli_path = ProjectSettings.globalize_path(CHROMA_CLI_PATH)
 	var output = []
-	var exit_code = OS.execute(PYTHON_CMD, [cli_path, "delete_collection", collection_name], output, true)
+	var exit_code = SafeExec.execute(PYTHON_CMD, [cli_path, "delete_collection", collection_name], output, true)
 
 	if exit_code != 0:
 		var error = "Failed to delete collection: " + str(output)
@@ -164,7 +165,7 @@ func delete_collection(collection_name: String) -> Dictionary:
 func get_collection_count(collection_name: String) -> int:
 	var cli_path = ProjectSettings.globalize_path(CHROMA_CLI_PATH)
 	var output = []
-	var exit_code = OS.execute(PYTHON_CMD, [cli_path, "get_count", collection_name], output, true)
+	var exit_code = SafeExec.execute(PYTHON_CMD, [cli_path, "get_count", collection_name], output, true)
 
 	if exit_code != 0:
 		return 0
@@ -176,7 +177,7 @@ func get_collection_count(collection_name: String) -> int:
 func list_collections() -> Array:
 	var cli_path = ProjectSettings.globalize_path(CHROMA_CLI_PATH)
 	var output = []
-	var exit_code = OS.execute(PYTHON_CMD, [cli_path, "list_collections"], output, true)
+	var exit_code = SafeExec.execute(PYTHON_CMD, [cli_path, "list_collections"], output, true)
 
 	if exit_code != 0:
 		return []
@@ -218,7 +219,7 @@ func test_connection() -> bool:
 func get_memory_by_id(collection_name: String, memory_id: String) -> Dictionary:
 	var cli_path = ProjectSettings.globalize_path(CHROMA_CLI_PATH)
 	var output = []
-	var exit_code = OS.execute(PYTHON_CMD, [
+	var exit_code = SafeExec.execute(PYTHON_CMD, [
 		cli_path,
 		"get_by_id",
 		collection_name,

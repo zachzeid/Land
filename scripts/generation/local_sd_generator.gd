@@ -1,5 +1,6 @@
 extends Node
 class_name LocalSDGenerator
+const SafeExec = preload("res://scripts/core/safe_exec.gd")
 ## LocalSDGenerator - Local Stable Diffusion / FLUX generation via CLI or API
 ## Supports: ComfyUI, Automatic1111, or direct diffusers CLI
 
@@ -185,7 +186,7 @@ func _generate_cli(request):
 
 func _run_cli_generation(request_id: String, args: Array, thread: Thread):
 	var output = []
-	var exit_code = OS.execute(python_cmd, args, output, true)
+	var exit_code = OS.execute(python_cmd, args.map(func(a): return SafeExec.clean(str(a))), output, true)
 
 	# Call back to main thread
 	call_deferred("_on_cli_complete", request_id, exit_code, output, thread)
