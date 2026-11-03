@@ -523,11 +523,18 @@ func _build_message_history(history: Array, current_input: String) -> Array:
 			"content": current_input
 		})
 	
-	# Ensure messages start with user if empty
-	if messages.is_empty():
-		messages.append({
+	# The API needs a user turn first and last: an NPC who spoke first gets the approach before it,
+	# and a history ending on the NPC (no new input) gets the player's silence after it, since a
+	# trailing assistant turn is a prefill, which current models reject
+	if messages.is_empty() or messages[0].role != "user":
+		messages.push_front({
 			"role": "user",
 			"content": "(Player approaches)"
+		})
+	if messages[-1].role != "user":
+		messages.append({
+			"role": "user",
+			"content": "(The player says nothing and waits.)"
 		})
 	
 	return messages

@@ -3,8 +3,15 @@ extends Node
 # Includes prompt injection mitigation and response validation
 
 const API_URL = "https://api.anthropic.com/v1/messages"
-const MODEL = "claude-sonnet-4-5-20250929"  # Claude Sonnet 4.5 (latest)
-const MAX_TOKENS = 1024
+const MODEL = "claude-opus-5-5"  # Claude Opus 5.5
+## Thinking is always on for this model and counts against max_tokens: leave room for it
+const MAX_TOKENS = 16000
+## Effort sets thinking depth (low | medium | high | xhigh | max; the model's default is medium)
+## NPC turns are short, in-character replies where latency matters: low (CLAUDE_EFFORT overrides)
+const DEFAULT_EFFORT = "low"
+## A safety classifier can decline (HTTP 200, stop_reason "refusal"); "default" re-runs the request
+## server-side on the model Anthropic recommends for that refusal category
+const FALLBACK_BETA = "server-side-fallback-2026-07-01"
 const API_VERSION = "2023-06-01"
 
 # Token usage tracking
@@ -48,6 +55,8 @@ func send_message(messages: Array, system_prompt: String = "") -> Dictionary:
 	var request_body = {
 		"model": MODEL,
 		"max_tokens": MAX_TOKENS,
+		"output_config": {"effort": _effort()},
+		"fallbacks": "default",
 		"messages": sanitized_messages
 	}
 	
@@ -186,7 +195,8 @@ func _make_request(body: Dictionary) -> Dictionary:
 	var headers = [
 		"Content-Type: application/json",
 		"x-api-key: " + api_key,
-		"anthropic-version: " + API_VERSION
+		"anthropic-version: " + API_VERSION,
+		"anthropic-beta: " + FALLBACK_BETA
 	]
 	
 	var json_body = JSON.stringify(body)
@@ -232,17 +242,24 @@ func _make_request(body: Dictionary) -> Dictionary:
 		error_occurred.emit("Claude API error (" + str(response_code) + "): " + error_msg)
 		return {"error": error_msg, "status_code": response_code, "full_response": data}
 	
+	# Declined by a safety classifier (after any fallback): there is no reply to read
+	if data.get("stop_reason", "") == "refusal":
+		var details = data.get("stop_details", {})
+		var category = str(details.get("category", "")) if details is Dictionary else ""
+		print("[ClaudeClient] Request declined (refusal%s)" % (": " + category if category != "" else ""))
+		return {"error": "Claude declined this request", "refusal": true, "category": category}
+
 	# Validate response structure
 	if not data.has("content") or data.content.is_empty():
 		return {"error": "Invalid response structure from Claude"}
 	
-	# Extract text from first content block
-	var content_block = data.content[0]
-	if not content_block.has("text"):
+	# The reply is the text blocks; thinking and fallback blocks come first and carry none
+	var text = extract_text(data.content)
+	if text.is_empty():
 		return {"error": "No text in Claude response"}
 	
 	var result = {
-		"text": content_block.text,
+		"text": text,
 		"usage": data.get("usage", {}),
 		"model": data.get("model", MODEL),
 		"stop_reason": data.get("stop_reason", "unknown")
@@ -260,11 +277,24 @@ func get_usage_stats() -> Dictionary:
 		"estimated_cost_usd": _calculate_cost()
 	}
 
-## Calculate estimated cost based on Claude 3.5 Sonnet pricing
-## Input: $3 per million tokens, Output: $15 per million tokens
+## Concatenated text of a response's text blocks (thinking, fallback and other blocks skipped)
+static func extract_text(content: Array) -> String:
+	var parts: Array = []
+	for block in content:
+		if block is Dictionary and block.get("type", "") == "text":
+			parts.append(str(block.get("text", "")))
+	return "".join(parts)
+
+func _effort() -> String:
+	var config = get_node_or_null("/root/Config")
+	var effort = str(config.claude_effort) if config and "claude_effort" in config else ""
+	return effort if effort in ["low", "medium", "high", "xhigh", "max"] else DEFAULT_EFFORT
+
+## Estimated cost at Claude Opus 5.5 pricing: input $4, output $20 per million tokens
+## (output includes thinking tokens)
 func _calculate_cost() -> float:
-	var input_cost = (total_input_tokens / 1_000_000.0) * 3.0
-	var output_cost = (total_output_tokens / 1_000_000.0) * 15.0
+	var input_cost = (total_input_tokens / 1_000_000.0) * 4.0
+	var output_cost = (total_output_tokens / 1_000_000.0) * 20.0
 	return input_cost + output_cost
 
 ## Reset usage statistics

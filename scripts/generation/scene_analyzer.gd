@@ -7,7 +7,8 @@ signal analysis_completed(result: Dictionary, image_size: Vector2)
 signal analysis_failed(error: String)
 
 const CLAUDE_API_URL = "https://api.anthropic.com/v1/messages"
-const REQUEST_TIMEOUT_MS = 60000
+const REQUEST_TIMEOUT_MS = 120000  # thinking is always on: allow for it
+const ClaudeClientScript = preload("res://scripts/dialogue/claude_client.gd")
 
 var api_key: String = ""
 var pending_request: HTTPRequest = null
@@ -79,8 +80,9 @@ func analyze_scene(image_path: String, scene_description: String = "") -> void:
 
 	# Create request body
 	var body = {
-		"model": "claude-sonnet-4-20250514",
-		"max_tokens": 4096,
+		"model": "claude-opus-5-5",
+		"max_tokens": 16000,  # thinking is always on and counts against this
+		"fallbacks": "default",
 		"messages": [{
 			"role": "user",
 			"content": [
@@ -110,6 +112,7 @@ func analyze_scene(image_path: String, scene_description: String = "") -> void:
 	var headers = [
 		"x-api-key: " + api_key,
 		"anthropic-version: 2023-06-01",
+		"anthropic-beta: server-side-fallback-2026-07-01",
 		"Content-Type: application/json"
 	]
 
@@ -198,11 +201,15 @@ func _on_request_completed(result: int, response_code: int, headers: PackedStrin
 		return
 
 	var response_data = json.data
+	if response_data.get("stop_reason", "") == "refusal":
+		push_warning("[SceneAnalyzer] Claude declined the scene analysis")
+		analysis_failed.emit("Claude declined the request")
+		return
 	if not response_data.has("content") or response_data.content.size() == 0:
 		analysis_failed.emit("No content in response")
 		return
 
-	var text_content = response_data.content[0].text
+	var text_content = ClaudeClientScript.extract_text(response_data.content)  # skips thinking blocks
 	print("[SceneAnalyzer] Received analysis response")
 
 	# Extract JSON from the response (it might be wrapped in markdown code blocks)
