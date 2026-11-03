@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/physics/flammable.gd" id="flammable"]
+
+[node name="HayBale" type="Node2D"]
+
+[node name="Look" type="Polygon2D" parent="."]
+color = Color(0.86, 0.74, 0.36, 1)
+polygon = PackedVector2Array(-16, -10, 16, -10, 16, 10, -16, 10)
+
+[node name="Flammable" type="Node2D" parent="."]
+script = ExtResource("flammable")
+burn_seconds = 8.0
+what = "hay bale"

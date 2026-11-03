@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/physics/pressure_plate.gd" id="pressure_plate"]
+
+[node name="PressurePlate" type="Node2D"]
+
+[node name="Look" type="Polygon2D" parent="."]
+color = Color(0.45, 0.45, 0.48, 1)
+polygon = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
+
+[node name="Plate" type="Node2D" parent="."]
+script = ExtResource("pressure_plate")
+weight_needed = 50.0
+size = Vector2(48, 48)

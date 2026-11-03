@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/physics/flammable.gd" id="flammable"]
+[ext_resource type="Script" path="res://scripts/world/physics/weight.gd" id="weight"]
+
+[node name="Crate" type="Node2D"]
+
+[node name="Look" type="Polygon2D" parent="."]
+color = Color(0.55, 0.38, 0.2, 1)
+polygon = PackedVector2Array(-14, -14, 14, -14, 14, 14, -14, 14)
+
+[node name="Flammable" type="Node2D" parent="."]
+script = ExtResource("flammable")
+burn_seconds = 14.0
+reach = 48.0
+what = "crate"
+
+[node name="Weight" type="Node2D" parent="."]
+script = ExtResource("weight")
+mass = 20.0
