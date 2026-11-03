@@ -818,7 +818,7 @@ position = Vector2(400, -330)
 position = Vector2(-400, -380)
 
 [node name="SpoilEast" type="Marker2D" parent="CreatureSpawns"]
-position = Vector2(420, 390)
+position = Vector2(360, 370)
 
 [node name="StrawCorner" type="Marker2D" parent="CreatureSpawns"]
 position = Vector2(-400, 390)

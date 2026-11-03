@@ -9,6 +9,9 @@ extends Node
 ## minutes, and plan_for leaves one fewer of that creature while `regrow_days` (creatures.json) have
 ## not passed, so a cleared Darkwood is still clear on re-entry and after a reload (save() rides in
 ## GenericManager's save, inside WorldState's "generics" block)
+## No creature spawns indoors (docs/WORLD_SCHEMA.md "Buildings"): nothing is placed in a building
+## location (Creature.is_building), and a spot inside a building's body (a world_solid StaticBody2D)
+## or a doorway (Creature.door_zones) is refused, with the refusals in last_report.refused
 ## GenericManager owns one; tests call plan_for / spawn_into directly
 
 const Creature = preload("res://scripts/combat/creature.gd")
@@ -19,7 +22,7 @@ const META = "spawned_by_creature_spawner"
 
 @export var enabled: bool = true
 var world_seed: int = 7919
-var last_report: Dictionary = {}   # {"location", "spawned": [names]}
+var last_report: Dictionary = {}   # {"location", "spawned": [ids], "refused": [{spot, why}]}
 var culls: Dictionary = {}         # location -> [{creature, at}] (at: game minute of the death)
 
 func _ready() -> void:
@@ -97,24 +100,69 @@ func spawn_into(location_id: String, scene_root: Node, day: int = -1) -> Array:
 	for node in scene_root.get_tree().get_nodes_in_group("creatures"):
 		if node.has_meta(META) and scene_root.is_ancestor_of(node):
 			node.queue_free()  # a scene revisited: the plan replaces what was there
-	var spots = _spots(scene_root)
+	var refused: Array = []
+	if Creature.is_building(location_id):
+		refused.append({"spot": null, "why": "building location"})
+		last_report = {"location": location_id, "spawned": [], "refused": refused}
+		return added  # a built place is never theirs, whatever creatures.json says
+	var blocked = Blocked.new(scene_root)
+	var spots = _spots(scene_root).filter(func(p):
+		var why = blocked.why(p)
+		if why != "":
+			refused.append({"spot": p, "why": why})
+			push_warning("[CreatureSpawner] %s: spot %s refused (%s)" % [location_id, p, why])
+		return why == "")
 	var i = 0
-	for row in plan_for(location_id, day):
+	for row in plan_for(location_id, day) if not spots.is_empty() else []:
 		for k in int(row.n):
 			var c = instance(str(row.creature))
 			if c == null:
 				continue
 			c.set_meta(META, true)
 			c.drop_seed = hash("%s|%s|%d" % [location_id, row.creature, k]) & 0x7fffffff
-			c.position = spots[i % spots.size()] + Vector2(24 * k, 18 * k)
+			var spot: Vector2 = spots[i % spots.size()]
+			var fanned = spot + Vector2(24 * k, 18 * k)
+			c.position = fanned if blocked.why(fanned) == "" else spot  # a pack never fans into a wall or door
+			c.zone_root = scene_root
 			scene_root.add_child(c)
 			c.home = c.position
 			if c.has_signal("died"):
 				c.died.connect(func(_info): note_cull(location_id, str(row.creature)))
 			added.append(c)
 			i += 1
-	last_report = {"location": location_id, "spawned": added.map(func(c): return str(c.creature_id))}
+	last_report = {"location": location_id, "spawned": added.map(func(c): return str(c.creature_id)), "refused": refused}
 	return added
+
+## Why a spot (scene_root's space) is no place for a creature: "building" (inside a world_solid body:
+## a building, wall or river), "doorway" (Creature.door_zones), or "" when it is open ground
+class Blocked:
+	var root: Node
+	var to_root: Transform2D
+	var solids: Array = []    # Rect2s in global space (root space when out of the tree)
+	var doors: Array = []
+
+	func _init(scene_root: Node) -> void:
+		root = scene_root
+		to_root = Creature.xform(scene_root, scene_root)
+		doors = Creature.door_zones(scene_root)
+		for body in scene_root.find_children("*", "StaticBody2D", true, false):
+			# world_solid.gd sets its layer in _ready, so a scene not yet in the tree is read by its script
+			var script = body.get_script()
+			if body.collision_layer & SOLID_MASK or (script and script.resource_path.ends_with("world_solid.gd")):
+				for cs in body.get_children():
+					if cs is CollisionShape2D and cs.shape and not cs.disabled:
+						solids.append(Creature.xform(cs, scene_root) * cs.shape.get_rect())
+
+	## spot: scene_root-local, as markers are read
+	func why(spot: Vector2) -> String:
+		var p = to_root * spot
+		for r in solids:
+			if r.has_point(p):
+				return "building"
+		for z in doors:
+			if z.rect.has_point(p):
+				return "doorway"
+		return ""
 
 ## A creature body: its scene under scenes/creatures/<id>.tscn, else a bare body
 static func instance(id: String) -> Node:
@@ -131,7 +179,7 @@ func _spots(scene_root: Node) -> Array:
 	if holder:
 		for m in holder.get_children():
 			if m is Marker2D:
-				spots.append(m.position)
+				spots.append(holder.position + m.position)
 	if spots.is_empty():
 		var center = Vector2.ZERO
 		var marker = scene_root.find_child("SpawnPoints", true, false)

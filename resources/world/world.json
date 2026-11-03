@@ -304,6 +304,7 @@
       "region": "eastern_march",
       "area": "The Ridge",
       "kind": "interior",
+      "building": false,
       "scene": "res://scenes/interiors/the_pit.tscn",
       "built": true,
       "travel_point": true
@@ -314,6 +315,7 @@
       "region": "eastern_march",
       "area": "Greystone",
       "kind": "interior",
+      "building": false,
       "scene": "res://scenes/puzzles/old_workings.tscn",
       "built": true
     },

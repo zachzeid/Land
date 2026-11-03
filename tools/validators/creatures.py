@@ -5,6 +5,11 @@ damage, a known damage type and behaviour, resistances within -1..1, where-entri
 locations with a count range and a chance, and drops naming item ids (checked against
 resources/items/*.json when that folder exists). No forbidden concept in any name or text.
 Every creature has `regrow_days` > 0 (how long a kill thins its place).
+Buildings (docs/WORLD_SCHEMA.md "Buildings"): a world.json location's `building`, when present, is
+true or false (else interiors are buildings, exteriors are not). No `where` names a building, no
+building location's scene has CreatureSpawns markers, and no marker stands inside a world_solid
+StaticBody2D (a building's footprint) or within DOOR_MARGIN of a doorway (a SceneTrigger or a
+"building_zones" Area2D). Scenes are read as text: positions and scales, rectangle shapes only.
 Archetypes: a `minor:` header, when present, says true or false.
 resources/combat/loadouts.json: npcs keyed by world.json npc keys and archetypes by archetype ids,
 each weapon a weapons.json id and each armour an armour.json id (one per slot), and no loadout gives
@@ -16,6 +21,142 @@ import re
 DAMAGE_TYPES = {"cut", "pierce", "blunt", "fire"}
 BEHAVIOURS = {"stalk", "charge", "flee_when_hurt"}
 NUMBERS = ("health", "damage", "poise", "speed", "charge_speed", "sense", "reach", "attack_seconds")
+
+
+DOOR_MARGIN = 30.0   # scripts/combat/creature.gd DOOR_MARGIN
+SOLID_LAYER = 4      # world_solid
+
+
+def is_building(loc):
+    """scripts/combat/creature.gd location_is_building: `building`, else kind == interior"""
+    if isinstance(loc.get("building"), bool):
+        return loc["building"]
+    return loc.get("kind") == "interior"
+
+
+def _vec(text):
+    m = re.match(r"Vector2\(\s*([-\d.e]+)\s*,\s*([-\d.e]+)\s*\)", text or "")
+    return (float(m.group(1)), float(m.group(2))) if m else None
+
+
+def read_tscn(path):
+    """Nodes of a .tscn as {path: {type, props, parent}} plus sub_resource rect sizes and ext scripts"""
+    nodes, subs, exts, cur = {}, {}, {}, None
+    for line in path.read_text().splitlines():
+        head = re.match(r"\[(\w+)(.*)\]$", line.strip())
+        if head:
+            kind, attrs = head.group(1), dict(re.findall(r'(\w+)="([^"]*)"', head.group(2)))
+            cur = None
+            if kind == "ext_resource":
+                exts[attrs.get("id")] = attrs.get("path", "")
+            elif kind == "sub_resource":
+                cur = subs.setdefault(attrs.get("id"), {"type": attrs.get("type")})
+            elif kind == "node":
+                parent = attrs.get("parent")
+                name = attrs.get("name", "")
+                key = name if parent is None else (name if parent == "." else f"{parent}/{name}")
+                cur = nodes.setdefault(key, {"type": attrs.get("type", ""), "parent": parent, "name": name})
+                groups = re.search(r"groups=\[([^\]]*)\]", head.group(2))
+                cur["groups"] = groups.group(1) if groups else ""
+                if parent is None:
+                    cur["root"] = True
+            continue
+        if cur is not None and " = " in line:
+            k, v = line.split(" = ", 1)
+            cur[k.strip()] = v.strip()
+    return nodes, subs, exts
+
+
+def _xform(nodes, key):
+    """(scale, offset) of a node relative to the scene root (position and scale; None if rotated)"""
+    chain = []
+    while key in nodes and not nodes[key].get("root"):
+        chain.append(nodes[key])
+        parent = nodes[key]["parent"]
+        key = parent if parent != "." else None
+        if key is None:
+            break
+    sx, sy, ox, oy = 1.0, 1.0, 0.0, 0.0
+    for n in reversed(chain):
+        if "rotation" in n:
+            return None
+        px, py = _vec(n.get("position")) or (0.0, 0.0)
+        ox, oy = ox + sx * px, oy + sy * py
+        nsx, nsy = _vec(n.get("scale")) or (1.0, 1.0)
+        sx, sy = sx * nsx, sy * nsy
+    return sx, sy, ox, oy
+
+
+def _rects(nodes, subs, owner):
+    """Root-space rects (x0, y0, x1, y1) of the rectangle CollisionShape2Ds under `owner`"""
+    out = []
+    for key, n in nodes.items():
+        if n["type"] != "CollisionShape2D" or n["parent"] != owner or n.get("disabled") == "true":
+            continue
+        m = re.match(r'SubResource\("([^"]+)"\)', n.get("shape", ""))
+        sub = subs.get(m.group(1)) if m else None
+        size = _vec(sub.get("size")) if sub and sub.get("type") == "RectangleShape2D" else None
+        t = _xform(nodes, key)
+        if size is None or t is None:
+            continue
+        sx, sy, ox, oy = t
+        hw, hh = abs(sx) * size[0] / 2, abs(sy) * size[1] / 2
+        out.append((ox - hw, oy - hh, ox + hw, oy + hh))
+    return out
+
+
+def scene_blockers(path):
+    """(solids, doors, markers) of a scene: world_solid body rects, doorway rects grown by DOOR_MARGIN
+    as (rect, target), and CreatureSpawns markers as (name, x, y)"""
+    nodes, subs, exts = read_tscn(path)
+    solids, doors, markers = [], [], []
+    for key, n in nodes.items():
+        script = re.match(r'ExtResource\("([^"]+)"\)', n.get("script", ""))
+        script = exts.get(script.group(1), "") if script else ""
+        owner = "." if n.get("root") else key
+        # world_solid.gd puts its body on world_solid at runtime, whatever the scene says
+        if n["type"] == "StaticBody2D" and (script.endswith("world_solid.gd") or int(n.get("collision_layer", "1")) & SOLID_LAYER):
+            solids += _rects(nodes, subs, owner)
+        elif n["type"] == "Area2D" and (script.endswith("scene_trigger.gd") or "building_zones" in n.get("groups", "")):
+            target = (n.get("target_location") or '""').strip('"')
+            doors += [((r[0] - DOOR_MARGIN, r[1] - DOOR_MARGIN, r[2] + DOOR_MARGIN, r[3] + DOOR_MARGIN), target) for r in _rects(nodes, subs, owner)]
+        elif n["type"] == "Marker2D" and (n["parent"] or "").split("/")[-1] == "CreatureSpawns":
+            t = _xform(nodes, key)
+            if t:
+                markers.append((n["name"], t[2], t[3]))
+    return solids, doors, markers
+
+
+def _inside(r, x, y):
+    return r[0] <= x <= r[2] and r[1] <= y <= r[3]
+
+
+def _validate_buildings(ctx, root, creatures):
+    world = "resources/world/world.json"
+    locs = {str(l.get("id")): l for l in ctx["world"].get("locations", []) if isinstance(l, dict)}
+    for lid, loc in locs.items():
+        if "building" in loc and not isinstance(loc["building"], bool):
+            ctx["err"](f"{world}:{lid}", "'building' must be true or false")
+    for c in creatures:
+        for entry in c.get("where", []) if isinstance(c, dict) else []:
+            lid = entry.get("location") if isinstance(entry, dict) else None
+            if lid in locs and is_building(locs[lid]):
+                ctx["err"](f"resources/combat/creatures.json:{c.get('id')}", f"where: '{lid}' is a building (creatures never go indoors)")
+    for lid, loc in sorted(locs.items()):
+        scene = str(loc.get("scene", ""))
+        path = root / scene.replace("res://", "") if scene.startswith("res://") else None
+        if path is None or not path.exists():
+            continue
+        solids, doors, markers = scene_blockers(path)
+        where = scene.replace("res://", "")
+        if markers and is_building(loc):
+            ctx["err"](where, f"CreatureSpawns in '{lid}', a building (creatures never go indoors)")
+        for name, x, y in markers:
+            if any(_inside(r, x, y) for r in solids):
+                ctx["err"](where, f"CreatureSpawns/{name} stands inside a building or wall (world_solid body)")
+            for r, target in doors:
+                if _inside(r, x, y):
+                    ctx["err"](where, f"CreatureSpawns/{name} stands in the doorway to '{target or '?'}'")
 
 
 def _range(value):
@@ -129,6 +270,7 @@ def validate(ctx):
         if m and m.group(1).lower() not in ("true", "false", "yes", "no"):
             ctx["err"](str(arch.relative_to(root)), f"'minor:' must be true or false, not '{m.group(1)}'")
 
+    _validate_buildings(ctx, root, creatures)
     _validate_loadouts(ctx, root)
 
 

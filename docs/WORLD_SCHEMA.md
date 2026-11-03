@@ -35,6 +35,36 @@ changed in ways no author anticipated.
 `thornhaven_blacksmith`, `iron_hollow_camp`. Planned (may be referenced; scenes come later):
 `old_mill`, `forest_path`, `council_hall`, `village_gate`, `healer_hut`, `thornhaven_chapel`.
 
+### Buildings (`building` on a location)
+
+A location is a **building** when it is a built structure people shelter in: a tavern, shop, smithy,
+chapel, hall, hut, waystation, abbey, manor, palace. Creatures never spawn in, path into or follow
+anyone into a building.
+
+| field | type | default | meaning |
+|-------|------|---------|---------|
+| `building` | bool | `true` for `"kind": "interior"`, `false` otherwise | creatures never go here |
+
+Set it only where the default is wrong: an interior that is dug, not built (`the_pit`, a back-seam of
+Greystone's deep vein; `old_workings`, the mine's abandoned levels) says `"building": false`; an
+exterior that is a walled, roofed place would say `"building": true`. The abbey undercroft is a built
+vault and keeps the default. A new interior (a tavern) is a building without saying so, and a door to
+a location not yet in world.json is treated as one.
+
+What the rule does (`scripts/combat/creature.gd`, `creature_spawner.gd`):
+- **Spawning.** Nothing spawns in a building location, whatever `creatures.json` says. A
+  `CreatureSpawns` marker inside a world_solid body (a building's footprint, a wall) or a doorway
+  is refused (`last_report.refused`); a pack never fans out into one.
+- **Doorways** are every `SceneTrigger` (any scene transition) and any Area2D in the
+  `building_zones` group (a building whose floor is walkable in an exterior scene), grown by 30 px.
+  A creature never steps into one, so it never takes a door; fleeing or shoved into one, it steps out.
+- **Pursuit.** A quarry standing in a doorway that leads into a building is out of reach: the
+  creature comes up to the door, loiters 4 s, then gives up, walks back to its spot and ignores that
+  quarry for 30 s unless struck by it. Creatures sit on the npc layer, so a door never notices one.
+- **Validation.** `tools/validators/creatures.py` fails a `where` naming a building, `CreatureSpawns`
+  in a building's scene, and a marker in a world_solid body or doorway;
+  `scripts/debug/test_creatures_indoors.gd` checks the same with physics across every scene.
+
 ---
 
 ## 2. SOUL.md
