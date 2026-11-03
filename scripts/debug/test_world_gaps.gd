@@ -310,6 +310,10 @@ func _test_beds_and_camps() -> void:
 		and way.get_node_or_null("SpawnPoints/bed") is Marker2D and int(way.get_node("Bed").rent) > 0)
 	if way:
 		way.free()
+	# An empty house: earlier sections run the clock past dusk, when travellers take the rooms (Taverns.lodgers)
+	var taverns = root.get_node("Taverns")
+	taverns.reset()
+	taverns.present_override = {"kingsroad_waystation": []}
 	var scene = _scene("GapsBed")
 	var bed = BED.new()
 	bed.location_id = "kingsroad_waystation"
@@ -324,6 +328,8 @@ func _test_beds_and_camps() -> void:
 	var info: Dictionary = stats.die({"scene_root": scene, "position": Vector2.ZERO})
 	_check("Death wakes them there", info.respawn == {"location": "kingsroad_waystation", "spawn_point": "bed"})
 	scene.queue_free()
+	taverns.present_override = {}
+	taverns.reset()
 
 	var outdoors = ""
 	var indoors = ""

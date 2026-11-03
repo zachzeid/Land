@@ -12,7 +12,7 @@ var storyline_state := {}  # Loaded StorylineDirector state (it autoloads after 
 var generics_state := {}  # Loaded generic NPC state (DynamicNPCRegistry.generics autoloads after us)
 var quest_state := {}  # Loaded QuestManager state (it autoloads after us)
 ## Player systems (docs/PLAYER_SYSTEMS.md §8): each autoload's save(), restored once they are ready
-const PLAYER_SYSTEMS = ["PlayerStats", "Inventory", "Crafting", "Combat", "WorldPhysics", "Puzzles"]
+const PLAYER_SYSTEMS = ["PlayerStats", "Inventory", "Crafting", "Combat", "WorldPhysics", "Puzzles", "Taverns"]
 var player_systems_state := {}
 var player_location := ""  # Where the player stood when the game was saved ("" = a new game)
 

@@ -184,6 +184,8 @@ func record(kind: String, summary: String, about: Array = [], opts: Dictionary =
 	}
 	if opts.has("commitment"):
 		ev["commitment"] = str(opts.commitment)
+	if opts.has("morals"):
+		ev["morals"] = str(opts.morals)  # a deed people judge by their own nature (Taverns.judgement)
 	if opts.has("skill"):
 		ev["skill"] = str(opts.skill)  # the skill a feat, a crafted piece or a fight showed (emergence triggers match it)
 	if kind in HARM_KINDS:

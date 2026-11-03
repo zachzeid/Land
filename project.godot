@@ -48,6 +48,7 @@ Crafting="*res://scripts/crafting/crafting.gd"
 Combat="*res://scripts/combat/combat.gd"
 WorldPhysics="*res://scripts/world/physics/world_physics.gd"
 Puzzles="*res://scripts/puzzles/puzzles.gd"
+Taverns="*res://scripts/world/taverns.gd"
 
 [display]
 

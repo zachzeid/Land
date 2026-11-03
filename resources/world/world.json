@@ -69,6 +69,7 @@
       "name": "Thornhaven Square",
       "region": "western_valley",
       "area": "Thornhaven Village",
+      "settlement": "village",
       "kind": "exterior",
       "scene": "res://scenes/game_world.tscn",
       "built": true
@@ -78,6 +79,7 @@
       "name": "Gregor's General Goods",
       "region": "western_valley",
       "area": "Thornhaven Village",
+      "settlement": "village",
       "kind": "interior",
       "scene": "res://scenes/interiors/gregor_shop_interior.tscn",
       "built": true
@@ -97,6 +99,7 @@
       "name": "The Smithy",
       "region": "western_valley",
       "area": "Thornhaven Village",
+      "settlement": "village",
       "kind": "interior",
       "scene": "res://scenes/interiors/blacksmith_interior.tscn",
       "built": true
@@ -106,6 +109,7 @@
       "name": "Council Hall",
       "region": "western_valley",
       "area": "Thornhaven Village",
+      "settlement": "village",
       "kind": "interior",
       "scene": "res://scenes/interiors/council_hall.tscn",
       "built": true
@@ -115,6 +119,7 @@
       "name": "Chapel of the Dawn",
       "region": "western_valley",
       "area": "Thornhaven Village",
+      "settlement": "village",
       "kind": "interior",
       "scene": "res://scenes/interiors/thornhaven_chapel.tscn",
       "built": true
@@ -133,6 +138,7 @@
       "name": "Thornhaven Gate",
       "region": "western_valley",
       "area": "Thornhaven Village",
+      "settlement": "village",
       "kind": "exterior",
       "scene": "res://scenes/exterior/village_gate.tscn",
       "built": true,
@@ -182,6 +188,7 @@
       "name": "Ferrisford Crossing",
       "region": "kingsroad",
       "area": "River Ferris",
+      "settlement": "village",
       "kind": "exterior",
       "scene": "res://scenes/exterior/ferrisford.tscn",
       "built": true,
@@ -192,6 +199,7 @@
       "name": "Greystone Mines",
       "region": "eastern_march",
       "area": "Greystone",
+      "settlement": "town",
       "kind": "exterior",
       "scene": "res://scenes/exterior/greystone_mines.tscn",
       "built": true,
@@ -222,6 +230,7 @@
       "name": "The Dawn Gate",
       "region": "the_capitol",
       "area": "Highmarch Walls",
+      "settlement": "city",
       "kind": "exterior",
       "scene": "res://scenes/capitol/capitol_gate.tscn",
       "built": true,
@@ -232,6 +241,7 @@
       "name": "The Lantern Market",
       "region": "the_capitol",
       "area": "Highmarch",
+      "settlement": "city",
       "kind": "exterior",
       "scene": "res://scenes/capitol/capitol_market.tscn",
       "built": true
@@ -241,6 +251,7 @@
       "name": "The Crown Court",
       "region": "the_capitol",
       "area": "Palace Hill",
+      "settlement": "city",
       "kind": "interior",
       "scene": "res://scenes/capitol/capitol_palace.tscn",
       "built": true
@@ -250,6 +261,7 @@
       "name": "The High Magistry",
       "region": "the_capitol",
       "area": "Palace Hill",
+      "settlement": "city",
       "kind": "interior",
       "scene": "res://scenes/capitol/capitol_magistry.tscn",
       "built": true
@@ -259,6 +271,7 @@
       "name": "Cathedral of the Dawn",
       "region": "the_capitol",
       "area": "Highmarch",
+      "settlement": "city",
       "kind": "interior",
       "scene": "res://scenes/capitol/capitol_cathedral.tscn",
       "built": true
@@ -268,6 +281,7 @@
       "name": "The Merchants' Guildhall",
       "region": "the_capitol",
       "area": "Highmarch",
+      "settlement": "city",
       "kind": "interior",
       "scene": "res://scenes/capitol/capitol_guildhall.tscn",
       "built": true
@@ -277,6 +291,7 @@
       "name": "The River Quarter",
       "region": "the_capitol",
       "area": "Riverside",
+      "settlement": "city",
       "kind": "exterior",
       "scene": "res://scenes/capitol/capitol_docks.tscn",
       "built": true,
@@ -287,6 +302,7 @@
       "name": "The Warrens",
       "region": "the_capitol",
       "area": "Riverside",
+      "settlement": "city",
       "kind": "exterior",
       "scene": "res://scenes/capitol/capitol_warrens.tscn",
       "built": true
@@ -296,6 +312,7 @@
       "name": "Ashdown House",
       "region": "the_capitol",
       "area": "Palace Hill",
+      "settlement": "city",
       "kind": "interior",
       "scene": "res://scenes/capitol/ashdown_manor.tscn",
       "built": true
@@ -329,6 +346,70 @@
       "kind": "interior",
       "scene": "res://scenes/puzzles/abbey_undercroft.tscn",
       "built": true
+    },
+    {
+      "id": "ferrisford_tavern",
+      "name": "The Tarred Rope",
+      "region": "kingsroad",
+      "area": "River Ferris",
+      "settlement": "village",
+      "kind": "interior",
+      "scene": "res://scenes/interiors/ferrisford_tavern.tscn",
+      "built": true,
+      "tavern": {
+        "keeper": "gen_tavern_keeper_1",
+        "rooms": 2,
+        "rent_copper": 3,
+        "brothel": false
+      }
+    },
+    {
+      "id": "greystone_tavern",
+      "name": "The Spoil Heap",
+      "region": "eastern_march",
+      "area": "Greystone",
+      "settlement": "town",
+      "kind": "interior",
+      "scene": "res://scenes/interiors/greystone_tavern.tscn",
+      "built": true,
+      "tavern": {
+        "keeper": "gen_tavern_keeper_2",
+        "rooms": 2,
+        "rent_copper": 4,
+        "brothel": false
+      }
+    },
+    {
+      "id": "capitol_docks_tavern",
+      "name": "The Wet Load",
+      "region": "the_capitol",
+      "area": "Riverside",
+      "settlement": "city",
+      "kind": "interior",
+      "scene": "res://scenes/capitol/capitol_docks_tavern.tscn",
+      "built": true,
+      "tavern": {
+        "keeper": "gen_tavern_keeper_3",
+        "rooms": 3,
+        "rent_copper": 6,
+        "brothel": false
+      }
+    },
+    {
+      "id": "capitol_market_inn",
+      "name": "The Brass Scales",
+      "region": "the_capitol",
+      "area": "Highmarch",
+      "settlement": "city",
+      "kind": "interior",
+      "scene": "res://scenes/capitol/capitol_market_inn.tscn",
+      "built": true,
+      "tavern": {
+        "keeper": "gen_tavern_keeper_4",
+        "rooms": 3,
+        "rent_copper": 12,
+        "brothel": false
+      }
     }
   ],
   "routes": [
@@ -619,6 +700,42 @@
         "foot"
       ],
       "note": "The stair down from the archive to the undercroft."
+    },
+    {
+      "a": "ferrisford",
+      "b": "ferrisford_tavern",
+      "minutes": 1,
+      "modes": [
+        "foot"
+      ],
+      "note": "Across the road from the toll hut."
+    },
+    {
+      "a": "greystone_mines",
+      "b": "greystone_tavern",
+      "minutes": 2,
+      "modes": [
+        "foot"
+      ],
+      "note": "The alehouse across the ore road from the miners' row."
+    },
+    {
+      "a": "capitol_docks",
+      "b": "capitol_docks_tavern",
+      "minutes": 1,
+      "modes": [
+        "foot"
+      ],
+      "note": "The alehouse behind the quay, where the gangs are hired."
+    },
+    {
+      "a": "capitol_market",
+      "b": "capitol_market_inn",
+      "minutes": 2,
+      "modes": [
+        "foot"
+      ],
+      "note": "The inn at the west end of the cross street, by the Weigh House."
     }
   ],
   "npcs": [

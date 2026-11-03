@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="5_dialogue_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="6_debug_interaction_panel"]
 [ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="7_debug_console"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="20_scene_trigger"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_300x1200"]
 size = Vector2(300, 1200)
@@ -46,6 +47,12 @@ size = Vector2(1680, 40)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_40x1200"]
 size = Vector2(40, 1200)
+
+[sub_resource type="RectangleShape2D" id="Tavern_220x140"]
+size = Vector2(220, 140)
+
+[sub_resource type="RectangleShape2D" id="TavernDoor_100x50"]
+size = Vector2(100, 50)
 
 [node name="Ferrisford" type="Node2D"]
 
@@ -626,7 +633,78 @@ script = ExtResource("1_world_solid")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bounds/East"]
 shape = SubResource("RectangleShape2D_40x1200")
 
+[node name="TheTarredRope" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(-460, 210)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TheTarredRope"]
+shape = SubResource("Tavern_220x140")
+
+[node name="Visual" type="ColorRect" parent="TheTarredRope"]
+offset_left = -110.0
+offset_top = -70.0
+offset_right = 110.0
+offset_bottom = 70.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="Roof" type="ColorRect" parent="TheTarredRope"]
+offset_left = -116.0
+offset_top = -72.0
+offset_right = 116.0
+offset_bottom = -48.0
+color = Color(0.22, 0.18, 0.12, 1)
+
+[node name="Sign" type="Label" parent="TheTarredRope"]
+z_index = 5
+offset_left = -150.0
+offset_top = -10.0
+offset_right = 150.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "The Tarred Rope"
+horizontal_alignment = 1
+
+[node name="TheTarredRopeDoor" type="Area2D" parent="."]
+z_index = 6
+position = Vector2(-460, 110)
+script = ExtResource("20_scene_trigger")
+target_location = "ferrisford_tavern"
+target_spawn_point = "default"
+prompt_text = "Go into the Tarred Rope"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TheTarredRopeDoor"]
+shape = SubResource("TavernDoor_100x50")
+
+[node name="Visual" type="ColorRect" parent="TheTarredRopeDoor"]
+offset_left = -30.0
+offset_top = -25.0
+offset_right = 30.0
+offset_bottom = 25.0
+color = Color(0.3, 0.2, 0.12, 1)
+
+[node name="InteractionPrompt" type="Label" parent="TheTarredRopeDoor"]
+z_index = 10
+visible = false
+offset_left = -150.0
+offset_top = -54.0
+offset_right = 150.0
+offset_bottom = -30.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Go into the Tarred Rope"
+horizontal_alignment = 1
+
 [node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="from_ferrisford_tavern" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-460, 70)
 
 [node name="default" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(-300, 40)

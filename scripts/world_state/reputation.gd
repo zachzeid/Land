@@ -118,6 +118,10 @@ static func breakdown(scope: String, id: String) -> Dictionary:
 		if f < ANON_BELOW:
 			f = 0.0
 		var w = kind_weight(ev, bool(k.get("self_defence", false)))
+		if ev.has("morals"):
+			var t = _node("Taverns")
+			if t:
+				w += t.judgement(parties, str(ev.morals))
 		var about = 1.0
 		for who in ev.get("about", []):
 			if who in parties:
