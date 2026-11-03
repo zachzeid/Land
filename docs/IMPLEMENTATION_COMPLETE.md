@@ -143,7 +143,7 @@ The system detects emotional conflicts:
 ## Test Results ✅
 
 ### Test 1: Dimension Calculation Logic
-**File:** `scripts/debug/test_calc_only.gd`
+**File:** `scripts/debug/test_dimensions.gd`
 **Status:** ✅ PASSING
 
 Validates:
@@ -153,7 +153,7 @@ Validates:
 - Progression: Neutral Stranger → Trusted Friend
 
 ### Test 2: Context Builder Interpretation
-**File:** `scripts/debug/test_context_dims.gd`
+**File:** `scripts/debug/test_dimensions.gd`
 **Status:** ✅ PASSING
 
 Validates:
@@ -163,7 +163,7 @@ Validates:
 - Claude receives complete emotional context
 
 ### Test 3: Full Evolution Progression
-**File:** `scripts/debug/test_full_evolution.gd`
+**File:** `scripts/debug/test_dimensions.gd`
 **Status:** ✅ PASSING
 
 Shows 4 relationship stages:
@@ -319,9 +319,9 @@ if relationship_respect > 70:
 - `scripts/dialogue/context_builder.gd` - Dimension interpretation + behavioral guidance
 
 ### Tests Created
-- `scripts/debug/test_calc_only.gd` - Dimension calculation validation ✅
-- `scripts/debug/test_context_dims.gd` - Context builder test ✅
-- `scripts/debug/test_full_evolution.gd` - 4-stage progression test ✅
+- `scripts/debug/test_dimensions.gd` - Dimension calculation validation ✅
+- `scripts/debug/test_dimensions.gd` - Context builder test ✅
+- `scripts/debug/test_dimensions.gd` - 4-stage progression test ✅
 
 ### Design Documents
 - `BEHAVIOR_EVOLUTION_SYSTEM.md` - Complete system design

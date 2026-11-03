@@ -2,6 +2,7 @@ extends SceneTree
 
 # Tests ChromaClient against the local ChromaDB (chroma_cli.py, PersistentClient):
 # connection, collections, storing memories, semantic search, importance filtering, counts, deletion
+# (absorbed test_memory_system.gd, which overlapped it)
 # Uses a temp ChromaDB directory (LAND_CHROMA_PATH), never ./chroma; SKIPs if python3 cannot import chromadb
 # Run: godot --headless --path . -s res://scripts/debug/test_chroma_client.gd
 
@@ -26,6 +27,7 @@ func _init():
 	root.add_child(chroma)
 
 	_check("Connection works", chroma.test_connection())
+	_check("Deleting a collection that does not exist is harmless", not chroma.delete_collection("test_never_created").has("error"))
 	_check("Collection created", not chroma.create_collection(COLLECTION).has("error"))
 
 	var now = Time.get_unix_time_from_system()
