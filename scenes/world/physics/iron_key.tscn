@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/physics/metal.gd" id="metal"]
+[ext_resource type="Script" path="res://scripts/world/physics/weight.gd" id="weight"]
+
+[node name="IronKey" type="Node2D"]
+
+[node name="Look" type="Polygon2D" parent="."]
+color = Color(0.35, 0.33, 0.32, 1)
+polygon = PackedVector2Array(-6, -3, 6, -3, 6, 3, -6, 3)
+
+[node name="Metal" type="Node2D" parent="."]
+script = ExtResource("metal")
+metal = "iron"
+
+[node name="Weight" type="Node2D" parent="."]
+script = ExtResource("weight")
+mass = 1.0

@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/physics/metal.gd" id="metal"]
+
+[node name="Lodestone" type="Node2D"]
+
+[node name="Look" type="Polygon2D" parent="."]
+color = Color(0.25, 0.24, 0.28, 1)
+polygon = PackedVector2Array(-12, -10, 12, -10, 12, 10, -12, 10)
+
+[node name="Metal" type="Node2D" parent="."]
+script = ExtResource("metal")
+metal = "lodestone"
+loose = false

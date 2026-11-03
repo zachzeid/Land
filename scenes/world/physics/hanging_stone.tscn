@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/physics/rope.gd" id="rope"]
+[ext_resource type="Script" path="res://scripts/world/physics/weight.gd" id="weight"]
+
+[node name="HangingStone" type="Node2D"]
+
+[node name="Rope" type="Node2D" parent="."]
+position = Vector2(0, -40)
+script = ExtResource("rope")
+holds = Array[NodePath]([NodePath("../Stone")])
+what = "rope"
+
+[node name="Look" type="Polygon2D" parent="Rope"]
+color = Color(0.6, 0.5, 0.32, 1)
+polygon = PackedVector2Array(-2, -20, 2, -20, 2, 20, -2, 20)
+
+[node name="Stone" type="Node2D" parent="."]
+
+[node name="Look" type="Polygon2D" parent="Stone"]
+color = Color(0.5, 0.5, 0.5, 1)
+polygon = PackedVector2Array(-14, -12, 14, -12, 14, 12, -14, 12)
+
+[node name="Weight" type="Node2D" parent="Stone"]
+script = ExtResource("weight")
+mass = 60.0

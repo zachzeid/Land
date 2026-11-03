@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/physics/lamp.gd" id="lamp"]
+
+[node name="Torch" type="Node2D"]
+
+[node name="Look" type="Polygon2D" parent="."]
+color = Color(0.4, 0.28, 0.16, 1)
+polygon = PackedVector2Array(-3, -12, 3, -12, 3, 12, -3, 12)
+
+[node name="Lamp" type="Node2D" parent="."]
+script = ExtResource("lamp")
+open_flame = true
+light_radius = 180.0
