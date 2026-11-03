@@ -5,6 +5,10 @@ extends Node
 ## seeded by the world seed, the location and the game day (the same visit on the same day sees the
 ## same wolves). Creatures stand at the scene's `CreatureSpawns` markers when it has them (any Marker2D
 ## under a node of that name), else on a ring well away from the default spawn point
+## A creature killed here stays dead until it regrows: each death is a cull {creature, at} in game
+## minutes, and plan_for leaves one fewer of that creature while `regrow_days` (creatures.json) have
+## not passed, so a cleared Darkwood is still clear on re-entry and after a reload (save() rides in
+## GenericManager's save, inside WorldState's "generics" block)
 ## GenericManager owns one; tests call plan_for / spawn_into directly
 
 const Creature = preload("res://scripts/combat/creature.gd")
@@ -16,6 +20,7 @@ const META = "spawned_by_creature_spawner"
 @export var enabled: bool = true
 var world_seed: int = 7919
 var last_report: Dictionary = {}   # {"location", "spawned": [names]}
+var culls: Dictionary = {}         # location -> [{creature, at}] (at: game minute of the death)
 
 func _ready() -> void:
 	var scene_manager = get_node_or_null("/root/SceneManager")
@@ -29,10 +34,13 @@ func _on_scene_ready(location_id: String) -> void:
 	if scene_root:
 		spawn_into(location_id, scene_root)
 
-## Which creatures appear on this visit: [{creature, n}] (deterministic for location + day)
-func plan_for(location_id: String, day: int = -1) -> Array:
+## Which creatures appear on this visit: [{creature, n}] (deterministic for location + day), less
+## the ones killed here that have not regrown by `now` (game minutes; default the clock)
+func plan_for(location_id: String, day: int = -1, now: int = -1) -> Array:
 	if day < 0:
 		day = _day()
+	if now < 0:
+		now = _now()
 	var rng = RandomNumberGenerator.new()
 	rng.seed = hash("%d|%s|%d" % [world_seed, location_id, day]) & 0x7fffffff
 	var plan: Array = []
@@ -45,9 +53,43 @@ func plan_for(location_id: String, day: int = -1) -> Array:
 				continue
 			var count: Array = entry.get("count", [1, 1])
 			var n = rng.randi_range(int(count[0]), int(count[1]))
-			if rng.randf() < float(entry.get("chance", 1.0)) and n > 0:
+			var roll = rng.randf()  # rolled before the cull so the dice stay the same for every visit
+			n -= culled(location_id, id, now)
+			if roll < float(entry.get("chance", 1.0)) and n > 0:
 				plan.append({"creature": id, "n": n})
 	return plan
+
+## How many of this creature killed here have not yet regrown by `now`
+func culled(location_id: String, creature_id: String, now: int = -1) -> int:
+	if now < 0:
+		now = _now()
+	var regrow = regrow_minutes(creature_id)
+	var n = 0
+	for c in culls.get(location_id, []):
+		if str(c.creature) == creature_id and int(c.at) <= now and now < int(c.at) + regrow:
+			n += 1
+	return n
+
+## creatures.json `regrow_days` in game minutes (a day when unset)
+static func regrow_minutes(creature_id: String) -> int:
+	return int(round(float(Creature.definition(creature_id).get("regrow_days", 1.0)) * 1440.0))
+
+## A creature of this location died (anyone's kill): it stays gone until it regrows
+func note_cull(location_id: String, creature_id: String, at: int = -1) -> void:
+	if location_id == "" or creature_id == "":
+		return
+	if not culls.has(location_id):
+		culls[location_id] = []
+	culls[location_id].append({"creature": creature_id, "at": at if at >= 0 else _now()})
+
+## Forget culls that have regrown by `now`
+func prune(now: int = -1) -> void:
+	if now < 0:
+		now = _now()
+	for loc in culls.keys():
+		culls[loc] = culls[loc].filter(func(c): return now < int(c.at) + regrow_minutes(str(c.creature)))
+		if culls[loc].is_empty():
+			culls.erase(loc)
 
 ## Instance the plan into a scene. Returns the creature nodes added
 func spawn_into(location_id: String, scene_root: Node, day: int = -1) -> Array:
@@ -67,6 +109,8 @@ func spawn_into(location_id: String, scene_root: Node, day: int = -1) -> Array:
 			c.position = spots[i % spots.size()] + Vector2(24 * k, 18 * k)
 			scene_root.add_child(c)
 			c.home = c.position
+			if c.has_signal("died"):
+				c.died.connect(func(_info): note_cull(location_id, str(row.creature)))
 			added.append(c)
 			i += 1
 	last_report = {"location": location_id, "spawned": added.map(func(c): return str(c.creature_id))}
@@ -118,5 +162,29 @@ func _inside_walls(scene_root: Node, center: Vector2, spot: Vector2) -> Vector2:
 	return back if (back - center).dot(dir) > 0.0 else center + dir * WALL_MARGIN
 
 func _day() -> int:
-	var world_state = get_node_or_null("/root/WorldState")
-	return int(world_state.get_game_minutes() / 1440) if world_state and world_state.has_method("get_game_minutes") else 0
+	return int(_now() / 1440)
+
+func _now() -> int:
+	var world_state = get_node_or_null("/root/WorldState") if is_inside_tree() else null
+	return int(world_state.get_game_minutes()) if world_state and world_state.has_method("get_game_minutes") else 0
+
+# =============================================================================
+# SAVE / LOAD (GenericManager carries it inside WorldState's "generics" block)
+# =============================================================================
+
+func save() -> Dictionary:
+	prune()
+	return {"version": 1, "culls": culls.duplicate(true)}
+
+func load_from_dict(data: Dictionary) -> void:
+	culls.clear()
+	var saved = data.get("culls", {})
+	if not saved is Dictionary:
+		return
+	for loc in saved:
+		var rows: Array = []
+		for c in saved[loc] if saved[loc] is Array else []:
+			if c is Dictionary and str(c.get("creature", "")) != "":
+				rows.append({"creature": str(c.creature), "at": int(c.get("at", 0))})
+		if not rows.is_empty():
+			culls[str(loc)] = rows

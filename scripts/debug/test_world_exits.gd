@@ -23,7 +23,7 @@ func _init():
 	print("============================================================\n")
 
 	var ids: Array = registry.get_location_ids()
-	_check("world.json lists 26 locations", ids.size() == 26)
+	_check("world.json lists 28 locations (26 places and two puzzle rooms)", ids.size() == 28)
 	var scenes: Dictionary = {}   # id -> instanced root
 	for id in ids:
 		if not registry.is_built(id):

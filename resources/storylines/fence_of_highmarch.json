@@ -1976,6 +1976,118 @@
           ]
         }
       ]
+    },
+    {
+      "id": "the_ferrymans_mark",
+      "act": 2,
+      "title": "The Ferryman's Mark",
+      "summary": "The stranger has laid Oskar's tally notches night by night against the harbour-master's book: the Hollow's barges come in after curfew as Guild barges for Warehouse Seven, each with the ferryman's O. Who notices, and what they do about the wharf, is theirs to choose.",
+      "location": "capitol_docks",
+      "requires": [
+        "tally_matched_to_register",
+        "!fence_route_burned"
+      ],
+      "resolves_on": [
+        "fence_warehouse_watched",
+        "fence_bales_relabelled"
+      ],
+      "hooks": [
+        {
+          "id": "fence_hollis_and_the_register",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The harbour-master's clerk mentions that someone sat a long while over his after-curfew book, a finger on the column of the ferryman's O.",
+          "options": [
+            {
+              "id": "chalk_them",
+              "label": "Have the western bales in Warehouse Seven chalked as estate salvage tonight",
+              "serves": [
+                "keep_the_guild_clean",
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_bales_relabelled",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "pay_the_clerk",
+              "label": "Find out who it was, and pay the clerk to forget",
+              "serves": [
+                "keep_the_river_moving",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Find out who sat over the harbour register, and keep the western barges off the wharf until you know."
+                }
+              ]
+            },
+            {
+              "id": "trust_the_seal",
+              "label": "Let them read what they like: the book says Guild barge",
+              "serves": [
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "If anyone asks after the western barges, say the register is the Guild's and the Guild's seal is good."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fence_oskar_and_the_matched_tally",
+          "type": "react",
+          "trigger": "on_open",
+          "eligible": [
+            "oskar"
+          ],
+          "situation": "If the stranger has laid your notches beside the Capitol's book, your O stands beside every Hollow barge in it, and anyone who reads it can find your family.",
+          "options": [
+            {
+              "id": "who_else",
+              "label": "Ask the stranger who else has seen the register beside your sticks",
+              "serves": [
+                "keep_my_family"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "If the stranger has matched your tally to the Capitol register, ask who else has seen the two side by side."
+                }
+              ]
+            },
+            {
+              "id": "to_the_rangers",
+              "label": "Tell them to take it to the rangers, and leave your name out",
+              "serves": [
+                "avenge_piet",
+                "give_the_tally"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "If the stranger has matched your tally to the Capitol register, tell them to take it to the rangers, and keep your name out of it."
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "endings": [

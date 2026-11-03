@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3]
+[gd_scene load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
 [ext_resource type="Script" path="res://scripts/world/world_obstacle.gd" id="2_world_obstacle"]
@@ -9,6 +9,9 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="7_debug_interaction_panel"]
 [ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="8_debug_console"]
 [ext_resource type="Script" path="res://scripts/world/drawing_urn.gd" id="9_drawing_urn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_urn_tiles"]
+size = Vector2(44, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1024x40"]
 size = Vector2(1024, 40)
@@ -822,6 +825,47 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 14
 text = "[E] Look at the Drawn Tile"
+horizontal_alignment = 1
+
+[node name="UrnTiles" type="Area2D" parent="Interactables"]
+z_index = 6
+position = Vector2(110, -290)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("4_story_item")
+interaction_name = "Look at the urn's tiles"
+flag_to_set = ""
+requires_flag = "tn_drawing"
+puzzle_id = "weigh_the_tiles"
+discovery_text = "[b]The urn's tiles[/b]
+
+Since the drawing the urn's tiles lie poured out on the altar cloth, to be counted back in before the cart comes: the whole village in small slabs of grey iron, Bjorn's hammer and pine on every back.
+
+Among them is a second ELENA. Its letters are square and shallow, cut once and clean, like every other name on the cloth."
+reexamine_text = "The village's tiles on the altar cloth, and among them a second ELENA, cut once and clean."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/UrnTiles"]
+shape = SubResource("RectangleShape2D_urn_tiles")
+
+[node name="Visual" type="ColorRect" parent="Interactables/UrnTiles"]
+offset_left = -20.0
+offset_top = -12.0
+offset_right = 20.0
+offset_bottom = 12.0
+color = Color(0.5, 0.5, 0.52, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Interactables/UrnTiles"]
+z_index = 10
+visible = false
+offset_left = -150.0
+offset_top = -44.0
+offset_right = 150.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Look at the urn's tiles"
 horizontal_alignment = 1
 
 [node name="Exit" type="Area2D" parent="."]

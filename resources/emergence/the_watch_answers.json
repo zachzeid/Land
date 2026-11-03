@@ -1,10 +1,13 @@
 {
   "id": "the_watch_answers",
   "title": "The Watch Answers",
-  "summary": "The player hurt someone inside Thornhaven, where Aldric's watch keeps the peace. Whoever of the watch knows it answers by their own soul: bring the stranger in, warn them, look away, or take their side.",
+  "summary": "The player hurt or killed someone inside Thornhaven, where Aldric's watch keeps the peace. Whoever of the watch knows it answers by their own soul: bring the stranger in, warn them, look away, or take their side.",
   "trigger": {
     "event": {
-      "kind": "harm",
+      "kind": [
+        "harm",
+        "kill"
+      ],
       "location": [
         "thornhaven_town_square",
         "thornhaven_gregor_shop",

@@ -79,6 +79,8 @@ var archetype_errors: Dictionary = {}  # file -> Array of errors
 var minor_archetypes: Dictionary = {}  # archetype id -> true: header `minor: true` (children are never combat targets)
 ## Creatures by location (docs/PLAYER_SYSTEMS.md §3): the world's other population, spawned per scene
 var creature_spawner: Node = null
+## The spawner's save (culls: who was killed where, and when) while there is no spawner to hold it
+var creature_state: Dictionary = {}
 var name_pools: Dictionary = {}      # region -> {"given": [], "family": []}
 var population: Array = []           # [{location, archetype, count, hours}]
 var instances: Dictionary = {}       # id -> GenericInstance
@@ -112,6 +114,7 @@ func _start_creature_spawner() -> void:
 		return
 	creature_spawner = CreatureSpawner.new()
 	creature_spawner.name = "CreatureSpawner"
+	creature_spawner.load_from_dict(creature_state)
 	add_child(creature_spawner)
 
 ## Fresh content + either the saved state (WorldState.generics_state) or a new population
@@ -1015,7 +1018,10 @@ func save() -> Dictionary:
 	var list: Array = []
 	for id in instance_order:
 		list.append(instances[id].to_dict())
-	return {"version": 1, "world_seed": world_seed, "instances": list, "relationships": ledger.save()}
+	if creature_spawner != null:
+		creature_state = creature_spawner.save()
+	return {"version": 1, "world_seed": world_seed, "instances": list, "relationships": ledger.save(),
+		"creatures": creature_state.duplicate(true)}
 
 ## Restore instances (layers, tiers, history, soul texts) and the ledger, then re-register every
 ## name and soul. Population entries added since the save are created
@@ -1025,6 +1031,9 @@ func load_from_dict(data: Dictionary) -> void:
 	instance_order.clear()
 	world_seed = int(data.get("world_seed", world_seed))
 	ledger.load_from_dict(data.get("relationships", {}))
+	creature_state = data.get("creatures", {}) if data.get("creatures") is Dictionary else {}
+	if creature_spawner != null:
+		creature_spawner.load_from_dict(creature_state)
 	for d in data.get("instances", []):
 		if not d is Dictionary:
 			continue

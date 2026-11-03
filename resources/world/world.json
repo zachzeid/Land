@@ -307,6 +307,24 @@
       "scene": "res://scenes/interiors/the_pit.tscn",
       "built": true,
       "travel_point": true
+    },
+    {
+      "id": "old_workings",
+      "name": "The Old Workings",
+      "region": "eastern_march",
+      "area": "Greystone",
+      "kind": "interior",
+      "scene": "res://scenes/puzzles/old_workings.tscn",
+      "built": true
+    },
+    {
+      "id": "abbey_undercroft",
+      "name": "The Abbey Undercroft",
+      "region": "eastern_march",
+      "area": "Brackenmoor",
+      "kind": "interior",
+      "scene": "res://scenes/puzzles/abbey_undercroft.tscn",
+      "built": true
     }
   ],
   "routes": [
@@ -570,6 +588,33 @@
         "horse"
       ],
       "note": "The far half of the ridge trail, down to Greystone's back road. Dagna's seal stands between the Pit and her galleries."
+    },
+    {
+      "a": "greystone_mines",
+      "b": "old_workings",
+      "minutes": 15,
+      "modes": [
+        "foot"
+      ],
+      "note": "Up the old stair from the hillside above the pithead into the workings worked out before Dagna's time."
+    },
+    {
+      "a": "old_workings",
+      "b": "the_pit",
+      "minutes": 285,
+      "modes": [
+        "foot"
+      ],
+      "note": "Down the old winze or the old adit to the old fall, and through it into the Pit's back-seam: a way the Hollow does not watch, open only to one who has found it (old_workings_way_found). As slow as the ridge trail, so it shortens nobody's road."
+    },
+    {
+      "a": "brackenmoor_abbey",
+      "b": "abbey_undercroft",
+      "minutes": 2,
+      "modes": [
+        "foot"
+      ],
+      "note": "The stair down from the archive to the undercroft."
     }
   ],
   "npcs": [
@@ -789,6 +834,13 @@
   },
   "calendar": {
     "note": "World fixed points. The engine sets each flag true when the game clock reaches it. A new game starts at start.",
+    "seasons": {
+      "note": "The game opens in autumn (the Tithe is an autumn rite). It lasts until the season_end point, then the seasons turn in order, each length_days long. Herbs grow only in their season (scripts/world/seasons.gd, resources/crafting/ingredients.json season)",
+      "first": "autumn",
+      "first_ends": "season_end",
+      "order": ["autumn", "winter", "spring", "summer"],
+      "length_days": 91
+    },
     "start": {
       "day": 1,
       "hour": 20,

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dz0yl5o1r4xti"]
+[gd_scene load_steps=17 format=3 uid="uid://dz0yl5o1r4xti"]
 
 [ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
 [ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="2_scene_trigger"]
@@ -9,6 +9,9 @@
 [ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/blacksmith_workbench.png" id="8_workbench"]
 [ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/crates_barrels.png" id="9_crates"]
 [ext_resource type="Script" path="res://scripts/world/story_item.gd" id="10_story_item"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_scale"]
+size = Vector2(44, 34)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
 size = Vector2(1024, 40)
@@ -235,6 +238,44 @@ offset_top = -4.0
 offset_right = 20.0
 offset_bottom = 4.0
 color = Color(0.4, 0.28, 0.16, 1)
+
+[node name="BjornsScale" type="Area2D" parent="Furniture"]
+z_index = 6
+position = Vector2(40, -150)
+script = ExtResource("10_story_item")
+interaction_name = "Look at Bjorn's scale"
+flag_to_set = ""
+puzzle_id = "weigh_the_tiles"
+discovery_text = "[b]Bjorn's scale[/b]
+
+A brass beam scale by the anvil, with a nest of iron weights down to the quarter-ounce. Set a tile on one pan and the weights on the other, and the beam tells you what the tile weighs.
+
+Every tile poured from the urn brings the beam level at two ounces and a half. Lay the two ELENA tiles one to each pan, and the beam does not hang level."
+reexamine_text = "Bjorn's beam scale. Every tile from the urn weighs two ounces and a half; the two ELENA tiles do not balance each other."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/BjornsScale"]
+shape = SubResource("RectangleShape2D_scale")
+
+[node name="Visual" type="ColorRect" parent="Furniture/BjornsScale"]
+offset_left = -18.0
+offset_top = -12.0
+offset_right = 18.0
+offset_bottom = 12.0
+color = Color(0.72, 0.6, 0.3, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Furniture/BjornsScale"]
+z_index = 10
+visible = false
+offset_left = -150.0
+offset_top = -44.0
+offset_right = 150.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Look at Bjorn's scale"
+horizontal_alignment = 1
 
 [node name="Blacksmith" parent="." groups=["npcs"] instance=ExtResource("4_blacksmith")]
 position = Vector2(-100, -50)

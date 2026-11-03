@@ -2,12 +2,15 @@
 """
 ChromaDB CLI wrapper - Allows Godot to interact with ChromaDB via command-line calls
 Usage: python3 chroma_cli.py <command> [args...]
+       python3 chroma_cli.py serve   (one command per stdin line; used by ChromaClient)
 """
 
 import os
+import io
 import sys
 import json
 import base64
+import contextlib
 import chromadb
 from chromadb.config import Settings
 
@@ -176,63 +179,101 @@ def get_count(collection_name):
     except Exception as e:
         print(json.dumps({"error": str(e), "count": 0}))
 
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
+def dispatch(argv):
+    """Run one command (argv = [command, args...]); prints one JSON line, returns the exit code"""
+    if len(argv) < 1:
         print(json.dumps({"error": "No command specified"}))
-        sys.exit(1)
-    
-    command = sys.argv[1]
-    
+        return 1
+    command = argv[0]
+    sys_argv = ["chroma_cli.py"] + list(argv)  # same indexes as the command line
+
     try:
         if command == "create_collection":
-            create_collection(sys.argv[2])
+            create_collection(sys_argv[2])
         
         elif command == "add_memory":
-            collection_name = sys.argv[2]
-            memory_id = sys.argv[3]
-            document_b64 = sys.argv[4]
-            metadata_b64 = sys.argv[5] if len(sys.argv) > 5 else ""
+            collection_name = sys_argv[2]
+            memory_id = sys_argv[3]
+            document_b64 = sys_argv[4]
+            metadata_b64 = sys_argv[5] if len(sys_argv) > 5 else ""
             add_memory(collection_name, memory_id, document_b64, metadata_b64)
         
         elif command == "query":
-            collection_name = sys.argv[2]
-            query_text = sys.argv[3]
+            collection_name = sys_argv[2]
+            query_text = sys_argv[3]
             if query_text.startswith("b64:"):  # ChromaClient encodes queries: they carry player speech
                 query_text = base64.b64decode(query_text[4:]).decode('utf-8')
-            n_results = int(sys.argv[4]) if len(sys.argv) > 4 else 5
-            min_importance = int(sys.argv[5]) if len(sys.argv) > 5 and sys.argv[5] != "-1" else None
-            memory_tier = int(sys.argv[6]) if len(sys.argv) > 6 else None
+            n_results = int(sys_argv[4]) if len(sys_argv) > 4 else 5
+            min_importance = int(sys_argv[5]) if len(sys_argv) > 5 and sys_argv[5] != "-1" else None
+            memory_tier = int(sys_argv[6]) if len(sys_argv) > 6 else None
             query_memories(collection_name, query_text, n_results, min_importance, memory_tier)
         
         elif command == "get_by_id":
-            collection_name = sys.argv[2]
-            memory_id = sys.argv[3]
+            collection_name = sys_argv[2]
+            memory_id = sys_argv[3]
             get_by_id(collection_name, memory_id)
 
         elif command == "delete_memory":
-            delete_memory(sys.argv[2], sys.argv[3])
+            delete_memory(sys_argv[2], sys_argv[3])
 
         elif command == "update_metadata":
-            update_metadata(sys.argv[2], sys.argv[3], sys.argv[4])
+            update_metadata(sys_argv[2], sys_argv[3], sys_argv[4])
 
         elif command == "get_where":
-            get_where(sys.argv[2], sys.argv[3], int(sys.argv[4]) if len(sys.argv) > 4 else 10)
+            get_where(sys_argv[2], sys_argv[3], int(sys_argv[4]) if len(sys_argv) > 4 else 10)
 
         elif command == "delete_collection":
-            collection_name = sys.argv[2]
+            collection_name = sys_argv[2]
             delete_collection(collection_name)
 
         elif command == "list_collections":
             list_collections()
 
         elif command == "get_count":
-            collection_name = sys.argv[2]
+            collection_name = sys_argv[2]
             get_count(collection_name)
 
         else:
             print(json.dumps({"error": f"Unknown command: {command}"}))
-            sys.exit(1)
+            return 1
     
     except Exception as e:
         print(json.dumps({"error": str(e)}))
-        sys.exit(1)
+        return 1
+    return 0
+
+def serve():
+    """Long-lived mode for ChromaClient: one JSON array of argv per stdin line, one reply per line
+    {"code": exit code, "out": the command's JSON line}. Pays the chromadb import and the embedding
+    model load once per game instead of once per call. Exits when stdin closes (the game quit)."""
+    reply_to = sys.stdout
+    devnull = os.open(os.devnull, os.O_WRONLY)
+    os.dup2(devnull, 2)  # nobody reads our stderr: a full pipe would block us
+    sys.stdout = sys.stderr  # stray prints (library warnings) never corrupt a reply
+    stdin = io.TextIOWrapper(sys.stdin.buffer, encoding="utf-8")
+    while True:
+        line = stdin.readline()
+        if not line:
+            return
+        line = line.strip()
+        if not line:
+            continue
+        buf = io.StringIO()
+        try:
+            argv = json.loads(line)
+            if not isinstance(argv, list):
+                raise ValueError("request must be a JSON array")
+            with contextlib.redirect_stdout(buf):
+                code = dispatch([str(a) for a in argv])
+        except Exception as e:
+            buf.write(json.dumps({"error": str(e)}) + "\n")
+            code = 1
+        lines = [l for l in buf.getvalue().splitlines() if l.strip()]
+        reply_to.write(json.dumps({"code": code, "out": lines[-1] if lines else ""}) + "\n")
+        reply_to.flush()
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == "serve":
+        serve()
+        sys.exit(0)
+    sys.exit(dispatch(sys.argv[1:]))

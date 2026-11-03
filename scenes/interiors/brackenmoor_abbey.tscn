@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=20 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
 [ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/shop_shelves.png" id="2_shop_shelves"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="5_dialogue_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="6_debug_interaction_panel"]
 [ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="7_debug_console"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="8_scene_trigger"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1536x40"]
 size = Vector2(1536, 40)
@@ -37,6 +38,9 @@ size = Vector2(80, 70)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_140x60"]
 size = Vector2(140, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_100x50"]
+size = Vector2(100, 50)
 
 [node name="BrackenmoorAbbey" type="Node2D"]
 
@@ -259,6 +263,7 @@ texture = ExtResource("2_shop_shelves")
 shape = SubResource("RectangleShape2D_120x60")
 
 [node name="Desk11" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(180, -420)
 script = ExtResource("1_world_solid")
 
@@ -273,6 +278,7 @@ offset_bottom = 25.0
 color = Color(0.45, 0.33, 0.2, 1)
 
 [node name="Desk12" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(360, -420)
 script = ExtResource("1_world_solid")
 
@@ -287,6 +293,7 @@ offset_bottom = 25.0
 color = Color(0.45, 0.33, 0.2, 1)
 
 [node name="Desk13" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(540, -420)
 script = ExtResource("1_world_solid")
 
@@ -301,6 +308,7 @@ offset_bottom = 25.0
 color = Color(0.45, 0.33, 0.2, 1)
 
 [node name="Desk21" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(180, -200)
 script = ExtResource("1_world_solid")
 
@@ -315,6 +323,7 @@ offset_bottom = 25.0
 color = Color(0.45, 0.33, 0.2, 1)
 
 [node name="Desk22" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(360, -200)
 script = ExtResource("1_world_solid")
 
@@ -329,6 +338,7 @@ offset_bottom = 25.0
 color = Color(0.45, 0.33, 0.2, 1)
 
 [node name="Desk23" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(540, -200)
 script = ExtResource("1_world_solid")
 
@@ -343,6 +353,7 @@ offset_bottom = 25.0
 color = Color(0.45, 0.33, 0.2, 1)
 
 [node name="Desk31" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(180, 20)
 script = ExtResource("1_world_solid")
 
@@ -357,6 +368,7 @@ offset_bottom = 25.0
 color = Color(0.45, 0.33, 0.2, 1)
 
 [node name="Desk32" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(360, 20)
 script = ExtResource("1_world_solid")
 
@@ -371,6 +383,7 @@ offset_bottom = 25.0
 color = Color(0.45, 0.33, 0.2, 1)
 
 [node name="Desk33" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(540, 20)
 script = ExtResource("1_world_solid")
 
@@ -385,6 +398,7 @@ offset_bottom = 25.0
 color = Color(0.45, 0.33, 0.2, 1)
 
 [node name="Lectern" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(360, 280)
 script = ExtResource("1_world_solid")
 
@@ -412,6 +426,7 @@ text = "Lectern"
 horizontal_alignment = 1
 
 [node name="Altar" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(0, -660)
 script = ExtResource("1_world_solid")
 
@@ -439,6 +454,7 @@ text = "Altar of the Dawn"
 horizontal_alignment = 1
 
 [node name="Pillar1" type="StaticBody2D" parent="Furniture"]
+collision_layer = 4
 position = Vector2(-40, -200)
 script = ExtResource("1_world_solid")
 
@@ -453,6 +469,7 @@ offset_bottom = 20.0
 color = Color(0.42, 0.42, 0.44, 1)
 
 [node name="Pillar2" type="StaticBody2D" parent="Furniture"]
+collision_layer = 4
 position = Vector2(-40, 200)
 script = ExtResource("1_world_solid")
 
@@ -467,6 +484,7 @@ offset_bottom = 20.0
 color = Color(0.42, 0.42, 0.44, 1)
 
 [node name="InfirmaryCot" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(620, 380)
 script = ExtResource("1_world_solid")
 
@@ -606,6 +624,93 @@ theme_override_font_sizes/font_size = 16
 text = "[E] Look at the copy desk"
 horizontal_alignment = 1
 
+[node name="AnselmShelfIndex" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(-410, -110)
+script = ExtResource("3_story_item")
+interaction_name = "Read Anselm's shelf index"
+flag_to_set = ""
+puzzle_id = "abbey_receipt"
+discovery_text = "[b]Brother Anselm's index[/b]
+
+A quire bound in slate-grey boards, chained to the end of the shelves, in a small square hand: every book the abbey keeps, by shelf and place.
+
+Shelf I: psalters and the offices of the hours.
+Shelf II: herbals. II.4, the herbal under copy; fever-root at leaf thirty-one.
+Shelf III: the Grey Fever, one book to a year, from III.1, the first year, to III.7, the last. In each, the receipts tried that year are bound in at the twelfth leaf.
+Shelf IV: the chronicles of the house.
+The saints' days and the other dull books are kept below, in the undercroft."
+reexamine_text = "Anselm's index: shelf, book and leaf for everything the abbey keeps. The fever books on shelf III, a year to a book, their receipts at the twelfth leaf."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/AnselmShelfIndex"]
+shape = SubResource("RectangleShape2D_50x40")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/AnselmShelfIndex"]
+offset_left = -18.0
+offset_top = -14.0
+offset_right = 18.0
+offset_bottom = 14.0
+color = Color(0.42, 0.44, 0.46, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/AnselmShelfIndex"]
+z_index = 10
+visible = false
+offset_left = -150.0
+offset_top = -48.0
+offset_right = 150.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Read Anselm's shelf index"
+horizontal_alignment = 1
+
+[node name="UndercroftStair" type="Area2D" parent="."]
+z_index = 6
+position = Vector2(-410, 470)
+script = ExtResource("8_scene_trigger")
+target_location = "abbey_undercroft"
+target_spawn_point = "default"
+prompt_text = "Go down to the undercroft"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UndercroftStair"]
+shape = SubResource("RectangleShape2D_100x50")
+
+[node name="Visual" type="ColorRect" parent="UndercroftStair"]
+offset_left = -50.0
+offset_top = -25.0
+offset_right = 50.0
+offset_bottom = 25.0
+color = Color(0.16, 0.14, 0.12, 1)
+
+[node name="Sign" type="Label" parent="UndercroftStair"]
+z_index = 5
+offset_left = -150.0
+offset_top = 28.0
+offset_right = 150.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 13
+text = "Stair down to the undercroft"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="UndercroftStair"]
+z_index = 10
+visible = false
+offset_left = -150.0
+offset_top = -48.0
+offset_right = 150.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Go down to the undercroft"
+horizontal_alignment = 1
+
 [node name="AbbeyDoor" type="Area2D" parent="."]
 z_index = 6
 position = Vector2(0, 700)
@@ -657,6 +762,9 @@ position = Vector2(0, 560)
 
 [node name="from_travel" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(0, 600)
+
+[node name="from_undercroft" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-410, 420)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.7, 0.7)

@@ -7,6 +7,7 @@ extends CanvasLayer
 
 const UI = preload("res://scripts/ui/player_ui.gd")
 const SkillsPage = preload("res://scripts/ui/skills_page.gd")
+const Camp = preload("res://scripts/world/camp.gd")
 ## Equipment slots (spec §6) and the slot an item kind goes to when its definition names none
 const SLOTS = ["main_hand", "off_hand", "body", "head", "tool"]  # Inventory's equipment slots
 const SLOT_NAMES = {"main_hand": "Main hand", "off_hand": "Off hand", "body": "Body", "head": "Head", "tool": "Tool"}
@@ -146,6 +147,8 @@ func refresh() -> void:
 				row.add_child(UI.button("Unequip", unequip.bind(slot), 90))
 			else:
 				row.add_child(UI.button("Equip", equip.bind(item, slot), 90))
+		if "camp" in inv.get_item_def(str(item.get("id", ""))).get("tags", []):
+			row.add_child(UI.button("Make camp", make_camp, 110))
 		_items.add_child(row)
 
 ## "Iron knife ×2 · fine (72) · 18/40 · made by Bjorn · stolen"
@@ -209,6 +212,14 @@ func unequip(slot: String) -> bool:
 	var ok = inv.unequip(slot) if inv.has_method("unequip") else inv.equip("", slot)
 	refresh()
 	return bool(ok)
+
+## Lay out the bedroll by a campfire where the player stands (camp.gd): wake here after a death
+func make_camp() -> Dictionary:
+	var player = get_tree().get_first_node_in_group("player") if is_inside_tree() else null
+	var r: Dictionary = Camp.make_camp("", player.global_position if player is Node2D else Vector2.ZERO)
+	_message.text = "You make camp. You will wake here." if r.ok else str(r.reason).capitalize() + "."
+	refresh()
+	return r
 
 func get_coin_text() -> String:
 	return _coin.text

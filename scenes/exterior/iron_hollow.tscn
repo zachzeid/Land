@@ -68,6 +68,7 @@ generation_seed = 2000
 analyze_after_generation = true
 
 [node name="CommandTent" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(0, -80)
 script = ExtResource("7_world_solid")
@@ -109,6 +110,7 @@ generation_prompt = "isometric 2D game building, 3/4 view showing front and righ
 asset_type = "building"
 
 [node name="BarracksTent1" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(-140, 40)
 script = ExtResource("7_world_solid")
@@ -130,6 +132,7 @@ generation_prompt = "isometric 2D game tent, 3/4 view, small bandit sleeping ten
 asset_type = "building"
 
 [node name="BarracksTent2" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(140, 40)
 script = ExtResource("7_world_solid")
@@ -232,6 +235,7 @@ text = "[E] Look at the Cart"
 horizontal_alignment = 1
 
 [node name="Campfire" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(0, 48)
 script = ExtResource("7_world_solid")
 
@@ -259,6 +263,7 @@ generation_prompt = "isometric 2D game prop, 3/4 view from above, large campfire
 asset_type = "prop"
 
 [node name="Tree1" type="StaticBody2D" parent="."]
+collision_layer = 8
 z_index = 30
 position = Vector2(-220, -180)
 script = ExtResource("8_world_obstacle")
@@ -274,6 +279,7 @@ offset_bottom = 48.0
 color = Color(0.15, 0.30, 0.12, 1)
 
 [node name="Tree2" type="StaticBody2D" parent="."]
+collision_layer = 8
 z_index = 30
 position = Vector2(220, -180)
 script = ExtResource("8_world_obstacle")
@@ -289,6 +295,7 @@ offset_bottom = 48.0
 color = Color(0.12, 0.28, 0.10, 1)
 
 [node name="Tree3" type="StaticBody2D" parent="."]
+collision_layer = 8
 z_index = 30
 position = Vector2(-240, 120)
 script = ExtResource("8_world_obstacle")
@@ -304,6 +311,7 @@ offset_bottom = 48.0
 color = Color(0.14, 0.32, 0.11, 1)
 
 [node name="Tree4" type="StaticBody2D" parent="."]
+collision_layer = 8
 z_index = 30
 position = Vector2(240, 120)
 script = ExtResource("8_world_obstacle")
@@ -321,6 +329,7 @@ color = Color(0.16, 0.35, 0.13, 1)
 [node name="CampBoundary" type="Node2D" parent="."]
 
 [node name="North" type="StaticBody2D" parent="CampBoundary"]
+collision_layer = 4
 position = Vector2(0, -290)
 script = ExtResource("7_world_solid")
 
@@ -328,6 +337,7 @@ script = ExtResource("7_world_solid")
 shape = SubResource("RectangleShape2D_boundary_h")
 
 [node name="South" type="StaticBody2D" parent="CampBoundary"]
+collision_layer = 4
 position = Vector2(0, 290)
 script = ExtResource("7_world_solid")
 
@@ -335,6 +345,7 @@ script = ExtResource("7_world_solid")
 shape = SubResource("RectangleShape2D_boundary_h")
 
 [node name="West" type="StaticBody2D" parent="CampBoundary"]
+collision_layer = 4
 position = Vector2(-290, 0)
 script = ExtResource("7_world_solid")
 
@@ -342,6 +353,7 @@ script = ExtResource("7_world_solid")
 shape = SubResource("RectangleShape2D_boundary_v")
 
 [node name="East" type="StaticBody2D" parent="CampBoundary"]
+collision_layer = 4
 position = Vector2(290, 0)
 script = ExtResource("7_world_solid")
 
@@ -371,6 +383,24 @@ theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 16
 text = "[E] Leave Camp"
 horizontal_alignment = 1
+
+[node name="CreatureSpawns" type="Node2D" parent="."]
+editor_description = "The camp edge where the ridge stones are, out of the clearing (scripts/combat/creature_spawner.gd; checked against the walls by scripts/debug/test_creature_spawns.gd)"
+
+[node name="WestStones" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(-230, -60)
+
+[node name="EastStones" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(200, -60)
+
+[node name="NorthEastRidge" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(150, -235)
+
+[node name="NorthWestRidge" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(-130, -235)
+
+[node name="SouthEastRidge" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(210, 215)
 
 [node name="SpawnPoints" type="Node2D" parent="."]
 

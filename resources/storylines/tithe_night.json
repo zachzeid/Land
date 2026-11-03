@@ -7220,6 +7220,145 @@
           ]
         }
       ]
+    },
+    {
+      "id": "the_back_seam",
+      "act": 3,
+      "title": "The Back Seam",
+      "summary": "The stranger has found a way into the Pit from Greystone's old workings, down past Dagna's boards to the old fall at the back of the seam, a way no Hollow man watches. It opens a road to the taken before the cart comes; whether to take it, and who goes, stays with the stranger and the people who choose to help or to stand in the way.",
+      "location": "the_pit",
+      "requires": [
+        "old_workings_way_found",
+        "tn_taken_alive_known",
+        "!tn_collection_night"
+      ],
+      "resolves_on": [
+        "tn_freed_the_pit"
+      ],
+      "hooks": [
+        {
+          "id": "davin_the_back_way",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "There is a way into the Pit from Greystone's old workings, down to the old fall at the back of the seam, that no Hollow man watches. You know where the chains run from there.",
+          "options": [
+            {
+              "id": "walk_it_with_them",
+              "label": "Go down through the old workings with the stranger and show them the seam",
+              "serves": [
+                "save_corin_and_willa",
+                "atone_for_running"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "If the stranger goes down through the old workings, go with them and show them where Corin and Willa are chained."
+                }
+              ]
+            },
+            {
+              "id": "tell_it_from_above",
+              "label": "Tell them how the seam runs from the fall, and stay above",
+              "serves": [
+                "never_go_back",
+                "guard_the_way"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Tell the stranger how the seam runs from the old fall to the chains, but do not go back down yourself."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "dagna_and_the_old_workings",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "Someone has been in your old workings above the seventh level, and the way down past your boards stands open. Beyond it are the picks you have told yourself were water.",
+          "options": [
+            {
+              "id": "timber_and_rope",
+              "label": "Send timber and rope up to the old workings, and ask nothing",
+              "serves": [
+                "behind_the_seal",
+                "honest_iron_for_bjorn"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "If the stranger goes down through the old workings, send timber and rope up to shore the fall, and ask nothing."
+                }
+              ]
+            },
+            {
+              "id": "greystones_ground",
+              "label": "Say the old workings are Greystone's ground, and shut",
+              "serves": [
+                "keep_the_deep_vein_shut",
+                "keep_greystone_working"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger the old workings are Greystone's ground, and nobody goes below the seventh level while you are foreman."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "varn_quiet_at_the_back",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The diggers at the back of the seam have gone quiet, and quiet diggers are thinking about something.",
+          "options": [
+            {
+              "id": "watch_the_fall",
+              "label": "Put a man at the back of the seam by the old fall",
+              "serves": [
+                "hold_the_pit"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Put a man at the back of the seam by the old fall, and tell him to sleep there."
+                }
+              ]
+            },
+            {
+              "id": "count_the_chains",
+              "label": "Count the chains twice a shift and leave the fall be: nobody comes through rock",
+              "serves": [
+                "be_feared",
+                "a_perfect_collection"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Count the chains twice a shift. Nobody comes through rock."
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "endings": [

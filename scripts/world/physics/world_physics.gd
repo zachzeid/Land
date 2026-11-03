@@ -12,15 +12,19 @@ extends Node
 ## - weight: plates press under the resting weight inside them; ropes hold weights until cut
 ## - metal: heats in fire and lights tinder while hot, cools, rusts while wet, sinks; lodestones
 ##   pull loose iron. Light: lamps and fires reveal, shadows and night hide (darkness_at)
-## Deeds go through PlayerEvents.record, never NPC state: a thing with an owner_key burnt by a fire
-## the player lit is a `fire` deed about the owner, witnessed by whoever saw the player light it
-## (Witnesses.in_sight; nobody: no witnesses, a rumour at most). Putting out a fire on someone's
-## thing that the player did not light is `help`. Physics never sets story flags
+## Deeds go through PlayerEvents.record, never NPC state: when a fire the player lit catches a thing
+## with an owner_key, that is a `fire` deed about the owner then (one per owner per fire), witnessed by
+## whoever saw the player light it (Witnesses.in_sight; nobody: no witnesses, a rumour at most). How it
+## ended for that owner (doused | burned) is kept on the fire and signalled (fire_outcome), never a
+## second deed. Putting out a fire on someone's thing that the player did not light is `help`.
+## Physics never sets story flags
 
 signal fire_started(node: Node, by: String)
 signal burned(node: Node, owner_key: String)
 signal doused(node: Node, by: String)
 signal weather_changed(state: Dictionary)
+## How a player's fire ended for one owner: "doused" (put out before it burned through) or "burned"
+signal fire_outcome(fire_id: String, owner_key: String, outcome: String, event_id: String)
 
 const Witnesses = preload("res://scripts/world/witnesses.gd")
 
@@ -52,6 +56,7 @@ const CHILD_WEIGHT = 35.0
 # Light
 const NIGHT_DARK = 0.85
 const INDOOR_DARK = 0.6
+const GLARE = 0.5                # a watcher in full lamp light sees half as far into the black
 
 const BURNABLE = ["flammable", "rope"]
 
@@ -64,7 +69,7 @@ var region_override: String = ""
 
 var components: Array = []
 var _saved: Dictionary = {}       # physics key -> state, for things not in the tree (and the save)
-var _fires: Dictionary = {}       # fire id -> {by, witnesses, minute, owners_recorded}
+var _fires: Dictionary = {}       # fire id -> {by, witnesses, minute, owners_recorded, deeds: {owner: event id}, outcomes: {owner: doused|burned}}
 var _fire_counter: int = 0
 var _last_weather: String = ""
 
@@ -130,6 +135,8 @@ func douse(node: Node, by: String = "player") -> bool:
 				c.extinguished.emit(by)
 				if by == "player" and c.owner_key != "" and c.lit_by != "player":
 					_record_help(c)
+				if c.owner_key != "":
+					_fire_outcome(c, "doused")
 	if out:
 		doused.emit(c, by)
 	return out
@@ -297,7 +304,8 @@ func step(delta: float) -> void:
 		for src in flames:
 			if src.c == f:
 				continue
-			var g = _heat_from(src.at, src.reach, pos, wind) * HEAT_RATE * delta
+			# Wind bends flames only out of doors; a fire in a room spreads by reach alone
+			var g = _heat_from(src.at, src.reach, pos, wind if src.c.is_outdoors() else Vector2.ZERO) * HEAT_RATE * delta
 			if g > best_gain:
 				best_gain = g
 				best = src.c
@@ -420,6 +428,8 @@ func _catch(f: Node, fire_id: String, by: String) -> void:
 	f.lit_by = by
 	f._show_fire(true)
 	f.ignited.emit(by)
+	if f.owner_key != "":
+		_record_fire(f)
 	fire_started.emit(f, by)
 
 ## Caught from a burning thing (the same fire), hot metal (a fire of whoever heated it) or a flame
@@ -437,7 +447,7 @@ func _burn_out(f: Node) -> void:
 	f.heat = 0.0
 	f.burn_left = 0.0
 	if f.owner_key != "":
-		_record_fire(f)
+		_fire_outcome(f, "burned")
 	burned.emit(f, f.owner_key)
 	# A rope on the same thing parts with it
 	var t = f.thing()
@@ -447,6 +457,8 @@ func _burn_out(f: Node) -> void:
 	f._on_burnt()
 	_saved[f.physics_key()] = f.get_state()
 
+## The player's fire caught someone's thing: a `fire` deed about them now, whether it is put out or
+## burns through (the outcome comes later, _fire_outcome)
 func _record_fire(f: Node) -> void:
 	var info: Dictionary = _fires.get(f.fire_id, {})
 	if str(info.get("by", f.lit_by)) != "player":
@@ -456,11 +468,45 @@ func _record_fire(f: Node) -> void:
 		return   # one deed per owner per fire, however many of their things it took
 	recorded.append(f.owner_key)
 	info["owners_recorded"] = recorded
-	_fires[f.fire_id] = info
 	var pe = get_node_or_null("/root/PlayerEvents")
 	if pe:
-		pe.record("fire", "set fire to %s's %s" % [_name_of(f.owner_key), f.describe()], [f.owner_key],
-			{"witnesses": info.get("witnesses", [])})
+		var deeds: Dictionary = info.get("deeds", {})
+		deeds[f.owner_key] = str(pe.record("fire", "set fire to %s's %s" % [_name_of(f.owner_key), f.describe()], [f.owner_key],
+			{"witnesses": info.get("witnesses", [])}))
+		info["deeds"] = deeds
+	_fires[f.fire_id] = info
+
+## How the player's fire ended for this owner. "burned" is final; "doused" holds until another of
+## their things burns through in the same fire. Kept on the fire and signalled; PlayerEvents gets
+## it through set_outcome when it has one (no second deed)
+func _fire_outcome(f: Node, outcome: String) -> void:
+	var info: Dictionary = _fires.get(f.fire_id, {})
+	if info.is_empty() or str(info.get("by", "")) != "player" or not f.owner_key in info.get("owners_recorded", []):
+		return
+	var outcomes: Dictionary = info.get("outcomes", {})
+	var was = str(outcomes.get(f.owner_key, ""))
+	if was == "burned" or was == outcome:
+		return
+	if outcome == "doused" and _owner_still_burning(f.fire_id, f.owner_key, f):
+		return
+	outcomes[f.owner_key] = outcome
+	info["outcomes"] = outcomes
+	_fires[f.fire_id] = info
+	var event_id = str(info.get("deeds", {}).get(f.owner_key, ""))
+	var pe = get_node_or_null("/root/PlayerEvents")
+	if pe and event_id != "" and pe.has_method("set_outcome"):
+		pe.set_outcome(event_id, outcome)
+	fire_outcome.emit(str(f.fire_id), f.owner_key, outcome, event_id)
+
+func _owner_still_burning(fire_id: String, owner: String, except: Node) -> bool:
+	for c in _live("flammable") + _live("rope"):
+		if c != except and c.burning and str(c.fire_id) == fire_id and c.owner_key == owner:
+			return true
+	return false
+
+## The player's fires: {by, witnesses, minute, owners_recorded, deeds, outcomes} (a copy; {} unknown)
+func get_fire(fire_id: String) -> Dictionary:
+	return _fires.get(fire_id, {}).duplicate(true)
 
 func _record_help(f: Node) -> void:
 	var pe = get_node_or_null("/root/PlayerEvents")
@@ -581,6 +627,11 @@ func darkness_at(at: Vector2, opts: Dictionary = {}) -> float:
 	for s in _live("shadow"):
 		if _same_scene(scene, s) and s.at().distance_to(at) <= s.radius:
 			dark = maxf(dark, s.depth)
+	return clampf(dark * (1.0 - light_at(at, opts)), 0.0, 1.0)
+
+## Light from lit lamps and fires at a point, 0 none .. 1 full (opts.scene_root: only those there)
+func light_at(at: Vector2, opts: Dictionary = {}) -> float:
+	var scene = opts.get("scene_root", null)
 	var light := 0.0
 	for l in _live("lamp"):
 		if l.lit and _same_scene(scene, l):
@@ -588,7 +639,17 @@ func darkness_at(at: Vector2, opts: Dictionary = {}) -> float:
 	for f in _live("flammable") + _live("rope"):
 		if f.burning and _same_scene(scene, f):
 			light = maxf(light, _falloff(f.at().distance_to(at), FIRE_LIGHT))
-	return clampf(dark * (1.0 - light), 0.0, 1.0)
+	return light
+
+## Lamps blind (§5.1 "lamps reveal and blind"): a watcher standing in lamp or fire light sees less of
+## a dark spot beyond it, as eyes used to the flame do. Factor on that watcher's sight (1 .. 1-GLARE):
+## light where they stand times darkness where they look. A spot inside the same light is not dark,
+## so a witness by a lit lamp sees what happens in its light
+func glare_factor(watcher_at: Vector2, at: Vector2, opts: Dictionary = {}) -> float:
+	var glare = light_at(watcher_at, opts)
+	if glare <= 0.0:
+		return 1.0
+	return 1.0 - GLARE * glare * darkness_at(at, opts)
 
 ## How far a watcher's sight reaches into that darkness, as a factor (1 full .. 0.3 near blind)
 func sight_factor(at: Vector2, opts: Dictionary = {}) -> float:

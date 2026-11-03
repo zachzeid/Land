@@ -22,6 +22,17 @@ class FakeStats extends Node:
 		return {"gained": 0.5, "level": lore, "milestone": 0}
 	func get_skill(skill: String) -> float:
 		return lore if skill == "lore" else 0.0
+	# The HUD reads these every frame while this fake stands in for PlayerStats
+	func get_health() -> float:
+		return 100.0
+	func get_max_health() -> float:
+		return 100.0
+	func get_stamina() -> float:
+		return 100.0
+	func get_max_stamina() -> float:
+		return 100.0
+	func get_level() -> int:
+		return 1
 
 class FakePlate extends Node2D:
 	signal pressed(on: bool)

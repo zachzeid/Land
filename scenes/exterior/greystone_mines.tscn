@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3]
+[gd_scene load_steps=26 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
 [ext_resource type="Texture2D" path="res://assets/generated/props/cart.png" id="2_cart"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="6_dialogue_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="7_debug_interaction_panel"]
 [ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="8_debug_console"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="9_scene_trigger"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_220x130"]
 size = Vector2(220, 130)
@@ -53,6 +54,9 @@ size = Vector2(1680, 40)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_40x1200"]
 size = Vector2(40, 1200)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_100x50"]
+size = Vector2(100, 50)
 
 [node name="GreystoneMines" type="Node2D"]
 
@@ -122,6 +126,7 @@ text = "Ore road - south to the Kingsroad"
 horizontal_alignment = 1
 
 [node name="Pithead" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(0, -420)
 script = ExtResource("1_world_solid")
@@ -157,6 +162,7 @@ text = "Pithead"
 horizontal_alignment = 1
 
 [node name="Winch" type="StaticBody2D" parent="."]
+collision_layer = 8
 z_index = 20
 position = Vector2(170, -400)
 script = ExtResource("1_world_solid")
@@ -207,6 +213,7 @@ texture = ExtResource("2_cart")
 shape = SubResource("RectangleShape2D_60x40")
 
 [node name="OreHeap" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(200, 90)
 script = ExtResource("1_world_solid")
 
@@ -234,6 +241,7 @@ text = "Ore heap"
 horizontal_alignment = 1
 
 [node name="SpoilHeap1" type="StaticBody2D" parent="."]
+collision_layer = 4
 position = Vector2(-380, -280)
 script = ExtResource("1_world_solid")
 
@@ -261,6 +269,7 @@ text = "Spoil heap"
 horizontal_alignment = 1
 
 [node name="SpoilHeap2" type="StaticBody2D" parent="."]
+collision_layer = 4
 position = Vector2(-520, -40)
 script = ExtResource("1_world_solid")
 
@@ -275,6 +284,7 @@ offset_bottom = 50.0
 color = Color(0.33, 0.31, 0.29, 1)
 
 [node name="ForemansOffice" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(470, -160)
 script = ExtResource("1_world_solid")
@@ -310,6 +320,7 @@ text = "Foreman's Office"
 horizontal_alignment = 1
 
 [node name="Cottage1" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(-620, 330)
 script = ExtResource("1_world_solid")
@@ -332,6 +343,7 @@ offset_bottom = -23.0
 color = Color(0.28, 0.24, 0.2, 1)
 
 [node name="Cottage2" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(-470, 330)
 script = ExtResource("1_world_solid")
@@ -354,6 +366,7 @@ offset_bottom = -23.0
 color = Color(0.28, 0.24, 0.2, 1)
 
 [node name="Cottage3" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(-320, 330)
 script = ExtResource("1_world_solid")
@@ -376,6 +389,7 @@ offset_bottom = -23.0
 color = Color(0.28, 0.24, 0.2, 1)
 
 [node name="Cottage4" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(-170, 330)
 script = ExtResource("1_world_solid")
@@ -411,6 +425,7 @@ text = "Miners' Row"
 horizontal_alignment = 1
 
 [node name="WashTrough" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(400, 330)
 script = ExtResource("1_world_solid")
 
@@ -594,9 +609,55 @@ theme_override_font_sizes/font_size = 16
 text = "[E] Take the ore road"
 horizontal_alignment = 1
 
+[node name="OldWorkingsStair" type="Area2D" parent="."]
+z_index = 6
+position = Vector2(320, -480)
+script = ExtResource("9_scene_trigger")
+target_location = "old_workings"
+target_spawn_point = "default"
+prompt_text = "Climb into the old workings"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OldWorkingsStair"]
+shape = SubResource("RectangleShape2D_100x50")
+
+[node name="Visual" type="ColorRect" parent="OldWorkingsStair"]
+offset_left = -50.0
+offset_top = -25.0
+offset_right = 50.0
+offset_bottom = 25.0
+color = Color(0.12, 0.11, 0.1, 1)
+
+[node name="Sign" type="Label" parent="OldWorkingsStair"]
+z_index = 5
+offset_left = -150.0
+offset_top = 28.0
+offset_right = 150.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "The old workings, above the seventh level"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="OldWorkingsStair"]
+z_index = 10
+visible = false
+offset_left = -150.0
+offset_top = -54.0
+offset_right = 150.0
+offset_bottom = -30.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Climb into the old workings"
+horizontal_alignment = 1
+
 [node name="Bounds" type="Node2D" parent="."]
 
 [node name="North" type="StaticBody2D" parent="Bounds"]
+collision_layer = 4
 position = Vector2(0, -600)
 script = ExtResource("1_world_solid")
 
@@ -604,6 +665,7 @@ script = ExtResource("1_world_solid")
 shape = SubResource("RectangleShape2D_1680x40")
 
 [node name="South" type="StaticBody2D" parent="Bounds"]
+collision_layer = 4
 position = Vector2(0, 600)
 script = ExtResource("1_world_solid")
 
@@ -611,6 +673,7 @@ script = ExtResource("1_world_solid")
 shape = SubResource("RectangleShape2D_1680x40")
 
 [node name="West" type="StaticBody2D" parent="Bounds"]
+collision_layer = 4
 position = Vector2(-800, 0)
 script = ExtResource("1_world_solid")
 
@@ -618,6 +681,7 @@ script = ExtResource("1_world_solid")
 shape = SubResource("RectangleShape2D_40x1200")
 
 [node name="East" type="StaticBody2D" parent="Bounds"]
+collision_layer = 4
 position = Vector2(800, 0)
 script = ExtResource("1_world_solid")
 
@@ -631,6 +695,23 @@ position = Vector2(0, 420)
 
 [node name="from_travel" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(0, 450)
+
+[node name="from_old_workings" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(320, -400)
+
+[node name="CreatureSpawns" type="Node2D" parent="."]
+
+[node name="RidgeScree" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(-620, -220)
+
+[node name="EastSpoil" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(640, 120)
+
+[node name="BackOfTheRow" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(-300, 200)
+
+[node name="UnderTheHill" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(560, -400)
 
 [node name="Player" parent="." instance=ExtResource("5_player")]
 z_index = 10

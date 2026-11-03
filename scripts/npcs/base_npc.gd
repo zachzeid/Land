@@ -2049,6 +2049,7 @@ signal combat_state_changed(npc_id: String, state: String)
 signal called_for_help(npc_id: String, foe_key: String)
 
 const CombatAIScript = preload("res://scripts/combat/combat_ai.gd")
+const LoadoutsScript = preload("res://scripts/combat/loadouts.gd")
 const BASE_HEALTH = 100.0
 const STAGGER_MS = 800
 const SPARE_MS = 8000              # a yielded person left unhit this long has been let go
@@ -2086,10 +2087,20 @@ func get_resistances() -> Dictionary:
 func is_staggered() -> bool:
 	return Time.get_ticks_msec() < staggered_until_ms
 
-## What Combat resolves hits on this body with (weapon, armour, resistances, poise, health, minor)
+## What Combat resolves hits on this body with (weapon, armour, resistances, poise, health, minor).
+## Weapon and armour: the scene body's own when set, else the loadout (resources/combat/loadouts.json);
+## a minor's are always empty
 func get_combat_profile() -> Dictionary:
-	return {"weapon": combat_weapon, "armour": combat_armour.duplicate(), "resist": get_resistances(), "poise": BASE_POISE,
-		"health": max_health, "skills": {}, "difficulty": 1.0, "minor": CombatAIScript.is_minor(combat_key())}
+	var minor = CombatAIScript.is_minor(combat_key())
+	var kit = combat_loadout(minor)
+	var own = not minor  # a child carries nothing, whatever the body was given
+	return {"weapon": combat_weapon if own and combat_weapon != "fists" else str(kit.weapon),
+		"armour": combat_armour.duplicate() if own and not combat_armour.is_empty() else kit.armour.duplicate(),
+		"resist": get_resistances(), "poise": BASE_POISE, "health": max_health, "skills": {}, "difficulty": 1.0, "minor": minor}
+
+## This person's loadout by roster key (GenericNPC answers by archetype). Minors carry nothing
+func combat_loadout(minor: bool = false) -> Dictionary:
+	return LoadoutsScript.for_npc(combat_key(), minor)
 
 ## Combat.apply_hit_to's entry point. Combat records the harm deed itself, so this one does not
 func take_combat_hit(result: Dictionary, attacker) -> Dictionary:
@@ -2101,15 +2112,16 @@ func on_staggered(seconds: float) -> void:
 
 ## A resolved hit lands: result {damage, type, staggered, killed} from Combat.resolve_hit.
 ## from_combat: it came through Combat, which records the harm deed and closes its own fight record.
-## Returns {health, staggered, dead, state} or {refused, reason} (children, the dead)
+## Returns {health, staggered, dead, state} or {refused, reason} (a child struck by anyone but the
+## player, the dead)
 func take_hit(result: Dictionary, attacker, from_combat: bool = false) -> Dictionary:
 	if not is_alive:
 		return {"refused": true, "reason": "dead"}
 	var key = combat_key()
-	if not CombatAIScript.can_target(key):
+	var foe_key = CombatAIScript.key_of(attacker)
+	if not CombatAIScript.can_target(key, foe_key):
 		return {"refused": true, "reason": "never a target (a child)"}
 	var now = Time.get_ticks_msec()
-	var foe_key = CombatAIScript.key_of(attacker)
 	var by_player = foe_key == CombatAIScript.PLAYER
 	var first = _fight.is_empty()
 	if first:
@@ -2202,8 +2214,10 @@ func _set_combat_state(d: Dictionary, foe) -> void:
 	combat_side = str(d.get("side", ""))
 	combat_foe = foe
 	combat_state_changed.emit(npc_id, combat_state)
-	if combat_state == "call_for_help":
+	if combat_state == "call_for_help" or bool(d.get("cry", false)):
 		called_for_help.emit(npc_id, CombatAIScript.key_of(foe))
+	if bool(d.get("cry", false)) and foe is Node:
+		CombatAIScript.raise_cry(self, foe)  # a child's scream: grown-ups in earshot decide whether to come
 
 ## Combat records no kill and calls no die(): both are this body's (a killing blow through Combat ends
 ## Combat's fight record with reason "killed" itself)

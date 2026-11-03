@@ -11,6 +11,8 @@ against resources/items/*.json when that exists (agent 2), else only for shape. 
 import json
 import re
 
+SEASONS = {"any", "spring", "summer", "autumn", "winter"}
+
 SKILLS = {"blades", "blunt", "bows", "defence", "athletics", "stealth", "smithing", "woodcraft", "herbcraft",
           "mining", "speech", "lore"}
 GATHER_SKILLS = {"woodcraft", "mining", "herbcraft", ""}
@@ -220,6 +222,11 @@ def validate(ctx):
         for f in n.get("requires_any_flag", []):
             if f not in flags:
                 err(w, f"gate flag '{f}' is not a known flag")
+        if "season" in n:
+            season = n["season"]
+            listed = season if isinstance(season, list) else [season]
+            if not listed or any(x not in SEASONS for x in listed):
+                err(w, f"season must be one of {sorted(SEASONS)} or a list of them")
         _forbidden(ctx, w, n)
     nodes = ndata.get("nodes", [])
     if not any(n.get("item") == "iron_ore" and n.get("location") == "greystone_mines" for n in nodes):
@@ -229,3 +236,23 @@ def validate(ctx):
         err(where, "the deep-vein white salt must exist and be story-gated (requires_any_flag)")
     if not any(n.get("item") == "fever_root" and n.get("location") == "forest_path" for n in nodes):
         err(where, "fever-root grows in the Darkwood (forest_path)")
+    # The Grey Fever cure is made on the story's clock, which runs in the opening season: its root
+    # and salt must be there to take then, whatever season the other herbs keep
+    story_season = ctx["world"].get("calendar", {}).get("seasons", {}).get("first", "autumn")
+    ingredients = {}
+    ipath = ctx["root"] / "resources/crafting/ingredients.json"
+    if ipath.exists():
+        try:
+            ingredients = {i.get("id"): i for i in json.loads(ipath.read_text()).get("ingredients", [])}
+        except ValueError:
+            pass
+    for item in ("fever_root", "white_salt"):
+        grows = []
+        for n in nodes:
+            if n.get("item") != item:
+                continue
+            season = n.get("season", ingredients.get(item, {}).get("season", "any") if n.get("kind") == "herb" else "any")
+            listed = season if isinstance(season, list) else [season]
+            grows.append("any" in listed or story_season in listed)
+        if grows and not any(grows):
+            err(where, f"the Grey Fever cure needs {item} in {story_season}, the story's season, and no node gives it then")

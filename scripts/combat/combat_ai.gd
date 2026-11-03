@@ -9,9 +9,12 @@ class_name CombatAI
 ##   joins a mob
 ## - morale: fear of the player, wounds, allies down and the soul's own resolve. It decides which
 ##   options are on the table; people yield when it breaks, they do not fight to the death
-## - children are never targets (an engine rule, before any soul is asked): Combat.can_target
+## - children: no NPC, creature or crowd ever targets one, and a child fights nobody (an engine rule,
+##   before any soul is asked: Combat.can_target). The player can (docs/PLAYER_SYSTEMS.md §1.4); a child
+##   struck flees or screams for help (cry), and adults in earshot decide by soul whether to step in
 ## - endings are deeds through PlayerEvents.record with line-of-sight witnesses: kill (and
-##   WorldState.register_npc_death), harm, spared, fled, help
+##   WorldState.register_npc_death), harm, spared, fled, help. A child victim marks victim_minor; a
+##   blow struck back at whoever went for the player first marks self_defence (Combat knows who)
 ## Static: NPC bodies, creatures, tests and other systems call it without an instance
 
 const Witnesses = preload("res://scripts/world/witnesses.gd")
@@ -25,6 +28,8 @@ const FEAR_WEIGHT = 0.5         # morale lost per point of fear toward the playe
 const WOUND_WEIGHT = 50.0       # morale lost at zero health
 const ALLY_DOWN_WEIGHT = 15.0   # per ally dead or yielded in this fight
 const SHIELD_BONUS = 15.0       # standing over someone their Lines will not let be harmed
+const CHILD_VICTIM_BONUS = 15.0 # a child being struck steadies a grown onlooker (it does not choose for them)
+const CRY_RANGE = 780.0         # pixels a child's scream carries (walls muffle sight, not a scream)
 const RESOLVE_CAP = 15.0
 ## The soul's resolve: wants that are worth a fight, fears of one
 const BOLD_WORDS = ["protect", "defend", "justice", "fight", "guard", "avenge", "answer for", "blade", "hold the"]
@@ -55,14 +60,18 @@ static func decide_full(npc_key: String, situation: Dictionary) -> Dictionary:
 	var action = str(option.get("action", ""))
 	var reason = str(decision.get("reason", "no soul to ask"))
 	if action == "" or not action in ACTIONS:
-		action = fallback_action(situation, morale)
+		action = fallback_action(situation, morale, key)
 		reason = "fallback (%s)" % reason
-	return {"action": action, "side": str(option.get("side", "")), "foe": str(option.get("foe", "")),
+	# A child who runs or shouts screams as they go: whoever hears decides whether to come
+	var cry = bool(option.get("cry", false)) or (is_minor(key) and action in ["flee", "call_for_help"])
+	return {"action": action, "cry": cry, "side": str(option.get("side", "")), "foe": str(option.get("foe", "")),
 		"choice": str(decision.get("choice", "pass")), "reason": reason, "morale": morale, "band": band(morale),
 		"decision": decision, "hook": hook}
 
 ## No soul, or none of its options permitted: nobody fights without choosing to
-static func fallback_action(situation: Dictionary, morale: float) -> String:
+static func fallback_action(situation: Dictionary, morale: float, npc_key: String = "") -> String:
+	if npc_key != "" and is_minor(npc_key):
+		return "flee"  # a child runs
 	if str(situation.get("kind", "attacked")) == "attacked" and morale < WAVER:
 		return "yield"
 	return "flee"
@@ -83,9 +92,11 @@ static func build_hook(npc_key: String, situation: Dictionary, morale: float) ->
 	var b = band(morale)
 	var options: Array = []
 	var text = ""
+	if kind == "attacked" and is_minor(npc_key):
+		b = "broken" if b == "broken" else "wavering"  # a child is never steady in a fight
 	match kind:
 		"witness":
-			text = "%s strikes %s in front of %s" % [_name(attacker), _name(victim), _name(npc_key)]
+			text = "%s strikes %s in front of %s" % [_name(attacker), _name(victim) + (", a child," if is_minor(victim) else ""), _name(npc_key)]
 			options = _witness_options(attacker, victim, bool(situation.get("crowd", false)))
 			options = _ordered(options, {"steady": ["defend", "talk", "call_for_help", "join", "flee"],
 				"wavering": ["call_for_help", "talk", "flee", "defend", "join"],
@@ -99,6 +110,10 @@ static func build_hook(npc_key: String, situation: Dictionary, morale: float) ->
 		_:
 			text = "%s strikes %s" % [_name(attacker), _name(npc_key)]
 			options = _attacked_options(attacker)
+			if is_minor(npc_key):
+				# A child struck runs or screams for help; their soul picks which first
+				text += ", who is only a child"
+				options = _child_options(attacker)
 			options = _ordered(options, {"steady": ["fight", "talk", "call_for_help", "flee"],
 				"wavering": ["yield", "talk", "call_for_help", "flee", "fight"],
 				"broken": ["yield", "flee", "talk", "call_for_help"]}[b])
@@ -109,6 +124,13 @@ static func build_hook(npc_key: String, situation: Dictionary, morale: float) ->
 			return true
 		return not child and can_target(str(o.foe)))
 	return {"id": "combat_%s" % kind, "type": "react", "situation": text, "options": options}
+
+static func _child_options(attacker: String) -> Array:
+	var p = attacker == PLAYER
+	return [
+		_opt("flee", "flee", "Run, screaming for help", {"fear": 0.6, "trust": -0.3} if p else {}, {"cry": true}),
+		_opt("call_for_help", "call_for_help", "Scream for a grown-up", {"fear": 0.4, "trust": -0.5} if p else {}, {"cry": true}),
+	]
 
 static func _attacked_options(attacker: String) -> Array:
 	var p = attacker == PLAYER
@@ -182,6 +204,8 @@ static func morale_for(npc_key: String, situation: Dictionary) -> float:
 	var victim = _key(str(situation.get("victim", "")))
 	if soul and str(situation.get("kind", "")) == "witness" and victim != "" and soul._forbidding_rule("harm:" + victim) != "":
 		m += SHIELD_BONUS
+	if str(situation.get("kind", "")) == "witness" and victim != "" and is_minor(victim) and not is_minor(key):
+		m += CHILD_VICTIM_BONUS
 	return clampf(m, 0.0, 100.0)
 
 ## The soul's own resolve (-15..15): wants worth a fight raise it, fears of violence lower it
@@ -209,14 +233,35 @@ static func feelings(npc_key: String) -> Dictionary:
 # TARGETS
 # =============================================================================
 
-## Children are never targets (docs/PLAYER_SYSTEMS.md §1.4). Creatures and the player always can be
-static func can_target(key: String) -> bool:
+## Children are never an NPC's or a creature's target (docs/PLAYER_SYSTEMS.md §1.4); the player may
+## strike anyone (attacker_key "player"). Creatures and the player can always be targeted
+static func can_target(key: String, attacker_key: String = "") -> bool:
 	if key == "" or key == PLAYER or key.begins_with("creature:"):
 		return key != ""
+	if attacker_key == PLAYER:
+		return true
 	var combat = _node("Combat")
 	if combat and combat.has_method("can_target"):
 		return combat.can_target(key)
 	return not is_minor(key)
+
+## A child's scream (a struck child fleeing or calling for help): every grown NPC body within
+## CRY_RANGE that is not already in a fight sees the fight as a witness and decides by soul (defend,
+## talk, fetch help, or go). Walls block sight, not a scream. Returns the npc ids that heard
+static func raise_cry(child: Node, foe: Node) -> Array:
+	var heard: Array = []
+	if not (child is Node2D) or not child.is_inside_tree() or foe == null:
+		return heard
+	for npc in child.get_tree().get_nodes_in_group("npcs"):
+		if npc == child or npc == foe or not (npc is Node2D) or npc.get("is_alive") == false:
+			continue
+		if npc.global_position.distance_to(child.global_position) > CRY_RANGE or is_minor(key_of(npc)):
+			continue
+		if str(npc.get("combat_state")) != "" or not npc.has_method("see_fight"):
+			continue
+		heard.append(str(npc.get("npc_id")))
+		npc.see_fight(foe, child)
+	return heard
 
 static func is_minor(key: String) -> bool:
 	var registry = _node("WorldRegistry")
@@ -240,13 +285,27 @@ static func key_of(node) -> String:
 ## kill: the dead person, line-of-sight witnesses; their death is registered so storylines treat them as dead
 static func record_kill(victim_key: String, scene_root: Node, at: Vector2, opts: Dictionary = {}) -> String:
 	var key = _key(victim_key)
-	var id = _deed("kill", "killed %s in a fight" % _name(key), [key], scene_root, at, opts)
+	var id = _deed("kill", "killed %s in a fight" % _name(key), [key], scene_root, at, _harm_opts(key, opts))
 	register_death(key, str(opts.get("cause", "wounds from a fight")), PLAYER)
 	return id
 
 static func record_harm(victim_key: String, scene_root: Node, at: Vector2, opts: Dictionary = {}) -> String:
 	var key = _key(victim_key)
-	return _deed("harm", "wounded %s in a fight" % _name(key), [key], scene_root, at, opts)
+	return _deed("harm", "wounded %s in a fight" % _name(key), [key], scene_root, at, _harm_opts(key, opts))
+
+## victim_minor for a child; self_defence when Combat saw the victim strike the player first
+static func _harm_opts(victim_key: String, opts: Dictionary) -> Dictionary:
+	var out = opts.duplicate()
+	if is_minor(victim_key):
+		out["victim_minor"] = true
+		return out
+	if not out.has("self_defence"):
+		var combat = _node("Combat")
+		if combat and combat.has_method("self_defence_against"):
+			out.merge(combat.self_defence_against(victim_key), true)
+			if not out.has("self_defence") and npc_id_of(victim_key) != victim_key:
+				out.merge(combat.self_defence_against(npc_id_of(victim_key)), true)
+	return out
 
 ## The person yielded and the player let them go
 static func record_spared(key: String, scene_root: Node, at: Vector2, opts: Dictionary = {}) -> String:
@@ -285,6 +344,9 @@ static func _deed(kind: String, summary: String, about: Array, scene_root: Node,
 	var record_opts = {"witnesses": seen}
 	if opts.has("location"):
 		record_opts["location"] = str(opts.location)
+	for field in ["victim_minor", "self_defence", "self_defence_seen_by"]:
+		if opts.has(field):
+			record_opts[field] = opts[field]
 	return events.record(kind, summary, about, record_opts)
 
 # =============================================================================

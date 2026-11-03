@@ -1454,6 +1454,27 @@ script = ExtResource("1_world_solid")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/East"]
 shape = SubResource("Rect_32x1024")
 
+[node name="CreatureSpawns" type="Node2D" parent="."]
+editor_description = "Along the flood walls and the drain, between the shanties (scripts/combat/creature_spawner.gd; checked against the walls by scripts/debug/test_creature_spawns.gd)"
+
+[node name="NorthWestWall" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(-290, -320)
+
+[node name="NorthEastBarrels" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(210, -330)
+
+[node name="EastWall" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(240, -170)
+
+[node name="WestAlley" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(-150, -20)
+
+[node name="SouthWestWall" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(-290, 300)
+
+[node name="SouthDrain" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(30, 420)
+
 [node name="SpawnPoints" type="Node2D" parent="."]
 
 [node name="default" type="Marker2D" parent="SpawnPoints"]

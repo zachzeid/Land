@@ -8,6 +8,7 @@
     3
   ],
   "flags": {
+    "ih_names_read_back": "The five names hidden in Gregor's ledger, Corin Ashby, Davin, Hesk Marlow, Willa Brand and Ada Fenn, were read back to him from his own sums.",
     "ih_trail_opened": "Questions about who rigged the lot began to lead to Gregor's shop, his back room and the strongbox key in his coat pocket",
     "ih_file_traced": "Bjorn said the recut tile had been worked with a fine file of the kind Gregor's shop sells",
     "ih_ransom_offered": "Gregor begged the messenger to carry his strongbox, his shop and his steel to the men in the forest as a ransom for Elena",
@@ -2906,6 +2907,106 @@
                 "mercy_for_gregor"
               ],
               "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "five_names_in_the_sums",
+      "act": 2,
+      "title": "Five Names in the Sums",
+      "summary": "The stranger has read Gregor's ledger back from its sums to the names the Tithe fell to, one for each autumn. Whoever holds the names no longer needs the book. Gregor, and the elder if it reaches him, choose what that means.",
+      "location": "thornhaven_gregor_shop",
+      "requires": [
+        "ledger_names_decoded",
+        "!gregor_exposed"
+      ],
+      "resolves_on": [
+        "ih_names_read_back",
+        "gregor_confronted",
+        "gregor_exposed"
+      ],
+      "hooks": [
+        {
+          "id": "ih_gregor_hears_the_names",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "If the stranger reads your sums back to you as names, Corin, Davin, Hesk, Willa, Ada, there is no ledger left to beg for. They carry it in their head.",
+          "options": [
+            {
+              "id": "say_them_first",
+              "label": "Say each name yourself before they can, and beg one day to tell Elena",
+              "serves": [
+                "make_amends",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "If the stranger reads the ledger's names back to you, say each one yourself, and beg one day to tell Elena first."
+                }
+              ]
+            },
+            {
+              "id": "honest_sums",
+              "label": "Call them a merchant's sums and nothing more",
+              "serves": [
+                "keep_the_secret",
+                "keep_the_council_paying"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "If the stranger reads names out of your sums, call it a madman's reading of honest accounts, and ask them to leave."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ih_mathias_and_the_five_names",
+          "type": "react",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "If the stranger brings you five names read out of Gregor's book, they are the five the lot took, and you blessed every drawing.",
+          "options": [
+            {
+              "id": "call_a_hearing",
+              "label": "Ask the stranger to say them before the council, and stand by them",
+              "serves": [
+                "prove_before_acting",
+                "speak_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "If the stranger brings you the five names from Gregor's ledger, ask them to say them before the council, and stand beside them."
+                }
+              ]
+            },
+            {
+              "id": "keep_them_close",
+              "label": "Keep the names in the chapel until the cart has come and gone",
+              "serves": [
+                "keep_the_peace_paid",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "If the stranger brings you names from Gregor's ledger, ask them to keep the names quiet until the cart has come and gone."
+                }
+              ]
             }
           ]
         }

@@ -7,7 +7,8 @@ extends SceneTree
 # - NPC bodies: hits wound, stagger and lower morale; morale breaking ends in yielding, not death;
 #   sparing records `spared`, killing records `kill` and the NPC is dead for the Director; the
 #   player standing up for someone records `help`, running records `fled`; witnesses by line of sight
-# - minors: Rook and a fixture archetype with `minor: true` (GenericManager.is_minor) cannot be hit
+# - minors: Rook and a fixture archetype with `minor: true` (GenericManager.is_minor) can be hit by the
+#   player (harm with victim_minor; the child runs or screams) and never by an NPC
 # - creatures: data, spawning by location, stalk / charge / flee when hurt, drops
 # Fake hit results (Combat.resolve_hit's shape); no API calls, no ChromaDB, no save file written
 # Run: godot --headless --path . -s res://scripts/debug/test_combat_world.gd
@@ -279,15 +280,24 @@ func _test_help_and_fled():
 	await process_frame
 
 func _test_minors():
-	print("\nChildren are never targets")
+	print("\nChildren: never an NPC's target; the player's at the heaviest cost")
 	var rook = _body("rook", Vector2(40, 0))
+	var varn_body = _body("varn", Vector2(-40, 0))
 	await physics_frame
 	var before = pe.order.size()
-	var r = rook.take_hit(_hit(30), player)
-	_check("Rook cannot be hit (%s)" % r.get("reason", ""), r.get("refused", false) and rook.health == rook.max_health and rook.is_alive)
+	var r = rook.take_hit(_hit(30), varn_body)
+	_check("An NPC cannot hit Rook (%s)" % r.get("reason", ""), r.get("refused", false) and rook.health == rook.max_health and rook.is_alive)
 	_check("...and no deed is recorded", pe.order.size() == before)
 	_check("Rook's combat profile says minor", rook.get_combat_profile().minor == true)
+	r = rook.take_hit(_hit(30), player)
+	await process_frame
+	_check("The player can (health %.0f)" % rook.health, not r.get("refused", false) and rook.health == rook.max_health - 30.0)
+	var rook_harm = _events("harm", "rook")
+	_check("...a harm deed marked victim_minor", rook_harm.size() == 1 and rook_harm[0].get("victim_minor", false))
+	_check("Rook runs or screams for help, never fights (%s)" % rook.combat_state, rook.combat_state in ["flee", "call_for_help"] and bool(rook.last_combat_decision.get("cry", false)))
+	rook.end_fight("over", false)
 	rook.queue_free()
+	varn_body.queue_free()
 
 	var dyn = root.get_node("DynamicNPCRegistry")
 	var real = dyn.generics
@@ -304,11 +314,12 @@ func _test_minors():
 	_check("`minor: true` makes its instances minors; `minor: false` does not", gm.is_minor(child.id) and not gm.is_minor(adult.id) and gm.is_minor("fixture_child"))
 	dyn.generics = gm
 	_check("WorldRegistry.is_minor asks GenericManager for generic ids", registry.is_minor(child.id) and not registry.is_minor(adult.id))
-	_check("Combat.can_target refuses the child, allows the adult", not root.get_node("Combat").can_target(child.id) and root.get_node("Combat").can_target(adult.id))
+	_check("Combat.can_target refuses the child to NPCs, allows the adult", not root.get_node("Combat").can_target(child.id) and root.get_node("Combat").can_target(adult.id))
+	_check("...and allows the child to the player", root.get_node("Combat").can_target(child.id, "player"))
 	var child_body = _body(child.id, Vector2(40, 0))
 	var adult_body = _body(adult.id, Vector2(-40, 0))
 	await physics_frame
-	_check("The child's body refuses the hit", child_body.take_hit(_hit(20), player).get("refused", false) and child_body.health == child_body.max_health)
+	_check("The child's body refuses an NPC's hit", child_body.take_hit(_hit(20), adult_body).get("refused", false) and child_body.health == child_body.max_health)
 	_check("The adult's body takes it", not adult_body.take_hit(_hit(20), player).get("refused", false) and adult_body.health == 80.0)
 	dyn.generics = real
 	for id in [child.id, adult.id]:

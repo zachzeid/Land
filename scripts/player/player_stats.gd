@@ -58,7 +58,8 @@ var _health: float = BASE_HEALTH
 var _stamina: float = BASE_STAMINA
 var _poise: float = MAX_POISE
 var _deaths: int = 0
-var _respawn: Dictionary = {}        # {location, spawn_point}: the last bed
+var _respawn: Dictionary = {}        # {location, spawn_point, position?: [x, y]}: the last bed or camp
+var _waking: bool = false            # a death's transition is on its way to the respawn
 var _since_spend: float = 999.0
 var _since_hurt: float = 999.0
 var _teaching = null
@@ -66,6 +67,9 @@ var _teaching = null
 func _ready():
 	load_content()
 	reset()
+	var scenes = _node("SceneManager")
+	if scenes and scenes.has_signal("scene_transition_completed"):
+		scenes.scene_transition_completed.connect(_on_scene_arrived)
 
 func load_content() -> void:
 	var data = _read_json(SKILLS_PATH)
@@ -349,9 +353,27 @@ func get_deaths() -> int:
 func get_death_count() -> int:
 	return _deaths
 
-## The last bed: where the player wakes after a death
-func set_respawn(location_id: String, spawn_point: String = "default") -> void:
+## The last bed: where the player wakes after a death. position: a camp outdoors has no marker in
+## the scene, so the player is put there after the scene loads (Vector2, or null for a marker)
+func set_respawn(location_id: String, spawn_point: String = "default", position = null) -> void:
 	_respawn = {"location": location_id, "spawn_point": spawn_point}
+	if position is Vector2:
+		_respawn["position"] = [position.x, position.y]
+
+## After a death, the scene of the respawn loaded: a camp puts the player at the bedroll
+func _on_scene_arrived(location_id: String) -> void:
+	if not _waking:
+		return
+	_waking = false
+	var p = _respawn.get("position", null)
+	if not p is Array or p.size() != 2 or str(_respawn.get("location", "")) != location_id:
+		return
+	var scenes = _node("SceneManager")
+	var who = scenes.get("player_instance") if scenes else null
+	if not (who is Node2D and is_instance_valid(who)):
+		who = _body()
+	if who:
+		who.global_position = Vector2(float(p[0]), float(p[1]))
 
 func get_respawn() -> Dictionary:
 	return _respawn.duplicate()
@@ -393,6 +415,7 @@ func die(opts: Dictionary = {}) -> Dictionary:
 	if move_on_respawn and not wake.is_empty():
 		var scenes = _node("SceneManager")
 		if scenes and scenes.has_method("transition_to"):
+			_waking = true
 			scenes.transition_to(str(wake.location), str(wake.get("spawn_point", "default")))
 	return info
 
@@ -502,5 +525,7 @@ func load_from_dict(data: Dictionary) -> void:
 	_deaths = int(data.get("deaths", 0))
 	var r = data.get("respawn", {})
 	_respawn = {"location": str(r.location), "spawn_point": str(r.get("spawn_point", "default"))} if r is Dictionary and r.has("location") else {}
+	if r is Dictionary and r.get("position") is Array and r.position.size() == 2:
+		_respawn["position"] = [float(r.position[0]), float(r.position[1])]
 	_health = clampf(float(data.get("health", get_max_health())), 1.0, get_max_health())
 	_stamina = clampf(float(data.get("stamina", get_max_stamina())), 0.0, get_max_stamina())

@@ -21,7 +21,17 @@ const LAYER_TRIGGER = 6
 ## Optional: fade duration for transition
 @export var fade_duration: float = 0.3
 
+## A world flag that must be set before this way is open (empty: always open). A way found by a
+## puzzle (old_workings_way_found) stays shut, with closed_text said in the world, until it is found
+@export var requires_flag: String = ""
+## What the player is told while requires_flag is unset: the in-world reason the way is shut
+@export_multiline var closed_text: String = ""
+
+## Set at runtime by whatever owns the way (a puzzle room): why it is shut now, "" when not
+var closed_reason: String = ""
+
 signal triggered(trigger: SceneTrigger)
+signal refused(trigger: SceneTrigger, reason: String)
 
 var player_in_range: bool = false
 var transition_cooldown: bool = false
@@ -72,8 +82,27 @@ func _on_body_exited(body: Node2D):
 		player_in_range = false
 		_show_prompt(false)
 
+## Open: the required flag is set and nothing has shut the way
+func is_open() -> bool:
+	return why_closed() == ""
+
+## Why the way is shut ("" when open): the owner's reason first, then the missing flag's
+func why_closed() -> String:
+	if closed_reason != "":
+		return closed_reason
+	if requires_flag != "":
+		var ws = get_node_or_null("/root/WorldState")
+		if ws == null or not ws.get_world_flag(requires_flag):
+			return closed_text if closed_text != "" else "The way is shut."
+	return ""
+
 func _trigger_transition():
 	if transition_cooldown:
+		return
+	var reason = why_closed()
+	if reason != "":
+		refused.emit(self, reason)
+		_say(reason)
 		return
 
 	transition_cooldown = true
@@ -96,3 +125,30 @@ func _show_prompt(show: bool):
 		prompt.visible = show
 		if show and prompt is Label:
 			prompt.text = "[E] %s" % prompt_text
+
+## The reason a way is shut, said in the world (a narration line, else a short-lived panel)
+func _say(text: String) -> void:
+	print("[SceneTrigger] %s is shut: %s" % [name, text])
+	if not is_inside_tree():
+		return
+	var dialogue_ui = get_tree().get_first_node_in_group("dialogue_ui")
+	if dialogue_ui and dialogue_ui.has_method("show_narration"):
+		dialogue_ui.show_narration(text)
+		return
+	var scene = get_tree().current_scene
+	if scene == null or DisplayServer.get_name() == "headless":
+		return
+	var canvas = CanvasLayer.new()
+	canvas.layer = 100
+	var panel = PanelContainer.new()
+	var label = Label.new()
+	label.text = text
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.custom_minimum_size = Vector2(420, 0)
+	panel.add_child(label)
+	canvas.add_child(panel)
+	scene.add_child(canvas)
+	panel.position = Vector2(get_viewport().get_visible_rect().size.x / 2.0 - 220.0, 40.0)
+	get_tree().create_timer(6.0).timeout.connect(func():
+		if is_instance_valid(canvas):
+			canvas.queue_free())

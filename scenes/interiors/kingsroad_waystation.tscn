@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3]
+[gd_scene load_steps=26 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
 [ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/tavern_fireplace.png" id="2_tavern_fireplace"]
@@ -10,6 +10,10 @@
 [ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="8_dialogue_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="9_debug_interaction_panel"]
 [ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="10_debug_console"]
+[ext_resource type="Script" path="res://scripts/world/bed.gd" id="20_bed"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bed_reach"]
+size = Vector2(80, 200)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1536x40"]
 size = Vector2(1536, 40)
@@ -230,6 +234,7 @@ scale = Vector2(1.5, 1.5)
 texture = ExtResource("5_crates_barrels")
 
 [node name="WrenChair" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(-60, -600)
 script = ExtResource("1_world_solid")
 
@@ -244,6 +249,7 @@ offset_bottom = 25.0
 color = Color(0.45, 0.2, 0.15, 1)
 
 [node name="Stairs" type="StaticBody2D" parent="Furniture"]
+collision_layer = 4
 position = Vector2(620, 300)
 script = ExtResource("1_world_solid")
 
@@ -271,6 +277,7 @@ text = "Stairs to the rooms"
 horizontal_alignment = 1
 
 [node name="Bunk1" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(-620, -260)
 script = ExtResource("1_world_solid")
 
@@ -284,7 +291,29 @@ offset_right = 70.0
 offset_bottom = 35.0
 color = Color(0.5, 0.42, 0.3, 1)
 
+[node name="Bed" type="Area2D" parent="."]
+position = Vector2(-510, -175)
+script = ExtResource("20_bed")
+location_id = "kingsroad_waystation"
+spawn_point = "bed"
+rent = 4
+keeper = "wren"
+interaction_name = "Take a bunk for the night"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bed"]
+shape = SubResource("RectangleShape2D_bed_reach")
+
+[node name="InteractionPrompt" type="Label" parent="Bed"]
+visible = false
+offset_left = -90.0
+offset_top = -120.0
+offset_right = 90.0
+offset_bottom = -100.0
+horizontal_alignment = 1
+text = "[E] Take a bunk for the night"
+
 [node name="Bunk2" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(-620, -90)
 script = ExtResource("1_world_solid")
 
@@ -299,6 +328,7 @@ offset_bottom = 35.0
 color = Color(0.5, 0.42, 0.3, 1)
 
 [node name="Bunk3" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(-620, 80)
 script = ExtResource("1_world_solid")
 
@@ -313,6 +343,7 @@ offset_bottom = 35.0
 color = Color(0.5, 0.42, 0.3, 1)
 
 [node name="Bunk4" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(-620, 250)
 script = ExtResource("1_world_solid")
 
@@ -327,6 +358,7 @@ offset_bottom = 35.0
 color = Color(0.5, 0.42, 0.3, 1)
 
 [node name="SaddleRack" type="StaticBody2D" parent="Furniture"]
+collision_layer = 8
 position = Vector2(-470, 520)
 script = ExtResource("1_world_solid")
 
@@ -556,6 +588,9 @@ position = Vector2(0, 560)
 
 [node name="from_travel" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(0, 600)
+
+[node name="bed" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-500, -175)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.7, 0.7)

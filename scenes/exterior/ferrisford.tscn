@@ -101,6 +101,7 @@ text = "The Kingsroad - west to Thornhaven"
 horizontal_alignment = 1
 
 [node name="River" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = -5
 position = Vector2(370, 0)
 script = ExtResource("1_world_solid")
@@ -193,6 +194,7 @@ text = "Barges, east to the Capitol"
 horizontal_alignment = 1
 
 [node name="TollHut" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(-200, -230)
 script = ExtResource("1_world_solid")
@@ -228,6 +230,7 @@ text = "Toll Hut"
 horizontal_alignment = 1
 
 [node name="FerrymanCottage" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(-560, -330)
 script = ExtResource("1_world_solid")
@@ -263,6 +266,7 @@ text = "Ferryman's Cottage"
 horizontal_alignment = 1
 
 [node name="TollBoard" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(-40, -110)
 script = ExtResource("1_world_solid")
 
@@ -290,6 +294,7 @@ text = "FERRISFORD TOLL: foot 1d, horse 3d, cart 6d, barges by arrangement"
 horizontal_alignment = 1
 
 [node name="Bollard1" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(130, -110)
 script = ExtResource("1_world_solid")
 
@@ -304,6 +309,7 @@ offset_bottom = 10.0
 color = Color(0.28, 0.2, 0.12, 1)
 
 [node name="Bollard2" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(130, 110)
 script = ExtResource("1_world_solid")
 
@@ -318,6 +324,7 @@ offset_bottom = 10.0
 color = Color(0.28, 0.2, 0.12, 1)
 
 [node name="Willow1" type="StaticBody2D" parent="."]
+collision_layer = 8
 z_index = 30
 position = Vector2(-700, 380)
 script = ExtResource("1_world_solid")
@@ -333,6 +340,7 @@ offset_bottom = 20.0
 color = Color(0.2, 0.36, 0.16, 1)
 
 [node name="Willow2" type="StaticBody2D" parent="."]
+collision_layer = 8
 z_index = 30
 position = Vector2(-420, 480)
 script = ExtResource("1_world_solid")
@@ -348,6 +356,7 @@ offset_bottom = 20.0
 color = Color(0.2, 0.36, 0.16, 1)
 
 [node name="Willow3" type="StaticBody2D" parent="."]
+collision_layer = 8
 z_index = 30
 position = Vector2(-120, 520)
 script = ExtResource("1_world_solid")
@@ -363,6 +372,7 @@ offset_bottom = 20.0
 color = Color(0.2, 0.36, 0.16, 1)
 
 [node name="Willow4" type="StaticBody2D" parent="."]
+collision_layer = 8
 z_index = 30
 position = Vector2(-720, -520)
 script = ExtResource("1_world_solid")
@@ -378,6 +388,7 @@ offset_bottom = 20.0
 color = Color(0.2, 0.36, 0.16, 1)
 
 [node name="Willow5" type="StaticBody2D" parent="."]
+collision_layer = 8
 z_index = 30
 position = Vector2(-300, -520)
 script = ExtResource("1_world_solid")
@@ -393,6 +404,7 @@ offset_bottom = 20.0
 color = Color(0.2, 0.36, 0.16, 1)
 
 [node name="Reeds1" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(170, -440)
 script = ExtResource("1_world_solid")
 
@@ -407,6 +419,7 @@ offset_bottom = 60.0
 color = Color(0.36, 0.42, 0.2, 1)
 
 [node name="Reeds2" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(170, 440)
 script = ExtResource("1_world_solid")
 
@@ -582,6 +595,7 @@ horizontal_alignment = 1
 [node name="Bounds" type="Node2D" parent="."]
 
 [node name="North" type="StaticBody2D" parent="Bounds"]
+collision_layer = 4
 position = Vector2(0, -600)
 script = ExtResource("1_world_solid")
 
@@ -589,6 +603,7 @@ script = ExtResource("1_world_solid")
 shape = SubResource("RectangleShape2D_1680x40")
 
 [node name="South" type="StaticBody2D" parent="Bounds"]
+collision_layer = 4
 position = Vector2(0, 600)
 script = ExtResource("1_world_solid")
 
@@ -596,6 +611,7 @@ script = ExtResource("1_world_solid")
 shape = SubResource("RectangleShape2D_1680x40")
 
 [node name="West" type="StaticBody2D" parent="Bounds"]
+collision_layer = 4
 position = Vector2(-800, 0)
 script = ExtResource("1_world_solid")
 
@@ -603,6 +619,7 @@ script = ExtResource("1_world_solid")
 shape = SubResource("RectangleShape2D_40x1200")
 
 [node name="East" type="StaticBody2D" parent="Bounds"]
+collision_layer = 4
 position = Vector2(800, 0)
 script = ExtResource("1_world_solid")
 

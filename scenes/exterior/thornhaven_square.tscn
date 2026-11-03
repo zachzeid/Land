@@ -156,6 +156,7 @@ texture = ExtResource("21_building_house")
 [node name="Collisions" type="Node2D" parent="."]
 
 [node name="GregorShopCollision" type="StaticBody2D" parent="Collisions"]
+collision_layer = 4
 position = Vector2(-240, -192)
 script = ExtResource("7_world_solid")
 
@@ -163,6 +164,7 @@ script = ExtResource("7_world_solid")
 shape = SubResource("RectangleShape2D_building_medium")
 
 [node name="TavernCollision" type="StaticBody2D" parent="Collisions"]
+collision_layer = 4
 position = Vector2(240, -208)
 script = ExtResource("7_world_solid")
 
@@ -170,6 +172,7 @@ script = ExtResource("7_world_solid")
 shape = SubResource("RectangleShape2D_building_large")
 
 [node name="BlacksmithCollision" type="StaticBody2D" parent="Collisions"]
+collision_layer = 4
 position = Vector2(-320, -16)
 script = ExtResource("7_world_solid")
 
@@ -177,6 +180,7 @@ script = ExtResource("7_world_solid")
 shape = SubResource("RectangleShape2D_building_medium")
 
 [node name="House1Collision" type="StaticBody2D" parent="Collisions"]
+collision_layer = 4
 position = Vector2(320, 16)
 script = ExtResource("7_world_solid")
 
@@ -184,6 +188,7 @@ script = ExtResource("7_world_solid")
 shape = SubResource("RectangleShape2D_building_medium")
 
 [node name="WellCollision" type="StaticBody2D" parent="Collisions"]
+collision_layer = 4
 position = Vector2(0, 32)
 script = ExtResource("7_world_solid")
 
@@ -485,6 +490,7 @@ text = "Chapel of the Dawn"
 horizontal_alignment = 1
 
 [node name="CouncilHallCollision" type="StaticBody2D" parent="Collisions"]
+collision_layer = 4
 position = Vector2(0, -352)
 script = ExtResource("7_world_solid")
 
@@ -492,6 +498,7 @@ script = ExtResource("7_world_solid")
 shape = SubResource("RectangleShape2D_building_large")
 
 [node name="ChapelCollision" type="StaticBody2D" parent="Collisions"]
+collision_layer = 4
 position = Vector2(-288, 272)
 script = ExtResource("7_world_solid")
 

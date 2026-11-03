@@ -4,7 +4,11 @@ resources/combat/creatures.json: every creature has an id, a name, positive heal
 damage, a known damage type and behaviour, resistances within -1..1, where-entries naming real
 locations with a count range and a chance, and drops naming item ids (checked against
 resources/items/*.json when that folder exists). No forbidden concept in any name or text.
+Every creature has `regrow_days` > 0 (how long a kill thins its place).
 Archetypes: a `minor:` header, when present, says true or false.
+resources/combat/loadouts.json: npcs keyed by world.json npc keys and archetypes by archetype ids,
+each weapon a weapons.json id and each armour an armour.json id (one per slot), and no loadout gives
+a minor (world.json `minor`, archetype `minor: true`) a weapon or armour.
 """
 import json
 import re
@@ -89,6 +93,9 @@ def validate(ctx):
         for dtype, v in (c.get("resist") or {}).items():
             if dtype not in DAMAGE_TYPES or not isinstance(v, (int, float)) or not -1 <= v <= 1:
                 ctx["err"](w, f"resist {dtype}: type must be known and value -1..1")
+        regrow = c.get("regrow_days")
+        if not isinstance(regrow, (int, float)) or isinstance(regrow, bool) or regrow <= 0:
+            ctx["err"](w, "regrow_days must be a positive number of game days")
         lives = c.get("where", [])
         if not isinstance(lives, list) or not lives:
             ctx["err"](w, "needs 'where' (the locations it lives in)")
@@ -116,8 +123,70 @@ def validate(ctx):
                 ctx["warn"](w, f"drop '{item}' is not in resources/items (yet)")
         _forbidden(ctx, w, " ".join(str(c.get(k, "")) for k in ("id", "name", "description")))
 
-    # Generic archetypes: `minor: true` makes every instance a child (never a combat target)
+    # Generic archetypes: `minor: true` makes every instance a child (never an NPC's or creature's target)
     for arch in sorted((root / "resources/generics/archetypes").glob("*.md")):
         m = re.search(r"^minor:\s*(\S+)\s*$", arch.read_text(), re.M)
         if m and m.group(1).lower() not in ("true", "false", "yes", "no"):
             ctx["err"](str(arch.relative_to(root)), f"'minor:' must be true or false, not '{m.group(1)}'")
+
+    _validate_loadouts(ctx, root)
+
+
+def _json(path):
+    try:
+        return json.loads(path.read_text())
+    except (OSError, ValueError):
+        return None
+
+
+def _validate_loadouts(ctx, root):
+    where = "resources/combat/loadouts.json"
+    path = root / where
+    if not path.exists():
+        return
+    data = _json(path)
+    if not isinstance(data, dict):
+        ctx["err"](where, "bad JSON")
+        return
+    weapons = (_json(root / "resources/combat/weapons.json") or {}).get("weapons", {})
+    armour = (_json(root / "resources/combat/armour.json") or {}).get("armour", {})
+    npcs = {str(n.get("key")): n for n in ctx["world"].get("npcs", []) if isinstance(n, dict)}
+    arch_dir = root / "resources/generics/archetypes"
+    archetypes = {}
+    for arch in sorted(arch_dir.glob("*.md")):
+        text = arch.read_text()
+        m = re.search(r"^archetype:\s*(\S+)\s*$", text, re.M)
+        minor = re.search(r"^minor:\s*(true|yes)\s*$", text, re.M | re.I)
+        archetypes[m.group(1) if m else arch.stem] = bool(minor)
+    for group, known in (("npcs", {k: bool(v.get("minor")) for k, v in npcs.items()}), ("archetypes", archetypes)):
+        rows = data.get(group, {})
+        if not isinstance(rows, dict):
+            ctx["err"](where, f"'{group}' must be an object")
+            continue
+        for key, row in rows.items():
+            w = f"{where}:{group}.{key}"
+            if key not in known:
+                ctx["err"](w, f"unknown {'npc key' if group == 'npcs' else 'archetype'}")
+                continue
+            if not isinstance(row, dict):
+                ctx["err"](w, "must be an object")
+                continue
+            weapon = row.get("weapon")
+            kit = row.get("armour", [])
+            if weapon is not None and weapon not in weapons:
+                ctx["err"](w, f"weapon '{weapon}' is not in weapons.json")
+            if not isinstance(kit, list):
+                ctx["err"](w, "armour must be a list")
+                kit = []
+            slots = set()
+            for a in kit:
+                if a not in armour:
+                    ctx["err"](w, f"armour '{a}' is not in armour.json")
+                    continue
+                slot = armour[a].get("slot")
+                if slot in slots:
+                    ctx["err"](w, f"two pieces for the {slot} slot")
+                slots.add(slot)
+            if known[key] and (weapon not in (None, "", "fists") or kit):
+                ctx["err"](w, "a minor carries nothing")
+            _forbidden(ctx, w, str(row.get("why", "")))

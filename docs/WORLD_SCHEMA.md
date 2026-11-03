@@ -275,6 +275,16 @@ use in conversation. Without one, `converse` falls back to the union of its `rea
    again.
 7. **Budget.** At most 3 actions per NPC reply, and at most one `set_flag` that resolves a beat.
 
+**Trade actions** answer the player's own ask (docs/PLAYER_SYSTEMS.md §2) and are offered only
+where they apply. Every soul may make them without a `converse:` grant; Lines (`hook:converse`,
+`effect:return_pack`, `effect:teach`) still refuse them. They count toward the budget.
+- `{"type":"return_pack","price":N}`: an NPC holding the player's pack (taken or kept where they
+  fell) gives it back, or sells it for N coin (Inventory.spend_coin; dropped when the purse is short).
+  Refusing or denying is no action.
+- `{"type":"teach","skill":S,"price":N}` or `{"type":"teach","skill":S,"favour":true}`: a teacher
+  (resources/player/teachers.json) gives a lesson in their trade for coin (their usual fee when no
+  price is named) or a favour owed (a `promise` deed). It takes game time and boosts gain (teaching.gd).
+
 ## 7. Player flags
 
 A storyline lists the flags only the player can set in `"player_flags": [...]` (each must also be
@@ -467,6 +477,17 @@ are the world's memory of the player.
   **region**, only from the events each party knows about, weighted by fidelity and recency. Nobody
   is omniscient. It is injected into NPC prompts as "what you have heard of the stranger" and read by
   the director.
+- **Violence** (docs/PLAYER_SYSTEMS.md §1.2, §1.4). `harm`/`kill` of a child carries
+  `victim_minor: true` (set by the caller, or found from `about` by `WorldRegistry.is_minor`) and the
+  heaviest weight in the game (harm -60, kill -120, against an adult kill's -30), for every party that
+  knows it. People come to know it three ways: line-of-sight witnesses; the child who lives, who tells
+  their own factions (`via: "the child told them"`); and a body found later. A `kill` leaves a trace at
+  its location; whoever is there at least 30 minutes later, in open hours, finds it (`heard_by[who].found`)
+  at fidelity 0.2 (a rumour), or 0.5 when someone still alive saw the stranger at that place within six
+  hours of it; then it spreads like any loud deed. A blow struck back at someone who struck the player
+  first (Combat tracks the first blow of each fight) carries `self_defence: true` and
+  `self_defence_known` (whoever saw that first blow, and the one who struck it); it weighs -3 (harm)
+  or -8 (kill), but only for a party that knows it, and a retelling at fidelity 0.6 or better carries it.
 
 ## 11. Movable fixed points
 
@@ -534,8 +555,9 @@ did.
   Templates: `crowd_against_a_neighbour`, `crowd_against_the_player`.
 - **Roles** bind to real NPCs at instantiation:
   - `from` is one of `event_witness`, `event_about`, `heard_event`, `faction:<id>`,
-    `near_player`, `npc:<key>`, `trigger_match`, or for crowds `crowd_target`, `crowd_aggrieved`,
-    `crowd_protector`;
+    `archetype:<id>` (registered generic souls of that archetype), `near_player`, `near_event` (souls
+    at the event's location), `npc:<key>`, `trigger_match`, or for crowds `crowd_target`,
+    `crowd_aggrieved`, `crowd_protector`;
   - `prefer` is a dimension with `_asc`/`_desc`, or `nearest`.
   - Generics are eligible too.
 - **The offline chooser** uses `appeal`: the dot product of the coefficients with the bound NPC's
@@ -544,9 +566,12 @@ did.
   `shift_fixed_point`, whatever their `converse:` line says, because gossip is what generics do.
   Main and promoted souls use their normal Agency for the hook type. Lines rules apply to everyone.
 - **Extra fields.**
-  - Event match: `location` (a list), `region`, `tone`, `min_count`, `first`, and
-    `about: ["archetype:<id>"]`.
-  - Role filters: `faction`, `region`, `knows_of_player`.
+  - Event match: `location` (a list), `region`, `tone`, `min_count`, `first`,
+    `about: ["archetype:<id>"]`, and `victim_minor` / `self_defence` (true or false).
+  - Role filters: `faction`, `region`, `knows_of_player`, `near_event: region | area` (the NPC is
+    now in the same region or area as the deed).
+  - Engine rule: an option whose `harms` names a child is never offered, and no crowd forms against
+    a child.
   - Agenda `npc` may be a literal key, and `spread_event` `to` may be role slots, NPC keys or `["*"]`.
 - **Allowed effects** are personal-scope plus `spread_event` (new: it spreads a player event) and
   `shift_fixed_point`, if the bound soul grants it. Emergent beats never set storyline flags.

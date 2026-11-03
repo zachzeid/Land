@@ -59,7 +59,7 @@ func _init():
 	var registry = root.get_node("WorldRegistry")
 	var combat = root.get_node("Combat")
 	_check("Rook is a minor (world.json)", registry.is_minor("rook") and registry.is_minor(registry.get_npc_id("rook")))
-	_check("...and can never be a combat target", not combat.can_target("rook"))
+	_check("...never an NPC's combat target, though the player can strike him", not combat.can_target("rook") and combat.can_target("rook", "player"))
 	_check("An adult can be", combat.can_target("varn") and not registry.is_minor("varn"))
 
 	print("\nSituation decisions")

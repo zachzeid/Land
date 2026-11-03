@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://scripts/puzzles/room_abbey_undercroft.gd" id="room"]
 [ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="solid"]
@@ -9,6 +9,9 @@
 [ext_resource type="Script" path="res://scripts/world/physics/basin.gd" id="basin"]
 [ext_resource type="Script" path="res://scripts/world/physics/metal.gd" id="metal"]
 [ext_resource type="Script" path="res://scripts/world/story_item.gd" id="story_item"]
+[ext_resource type="Script" path="res://scripts/world/physics/weight.gd" id="weight"]
+[ext_resource type="Script" path="res://scripts/puzzles/room_action.gd" id="room_action"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="scene_trigger"]
 
 [sub_resource type="RectangleShape2D" id="Rect_1024x40"]
 size = Vector2(1024, 40)
@@ -24,6 +27,18 @@ size = Vector2(120, 16)
 
 [sub_resource type="RectangleShape2D" id="Rect_60x40"]
 size = Vector2(60, 40)
+
+[sub_resource type="RectangleShape2D" id="Rect_90x70"]
+size = Vector2(90, 70)
+
+[sub_resource type="RectangleShape2D" id="Rect_15x105"]
+size = Vector2(15, 105)
+
+[sub_resource type="RectangleShape2D" id="Rect_150x15"]
+size = Vector2(150, 15)
+
+[sub_resource type="RectangleShape2D" id="Rect_140x30"]
+size = Vector2(140, 30)
 
 [node name="AbbeyUndercroft" type="Node2D"]
 script = ExtResource("room")
@@ -176,6 +191,38 @@ offset_bottom = 54.0
 text = "Iron-bound reliquary chest"
 horizontal_alignment = 1
 
+[node name="Weight" type="Node2D" parent="Parts/ReliquaryChest"]
+script = ExtResource("weight")
+mass = 50.0
+
+[node name="Push" type="Area2D" parent="Parts/ReliquaryChest"]
+z_index = 6
+script = ExtResource("room_action")
+interaction_name = "Drag the reliquary chest onto the kneeling stone"
+verb = "push"
+target = NodePath("..")
+destination = NodePath("../../KneelerSouth")
+state_key = "chest_on_kneeler"
+back_name = "Drag the chest off the kneeling stone"
+done_text = "The chest scrapes over the flags and comes to rest on the southern kneeling stone. The stone sinks a finger's width under it."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/ReliquaryChest/Push"]
+shape = SubResource("Rect_90x70")
+
+[node name="InteractionPrompt" type="Label" parent="Parts/ReliquaryChest/Push"]
+z_index = 10
+visible = false
+offset_left = -160.0
+offset_top = -60.0
+offset_right = 160.0
+offset_bottom = -36.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Drag the reliquary chest onto the kneeling stone"
+horizontal_alignment = 1
+
 [node name="LampRope" type="Node2D" parent="Parts"]
 position = Vector2(150, -230)
 script = ExtResource("rope")
@@ -195,9 +242,39 @@ offset_bottom = 78.0
 text = "Lamp rope"
 horizontal_alignment = 1
 
+[node name="Cut" type="Area2D" parent="Parts/LampRope"]
+z_index = 6
+position = Vector2(0, 30)
+script = ExtResource("room_action")
+interaction_name = "Cut the lamp rope"
+verb = "cut"
+target = NodePath("..")
+needs_tag = "blade"
+lacking_text = "The lamp hangs on a rope belayed to an iron cleat in the wall. You have nothing with an edge to cut it."
+done_text = "The rope parts and the lamp drops."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/LampRope/Cut"]
+shape = SubResource("Rect_60x40")
+
+[node name="InteractionPrompt" type="Label" parent="Parts/LampRope/Cut"]
+z_index = 10
+visible = false
+offset_left = -160.0
+offset_top = -48.0
+offset_right = 160.0
+offset_bottom = -24.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Cut the lamp rope"
+horizontal_alignment = 1
+
 [node name="HangingLamp" type="Node2D" parent="Parts"]
 position = Vector2(150, -170)
 script = ExtResource("lamp")
+lit = true
+open_flame = false
 
 [node name="Visual" type="ColorRect" parent="Parts/HangingLamp"]
 offset_left = -12.0
@@ -312,6 +389,92 @@ offset_top = -20.0
 offset_right = 30.0
 offset_bottom = 20.0
 color = Color(0.45, 0.2, 0.18, 1)
+
+[node name="AumbryWalls" type="Node2D" parent="Parts"]
+
+[node name="West" type="StaticBody2D" parent="Parts/AumbryWalls"]
+position = Vector2(232.5, 227.5)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/AumbryWalls/West"]
+shape = SubResource("Rect_15x105")
+
+[node name="Visual" type="ColorRect" parent="Parts/AumbryWalls/West"]
+offset_left = -7.5
+offset_top = -52.5
+offset_right = 7.5
+offset_bottom = 52.5
+color = Color(0.26, 0.24, 0.22, 1)
+
+[node name="East" type="StaticBody2D" parent="Parts/AumbryWalls"]
+position = Vector2(367.5, 227.5)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/AumbryWalls/East"]
+shape = SubResource("Rect_15x105")
+
+[node name="Visual" type="ColorRect" parent="Parts/AumbryWalls/East"]
+offset_left = -7.5
+offset_top = -52.5
+offset_right = 7.5
+offset_bottom = 52.5
+color = Color(0.26, 0.24, 0.22, 1)
+
+[node name="Back" type="StaticBody2D" parent="Parts/AumbryWalls"]
+position = Vector2(300, 272.5)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/AumbryWalls/Back"]
+shape = SubResource("Rect_150x15")
+
+[node name="Visual" type="ColorRect" parent="Parts/AumbryWalls/Back"]
+offset_left = -75.0
+offset_top = -7.5
+offset_right = 75.0
+offset_bottom = 7.5
+color = Color(0.26, 0.24, 0.22, 1)
+
+[node name="Ways" type="Node2D" parent="."]
+
+[node name="StairUp" type="Area2D" parent="Ways"]
+z_index = 6
+position = Vector2(0, 450)
+script = ExtResource("scene_trigger")
+target_location = "brackenmoor_abbey"
+target_spawn_point = "from_undercroft"
+require_input = false
+prompt_text = "Up to the archive"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ways/StairUp"]
+shape = SubResource("Rect_140x30")
+
+[node name="Sign" type="Label" parent="Ways/StairUp"]
+offset_left = -160.0
+offset_top = -40.0
+offset_right = 160.0
+offset_bottom = -18.0
+text = "The stair up to the archive"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="Ways/StairUp"]
+z_index = 10
+visible = false
+offset_left = -160.0
+offset_top = -66.0
+offset_right = 160.0
+offset_bottom = -42.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Up to the archive"
+horizontal_alignment = 1
 
 [node name="SpawnPoints" type="Node2D" parent="."]
 

@@ -1,5 +1,5 @@
 {
-  "_doc": "Gathering nodes (docs/PLAYER_SYSTEMS.md §4). Each holds `charges` takes; each take regrows after regrow_minutes on the game clock. Yield = base_yield + floor(skill / 35). owner: an npc key whose land or stores these are (taking without leave is theft, about the owner); stores: true for a cart or stock rather than land. requires_any_flag: the node exists only once one of those flags is true (story-gated). grade: the material's grade (0-100), the quality of what comes off it.",
+  "_doc": "Gathering nodes (docs/PLAYER_SYSTEMS.md §4). Each holds `charges` takes; each take regrows after regrow_minutes on the game clock. Yield = base_yield + floor(skill / 35). owner: an npc key whose land or stores these are (taking without leave is theft, about the owner); stores: true for a cart or stock rather than land. requires_any_flag: the node exists only once one of those flags is true (story-gated). grade: the material's grade (0-100), the quality of what comes off it. season: the season it can be taken in (any, autumn, winter, spring, summer); when absent, a herb takes its ingredient's season (resources/crafting/ingredients.json) and anything else grows all year.",
   "nodes": [
     {
       "id": "darkwood_trees",
@@ -127,7 +127,8 @@
       "minutes": 40,
       "base_yield": 1,
       "grade": 55,
-      "difficulty": 1.5
+      "difficulty": 1.5,
+      "season": "any"
     },
     {
       "id": "abbey_herb_garden",
@@ -143,7 +144,8 @@
       "base_yield": 1,
       "grade": 70,
       "difficulty": 1.0,
-      "owner": "anselm"
+      "owner": "anselm",
+      "season": "any"
     },
     {
       "id": "gate_flax",
@@ -158,7 +160,11 @@
       "minutes": 20,
       "base_yield": 2,
       "grade": 45,
-      "difficulty": 0.5
+      "difficulty": 0.5,
+      "season": [
+        "summer",
+        "autumn"
+      ]
     },
     {
       "id": "gregor_stock_charcoal",
@@ -176,6 +182,141 @@
       "difficulty": 0.0,
       "owner": "gregor",
       "stores": true
+    },
+    {
+      "id": "gate_yarrow",
+      "kind": "herb",
+      "name": "Yarrow by the gate road",
+      "location": "village_gate",
+      "item": "yarrow",
+      "skill": "herbcraft",
+      "tool": "",
+      "charges": 3,
+      "regrow_minutes": 2880,
+      "minutes": 20,
+      "base_yield": 1,
+      "grade": 50,
+      "difficulty": 0.8
+    },
+    {
+      "id": "gate_nettles",
+      "kind": "herb",
+      "name": "Nettle beds along the gate ditch",
+      "location": "village_gate",
+      "item": "nettle",
+      "skill": "herbcraft",
+      "tool": "",
+      "charges": 4,
+      "regrow_minutes": 1440,
+      "minutes": 15,
+      "base_yield": 2,
+      "grade": 45,
+      "difficulty": 0.5
+    },
+    {
+      "id": "gate_field_mushrooms",
+      "kind": "herb",
+      "name": "Field mushrooms in the gate meadow",
+      "location": "village_gate",
+      "item": "field_mushroom",
+      "skill": "herbcraft",
+      "tool": "",
+      "charges": 3,
+      "regrow_minutes": 2880,
+      "minutes": 20,
+      "base_yield": 2,
+      "grade": 45,
+      "difficulty": 0.8
+    },
+    {
+      "id": "darkwood_valerian",
+      "kind": "herb",
+      "name": "Valerian in the wet hollow",
+      "location": "forest_path",
+      "item": "valerian_root",
+      "skill": "herbcraft",
+      "tool": "",
+      "charges": 2,
+      "regrow_minutes": 4320,
+      "minutes": 30,
+      "base_yield": 1,
+      "grade": 55,
+      "difficulty": 1.2
+    },
+    {
+      "id": "darkwood_deathcap",
+      "kind": "herb",
+      "name": "Pale caps under the oaks",
+      "location": "forest_path",
+      "item": "deathcap",
+      "skill": "herbcraft",
+      "tool": "",
+      "charges": 2,
+      "regrow_minutes": 4320,
+      "minutes": 15,
+      "base_yield": 1,
+      "grade": 50,
+      "difficulty": 1.0
+    },
+    {
+      "id": "darkwood_nightshade",
+      "kind": "herb",
+      "name": "Nightshade on the forest edge",
+      "location": "forest_path",
+      "item": "nightshade_berries",
+      "skill": "herbcraft",
+      "tool": "",
+      "charges": 2,
+      "regrow_minutes": 2880,
+      "minutes": 15,
+      "base_yield": 1,
+      "grade": 45,
+      "difficulty": 0.8
+    },
+    {
+      "id": "ferrisford_watercress",
+      "kind": "herb",
+      "name": "Watercress in the ford shallows",
+      "location": "ferrisford",
+      "item": "watercress",
+      "skill": "herbcraft",
+      "tool": "",
+      "charges": 4,
+      "regrow_minutes": 1440,
+      "minutes": 20,
+      "base_yield": 2,
+      "grade": 50,
+      "difficulty": 0.5
+    },
+    {
+      "id": "ferrisford_river_mint",
+      "kind": "herb",
+      "name": "Water mint on the banks below the ferry",
+      "location": "ferrisford",
+      "item": "river_mint",
+      "skill": "herbcraft",
+      "tool": "",
+      "charges": 3,
+      "regrow_minutes": 1440,
+      "minutes": 15,
+      "base_yield": 1,
+      "grade": 45,
+      "difficulty": 0.5
+    },
+    {
+      "id": "ferrisford_willows",
+      "kind": "herb",
+      "name": "River willows at the ford",
+      "location": "ferrisford",
+      "item": "willow_bark",
+      "skill": "herbcraft",
+      "tool": "",
+      "charges": 3,
+      "regrow_minutes": 4320,
+      "minutes": 25,
+      "base_yield": 1,
+      "grade": 50,
+      "difficulty": 0.8
     }
   ]
 }

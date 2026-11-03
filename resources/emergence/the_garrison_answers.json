@@ -1,0 +1,131 @@
+{
+  "id": "the_garrison_answers",
+  "title": "The Garrison Answers",
+  "summary": "The player hurt or killed someone under the walls of Fort Ashguard or on the march it keeps. Whoever of Commander Lucan's garrison knows it answers by their own soul: march the stranger to the fort, warn them, look away, or take their side.",
+  "trigger": {
+    "event": {
+      "kind": [
+        "harm",
+        "kill"
+      ],
+      "location": [
+        "fort_ashguard",
+        "greystone_mines",
+        "brackenmoor_abbey"
+      ]
+    }
+  },
+  "roles": {
+    "victim": {
+      "from": "event_about",
+      "prefer": "nearest",
+      "optional": true
+    },
+    "keeper": {
+      "from": "faction:ashguard",
+      "min_fidelity": 0.6,
+      "prefer": "nearest"
+    }
+  },
+  "cooldown_days": 1,
+  "max_active": 2,
+  "expires_days": 2,
+  "location": "{keeper.location}",
+  "hooks": [
+    {
+      "id": "keeping_the_peace",
+      "type": "react",
+      "eligible_role": "keeper",
+      "trigger": "on_open",
+      "situation": "Fort Ashguard keeps the crown's peace on the march, and {player} broke it: {event.summary}. The garrison has heard, and the march is waiting to see whether Ashguard still means anything.",
+      "options": [
+        {
+          "id": "bring_them_in",
+          "label": "March the stranger to the fort to answer for it",
+          "appeal": {
+            "trust": -0.5,
+            "fear": -0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{keeper}",
+              "text": "Find {player} and march them to Fort Ashguard to answer to the commander for what they did."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{keeper}",
+              "dimension": "trust",
+              "delta": -12
+            }
+          ]
+        },
+        {
+          "id": "one_warning",
+          "label": "Give them one warning, in the commander's name",
+          "appeal": {
+            "respect": 0.4,
+            "trust": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{keeper}",
+              "text": "Tell {player} the garrison knows what they did, that this is the commander's one warning, and that next time it's the fort's cells."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{keeper}",
+              "dimension": "trust",
+              "delta": -5
+            }
+          ]
+        },
+        {
+          "id": "look_away",
+          "label": "Look the other way; the wages are late and it isn't a soldier's business",
+          "appeal": {
+            "fear": 0.5,
+            "affection": 0.3
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{keeper}",
+              "dimension": "fear",
+              "delta": 4
+            }
+          ]
+        },
+        {
+          "id": "take_their_side",
+          "label": "Side with the stranger: {victim} had it coming",
+          "harms": [
+            "{victim}"
+          ],
+          "appeal": {
+            "affection": 0.5,
+            "trust": 0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{keeper}",
+              "text": "Tell {player} that {victim} had it coming, and that the garrison won't be asking about it."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{keeper}",
+              "dimension": "trust",
+              "delta": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:keeper",
+    "expired"
+  ]
+}

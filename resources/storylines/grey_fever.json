@@ -8,6 +8,8 @@
     3
   ],
   "flags": {
+    "grey_anselm_sent_the_letters_east": "Brother Anselm told the stranger to carry his second set of the salt letters to the Capitol, and said he would swear to his own hand.",
+    "grey_anselm_asked_the_letters_back": "Brother Anselm asked the stranger to give his second set of the salt letters back to the undercroft, by his obedience to the abbot.",
     "grey_ague_named": "Sister Ysolde stood up in the Cathedral's chapter and named the coughing in the River Quarter for what it was: the Grey Fever, come back after twenty years.",
     "grey_letter_to_anselm": "Sister Ysolde wrote to Brother Anselm at Brackenmoor that the Grey Fever had come back, and begged him for the old receipt.",
     "grey_root_cornered": "The Guild's buyers bought up every bundle of fever-root in the Lantern Market, and its price went out of the River Quarter's reach.",
@@ -2079,6 +2081,110 @@
                 "rule_from_shadow"
               ],
               "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "letters_from_the_undercroft",
+      "act": 2,
+      "title": "Letters from the Undercroft",
+      "summary": "The stranger has found Brother Anselm's second set of the salt letters in the binding of a book of saints' days, and Anselm's own copy of the receipt with them. Anselm must decide whether his silence ends here, and the sister who wants the cure freed whether she will carry them.",
+      "location": "brackenmoor_abbey",
+      "requires": [
+        "salt_letters_second_set_found"
+      ],
+      "resolves_on": [
+        "grey_anselm_sent_the_letters_east",
+        "grey_anselm_asked_the_letters_back"
+      ],
+      "hooks": [
+        {
+          "id": "grey_anselm_finds_the_aumbry_open",
+          "type": "react",
+          "trigger": "idle",
+          "eligible": [
+            "anselm"
+          ],
+          "situation": "The aumbry grate in the undercroft stands open on its pawl, and the book of saints' days is cut along the spine. The second set is gone from where you hid it twenty years ago.",
+          "options": [
+            {
+              "id": "let_them_go_east",
+              "label": "Pray the hand that took them carries them east",
+              "serves": [
+                "atone_for_silence",
+                "name_the_profiteers"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "anselm",
+                  "text": "If the stranger has the letters from the undercroft, tell them to carry them east to Sister Ysolde, and that you will swear to your hand."
+                },
+                {
+                  "type": "shift_want",
+                  "npc": "anselm",
+                  "want": "atone_for_silence",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "ask_for_them_back",
+              "label": "Ask for them back, gently, by the abbot's word",
+              "serves": [
+                "obey_the_abbot",
+                "keep_the_archive_whole"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "anselm",
+                  "text": "If the stranger has the letters from the undercroft, ask for them back by the abbot's word, gently, and do not threaten."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "grey_ysolde_and_the_letters",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "ysolde"
+          ],
+          "situation": "If the stranger comes to the Cathedral with Brackenmoor's salt letters, the chapter's mercy of the Grey Year is written in them: who sold the cure, and at what price.",
+          "options": [
+            {
+              "id": "to_the_chapter",
+              "label": "Ask the stranger to lay them before the chapter with you",
+              "serves": [
+                "expose_the_rationing",
+                "free_the_cure"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "ysolde",
+                  "text": "If the stranger brings the salt letters, ask them to lay the letters before the chapter with you at your side."
+                }
+              ]
+            },
+            {
+              "id": "keep_them_safe",
+              "label": "Ask the stranger to keep them hidden until the salt is in hand",
+              "serves": [
+                "heal_the_sick",
+                "keep_her_vows"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "ysolde",
+                  "text": "If the stranger brings the salt letters, ask them to keep the letters hidden until the salt for the sick is in hand."
+                }
+              ]
             }
           ]
         }

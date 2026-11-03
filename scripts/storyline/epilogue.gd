@@ -457,8 +457,13 @@ static func _judge(ctx: Dictionary, intention: Dictionary, now: int) -> Dictiona
 	return {"id": str(intention.get("id", "")), "goal": goal, "stance": stance, "day": int(intention.get("day", 1)),
 		"verdict": verdict, "score": score, "evidence": evidence, "text": text}
 
+## Harm to a child weighs three times any other deed; a blow struck back in self-defence weighs nothing
 static func _deed_sign(ev: Dictionary) -> int:
 	var kind = str(ev.get("kind", ""))
+	if kind in ["harm", "kill"] and ev.get("victim_minor", false):
+		return -3
+	if kind in ["harm", "kill"] and ev.get("self_defence", false):
+		return 0
 	if kind == "promise":
 		return 1 if str(ev.get("status", "")) == "kept" else (-1 if str(ev.get("status", "")) == "broken" else 0)
 	if kind in POSITIVE_KINDS:

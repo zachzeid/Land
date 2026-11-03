@@ -600,6 +600,14 @@ func get_converse_denial_reason(effect: Dictionary) -> String:
 		return "Agency for converse (%s) does not grant %s" % [get_converse_grant_source(), effect_type]
 	return _effect_line_denial(effect)
 
+## Why this soul may not make a trade action (StorylineDirector.TRADE_ACTIONS: return_pack, teach)
+## in conversation ("" when it may). Every soul may answer the player's ask; Lines still refuse it
+func get_trade_denial_reason(effect: Dictionary) -> String:
+	var rule = _forbidding_rule("hook:" + CONVERSE)
+	if rule != "":
+		return "line 'hook:converse': %s" % rule
+	return _effect_line_denial(effect)
+
 ## Why this soul may not cause this effect while working a personal step ("" when it may):
 ## personal-scope types only, only those the step lists, and no Lines-I-Will-Not-Cross violation
 func get_personal_denial_reason(effect: Dictionary, step: Dictionary) -> String:

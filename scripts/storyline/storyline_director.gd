@@ -1013,6 +1013,16 @@ const CONVERSE_SHAPES = {
 	"shift_fixed_point": '{"type":"shift_fixed_point","point":P,"days":-3..3 or "cancel":true,"reason":"why, in-world"}',
 	"spread_event": '{"type":"spread_event","event":E,"to":[K] or ["*"],"via":"how it travels"}',
 }
+## Trade actions answer the player's own ask in conversation (docs/PLAYER_SYSTEMS.md §2): any soul may
+## make them where they apply (it holds the player's pack; the ask is its trade), and its Lines
+## (hook:converse, effect:<type>) still refuse them. Asked, demanded or offered coin, the NPC decides:
+## a thief may give the pack back, sell it, refuse or deny it (no action); a teacher may teach for coin
+## or a favour, or not. price is in the smallest coin (Inventory.spend_coin)
+const TRADE_ACTIONS = ["return_pack", "teach"]
+const TRADE_SHAPES = {
+	"return_pack": '{"type":"return_pack","price":N}',
+	"teach": '{"type":"teach","skill":S,"price":N} or {"type":"teach","skill":S,"favour":true}',
+}
 ## Hard budget for the agency block (~4 chars per token). Caps tighten level by level until it fits
 const AGENCY_BLOCK_CHAR_BUDGET = 3400
 const AGENCY_CAP_LEVELS = [
@@ -1051,8 +1061,9 @@ func _build_agency_block(key: String, soul, reach: Dictionary, ranked: Array, fl
 		block += (", %s.\n" % world_state.get_time_string()) if world_state and world_state.has_method("get_time_string") else ".\n"
 		block += "The world: %s\n" % " ".join(registry.get_world_rules())
 	var grants: Array = soul.get_converse_grants()
+	var trade = _trade_block(key, soul)
 	if grants.is_empty():
-		block += "You act through words alone right now: leave \"actions\" empty.\n"
+		block += "You act through words alone right now: leave \"actions\" empty%s.\n" % (" except as below" if trade != "" else "")
 	else:
 		block += "Answer however you truly would. Only if what was said moves you to act, add \"actions\" (at most %d, usually none), using only these shapes:\n" % CONVERSATION_ACTION_BUDGET
 		for effect_type in grants:
@@ -1085,11 +1096,97 @@ func _build_agency_block(key: String, soul, reach: Dictionary, ranked: Array, fl
 		if not people.is_empty():
 			block += "People by key: %s\n" % ", ".join(people)
 		block += "Nothing happens instantly at a distance: word to someone far away arrives when a rider could carry it.\n"
+	block += trade
 	if not committable.is_empty():
 		block += "If the player GENUINELY commits to one of these (not a joke, not a lie you saw through), put its id in \"commitments\":\n"
 		for flag in committable.slice(0, caps.commit):
 			block += "- %s: %s\n" % [flag, _clip(reach.player_flags[flag].text, 90)]
 	return block + "\n"
+
+## What this NPC could do for the player's own ask (TRADE_ACTIONS), or "" when nothing applies
+func _trade_block(key: String, soul) -> String:
+	var lines: Array = []
+	var inv = get_node_or_null("/root/Inventory")
+	if inv and inv.has_method("packs_held_by") and soul.get_trade_denial_reason({"type": "return_pack"}) == "":
+		var held: Array = inv.packs_held_by(key)
+		if not held.is_empty():
+			var how = "took" if held.any(func(p): return str(p.get("state", "")) == "taken") else "kept"
+			lines.append("You %s the stranger's pack where they fell. Only if you choose to give it back (asked, demanded or bought), add %s (N = what you ask, 0 for nothing). You may refuse or deny it instead." % [how, TRADE_SHAPES.return_pack])
+	var teaching = _teaching()
+	if teaching and soul.get_trade_denial_reason({"type": "teach"}) == "":
+		var offers: Array = []
+		for skill in teaching.trades_of(key):
+			if teaching.lesson_denial(key, str(skill)) == "":
+				var cost = int(teaching.usual_cost(key, str(skill)))
+				offers.append("%s (your usual fee N=%d, %s)" % [skill, cost, _coin_text(cost)])
+		if not offers.is_empty():
+			lines.append("You could teach the stranger %s; a lesson takes %s. Only if you choose to, add %s." % [", ".join(offers), _format_minutes(int(teaching.lesson_minutes())), TRADE_SHAPES.teach])
+	return "" if lines.is_empty() else "\n".join(lines) + "\n"
+
+## A trade action, checked against the soul's Lines and the world, then done.
+## Returns {ok, reason, effect} (effect carries what happened: packs back, lesson)
+func _apply_trade_action(key: String, soul, raw: Dictionary) -> Dictionary:
+	var e: Dictionary = raw.duplicate(true)
+	var out = {"ok": false, "reason": "", "effect": e}
+	if soul == null:
+		out.reason = "soul: no SOUL.md for %s" % key
+		return out
+	var denial = soul.get_trade_denial_reason(e)
+	if denial != "":
+		out.reason = "soul: " + denial
+		return out
+	var inv = get_node_or_null("/root/Inventory")
+	var price = 0
+	var priced = e.has("price")
+	if priced:
+		if not (e.price is int or e.price is float) or int(e.price) < 0:
+			out.reason = "vocabulary: price is a whole number of coin, 0 or more"
+			return out
+		price = int(e.price)
+	e["price"] = price
+	match str(e.type):
+		"return_pack":
+			if inv == null or not inv.has_method("packs_held_by") or inv.packs_held_by(key).is_empty():
+				out.reason = "truth: %s holds no pack of the player's" % key
+				return out
+			if price > 0 and not inv.spend_coin(price):
+				out.reason = "coin: the player cannot pay %d" % price
+				return out
+			e["packs"] = inv.recover_from(key, "sold" if price > 0 else "given")
+		"teach":
+			var teaching = _teaching()
+			var skill = str(e.get("skill", "")).strip_edges().to_lower()
+			e["skill"] = skill
+			if teaching == null:
+				out.reason = "no teaching"
+				return out
+			var why = teaching.lesson_denial(key, skill)
+			if why != "":
+				out.reason = "teach: " + why
+				return out
+			var favour = e.get("favour", false) == true
+			if not priced and not favour:
+				price = int(teaching.usual_cost(key, skill))
+				e["price"] = price
+			var lesson: Dictionary = teaching.give_lesson(key, skill, "favour" if favour else "coin", 0 if favour else price)
+			if not lesson.ok:
+				out.reason = "teach: " + str(lesson.reason)
+				return out
+			e["favour"] = favour
+			e["minutes"] = int(lesson.minutes)
+	out.ok = true
+	out.effect = e
+	print("[StorylineDirector] %s: %s" % [key, e])
+	return out
+
+func _teaching():
+	var stats = get_node_or_null("/root/PlayerStats")
+	return stats.get_teaching() if stats and stats.has_method("get_teaching") else null
+
+## Coin as the purse names it (Inventory.format_coin)
+func _coin_text(amount: int) -> String:
+	var inv = get_node_or_null("/root/Inventory")
+	return str(inv.format_coin(amount)) if inv and inv.has_method("format_coin") else str(amount)
 
 ## Committable player flags, the beats nearest this NPC (then most recent) first
 func _rank_player_flags(reach: Dictionary) -> Array:
@@ -1194,6 +1291,13 @@ func apply_conversation_actions(npc: String, actions: Array, commitments: Array 
 		index += 1
 		if index > CONVERSATION_ACTION_BUDGET:
 			dropped.append({"effect": raw, "reason": "budget: at most %d actions per reply" % CONVERSATION_ACTION_BUDGET})
+			continue
+		if raw is Dictionary and str(raw.get("type", "")) in TRADE_ACTIONS:
+			var traded = _apply_trade_action(key, soul, raw)
+			if traded.ok:
+				applied.append(traded.effect)
+			else:
+				dropped.append({"effect": traded.effect, "reason": traded.reason})
 			continue
 		var verdict = _check_conversation_action(key, soul, raw, reach, resolving)
 		if not verdict.ok:

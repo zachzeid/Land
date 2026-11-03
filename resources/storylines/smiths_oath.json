@@ -8,6 +8,7 @@
     3
   ],
   "flags": {
+    "oath_davin_owned_the_tiles": "Davin owned to the stranger that he poured the spare lot tiles in Bjorn's mould, for Gregor's silver mark, not knowing what they were for.",
     "oath_light_tile_weighed": "Bjorn weighed the lot tiles in his palm after the drawing and said aloud that Elena's tile was light: it had been filed and recut.",
     "oath_tiles_from_my_forge": "Bjorn knew the second set of lot tiles at a glance: poured from his own leftover iron, in his own mould, while he was away at market.",
     "oath_gregor_faced": "Bjorn stood in Gregor's shop and asked him, man to man, who had paid for a second set of lot tiles to be poured at his forge.",
@@ -3160,6 +3161,104 @@
                   "type": "agenda",
                   "npc": "davin",
                   "text": "Ask the stranger who gave Varn his orders."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_hand_at_the_mould",
+      "act": 2,
+      "title": "The Hand at the Mould",
+      "summary": "The stranger has worked out from Bjorn's own tally and mould that the spare tiles were poured by someone who learned that forge at Bjorn's side. Davin is at Old Maud's. What he says when it is put to him, and what Bjorn does when he hears it, are theirs to choose.",
+      "location": "healer_hut",
+      "requires": [
+        "spare_tiles_traced_to_davin",
+        "davin_found"
+      ],
+      "resolves_on": [
+        "oath_davin_owned_the_tiles"
+      ],
+      "hooks": [
+        {
+          "id": "oath_davin_owns_the_pour",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "If the stranger comes to Maud's and says the spare tiles were poured in Bjorn's mould by a hand that knew his forge, there is only one such hand. Yours.",
+          "options": [
+            {
+              "id": "own_it",
+              "label": "Own it: you poured them for Gregor's silver and never knew what they were for",
+              "serves": [
+                "atone_for_running",
+                "see_bjorn"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "If the stranger names the spare tiles as your pour, own it: Gregor paid a silver mark, and you did not know they were for the lot."
+                }
+              ]
+            },
+            {
+              "id": "deny_it",
+              "label": "Say a smith's boy pours what he is told, and keep to the loft",
+              "serves": [
+                "stay_hidden",
+                "never_go_back"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "If the stranger asks about the spare tiles, say a smith's boy pours what he is told and knows nothing more."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_hears_whose_pour",
+          "type": "react",
+          "trigger": "on_flag:oath_davin_owned_the_tiles",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "If the stranger tells you Davin owned the spare tiles, your boy poured them in your mould while you were at market, and Gregor paid him for it.",
+          "options": [
+            {
+              "id": "to_the_boy",
+              "label": "Go to Maud's with his hammer, not your fists",
+              "serves": [
+                "bring_davin_home",
+                "atone_for_the_steel"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "If the stranger says Davin poured the spare tiles, go to Old Maud's with his small hammer, and do not raise your voice."
+                }
+              ]
+            },
+            {
+              "id": "to_the_payer",
+              "label": "Ask who paid him, and take it to Gregor's door",
+              "serves": [
+                "face_gregor",
+                "read_the_tiles"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "If the stranger says Davin poured the spare tiles, ask who paid him, and take it to Gregor's door yourself."
                 }
               ]
             }

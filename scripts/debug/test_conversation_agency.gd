@@ -112,7 +112,7 @@ func _test_registry():
 	_check("key <-> npc_id both ways", registry.get_npc_key("corwin_magistrate_001") == "corwin" and registry.get_npc_id("rook") == "rook_broker_001" and registry.get_npc_key("Gregor") == "gregor")
 	_check("Unknown NPCs give empty answers", registry.get_npc_key("marta_baker_001") == "" and registry.get_npc("nobody").is_empty())
 	_check("Home and scene", registry.get_npc_home("edric") == "capitol_palace" and registry.get_npc_scene("varn") == "res://scenes/npcs/varn_bandit.tscn")
-	_check("26 locations with built, region and travel_point", registry.get_location_ids().size() == 26 and registry.is_built("thornhaven_tavern")
+	_check("28 locations with built, region and travel_point", registry.get_location_ids().size() == 28 and registry.is_built("thornhaven_tavern")
 		and registry.get_location_ids().all(func(id): return registry.is_built(id) == (registry.get_location(id).get("built", false) == true)) and registry.get_region("capitol_docks") == "the_capitol" and registry.is_travel_point("ferrisford"))
 	_check("Direct route minutes, -1 for non-neighbours", registry.get_route_minutes("thornhaven_town_square", "thornhaven_tavern") == 1
 		and registry.get_route_minutes("thornhaven_tavern", "old_mill") == -1)

@@ -67,7 +67,8 @@ var inventory_provider: Object = null
 var _weapons: Dictionary = {}
 var _armour: Dictionary = {}
 var _state: Dictionary = {}          # instance id -> fighter state
-var _fights: Dictionary = {}         # "<id>|<id>" -> {a, b, names, player, started, last, hits, damage, harmed}
+var _fights: Dictionary = {}         # "<id>|<id>" -> {aggressor, a, b, names, player, started, last, hits, damage, harmed}
+var _first_strikes: Dictionary = {}  # "<id>|<id>" -> {by, at, seen_by, names, player}: who started it
 var _clock: float = -1.0
 
 func _ready() -> void:
@@ -91,7 +92,8 @@ func get_armour_def(id: String) -> Dictionary:
 # =============================================================================
 
 ## action: light | heavy | shoot (strikes), block | parry (raise the guard; a parry is a guard raised
-## in time), dodge. target null: the first fighter in the facing arc, passing through minors.
+## in time), dodge. target null: the first fighter in the facing arc (an NPC's swing passes through
+## minors; the player's does not, docs/PLAYER_SYSTEMS.md §1.4).
 ## Returns the resolved hit, {} for a swing that met nothing, {"refused": reason} when held back
 ## (nothing spent), {"action", "ok"} for block/parry/dodge, {"action": "shoot", "projectile"} for a shot
 func attack(attacker: Node, target: Node, action: String) -> Dictionary:
@@ -116,14 +118,14 @@ func attack(attacker: Node, target: Node, action: String) -> Dictionary:
 		action = "shoot"
 	elif action == "shoot":
 		return _refuse(attacker, action, "no_ranged_weapon")
-	if target != null and not can_target_node(target):
+	if target != null and not can_target_node(target, attacker):
 		return _refuse(attacker, action, "minor")
 	var ammo = str(weapon.get("ammo", ""))
 	if action == "shoot" and ammo != "" and _is_player(attacker) and not _inventory_has(ammo):
 		return _refuse(attacker, action, "no_ammo")
 	if action != "shoot" and target == null:
 		var found = targets_in_arc(attacker, weapon)
-		var open = found.filter(func(n): return can_target_node(n))
+		var open = found.filter(func(n): return can_target_node(n, attacker))
 		if not found.is_empty() and open.is_empty():
 			return _refuse(attacker, action, "minor")
 		target = open[0] if not open.is_empty() else null
@@ -131,6 +133,8 @@ func attack(attacker: Node, target: Node, action: String) -> Dictionary:
 	if not _spend(attacker, cost):
 		return _refuse(attacker, action, "stamina")
 	st.blocking = false
+	if target != null:
+		_mark_first_strike(attacker, target)  # a swing that misses still starts the fight
 	st.ready_at = now() + (1.0 / maxf(float(weapon.get("speed", 1.0)), 0.1)) * (HEAVY_TIME if action == "heavy" else 1.0)
 	if action == "shoot":
 		if ammo != "" and _is_player(attacker):
@@ -156,7 +160,7 @@ func resolve_hit(attacker: Node, target: Node, weapon: Dictionary, action: Strin
 	var result = {"damage": 0.0, "type": _main_type(by_type), "staggered": false, "killed": false,
 		"blocked": false, "parried": false, "dodged": false, "guard_broken": false, "poise_damage": 0.0,
 		"raw": raw, "broke": false, "attacker_staggered": false, "action": action, "weapon": str(weapon.get("id", "fists"))}
-	if target == null or not can_target_node(target):
+	if target == null or not can_target_node(target, attacker):
 		return result
 	var ts = _state_of(target)
 	var t = now()
@@ -213,18 +217,32 @@ func resolve_hit(attacker: Node, target: Node, weapon: Dictionary, action: Strin
 	_after_hit(attacker, target, weapon, action, result)
 	return result
 
-## Never targets a minor (WorldRegistry.is_minor): docs/PLAYER_SYSTEMS.md §1.4
-func can_target(target_key: String) -> bool:
-	var registry = get_node_or_null("/root/WorldRegistry")
-	return not (registry and registry.has_method("is_minor") and registry.is_minor(target_key))
+## docs/PLAYER_SYSTEMS.md §1.4: the player may strike anyone, children included (at the heaviest
+## cost: the deed carries victim_minor). NPCs, creatures and crowds never target a minor
+## (WorldRegistry.is_minor). attacker_key "" is anyone but the player
+func can_target(target_key: String, attacker_key: String = "") -> bool:
+	if attacker_key == "player":
+		return target_key != "" and target_key != "player"
+	return not is_minor_key(target_key)
 
-## The body itself: alive, not marked minor, and its key not a minor
-func can_target_node(node: Node) -> bool:
+func is_minor_key(key: String) -> bool:
+	var registry = get_node_or_null("/root/WorldRegistry")
+	return key != "" and key != "player" and registry != null and registry.has_method("is_minor") and registry.is_minor(key)
+
+## The body itself: alive, and (unless the player is the one striking) not a minor
+func can_target_node(node: Node, attacker: Node = null) -> bool:
 	if node == null or not is_instance_valid(node) or node.get("is_alive") == false:
 		return false
-	if node.get("minor") == true or bool(profile_of(node).get("minor", false)):
+	if _is_player(attacker):
+		return node != attacker
+	if is_minor_node(node):
 		return false
 	return can_target(fighter_key(node))
+
+func is_minor_node(node: Node) -> bool:
+	if node == null or not is_instance_valid(node):
+		return false
+	return node.get("minor") == true or bool(profile_of(node).get("minor", false)) or is_minor_key(fighter_key(node))
 
 ## Give a body a resolved hit. The player's goes to PlayerStats.damage; a body with
 ## take_combat_hit(result, attacker) handles its own; anyone else uses Combat's plain pool.
@@ -541,7 +559,9 @@ func _after_hit(attacker: Node, target: Node, weapon: Dictionary, action: String
 	if result.killed:
 		_finish(_fight_key(attacker, target), "killed", {"killed": tkey, "by": fighter_key(attacker)})
 
-## The player struck a person: `harm` about them, seen by whoever has line of sight (and the struck)
+## The player struck a person: `harm` about them, seen by whoever has line of sight (and the struck).
+## A child carries victim_minor (the heaviest weight); a blow struck back at someone who went for the
+## player first carries self_defence, known to whoever saw that first blow (and the one who struck it)
 func _record_harm(attacker: Node, target: Node, weapon: Dictionary) -> String:
 	var pe = get_node_or_null("/root/PlayerEvents")
 	if pe == null:
@@ -552,7 +572,59 @@ func _record_harm(attacker: Node, target: Node, weapon: Dictionary) -> String:
 	if not key in witnesses:
 		witnesses.append(key)
 	var how = "bare-handed" if str(weapon.get("id")) == "fists" else "with a %s" % str(weapon.get("name", "weapon"))
-	return pe.record("harm", "struck %s %s" % [display_name(target), how], [key], {"witnesses": witnesses})
+	var opts = {"witnesses": witnesses, "victim_minor": is_minor_node(target)}
+	opts.merge(self_defence_opts(attacker, target), true)
+	return pe.record("harm", "struck %s %s" % [display_name(target), how], [key], opts)
+
+## {self_defence, self_defence_seen_by} for the player's deed against `target` ({} when the player
+## struck first, or there is no player in it). Children never strike first, so never for a minor
+func self_defence_opts(a: Node, b: Node) -> Dictionary:
+	var player = a if _is_player(a) else (b if _is_player(b) else null)
+	var other = b if player == a else a
+	if player == null or other == null or is_minor_node(other):
+		return {}
+	var first = first_strike(a, b)
+	if first.is_empty() or str(first.by) == "player":
+		return {}
+	var seen: Array = first.get("seen_by", []).duplicate()
+	if not str(first.by) in seen:
+		seen.append(str(first.by))
+	return {"self_defence": true, "self_defence_seen_by": seen}
+
+## The same, by the other fighter's key (CombatAI records kills from an NPC body that only knows keys)
+func self_defence_against(opponent_key: String) -> Dictionary:
+	for fk in _first_strikes:
+		var f: Dictionary = _first_strikes[fk]
+		if f.get("player", false) and opponent_key in f.get("names", []):
+			if str(f.by) == "player" or is_minor_key(opponent_key):
+				return {}
+			var seen: Array = f.get("seen_by", []).duplicate()
+			if not str(f.by) in seen:
+				seen.append(str(f.by))
+			return {"self_defence": true, "self_defence_seen_by": seen}
+	return {}
+
+## Who struck first between two bodies: {by (fighter key), at, seen_by (npc ids that saw the first
+## blow), names, player} or {}
+func first_strike(a: Node, b: Node) -> Dictionary:
+	return _first_strikes.get(_fight_key(a, b), {}).duplicate(true)
+
+## The first blow (landed or not) between two bodies is remembered with who saw it. A player fight
+## asks Witnesses who could see the one who struck it
+func _mark_first_strike(attacker: Node, target: Node) -> void:
+	var key = _fight_key(attacker, target)
+	if _first_strikes.has(key) and (_fights.has(key) or now() - float(_first_strikes[key].at) <= FIGHT_TIMEOUT):
+		return
+	var player = _is_player(attacker) or _is_player(target)
+	var by = fighter_key(attacker)
+	# Someone standing up for the player's victim answers the player's violence; they did not start it
+	if player and not _is_player(attacker) and str(attacker.get("combat_side")) == "defend":
+		by = "player"
+	var seen: Array = []
+	if player and by != "player" and attacker is Node2D and attacker.is_inside_tree():
+		seen = Witnesses.in_sight(_scene_root_of(attacker), attacker.global_position, {"exclude": [fighter_key(attacker)]})
+	_first_strikes[key] = {"by": by, "at": now(), "seen_by": seen,
+		"names": [fighter_key(attacker), fighter_key(target)], "player": player}
 
 ## A person (roster, generic, or an NPC body), not a creature: striking one is a deed
 func is_person(node: Node) -> bool:
@@ -577,7 +649,8 @@ func display_name(node: Node) -> String:
 func _note_fight(a: Node, b: Node) -> Dictionary:
 	var key = _fight_key(a, b)
 	if not _fights.has(key):
-		_fights[key] = {"a": weakref(a), "b": weakref(b), "names": [fighter_key(a), fighter_key(b)],
+		_mark_first_strike(a, b)  # a blow that came by another road (a projectile, resolve_hit directly)
+		_fights[key] = {"aggressor": str(_first_strikes[key].by), "a": weakref(a), "b": weakref(b), "names": [fighter_key(a), fighter_key(b)],
 			"player": _is_player(a) or _is_player(b), "started": now(), "last": now(), "hits": 0, "damage": {}, "harmed": {}}
 	var f = _fights[key]
 	f.last = now()
@@ -587,7 +660,7 @@ func _note_fight(a: Node, b: Node) -> Dictionary:
 func _finish(key: String, reason: String, extra: Dictionary = {}) -> void:
 	var f = _fights[key]
 	_fights.erase(key)
-	var info = {"participants": f.names, "player": f.player, "reason": reason, "hits": f.hits,
+	var info = {"participants": f.names, "player": f.player, "reason": reason, "hits": f.hits, "aggressor": str(f.get("aggressor", "")),
 		"damage": f.damage, "harm_events": f.harmed.values(), "started": f.started, "ended": now()}
 	info.merge(extra, true)
 	fight_ended.emit(info)
@@ -623,6 +696,7 @@ func set_test_clock(t: float) -> void:
 func reset() -> void:
 	_state.clear()
 	_fights.clear()
+	_first_strikes.clear()
 
 var _play_time: float = 0.0
 
@@ -644,6 +718,9 @@ func _process(delta: float) -> void:
 		var gone = f.a.get_ref() == null or f.b.get_ref() == null
 		if gone or t - float(f.last) > FIGHT_TIMEOUT:
 			_finish(key, "gone" if gone else "parted")
+	for key in _first_strikes.keys():
+		if not _fights.has(key) and t - float(_first_strikes[key].at) > FIGHT_TIMEOUT * 2.0:
+			_first_strikes.erase(key)
 
 func _state_of(node: Node) -> Dictionary:
 	var id = node.get_instance_id()

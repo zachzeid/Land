@@ -299,7 +299,7 @@ def validate_population():
                 err(str(names.relative_to(ROOT)), f"region '{r['id']}' needs at least 20 names")
 
 
-ROLE_SOURCES = ("event_witness", "event_about", "heard_event", "near_player", "trigger_match", "crowd_target", "crowd_aggrieved", "crowd_protector")
+ROLE_SOURCES = ("event_witness", "event_about", "heard_event", "near_player", "near_event", "trigger_match", "crowd_target", "crowd_aggrieved", "crowd_protector")
 
 
 def run_validator_plugins(souls, flags_known):
@@ -402,12 +402,19 @@ def validate_emergence(path, souls, flags_known):
     roles = t.get("roles", {})
     for rname, r in roles.items():
       for src in (r.get("from") if isinstance(r.get("from"), list) else [r.get("from", "")]):
-        if not (src in ROLE_SOURCES or src.startswith("faction:") or src.startswith("npc:")):
+        if not (src in ROLE_SOURCES or src.startswith("faction:") or src.startswith("npc:") or src.startswith("archetype:")):
             err(where, f"role '{rname}' from '{src}' unknown")
+        if src.startswith("archetype:") and not (ROOT / "resources/generics/archetypes" / f"{src[10:]}.md").exists():
+            err(where, f"role '{rname}' archetype '{src[10:]}' unknown")
         if src.startswith("npc:") and src[4:] not in NPC_KEYS:
             err(where, f"role '{rname}' npc '{src[4:]}' unknown")
         if src.startswith("faction:") and src[8:] not in {f["id"] for f in WORLD.get("factions", [])}:
             err(where, f"role '{rname}' faction '{src[8:]}' unknown")
+      if "near_event" in r and r["near_event"] not in ("region", "area"):
+          err(where, f"role '{rname}' near_event must be region|area")
+    for field in ("victim_minor", "self_defence"):
+        if ev and field in ev and not isinstance(ev[field], bool):
+            err(where, f"trigger event '{field}' must be true or false")
     for h in t.get("hooks", []):
         hw = f"{where}:{h.get('id')}"
         if h.get("type") not in HOOK_TYPES:

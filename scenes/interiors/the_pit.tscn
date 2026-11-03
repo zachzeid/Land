@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
 [ext_resource type="Script" path="res://scripts/world/story_item.gd" id="3_story_item"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="5_dialogue_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="6_debug_interaction_panel"]
 [ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="7_debug_console"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="8_scene_trigger"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1024x40"]
 size = Vector2(1024, 40)
@@ -42,6 +43,9 @@ size = Vector2(16, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mouth"]
 size = Vector2(140, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_old_fall"]
+size = Vector2(120, 50)
 
 [node name="ThePit" type="Node2D"]
 
@@ -749,6 +753,54 @@ text = "[E] Climb to the ridge trail"
 horizontal_alignment = 1
 
 
+[node name="OldFall" type="Area2D" parent="."]
+z_index = 6
+position = Vector2(400, -420)
+script = ExtResource("8_scene_trigger")
+target_location = "old_workings"
+target_spawn_point = "from_pit"
+prompt_text = "Climb up through the old fall"
+requires_flag = "old_workings_way_found"
+closed_text = "The back of the seam ends in a fall of old rock, timbers crushed flat in it. Faint through it comes the drip of other galleries. From this side you know of no way through."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OldFall"]
+shape = SubResource("RectangleShape2D_old_fall")
+
+[node name="Visual" type="ColorRect" parent="OldFall"]
+offset_left = -60.0
+offset_top = -25.0
+offset_right = 60.0
+offset_bottom = 25.0
+color = Color(0.22, 0.2, 0.18, 1)
+
+[node name="Sign" type="Label" parent="OldFall"]
+z_index = 5
+offset_left = -120.0
+offset_top = 28.0
+offset_right = 120.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "The old fall"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="OldFall"]
+z_index = 10
+visible = false
+offset_left = -150.0
+offset_top = -54.0
+offset_right = 150.0
+offset_bottom = -30.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Climb up through the old fall"
+horizontal_alignment = 1
+
+
 [node name="SpawnPoints" type="Node2D" parent="."]
 
 [node name="default" type="Marker2D" parent="SpawnPoints"]
@@ -756,6 +808,23 @@ position = Vector2(0, 320)
 
 [node name="from_travel" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(0, 370)
+
+[node name="from_old_workings" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(400, -330)
+
+[node name="CreatureSpawns" type="Node2D" parent="."]
+
+[node name="SeamWest" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(-400, -380)
+
+[node name="SpoilEast" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(420, 390)
+
+[node name="StrawCorner" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(-400, 390)
+
+[node name="BehindTheCrate" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(200, 260)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.9, 0.9)

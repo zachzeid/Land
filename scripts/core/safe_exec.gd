@@ -26,3 +26,12 @@ static func execute(path: String, args: Array, output: Array = [], read_stderr: 
 			push_error("[SafeExec] Refused to run %s: an argument holds a shell character" % path.get_file())
 			return -1
 	return OS.execute(path, args, output, read_stderr)
+
+## OS.execute_with_pipe under the same check: {} (nothing run) when any argument is unsafe
+## Text written to the process's stdin never passes through a shell, so only the arguments matter
+static func execute_with_pipe(path: String, args: Array, blocking: bool = true) -> Dictionary:
+	for arg in args:
+		if not is_safe(arg):
+			push_error("[SafeExec] Refused to run %s: an argument holds a shell character" % path.get_file())
+			return {}
+	return OS.execute_with_pipe(path, args, blocking)

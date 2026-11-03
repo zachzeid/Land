@@ -846,6 +846,27 @@ script = ExtResource("7_world_solid")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/East"]
 shape = SubResource("RectangleShape2D_32x1024")
 
+[node name="CreatureSpawns" type="Node2D" parent="."]
+editor_description = "Deep wood off the paths, away from the gate spawn: the pines west and east, the ferns, the south wood (scripts/combat/creature_spawner.gd; checked against the walls by scripts/debug/test_creature_spawns.gd)"
+
+[node name="PinesWest" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(-300, -180)
+
+[node name="PinesEast" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(330, -60)
+
+[node name="NorthEastWood" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(300, -330)
+
+[node name="Ferns" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(-320, 250)
+
+[node name="SouthWood" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(-150, 380)
+
+[node name="WetHollowEdge" type="Marker2D" parent="CreatureSpawns"]
+position = Vector2(340, 420)
+
 [node name="SpawnPoints" type="Node2D" parent="."]
 
 [node name="default" type="Marker2D" parent="SpawnPoints"]

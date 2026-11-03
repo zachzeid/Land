@@ -442,6 +442,50 @@ func reclaim_from(npc_key: String) -> int:
 			print("[Inventory] %s handed back %s" % [key, pack_id])
 	return back
 
+## A pack an NPC took (or holds) comes back to the player: the holder chose in conversation to give
+## or sell it back (StorylineDirector's return_pack action, decided by their soul), or the player took
+## it back by theft or force (steal_pack_back, a `kill` deed about the holder). how: given | sold |
+## stolen | force. Returns how many packs came back
+func recover_from(npc_key: String, how: String = "given") -> int:
+	var key = _key(npc_key)
+	var back = 0
+	for pack_id in packs.keys():
+		var pack: Dictionary = packs[pack_id]
+		if pack.state in ["taken", "held"] and key != "" and _key(str(pack.holder)) == key:
+			_return_contents(pack)
+			packs.erase(pack_id)
+			back += 1
+			print("[Inventory] %s back from %s (%s)" % [pack_id, key, how])
+	return back
+
+## Packs this NPC has (taken or kept), copies
+func packs_held_by(npc_key: String) -> Array:
+	var key = _key(npc_key)
+	return packs.values().filter(func(p): return p.state in ["taken", "held"] and key != "" and _key(str(p.holder)) == key) \
+		.map(func(p): return p.duplicate(true))
+
+## Take a pack back from the NPC who took it, by stealth: a `theft` deed about them (it is theirs now,
+## as they see it), witnessed by whoever has line of sight (the holder too, unless the player is
+## unseen). Returns {ok, event_id, witnesses, reason}
+func steal_pack_back(npc_key: String, scene_root: Node = null, at = null) -> Dictionary:
+	var key = _key(npc_key)
+	var held = packs_held_by(key)
+	if held.is_empty():
+		return {"ok": false, "event_id": "", "witnesses": [], "reason": "%s has no pack of yours" % _name(key)}
+	var seen: Array = []
+	var pos = at if at is Vector2 else (_player_position(scene_root) if scene_root else null)
+	if scene_root and is_instance_valid(scene_root) and pos is Vector2:
+		var stats = get_node_or_null("/root/PlayerStats")
+		var stealth = float(stats.get_skill("stealth")) if stats and stats.has_method("get_skill") else 0.0
+		seen = Witnesses.in_sight(scene_root, pos, {"stealth": stealth})
+	var event_id = ""
+	var player_events = get_node_or_null("/root/PlayerEvents")
+	if player_events:
+		event_id = str(player_events.record("theft", "took their pack back from %s" % _name(key), [key],
+			{"witnesses": seen, "location": _location()}))
+	recover_from(key, "stolen")
+	return {"ok": true, "event_id": event_id, "witnesses": seen, "reason": ""}
+
 ## Pack records (copies). location: only those there ("" = all)
 func get_packs(location: String = "") -> Array:
 	var out: Array = []
@@ -499,6 +543,11 @@ func _return_contents(pack: Dictionary) -> void:
 
 ## A fall: link it to the pack dropped there (before or after, within FELL_LINK_MINUTES)
 func _on_player_event(ev: Dictionary) -> void:
+	if str(ev.get("kind", "")) == "kill":
+		# Force: whatever the dead held of the player's is taken back from them
+		for who in ev.get("about", []):
+			recover_from(str(who), "force")
+		return
 	if str(ev.get("kind", "")) != "fell":
 		return
 	var location = str(ev.get("location", ""))

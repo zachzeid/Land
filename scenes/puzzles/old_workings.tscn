@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://scripts/puzzles/room_old_workings.gd" id="room"]
 [ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="solid"]
@@ -8,6 +8,9 @@
 [ext_resource type="Script" path="res://scripts/world/physics/lamp.gd" id="lamp"]
 [ext_resource type="Script" path="res://scripts/world/physics/basin.gd" id="basin"]
 [ext_resource type="Script" path="res://scripts/world/physics/metal.gd" id="metal"]
+[ext_resource type="Script" path="res://scripts/world/physics/weight.gd" id="weight"]
+[ext_resource type="Script" path="res://scripts/puzzles/room_action.gd" id="room_action"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="scene_trigger"]
 
 [sub_resource type="RectangleShape2D" id="Rect_1024x40"]
 size = Vector2(1024, 40)
@@ -20,6 +23,27 @@ size = Vector2(90, 60)
 
 [sub_resource type="RectangleShape2D" id="Rect_160x30"]
 size = Vector2(160, 30)
+
+[sub_resource type="RectangleShape2D" id="Rect_80x60"]
+size = Vector2(80, 60)
+
+[sub_resource type="RectangleShape2D" id="Rect_60x40"]
+size = Vector2(60, 40)
+
+[sub_resource type="RectangleShape2D" id="Rect_160x40"]
+size = Vector2(160, 40)
+
+[sub_resource type="RectangleShape2D" id="Rect_20x268"]
+size = Vector2(20, 268)
+
+[sub_resource type="RectangleShape2D" id="Rect_140x100"]
+size = Vector2(140, 100)
+
+[sub_resource type="RectangleShape2D" id="Rect_140x60"]
+size = Vector2(140, 60)
+
+[sub_resource type="RectangleShape2D" id="Rect_140x30"]
+size = Vector2(140, 30)
 
 [node name="OldWorkings" type="Node2D"]
 script = ExtResource("room")
@@ -169,6 +193,34 @@ offset_bottom = 98.0
 text = "Cage rope"
 horizontal_alignment = 1
 
+[node name="Cut" type="Area2D" parent="Parts/CageRope"]
+z_index = 6
+position = Vector2(0, 40)
+script = ExtResource("room_action")
+interaction_name = "Cut the cage rope"
+verb = "cut"
+target = NodePath("..")
+needs_tag = "blade"
+lacking_text = "The cage rope is old hemp as thick as your wrist, tarred hard. You have nothing with an edge to cut it."
+done_text = "The blade bites, the strands spring apart one by one, and the rope goes."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/CageRope/Cut"]
+shape = SubResource("Rect_60x40")
+
+[node name="InteractionPrompt" type="Label" parent="Parts/CageRope/Cut"]
+z_index = 10
+visible = false
+offset_left = -160.0
+offset_top = -48.0
+offset_right = 160.0
+offset_bottom = -24.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Cut the cage rope"
+horizontal_alignment = 1
+
 [node name="Winze" type="Node2D" parent="Parts"]
 position = Vector2(0, -180)
 
@@ -268,6 +320,35 @@ offset_bottom = 43.0
 text = "Rotten timbers"
 horizontal_alignment = 1
 
+[node name="Fire" type="Area2D" parent="Parts/Barricade"]
+z_index = 6
+position = Vector2(0, 40)
+script = ExtResource("room_action")
+interaction_name = "Put a flame to the timbers"
+verb = "ignite"
+target = NodePath("..")
+needs_tag = "fire"
+light_from = NodePath("../../Lamp")
+lacking_text = "The timbers are dry as old bread and would go up at a touch, but you have no flame. A lamp might lend one."
+done_text = "The old wood takes the flame along its grain, and the smoke rolls up the adit."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/Barricade/Fire"]
+shape = SubResource("Rect_160x40")
+
+[node name="InteractionPrompt" type="Label" parent="Parts/Barricade/Fire"]
+z_index = 10
+visible = false
+offset_left = -160.0
+offset_top = -48.0
+offset_right = 160.0
+offset_bottom = -24.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Put a flame to the timbers"
+horizontal_alignment = 1
+
 [node name="AditBlock" type="StaticBody2D" parent="Parts"]
 position = Vector2(330, -220)
 collision_layer = 4
@@ -284,9 +365,45 @@ offset_right = 80.0
 offset_bottom = 15.0
 color = Color(0.45, 0.33, 0.2, 1)
 
+[node name="AditWalls" type="Node2D" parent="Parts"]
+
+[node name="West" type="StaticBody2D" parent="Parts/AditWalls"]
+position = Vector2(240, -338)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/AditWalls/West"]
+shape = SubResource("Rect_20x268")
+
+[node name="Visual" type="ColorRect" parent="Parts/AditWalls/West"]
+offset_left = -10.0
+offset_top = -134.0
+offset_right = 10.0
+offset_bottom = 134.0
+color = Color(0.24, 0.22, 0.2, 1)
+
+[node name="East" type="StaticBody2D" parent="Parts/AditWalls"]
+position = Vector2(420, -338)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/AditWalls/East"]
+shape = SubResource("Rect_20x268")
+
+[node name="Visual" type="ColorRect" parent="Parts/AditWalls/East"]
+offset_left = -10.0
+offset_top = -134.0
+offset_right = 10.0
+offset_bottom = 134.0
+color = Color(0.24, 0.22, 0.2, 1)
+
 [node name="Lamp" type="Node2D" parent="Parts"]
 position = Vector2(-300, 300)
 script = ExtResource("lamp")
+lit = true
+open_flame = false
 
 [node name="Visual" type="ColorRect" parent="Parts/Lamp"]
 offset_left = -10.0
@@ -322,6 +439,148 @@ offset_bottom = 63.0
 text = "Sump"
 horizontal_alignment = 1
 
+[node name="OreTub" type="Node2D" parent="Parts"]
+position = Vector2(-360, 120)
+
+[node name="Weight" type="Node2D" parent="Parts/OreTub"]
+script = ExtResource("weight")
+mass = 80.0
+
+[node name="Visual" type="ColorRect" parent="Parts/OreTub"]
+offset_left = -26.0
+offset_top = -18.0
+offset_right = 26.0
+offset_bottom = 18.0
+color = Color(0.32, 0.28, 0.24, 1)
+
+[node name="Label" type="Label" parent="Parts/OreTub"]
+offset_left = -200.0
+offset_top = 22.0
+offset_right = 200.0
+offset_bottom = 46.0
+text = "Ore tub, full of old spoil"
+horizontal_alignment = 1
+
+[node name="Push" type="Area2D" parent="Parts/OreTub"]
+z_index = 6
+script = ExtResource("room_action")
+interaction_name = "Roll the ore tub onto the treadle"
+verb = "push"
+target = NodePath("..")
+destination = NodePath("../../BrakePlate")
+state_key = "tub_on_brake"
+back_name = "Roll the ore tub off the treadle"
+done_text = "The tub grinds along the old rails and settles on the treadle. Somewhere above, the winch brake groans and takes hold of the drum."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/OreTub/Push"]
+shape = SubResource("Rect_80x60")
+
+[node name="InteractionPrompt" type="Label" parent="Parts/OreTub/Push"]
+z_index = 10
+visible = false
+offset_left = -160.0
+offset_top = -60.0
+offset_right = 160.0
+offset_bottom = -36.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Roll the ore tub onto the treadle"
+horizontal_alignment = 1
+
+[node name="Ways" type="Node2D" parent="."]
+
+[node name="ToPithead" type="Area2D" parent="Ways"]
+z_index = 6
+position = Vector2(0, 450)
+script = ExtResource("scene_trigger")
+target_location = "greystone_mines"
+target_spawn_point = "from_old_workings"
+require_input = false
+prompt_text = "Up to the pithead"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ways/ToPithead"]
+shape = SubResource("Rect_140x30")
+
+[node name="Sign" type="Label" parent="Ways/ToPithead"]
+offset_left = -160.0
+offset_top = 18.0
+offset_right = 160.0
+offset_bottom = 40.0
+text = "Up the old stair to the pithead"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="Ways/ToPithead"]
+z_index = 10
+visible = false
+offset_left = -160.0
+offset_top = -48.0
+offset_right = 160.0
+offset_bottom = -24.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Up to the pithead"
+horizontal_alignment = 1
+
+[node name="WinzeWay" type="Area2D" parent="Ways"]
+z_index = 6
+position = Vector2(0, -180)
+script = ExtResource("scene_trigger")
+target_location = "the_pit"
+target_spawn_point = "from_old_workings"
+require_input = true
+prompt_text = "Climb down the winze"
+requires_flag = "old_workings_way_found"
+closed_text = "The old winze drops away into the dark past Dagna's boards. You have found no way down it yet."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ways/WinzeWay"]
+shape = SubResource("Rect_140x100")
+
+[node name="InteractionPrompt" type="Label" parent="Ways/WinzeWay"]
+z_index = 10
+visible = false
+offset_left = -160.0
+offset_top = -48.0
+offset_right = 160.0
+offset_bottom = -24.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Climb down the winze"
+horizontal_alignment = 1
+
+[node name="AditWay" type="Area2D" parent="Ways"]
+z_index = 6
+position = Vector2(330, -330)
+script = ExtResource("scene_trigger")
+target_location = "the_pit"
+target_spawn_point = "from_old_workings"
+require_input = true
+prompt_text = "Follow the old adit down"
+requires_flag = "old_workings_way_found"
+closed_text = "The old adit runs on into the dark beyond the timbers. You have found no way through it yet."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ways/AditWay"]
+shape = SubResource("Rect_140x60")
+
+[node name="InteractionPrompt" type="Label" parent="Ways/AditWay"]
+z_index = 10
+visible = false
+offset_left = -160.0
+offset_top = -48.0
+offset_right = 160.0
+offset_bottom = -24.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Follow the old adit down"
+horizontal_alignment = 1
+
 [node name="SpawnPoints" type="Node2D" parent="."]
 
 [node name="default" type="Marker2D" parent="SpawnPoints"]
@@ -329,6 +588,9 @@ position = Vector2(0, 400)
 
 [node name="from_travel" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(0, 430)
+
+[node name="from_pit" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(120, -140)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.9, 0.9)

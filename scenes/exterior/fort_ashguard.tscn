@@ -94,6 +94,7 @@ text = "Training yard"
 horizontal_alignment = 1
 
 [node name="Keep" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(0, -400)
 script = ExtResource("1_world_solid")
@@ -129,6 +130,7 @@ text = "The Keep - Commander's Hall"
 horizontal_alignment = 1
 
 [node name="Barracks" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(-500, -150)
 script = ExtResource("1_world_solid")
@@ -164,6 +166,7 @@ text = "Barracks (half empty)"
 horizontal_alignment = 1
 
 [node name="Armoury" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(500, -150)
 script = ExtResource("1_world_solid")
@@ -199,6 +202,7 @@ text = "Armoury"
 horizontal_alignment = 1
 
 [node name="Stable" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(520, 230)
 script = ExtResource("1_world_solid")
@@ -234,6 +238,7 @@ text = "Stables - six stalls, two horses"
 horizontal_alignment = 1
 
 [node name="Well" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(0, 80)
 script = ExtResource("1_world_solid")
 
@@ -248,6 +253,7 @@ offset_bottom = 30.0
 color = Color(0.42, 0.42, 0.44, 1)
 
 [node name="GatehouseWest" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(-130, 520)
 script = ExtResource("1_world_solid")
@@ -263,6 +269,7 @@ offset_bottom = 60.0
 color = Color(0.34, 0.34, 0.36, 1)
 
 [node name="GatehouseEast" type="StaticBody2D" parent="."]
+collision_layer = 4
 z_index = 20
 position = Vector2(130, 520)
 script = ExtResource("1_world_solid")
@@ -291,6 +298,7 @@ text = "Gate - the March road"
 horizontal_alignment = 1
 
 [node name="Dummy1" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(-480, 240)
 script = ExtResource("1_world_solid")
 
@@ -305,6 +313,7 @@ offset_bottom = 13.0
 color = Color(0.55, 0.45, 0.3, 1)
 
 [node name="Dummy2" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(-380, 240)
 script = ExtResource("1_world_solid")
 
@@ -319,6 +328,7 @@ offset_bottom = 13.0
 color = Color(0.55, 0.45, 0.3, 1)
 
 [node name="Dummy3" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(-280, 240)
 script = ExtResource("1_world_solid")
 
@@ -333,6 +343,7 @@ offset_bottom = 13.0
 color = Color(0.55, 0.45, 0.3, 1)
 
 [node name="EmptyRack" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(330, -40)
 script = ExtResource("1_world_solid")
 
@@ -360,6 +371,7 @@ text = "Empty spear rack"
 horizontal_alignment = 1
 
 [node name="SentryPost1" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(-680, -480)
 script = ExtResource("1_world_solid")
 
@@ -387,6 +399,7 @@ text = "Post"
 horizontal_alignment = 1
 
 [node name="SentryPost2" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(680, -480)
 script = ExtResource("1_world_solid")
 
@@ -414,6 +427,7 @@ text = "Empty post"
 horizontal_alignment = 1
 
 [node name="SentryPost3" type="StaticBody2D" parent="."]
+collision_layer = 8
 position = Vector2(680, 480)
 script = ExtResource("1_world_solid")
 
@@ -604,6 +618,7 @@ horizontal_alignment = 1
 [node name="Walls" type="Node2D" parent="."]
 
 [node name="North" type="StaticBody2D" parent="Walls"]
+collision_layer = 4
 position = Vector2(0, -600)
 script = ExtResource("1_world_solid")
 
@@ -618,6 +633,7 @@ offset_bottom = 20.0
 color = Color(0.3, 0.3, 0.32, 1)
 
 [node name="South" type="StaticBody2D" parent="Walls"]
+collision_layer = 4
 position = Vector2(0, 600)
 script = ExtResource("1_world_solid")
 
@@ -632,6 +648,7 @@ offset_bottom = 20.0
 color = Color(0.3, 0.3, 0.32, 1)
 
 [node name="West" type="StaticBody2D" parent="Walls"]
+collision_layer = 4
 position = Vector2(-800, 0)
 script = ExtResource("1_world_solid")
 
@@ -646,6 +663,7 @@ offset_bottom = 600.0
 color = Color(0.3, 0.3, 0.32, 1)
 
 [node name="East" type="StaticBody2D" parent="Walls"]
+collision_layer = 4
 position = Vector2(800, 0)
 script = ExtResource("1_world_solid")
 

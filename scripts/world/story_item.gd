@@ -95,6 +95,9 @@ func _offer_puzzle() -> void:
 	var puzzles = get_node_or_null("/root/Puzzles")
 	if puzzles and puzzles.has_method("is_solved") and puzzles.is_solved(puzzle_id):
 		return
+	# A clue examined before the puzzle's own evidence is found is only a clue: no card yet
+	if puzzles and puzzles.has_method("is_available") and not puzzles.is_available(puzzle_id):
+		return
 	var ui = get_tree().get_first_node_in_group("player_ui")
 	if ui and ui.has_method("open_puzzle"):
 		ui.call_deferred("open_puzzle", puzzle_id)

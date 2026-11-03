@@ -12,10 +12,10 @@
       "note": "The drawn tile on the lectern: ELENA, Bjorn's hammer and pine on the back, the face filed low and bright."},
     {"id": "TileMould", "kind": "story_item", "scene": "res://scenes/interiors/blacksmith_interior.tscn",
       "note": "Bjorn's card in the mould's leather: each tile two ounces and a half, filed square, name cut once and clean."},
-    {"id": "lot_urn", "kind": "object", "location": "thornhaven_chapel",
-      "note": "The chapel's lot urn, its tiles poured out on the cloth. Among the village's names is a second ELENA, cut once and clean."},
-    {"id": "bjorns_scale", "kind": "object", "location": "thornhaven_blacksmith",
-      "text": "Bjorn's brass beam scale by the anvil, with a nest of iron weights down to the quarter-ounce. Every tile from the urn balances two ounces and a half. The tile from the lectern does not: the beam lifts it before the quarter-ounce weight is off the pan."}
+    {"id": "UrnTiles", "kind": "story_item", "scene": "res://scenes/interiors/thornhaven_chapel.tscn",
+      "note": "The urn's tiles poured out on the altar cloth. Among the village's names is a second ELENA, cut once and clean."},
+    {"id": "BjornsScale", "kind": "story_item", "scene": "res://scenes/interiors/blacksmith_interior.tscn",
+      "note": "Bjorn's brass beam scale by the anvil. Every tile poured from the urn brings the beam level at two ounces and a half; the two ELENA tiles, one to each pan, do not balance."}
   ],
   "answer": {
     "shape": "choose",

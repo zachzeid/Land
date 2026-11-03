@@ -12,6 +12,9 @@ extends RefCounted
 #   fidelity: the party's best fidelity; an anonymous rumour (< 0.3) cannot be pinned on the player: 0
 #   recency: 0.5 ^ (days since the deed or its last change / HALF_LIFE_DAYS), never below RECENCY_FLOOR
 #   about: x1.5 when the event concerns the party (x2 for hostile kinds)
+# Violence (docs/PLAYER_SYSTEMS.md §1.4, §3): harm or kill of a child (victim_minor) weighs most of
+# anything in the game, for every party that knows it; a blow struck back at whoever went for the
+# player first (self_defence) weighs far less, but only for a party that knows who struck first
 
 const SCALE = 50.0
 const HALF_LIFE_DAYS = 7.0
@@ -29,6 +32,15 @@ const KIND_WEIGHTS = {
 	# Player systems (docs/PLAYER_SYSTEMS.md §7)
 	"feat": 6.0, "crafted": 2.0, "solved": 3.0, "fled": -6.0, "fell": -2.0, "fire": -16.0, "trespass": -6.0,
 }
+## Harming a child is the worst thing the player can do: well beyond killing a grown man
+const MINOR_HARM = -60.0
+const MINOR_KILL = -120.0
+## Struck back at someone who struck first: the deed still counts, at a small share
+const SELF_DEFENCE_HARM = -3.0
+const SELF_DEFENCE_KILL = -8.0
+## A fire's weight once its end is known: put out before it did much, or burned through
+const FIRE_DOUSED = -10.0
+const FIRE_BURNED = -24.0
 const PROMISE_OPEN = 2.0
 const PROMISE_KEPT = 15.0
 const PROMISE_BROKEN = -25.0
@@ -41,11 +53,16 @@ const CLAIM_DOUBTED = -4.0
 ## as Thornhaven folk (world.json factions note)
 const HIDDEN_MEMBERS = {"mira": {"faction": "iron_hollow", "until": "mira_boss_revealed", "cover": "thornhaven"}}
 
-## Weight of one event (before fidelity, recency and aboutness)
-static func kind_weight(ev: Dictionary) -> float:
+## Weight of one event (before fidelity, recency and aboutness). knows_self_defence: the party knows
+## the victim struck first (PlayerEvents.knows_self_defence)
+static func kind_weight(ev: Dictionary, knows_self_defence: bool = false) -> float:
 	if ev.is_empty():
 		return 0.0
 	var kind = str(ev.get("kind", ""))
+	if kind in ["harm", "kill"] and ev.get("victim_minor", false):
+		return MINOR_KILL if kind == "kill" else MINOR_HARM
+	if kind in ["harm", "kill"] and knows_self_defence and ev.get("self_defence", false):
+		return SELF_DEFENCE_KILL if kind == "kill" else SELF_DEFENCE_HARM
 	match kind:
 		"promise":
 			match str(ev.get("status", "open")):
@@ -60,6 +77,13 @@ static func kind_weight(ev: Dictionary) -> float:
 			return CLAIM_BELIEVED if ev.get("believed", true) != false else CLAIM_DOUBTED
 		"lie":
 			return LIE_EXPOSED if ev.has("was") else KIND_WEIGHTS.lie
+		"fire":
+			match str(ev.get("outcome", "")):
+				"doused":
+					return FIRE_DOUSED
+				"burned":
+					return FIRE_BURNED
+			return KIND_WEIGHTS.fire
 		"kept_company":
 			return KIND_WEIGHTS.kept_company * mini(int(ev.get("hours", 1)), 4)
 	return float(KIND_WEIGHTS.get(kind, 0.0))
@@ -93,7 +117,7 @@ static func breakdown(scope: String, id: String) -> Dictionary:
 		var f = float(k.fidelity)
 		if f < ANON_BELOW:
 			f = 0.0
-		var w = kind_weight(ev)
+		var w = kind_weight(ev, bool(k.get("self_defence", false)))
 		var about = 1.0
 		for who in ev.get("about", []):
 			if who in parties:

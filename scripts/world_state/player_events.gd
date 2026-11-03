@@ -11,6 +11,11 @@ extends Node
 #   queued while unloaded), generics as layers through GenericManager.on_news_spread (tag dedup)
 # - capture: conversation utterances (BaseNPC), Director commitments (player_choice), StoryItem
 #   discoveries, arrivals (seen_at) and time spent near someone (kept_company, hourly)
+# - violence (docs/PLAYER_SYSTEMS.md §1.2, §1.4): harm/kill of a child carries victim_minor (the
+#   heaviest weight); a child who survives tells their own people. A blow struck back at whoever went
+#   for the player first carries self_defence, known to those who saw the first blow (and to whoever
+#   hears it told well enough). A kill leaves a body: whoever comes to that place later finds it and
+#   knows a death, and who did it only if the stranger was seen there about then (check_traces)
 # Reputation (scripts/world_state/reputation.gd) is computed only from what each party knows here
 
 signal player_event_recorded(ev: Dictionary)
@@ -43,6 +48,14 @@ const MINUTES_PER_DAY = 1440
 const SOURCE_PREFIX = "pe:"
 const PROMPT_MAX_EVENTS = 4
 const PROMPT_LINE_MAX = 150
+const HARM_KINDS = ["harm", "kill"]
+const CHILD_TOLD_VIA = "the child told them"
+const FOUND_VIA = "a body found"
+const FOUND_DELAY_MINUTES = 30   # a body lies a while before anyone comes upon it
+const FOUND_ANON = 0.2           # a body, and nothing to say who: a rumour of a stranger at most (§1.2)
+const FOUND_LINKED = 0.5         # a body where the stranger was seen about then
+const FOUND_LINK_MINUTES = 360   # seen there within this many minutes of the deed
+const TRACE_DAYS = 14            # after this the dead are buried or gone and nobody finds anything
 
 const IMPORTANCE = {"kill": 9, "harm": 8, "spared": 8, "theft": 7, "threat": 7, "lie": 7, "confession": 7,
 	"promise": 6, "gift": 6, "help": 6, "accusation": 6, "insult": 5, "refusal": 5, "claim": 4,
@@ -58,6 +71,7 @@ const VAGUE = {"claim": "told some tale", "promise": "made someone a promise", "
 	"feat": "did something few could", "crafted": "made something", "fled": "ran from a fight",
 	"fire": "set a fire", "trespass": "went where they had no right to", "solved": "worked out a puzzle",
 	"fell": "fell, and lay still"}
+const VAGUE_MINOR = {"harm": "hurt a child", "kill": "killed a child"}
 
 ## Retelling drift, keyed by the teller's attitude and whether the deed reads well or ill
 const TONE_TEMPLATES = {
@@ -70,6 +84,7 @@ const TONE_TEMPLATES = {
 }
 
 const Rep = preload("res://scripts/world_state/reputation.gd")
+const TimeWindowScript = preload("res://scripts/storyline/time_window.gd")
 
 var events: Dictionary = {}      # id -> event (WORLD_SCHEMA §10 shape plus status/due/changed fields)
 var order: Array = []            # ids, oldest first
@@ -77,6 +92,7 @@ var counter: int = 0
 var in_flight: Array = []        # [{event, to, at, fidelity, from, via, tone}] word on the road
 var _company: Dictionary = {}    # who -> minutes near the player toward the next kept_company tick
 var _last_arrival: Dictionary = {}  # location -> minute of the last seen_at there
+var traces: Array = []           # [{event, location, minute}]: bodies nobody has found yet
 
 ## Tests and tools
 var player_location_override: String = ""
@@ -127,6 +143,9 @@ func _connect_director() -> void:
 ##   commitment: String        the player flag a Director commitment set
 ##   remember: bool            witnesses store a memory (default true; false for kept_company and plain
 ##                             arrivals, which are knowledge for reputation and prompts, not RAG entries)
+##   victim_minor: bool        harm/kill of a child (default: any `about` is a minor, WorldRegistry.is_minor)
+##   self_defence: bool        harm/kill of someone who struck the player first (Combat knows)
+##   self_defence_seen_by      who saw that first blow (they, and the one who struck it, know it)
 func record(kind: String, summary: String, about: Array = [], opts: Dictionary = {}) -> String:
 	kind = kind.strip_edges().to_lower()
 	if kind not in KINDS:
@@ -167,6 +186,20 @@ func record(kind: String, summary: String, about: Array = [], opts: Dictionary =
 		ev["commitment"] = str(opts.commitment)
 	if opts.has("skill"):
 		ev["skill"] = str(opts.skill)  # the skill a feat, a crafted piece or a fight showed (emergence triggers match it)
+	if kind in HARM_KINDS:
+		var minor = opts.get("victim_minor", null)
+		if minor == null:
+			minor = _about_minor(ev.about)
+		if bool(minor):
+			ev["victim_minor"] = true  # children never strike first: no self-defence against one
+		elif bool(opts.get("self_defence", false)):
+			ev["self_defence"] = true
+			var knows: Array = []
+			for w in opts.get("self_defence_seen_by", []):
+				_append_unique(knows, _who(str(w)))
+			for a in ev.about:
+				_append_unique(knows, a)  # the one who struck first knows they did
+			ev["self_defence_known"] = knows.filter(func(w): return w != "")
 	# A claim the world already contradicts is a lie from the start
 	if kind == "claim" and flag != null:
 		var current = _flag_value(str(flag))
@@ -187,7 +220,96 @@ func record(kind: String, summary: String, about: Array = [], opts: Dictionary =
 	var loud = ev.kind in AUTO_SPREAD_KINDS
 	if bool(opts.get("spread", loud)) and not witnesses.is_empty():
 		spread(ev.id, ["*"], AUTO_SPREAD_VIA)
+	if ev.kind == "kill" and location != "":
+		traces.append({"event": ev.id, "location": location, "minute": minute})
+	if ev.kind == "harm" and ev.get("victim_minor", false):
+		child_tells(ev.id)
 	return ev.id
+
+## A child who lived through it runs to their own people: their factions (Reputation.factions_of)
+## hear it from the child, by road, as any word travels. Returns the spread result ({} when the
+## child is dead or no child is named)
+func child_tells(event_id: String) -> Dictionary:
+	if not events.has(event_id):
+		return {}
+	var ev: Dictionary = events[event_id]
+	var people: Array = []
+	for child in ev.about:
+		if not _is_minor(child) or not _is_alive(child) or not _npc_id_of(child) in ev.witnesses:
+			continue
+		for fid in Rep.factions_of(child):
+			for who in Rep.faction_members(str(fid)):
+				if who != child:
+					_append_unique(people, _who(str(who)))
+	if people.is_empty():
+		return {}
+	return spread(event_id, people, CHILD_TOLD_VIA)
+
+## Bodies left where nobody saw: whoever is at that place later (and open hours, §1.5: nobody comes
+## upon anything while the world is closed) finds the dead. They know a death at FOUND_ANON, or at
+## FOUND_LINKED when the stranger was seen at that place within FOUND_LINK_MINUTES of it (any event
+## there someone witnessed). Then the word goes round like any loud deed. Returns the event ids found
+func check_traces() -> Array:
+	var found_ids: Array = []
+	var now = _now()
+	if traces.is_empty() or not TimeWindowScript.is_open(now):
+		return found_ids
+	var keep: Array = []
+	for trace in traces:
+		var ev: Dictionary = events.get(str(trace.event), {})
+		if ev.is_empty() or now - int(trace.minute) > TRACE_DAYS * MINUTES_PER_DAY:
+			continue
+		if now - int(trace.minute) < FOUND_DELAY_MINUTES:
+			keep.append(trace)
+			continue
+		var finders: Array = get_present(str(trace.location)).filter(func(w): return w not in ev.about and _knowledge(ev, w).is_empty())
+		if finders.is_empty():
+			keep.append(trace)
+			continue
+		var f = FOUND_LINKED if seen_near(str(trace.location), int(trace.minute), str(ev.id)) else FOUND_ANON
+		for who in finders:
+			ev.heard_by[who] = {"fidelity": f, "minute": now, "from": "", "via": FOUND_VIA, "tone": "plain", "found": true}
+			var dead = " and ".join(ev.about.map(func(a): return _display_name(a))) if not ev.about.is_empty() else "someone"
+			var what = compose(ev, "plain", f, abs(hash(str(ev.id) + who)))
+			_store_memory(who, ev, "I found %s dead at %s: %s" % [dead, _place_name(str(trace.location)), what], "heard")
+			player_event_heard.emit(str(ev.id), who, f)
+		found_ids.append(str(ev.id))
+		spread(str(ev.id), ["*"], FOUND_VIA)
+	traces = keep
+	return found_ids
+
+## Was the stranger seen at a place within FOUND_LINK_MINUTES of a minute: an event there, other than
+## `except`, witnessed by someone still alive who is not one of `except`'s victims (the dead tell nothing)
+func seen_near(location: String, minute: int, except: String = "") -> bool:
+	var victims: Array = events[except].about if events.has(except) else []
+	for id in order:
+		var ev: Dictionary = events[id]
+		if id == except or str(ev.location) != location or absi(int(ev.minute) - minute) > FOUND_LINK_MINUTES:
+			continue
+		for npc_id in ev.witnesses:
+			var who = _who(str(npc_id))
+			if who not in victims and _is_alive(who):
+				return true
+	return false
+
+## Does this person know the deed was self-defence (saw the first blow, or heard it told well)?
+func knows_self_defence(ev: Dictionary, who: String) -> bool:
+	if not ev.get("self_defence", false) or who == "":
+		return false
+	if who in ev.get("self_defence_known", []):
+		return true
+	var h = ev.heard_by.get(who, {})
+	return h is Dictionary and bool(h.get("self_defence", false))
+
+func _about_minor(about: Array) -> bool:
+	for who in about:
+		if _is_minor(str(who)):
+			return true
+	return false
+
+func _is_minor(who: String) -> bool:
+	var registry = _registry()
+	return registry != null and registry.has_method("is_minor") and (registry.is_minor(who) or registry.is_minor(_npc_id_of(who)))
 
 ## One event by id (a copy; {} when unknown)
 func get_event(id: String) -> Dictionary:
@@ -260,6 +382,25 @@ func resolve_promise(event_id: String, outcome: String, reason: String = "") -> 
 	if ev.kind != "promise" or ev.status != "open":
 		return false
 	_set_promise(ev, outcome, reason if reason != "" else "settled")
+	return true
+
+## How a deed ended, once known (a fire "doused" or "burned"). The summary says so and reputation
+## weighs it (Reputation.kind_weight); "burned" is final. No new deed, no new spread: those who knew
+## of the deed hear the end with it
+func set_outcome(event_id: String, outcome: String) -> bool:
+	if not events.has(event_id) or outcome == "":
+		return false
+	var ev: Dictionary = events[event_id]
+	if str(ev.get("outcome", "")) in [outcome, "burned"]:
+		return false
+	ev["outcome"] = outcome
+	var base = str(ev.get("base_summary", ev.summary))
+	ev["base_summary"] = base
+	var ending = {"doused": "; it was put out", "burned": "; it burned through"}.get(outcome, "; " + outcome)
+	ev["summary"] = (base + ending).substr(0, SUMMARY_MAX)
+	ev["changed_minute"] = _now()
+	ev["change_reason"] = outcome
+	player_event_changed.emit(ev.duplicate(true))
 	return true
 
 ## Set or replace a promise's due ({"day", "flag", "value", "fails"})
@@ -370,7 +511,8 @@ func spread(event_id: String, to_keys: Array, via: String = "") -> Dictionary:
 		if not known.is_empty() and float(known.fidelity) >= float(best.fidelity):
 			continue  # already heard it at least this well
 		var item = {"event": event_id, "to": target, "at": now + int(best.minutes), "fidelity": float(best.fidelity),
-			"from": best.teller, "via": via, "tone": _tone_of(best.teller)}
+			"from": best.teller, "via": via, "tone": _tone_of(best.teller),
+			"self_defence": knows_self_defence(ev, best.teller) and float(best.fidelity) >= HALF_HEARD_BELOW}
 		result.scheduled.append({"to": target, "from": best.teller, "at": item.at, "fidelity": item.fidelity})
 		if int(best.minutes) <= 0:
 			_deliver_heard(item)
@@ -401,9 +543,12 @@ func _deliver_heard(item: Dictionary) -> void:
 		return
 	var f = float(item.fidelity)
 	var tone = str(item.get("tone", "plain"))
-	var text = compose(ev, tone, f, abs(hash(str(ev.id) + target)))
+	var sd = bool(item.get("self_defence", false))
+	var text = compose(ev, tone, f, abs(hash(str(ev.id) + target)), sd)
 	ev.heard_by[target] = {"fidelity": f, "minute": int(item.at), "from": str(item.from), "via": str(item.get("via", "")),
 		"tone": tone}
+	if sd:
+		ev.heard_by[target]["self_defence"] = true
 	var how = "I heard"
 	if f >= ANON_BELOW:
 		how += " from " + _display_name(str(item.from))
@@ -419,10 +564,10 @@ func _tell_witnesses(ev: Dictionary, witnesses: Array, from_presence: bool) -> v
 	var text = compose(ev, "plain", 1.0, 0)
 	var generic_witnesses: Array = []
 	for w in witnesses:
-		if gm and gm.is_generic(w):
+		if gm and gm.is_generic(w) and not knows_self_defence(ev, w):
 			generic_witnesses.append(w)
 		elif w != ev.source:
-			_store_memory(w, ev, "I saw it myself: " + text, "witnessed")
+			_store_memory(w, ev, "I saw it myself: " + compose(ev, "plain", 1.0, 0, knows_self_defence(ev, w)), "witnessed")
 	if gm and not generic_witnesses.is_empty() and gm.has_method("on_news_spread"):
 		if from_presence:
 			gm.on_news_spread(_source_flag(ev), text, "witnessed", [], _region_of(ev.location), ev.location)
@@ -446,6 +591,8 @@ func _store_memory(who: String, ev: Dictionary, text: String, how: String) -> vo
 	var importance = int(IMPORTANCE.get(str(ev.get("was", ev.kind)), 5))
 	if ev.status in ["broken", "exposed"]:
 		importance = maxi(importance, 8)
+	if ev.get("victim_minor", false):
+		importance = 10
 	if how == "heard":
 		importance = maxi(importance - 1, 3)
 	propagator.deliver_memory(who, {
@@ -515,17 +662,25 @@ func _in_flight_to(event_id: String, who: String) -> bool:
 # =============================================================================
 
 ## The event as someone would tell it: tone "dark" | "soft" | "plain", at this fidelity
-func compose(ev: Dictionary, tone: String, fidelity: float, seed: int = 0) -> String:
+## self_defence_known: the teller knows who struck first, and says so
+func compose(ev: Dictionary, tone: String, fidelity: float, seed: int = 0, self_defence_known: bool = false) -> String:
 	var kind = str(ev.get("was", ev.kind))
 	if fidelity < ANON_BELOW:
 		var vague = str(VAGUE.get(kind, "did something"))
+		if ev.get("victim_minor", false):
+			vague = str(VAGUE_MINOR.get(kind, vague))
 		if ev.status == "broken":
 			vague = "broke a promise"
 		elif ev.status == "exposed":
 			vague = "was caught in a lie"
 		return "There's a rumour of a stranger who %s." % vague
 	var core = "the stranger " + str(ev.summary) + _status_suffix(ev)
-	var valence = "bad" if Rep.kind_weight(ev) < 0 else "good"
+	var victims = " and ".join(ev.get("about", []).map(func(a): return _display_name(a)))
+	if self_defence_known and ev.get("self_defence", false):
+		core += ", when %s went for them first" % (victims if victims != "" else "the other")
+	if ev.get("victim_minor", false):
+		core += ". %s %s only a child" % [victims if victims != "" else "It", "was" if kind == "kill" else "is"]
+	var valence = "bad" if Rep.kind_weight(ev, self_defence_known) < 0 else "good"
 	var templates: Array = TONE_TEMPLATES.get("%s_%s" % [tone, valence], TONE_TEMPLATES.plain_good)
 	var text = _capitalize(str(templates[seed % templates.size()]) % core)
 	if fidelity < HALF_HEARD_BELOW:
@@ -580,13 +735,15 @@ func _knowledge(ev: Dictionary, who: String) -> Dictionary:
 	if _npc_id_of(who) in ev.witnesses:
 		return {"id": ev.id, "kind": ev.kind, "status": ev.status, "truth": ev.truth, "about": ev.about.duplicate(),
 			"minute": int(ev.minute), "learned": int(ev.minute), "fidelity": 1.0, "how": "witnessed", "from": "",
-			"text": compose(ev, "plain", 1.0, 0), "anonymous": false}
+			"text": compose(ev, "plain", 1.0, 0, knows_self_defence(ev, who)), "anonymous": false,
+			"self_defence": knows_self_defence(ev, who)}
 	if ev.heard_by.has(who):
 		var h: Dictionary = ev.heard_by[who]
 		var f = float(h.fidelity)
 		return {"id": ev.id, "kind": ev.kind, "status": ev.status, "truth": ev.truth, "about": ev.about.duplicate(),
-			"minute": int(ev.minute), "learned": int(h.minute), "fidelity": f, "how": "heard", "from": str(h.from),
-			"text": compose(ev, str(h.get("tone", "plain")), f, abs(hash(str(ev.id) + who))), "anonymous": f < ANON_BELOW}
+			"minute": int(ev.minute), "learned": int(h.minute), "fidelity": f, "how": "found" if h.get("found", false) else "heard",
+			"from": str(h.from), "text": compose(ev, str(h.get("tone", "plain")), f, abs(hash(str(ev.id) + who)), knows_self_defence(ev, who)),
+			"anonymous": f < ANON_BELOW, "self_defence": knows_self_defence(ev, who)}
 	return {}
 
 ## Union of what a set of people know: event id -> {"event": ev, "fidelity": best, "learned": minute}
@@ -610,7 +767,12 @@ func knowledge_of(parties: Array) -> Dictionary:
 					best = float(ev.heard_by[who].fidelity)
 					learned = int(ev.heard_by[who].minute)
 		if best > 0.0:
-			result[id] = {"event": ev, "fidelity": best, "learned": learned}
+			var sd = false
+			for npc_id in by_id:
+				if knows_self_defence(ev, by_id[npc_id]):
+					sd = true
+					break
+			result[id] = {"event": ev, "fidelity": best, "learned": learned, "self_defence": sd}
 	return result
 
 # =============================================================================
@@ -643,7 +805,7 @@ func get_heard_block(npc_id: String, max_events: int = PROMPT_MAX_EVENTS) -> Str
 ## What an NPC would bring up first: heavy deeds, open promises (owed), things done to it; fresh and clear
 func _salience(k: Dictionary, now: int, who: String = "") -> float:
 	var ev: Dictionary = events.get(str(k.id), {})
-	var w = absf(Rep.kind_weight(ev)) + 1.0
+	var w = absf(Rep.kind_weight(ev, bool(k.get("self_defence", false)))) + 1.0
 	if str(ev.get("kind", "")) == "promise" and str(ev.get("status", "")) == "open":
 		w = maxf(w, 10.0)
 	if who != "" and who in ev.get("about", []):
@@ -799,6 +961,8 @@ func note_arrival(location_id: String) -> String:
 func _on_time_advanced(minutes: int, _total: int, reason: String) -> void:
 	process_in_flight()
 	check_promises()
+	if capture_enabled:
+		check_traces()
 	if capture_enabled and not reason.begins_with("travel") and not reason.begins_with("walk"):
 		accrue_company(minutes)
 
@@ -1078,7 +1242,7 @@ func _decapitalize(s: String) -> String:
 
 func save() -> Dictionary:
 	return {"version": 1, "counter": counter, "order": order.duplicate(), "events": events.duplicate(true),
-		"in_flight": in_flight.duplicate(true), "company": _company.duplicate()}
+		"in_flight": in_flight.duplicate(true), "company": _company.duplicate(), "traces": traces.duplicate(true)}
 
 func load_from_dict(data: Dictionary) -> void:
 	reset()
@@ -1107,6 +1271,9 @@ func load_from_dict(data: Dictionary) -> void:
 			var copy: Dictionary = item.duplicate(true)
 			copy["at"] = int(copy.get("at", 0))
 			in_flight.append(copy)
+	for t in data.get("traces", []):
+		if t is Dictionary and events.has(str(t.get("event", ""))):
+			traces.append({"event": str(t.event), "location": str(t.get("location", "")), "minute": int(t.get("minute", 0))})
 	var company = data.get("company", {})
 	if company is Dictionary:
 		for who in company:
@@ -1120,3 +1287,4 @@ func reset() -> void:
 	in_flight.clear()
 	_company.clear()
 	_last_arrival.clear()
+	traces.clear()

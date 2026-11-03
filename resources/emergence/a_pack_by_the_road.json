@@ -9,7 +9,7 @@
   },
   "roles": {
     "finder": {
-      "from": "near_player",
+      "from": "near_event",
       "prefer": "nearest"
     },
     "watch": {
@@ -43,7 +43,7 @@
             {
               "type": "agenda",
               "npc": "{finder}",
-              "text": "If {player} asks about their pack, say you never saw it. Keep what was in it out of sight."
+              "text": "You took {player}'s pack where they fell. If they ask for it back, deny it, refuse, or sell it back, as suits you."
             }
           ]
         },

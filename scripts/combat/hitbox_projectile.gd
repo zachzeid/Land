@@ -3,7 +3,7 @@ extends Area2D
 ## the world can see it, and finds what it hits with a ray along each step (no tunnelling at speed):
 ## the first fighter body or hurtbox (layers player 1, npc 2) takes the hit through
 ## Combat.resolve_hit; a wall (world_solid 3) stops it. It passes through its shooter and through
-## anyone Combat may not target (a minor)
+## anyone Combat may not target for this shooter (a minor, unless the player loosed it)
 
 const PROJECTILE_LAYER = 64          # 2d_physics layer 7, projectile
 const HIT_MASK = 1 | 2 | 4           # player, npc, world_solid
@@ -66,7 +66,7 @@ func _cast(from: Vector2, to: Vector2) -> Dictionary:
 		if fighter == null:
 			if collider is CollisionObject2D and (collider.collision_layer & 4) != 0:
 				return {"wall": true, "position": res.position}
-		elif fighter != shooter and combat.can_target_node(fighter):
+		elif fighter != shooter and combat.can_target_node(fighter, shooter):
 			return {"fighter": fighter, "position": res.position}
 		exclude.append(res.rid)
 	return {}

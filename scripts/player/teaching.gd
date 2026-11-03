@@ -9,7 +9,6 @@ extends RefCounted
 const TEACHERS_PATH = "res://resources/player/teachers.json"
 const COMBAT_SKILLS = ["blades", "blunt", "bows", "defence"]
 const DEFAULT_BASE_COPPER = 12
-const InventoryScript = preload("res://scripts/player/inventory.gd")
 const DEFAULT_UP_TO = 50
 
 ## Seams (null = autoloads)
@@ -31,25 +30,13 @@ func _init(owner_stats = null):
 func request_training(teacher_key: String, skill: String) -> Dictionary:
 	var key = npc_key(teacher_key)
 	var out = {"ok": false, "reason": "", "cost_copper": 0, "minutes": 0}
-	var s = _stats()
-	if s == null or not skill in s.get_skill_ids():
-		out.reason = "no such skill"
-		return out
-	if _is_minor(key, teacher_key) and skill in COMBAT_SKILLS:
-		out.reason = "a child does not teach fighting"
+	out.reason = lesson_denial(key, skill, teacher_key)
+	if out.reason != "":
 		return out
 	var row = teacher_row(key)
-	if row.is_empty() or not skill in row.get("skills", []):
-		out.reason = "does not know that trade"
-		return out
-	var current: float = s.get_skill(skill)
-	if current >= float(row.get("up_to", DEFAULT_UP_TO)):
-		out.reason = "has nothing more to teach you"
-		return out
-	var cost = lesson_cost(row, current)
-	var minutes = int(_data.get("lesson_minutes", 120))
+	var cost = lesson_cost(row, _stats().get_skill(skill))
 	out.cost_copper = cost
-	out.minutes = minutes
+	out.minutes = lesson_minutes()
 	var dir = _director()
 	if dir == null:
 		out.reason = "no one to ask"
@@ -62,21 +49,63 @@ func request_training(teacher_key: String, skill: String) -> Dictionary:
 		return out
 	if dir.has_method("apply_situation_effects") and not decision.get("effects", []).is_empty():
 		dir.apply_situation_effects(key, decision, {"teaching": skill})
-	if out.choice == "teach":
-		_pay(cost)
-		out["paid"] = "coin"
+	var lesson = give_lesson(key, skill, "coin" if out.choice == "teach" else "favour", cost)
+	out.merge(lesson, true)
+	return out
+
+## Why this NPC cannot teach this skill ("" when they can): no such skill, not their trade, a child
+## and a fighting skill, or the player already past what they know
+func lesson_denial(teacher_key: String, skill: String, raw: String = "") -> String:
+	var key = npc_key(teacher_key)
+	var s = _stats()
+	if s == null or not skill in s.get_skill_ids():
+		return "no such skill"
+	if _is_minor(key, raw if raw != "" else teacher_key) and skill in COMBAT_SKILLS:
+		return "a child does not teach fighting"
+	var row = teacher_row(key)
+	if row.is_empty() or not skill in row.get("skills", []):
+		return "does not know that trade"
+	if s.get_skill(skill) >= float(row.get("up_to", DEFAULT_UP_TO)):
+		return "has nothing more to teach you"
+	return ""
+
+## The usual fee for a lesson from this teacher now (0 when they cannot teach it)
+func usual_cost(teacher_key: String, skill: String) -> int:
+	var row = teacher_row(npc_key(teacher_key))
+	var s = _stats()
+	return lesson_cost(row, s.get_skill(skill)) if not row.is_empty() and s else 0
+
+func lesson_minutes() -> int:
+	return int(_data.get("lesson_minutes", 120))
+
+## The lesson itself, once the teacher has said yes (by soul: decide_situation here, or their own
+## `teach` action in conversation). paid: "coin" (cost is taken from the purse; false when it is
+## short) or "favour" (a promise deed). Takes game time and boosts gain for a while.
+## Returns {ok, reason, paid, cost_copper, minutes, recipes_learned}
+func give_lesson(teacher_key: String, skill: String, paid: String, cost: int) -> Dictionary:
+	var key = npc_key(teacher_key)
+	var out = {"ok": false, "reason": "", "paid": paid, "cost_copper": 0, "minutes": lesson_minutes(), "recipes_learned": []}
+	var denial = lesson_denial(key, skill)
+	if denial != "":
+		out.reason = denial
+		return out
+	var s = _stats()
+	if paid == "coin":
+		if not _pay(maxi(cost, 0)):
+			out.reason = "cannot pay"
+			return out
+		out.cost_copper = maxi(cost, 0)
 	else:
-		out["paid"] = "favour"
-		out.cost_copper = 0
+		out.paid = "favour"
 		var events = _node("PlayerEvents")
 		if events:
 			events.record("promise", "promised a favour in return for lessons in %s" % skill, [key], {"witnesses": [key], "spread": false})
 	var ws = _world_state()
 	var now = ws.get_game_minutes() if ws else 0
-	s.add_training(skill, float(_data.get("boost_multiplier", 2.0)), now + minutes + int(_data.get("boost_minutes", 1440)))
+	s.add_training(skill, float(_data.get("boost_multiplier", 2.0)), now + out.minutes + int(_data.get("boost_minutes", 1440)))
 	if ws and ws.has_method("advance_time"):
-		ws.advance_time(minutes, "training")
-	out["recipes_learned"] = _learn_taught_recipes(skill)
+		ws.advance_time(out.minutes, "training")
+	out.recipes_learned = _learn_taught_recipes(skill)
 	out.ok = true
 	out.reason = "taught"
 	return out
@@ -124,7 +153,7 @@ func npc_key(who: String) -> String:
 func _hook(key: String, skill: String, cost: int, can_pay: bool) -> Dictionary:
 	var options: Array = [{"id": "refuse", "label": "Refuse to teach the stranger", "appeal": {"fear": 0.5, "trust": -0.5}, "effects": []}]
 	if can_pay:
-		options.append({"id": "teach", "label": "Teach them %s for %s" % [skill, InventoryScript.format_coin(cost)],
+		options.append({"id": "teach", "label": "Teach them %s for %s" % [skill, _coin_text(cost)],
 			"appeal": {"trust": 1.0, "respect": 1.0, "familiarity": 0.5}, "effects": []})
 	else:
 		options.append({"id": "teach_for_favour", "label": "Teach them %s for a favour owed" % skill,
@@ -153,10 +182,24 @@ func _coin() -> int:
 	var inv = _inventory()
 	return int(inv.get_coin()) if inv and inv.has_method("get_coin") else 0
 
-func _pay(copper: int) -> void:
+## Pay from the purse (Inventory.spend_coin). false when it is short
+func _pay(copper: int) -> bool:
+	if copper <= 0:
+		return true
 	var inv = _inventory()
-	if inv and inv.has_method("add_coin") and copper > 0:
-		inv.add_coin(-copper)
+	if inv == null:
+		return false
+	if inv.has_method("spend_coin"):
+		return inv.spend_coin(copper)
+	if _coin() < copper or not inv.has_method("add_coin"):
+		return false  # a purse without spend_coin (test fakes): check, then take
+	inv.add_coin(-copper)
+	return true
+
+## The price as coin is named (Inventory.format_coin), never denominations written here
+func _coin_text(amount: int) -> String:
+	var inv = _inventory()
+	return str(inv.format_coin(amount)) if inv and inv.has_method("format_coin") else str(amount)
 
 func _stats():
 	return stats if stats != null else _node("PlayerStats")

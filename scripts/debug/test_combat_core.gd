@@ -9,8 +9,9 @@ extends SceneTree
 # - weapons wear through Inventory.wear and break; a broken weapon hits like fists
 # - skill use on every landed hit (weapon skill, difficulty from the target), block/parry raise
 #   defence, dodge/sprint raise athletics
-# - minors are never targets: a swing at Rook is refused, a swing past him reaches the adult behind,
-#   an arrow passes through him
+# - minors (docs/PLAYER_SYSTEMS.md §1.4): the player can strike Rook (the harm carries victim_minor);
+#   an NPC's swing at him is refused and passes through him to the adult behind, and so does an NPC's
+#   arrow, while the player's arrow lands on him
 # - striking a person records one `harm` per fight, witnessed by line of sight (not through a wall)
 # - dodge invulnerability, projectiles stopped by walls, apply_hit_to for bodies with their own health,
 #   hit_landed / fight_ended, the player scene's hurtbox
@@ -260,23 +261,38 @@ func _init():
 	r = combat.attack(foe, player, "light")
 	_check("After it the blow lands on PlayerStats.damage", not r.get("dodged", true) and stats.health < 100.0)
 
-	print("\nChildren are never targets")
+	print("\nChildren: the player can strike them; NPCs never do")
 	player = await _fresh({"main_hand": _rec("short_sword", 50)})
 	var rook = _body(registry.get_npc_id("rook"), Vector2(30, 0), ["npcs"])
 	rook.npc_name = "Rook"
 	await _settle()
-	_check("Combat.can_target('rook') is false", not combat.can_target("rook") and not combat.can_target_node(rook))
-	r = combat.attack(player, null, "light")
-	_check("A swing with only Rook in reach is refused, nothing spent", r.get("refused", "") == "minor" and is_equal_approx(stats.stamina, 100.0))
-	r = combat.attack(player, rook, "light")
-	_check("Aimed at Rook it is refused", r.get("refused", "") == "minor" and is_equal_approx(stats.stamina, 100.0))
-	var behind_rook = _body("test_adult_001", Vector2(55, 0), ["fighters"])
+	_check("Combat.can_target('rook') is false for anyone but the player", not combat.can_target("rook") and not combat.can_target("rook", "varn") and not combat.can_target_node(rook))
+	_check("...and true for the player", combat.can_target("rook", "player") and combat.can_target_node(rook, player))
+	var npc_foe = _body("test_npc_attacker_001", Vector2(60, 0), ["fighters"])
+	npc_foe.profile = {"weapon": "short_sword"}
 	await _settle()
+	r = combat.attack(npc_foe, rook, "light")
+	_check("An NPC aiming at Rook is refused (minor)", r.get("refused", "") == "minor")
+	npc_foe.queue_free()
 	var hits: Array = []
 	combat.hit_landed.connect(func(info): hits.append(info))
+	var pe0 = root.get_node("PlayerEvents")
+	var before_rook = pe0.order.size()
 	r = combat.attack(player, null, "light")
-	_check("A swing passes through Rook to the adult behind him", r.get("damage", 0.0) > 0.0 and hits.size() == 1 and hits[0].target == behind_rook)
-	_check("hit_landed carries attacker, target and keys", hits.size() == 1 and hits[0].attacker_key == "player" and hits[0].target_key == "test_adult_001")
+	_check("The player's swing with only Rook in reach lands on him", r.get("damage", 0.0) > 0.0 and hits.size() == 1 and hits[0].target == rook)
+	_check("hit_landed carries attacker, target and keys", hits.size() == 1 and hits[0].attacker_key == "player" and hits[0].target_key == registry.get_npc_id("rook"))
+	var rook_harm = pe0.get_event(pe0.order.back()) if pe0.order.size() > before_rook else {}
+	_check("...a harm about Rook marked victim_minor", rook_harm.get("kind", "") == "harm" and "rook" in rook_harm.get("about", []) and rook_harm.get("victim_minor", false))
+	var behind_rook = _body("test_adult_001", Vector2(55, 0), ["fighters"])
+	var swinger = _body("test_npc_swinger_001", Vector2(10, 0), ["fighters"])  # the player stands behind it
+	swinger.facing = Vector2.RIGHT
+	swinger.profile = {"weapon": "short_sword"}
+	await _settle()
+	hits.clear()
+	r = combat.attack(swinger, null, "light")
+	_check("An NPC's swing passes through Rook to the adult behind him", r.get("damage", 0.0) > 0.0 and hits.size() == 1 and hits[0].target == behind_rook)
+	swinger.queue_free()
+	behind_rook.queue_free()
 
 	print("\nThe harm deed and its witnesses")
 	player = await _fresh({"main_hand": _rec("short_sword", 50)})
@@ -332,10 +348,17 @@ func _init():
 	var out = await _fly(r.get("projectile"))
 	_check("The arrow flies and lands on the target (pierce)", out.get("fighter") == deer and out.result.type == "pierce" and out.result.damage > 0.0)
 	var rook2 = _body(registry.get_npc_id("rook"), Vector2(100, 0), ["npcs"])
+	var archer = _body("test_npc_archer_001", Vector2(0, 0), ["fighters"])
+	archer.facing = Vector2.RIGHT
+	archer.profile = {"weapon": "hunting_bow"}
+	await _settle()
+	out = await _fly(combat.attack(archer, null, "light").get("projectile"))
+	_check("An NPC's arrow passes through Rook to the target beyond", out.get("fighter") == deer)
+	archer.queue_free()
 	await _settle()
 	_tick(3.0)
 	out = await _fly(combat.attack(player, null, "light").get("projectile"))
-	_check("An arrow passes through Rook to the target beyond", out.get("fighter") == deer)
+	_check("The player's arrow lands on Rook", out.get("fighter") == rook2)
 	rook2.queue_free()
 	scene.add_child(_wall(Vector2(120, 0), Vector2(20, 200)))
 	await _settle()

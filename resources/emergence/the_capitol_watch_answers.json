@@ -1,0 +1,128 @@
+{
+  "id": "the_capitol_watch_answers",
+  "title": "The Capitol Watch Answers",
+  "summary": "The player hurt or killed someone inside the Capitol, where the crown's soldiers stand the gates. Whoever of them knows it answers by their own soul: bring the stranger before the High Magistry, warn them, look away, or take their side.",
+  "trigger": {
+    "event": {
+      "kind": [
+        "harm",
+        "kill"
+      ],
+      "region": "the_capitol"
+    }
+  },
+  "roles": {
+    "victim": {
+      "from": "event_about",
+      "prefer": "nearest",
+      "optional": true
+    },
+    "keeper": {
+      "from": "archetype:garrison_soldier",
+      "region": "the_capitol",
+      "min_fidelity": 0.6,
+      "prefer": "nearest"
+    }
+  },
+  "cooldown_days": 1,
+  "max_active": 2,
+  "expires_days": 2,
+  "location": "{keeper.location}",
+  "hooks": [
+    {
+      "id": "keeping_the_peace",
+      "type": "react",
+      "eligible_role": "keeper",
+      "trigger": "on_open",
+      "situation": "The crown's soldiers keep the peace inside Highmarch's walls, and {player} broke it: {event.summary}. The gate has heard, and the city is watching what the crown's soldiers do.",
+      "options": [
+        {
+          "id": "bring_them_in",
+          "label": "Bring the stranger before the High Magistry",
+          "appeal": {
+            "trust": -0.5,
+            "fear": -0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{keeper}",
+              "text": "Find {player} and bring them to the High Magistry to answer for what they did."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{keeper}",
+              "dimension": "trust",
+              "delta": -12
+            }
+          ]
+        },
+        {
+          "id": "one_warning",
+          "label": "Give them one warning at the gate",
+          "appeal": {
+            "respect": 0.4,
+            "trust": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{keeper}",
+              "text": "Tell {player} the gate knows what they did, that this is their one warning, and that next time it's the Magistry's cells."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{keeper}",
+              "dimension": "trust",
+              "delta": -5
+            }
+          ]
+        },
+        {
+          "id": "look_away",
+          "label": "Look the other way; the Hill does not pay for trouble it never sees",
+          "appeal": {
+            "fear": 0.5,
+            "affection": 0.3
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{keeper}",
+              "dimension": "fear",
+              "delta": 4
+            }
+          ]
+        },
+        {
+          "id": "take_their_side",
+          "label": "Side with the stranger: {victim} had it coming",
+          "harms": [
+            "{victim}"
+          ],
+          "appeal": {
+            "affection": 0.5,
+            "trust": 0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{keeper}",
+              "text": "Tell {player} that {victim} had it coming, and that the gate won't be asking about it."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{keeper}",
+              "dimension": "trust",
+              "delta": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:keeper",
+    "expired"
+  ]
+}

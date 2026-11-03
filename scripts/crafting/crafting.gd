@@ -17,6 +17,7 @@ signal node_changed(node_id: String)
 signal leave_decided(target_id: String, granted: bool, decision: Dictionary)
 
 const Witnesses = preload("res://scripts/world/witnesses.gd")
+const Seasons = preload("res://scripts/world/seasons.gd")
 
 const RECIPES_PATH = "res://resources/crafting/recipes.json"
 const STATIONS_PATH = "res://resources/crafting/stations.json"
@@ -513,6 +514,25 @@ func node_regrows_at(node_id: String) -> int:
 		return -1
 	return int(node_state[node_id].since) + maxi(1, int(nodes[node_id].get("regrow_minutes", 1440)))
 
+## The season a node can be taken in: its own `season`, else (a herb) its ingredient's, else "any"
+func node_season(node_id: String):
+	var n: Dictionary = nodes.get(node_id, {})
+	if n.has("season"):
+		return n.season
+	if str(n.get("kind", "")) == "herb":
+		var hc = _herbcraft()
+		var ing: Dictionary = hc.ingredient(str(n.get("item", ""))) if hc else {}
+		return str(ing.get("season", Seasons.ANY))
+	return Seasons.ANY
+
+## The season now, by the game clock (world.json calendar.seasons)
+func season_now() -> String:
+	return Seasons.season_at(_now())
+
+## Whether a node grows in the season the clock is in
+func node_in_season(node_id: String) -> bool:
+	return Seasons.in_season(node_season(node_id), season_now())
+
 ## Take from a node. at: the live node (where the deed is seen from; default the registered one)
 ## Returns {ok, item, qty, reason, stolen, events}
 func gather(node_id: String, at: Node = null) -> Dictionary:
@@ -522,6 +542,10 @@ func gather(node_id: String, at: Node = null) -> Dictionary:
 	var where = _not_here(n)
 	if where != "":
 		return {"ok": false, "item": {}, "qty": 0, "reason": where}
+	if not node_in_season(node_id):
+		var season = node_season(node_id)
+		var when = " or ".join(season) if season is Array else str(season)
+		return {"ok": false, "item": {}, "qty": 0, "reason": "nothing grows here in %s; come back in %s" % [season_now(), when]}
 	if node_available(node_id) <= 0:
 		var hours = ceili(maxf(0.0, node_regrows_at(node_id) - _now()) / 60.0)
 		return {"ok": false, "item": {}, "qty": 0, "reason": "it is bare; give it %d hour(s)" % hours}

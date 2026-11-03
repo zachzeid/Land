@@ -77,7 +77,13 @@ func get_combat_profile() -> Dictionary:
 	var manager = _manager()
 	if manager and manager.has_method("is_minor") and manager.is_minor(generic_id if generic_id != "" else npc_id):
 		profile["minor"] = true
+		profile["weapon"] = "fists"  # a child carries nothing, whatever the body was given
+		profile["armour"] = []
 	return profile
+
+## A generic fights with its archetype's loadout (resources/combat/loadouts.json `archetypes`)
+func combat_loadout(minor: bool = false) -> Dictionary:
+	return LoadoutsScript.for_archetype(archetype_id, minor)
 
 ## Combat.apply_hit_to's entry point (BaseNPC.take_hit, with Combat recording the harm)
 func take_combat_hit(result: Dictionary, attacker) -> Dictionary:

@@ -236,6 +236,8 @@ func _crowd_condition(spec: Dictionary) -> Dictionary:
 		var target: String = t[0]
 		if only != "" and target != director._npc_key(only):
 			continue
+		if _is_minor(target):
+			continue  # no crowd ever forms against a child (§1.4)
 		var aggrieved: Array = []
 		var protectors: Array = []
 		for p in people:
@@ -281,6 +283,9 @@ func event_matches(spec: Dictionary, ev: Dictionary) -> bool:
 			var values: Array = wanted if wanted is Array else [wanted]
 			if str(ev.get(field, "")) not in values.map(func(v): return str(v)):
 				return false
+	for field in ["victim_minor", "self_defence"]:  # violence marks (PlayerEvents), false when absent
+		if spec.has(field) and bool(ev.get(field, false)) != bool(spec[field]):
+			return false
 	if spec.has("about"):
 		var wanted = spec.about if spec.about is Array else [spec.about]
 		var about: Array = _event_keys(ev.get("about", []))
@@ -559,6 +564,9 @@ func bind_roles(t: Dictionary, ev: Dictionary, matches: Array) -> Dictionary:
 					continue
 			if spec.get("knows_of_player", false) == true and not knows_of_player(key):
 				continue
+			# near_event: region | area: only those who are now where the deed was done (rangers where they ride)
+			if spec.has("near_event") and not _near_event(key, str(spec.near_event), ev):
+				continue
 			# Fidelity is per hearer (PlayerEvents heard_by[who].fidelity; witnesses know it at 1.0)
 			if spec.has("min_fidelity") and str(ev.get("id", "")) != "" and _fidelity_for(str(ev.id), key) < float(spec.min_fidelity):
 				continue
@@ -569,6 +577,16 @@ func bind_roles(t: Dictionary, ev: Dictionary, matches: Array) -> Dictionary:
 			return {}
 		bound[role] = _prefer(candidates, str(spec.get("prefer", "")), ev)[0]
 	return bound
+
+func _near_event(key: String, scope: String, ev: Dictionary) -> bool:
+	var registry = director._registry()
+	var at = str(ev.get("location", ""))
+	var here = director.get_npc_location(key)
+	if registry == null or not _has_location(at) or not _has_location(here):
+		return false
+	if scope == "area":
+		return registry.get_area(here) == registry.get_area(at)
+	return registry.get_region(here) == registry.get_region(at)
 
 ## Who could fill a role, from one source or a list of them (keys, sorted for determinism)
 func role_candidates(spec: Dictionary, ev: Dictionary, matches: Array) -> Array:
@@ -593,8 +611,12 @@ func role_candidates(spec: Dictionary, ev: Dictionary, matches: Array) -> Array:
 			keys = _crowd.get("protectors", []).duplicate()
 		elif src == "near_player":
 			keys = near_player()
+		elif src == "near_event":
+			keys = near_event(ev)
 		elif src.begins_with("faction:"):
 			keys = faction_members(src.substr(8))
+		elif src.begins_with("archetype:"):
+			keys = archetype_members(src.substr(10))
 		elif src.begins_with("npc:"):
 			keys = [director._npc_key(src.substr(4))]
 		if src != "crowd_aggrieved":
@@ -671,6 +693,18 @@ func near_player() -> Array:
 			keys.append(key)
 	return keys
 
+## Souls standing where the event happened (not travelling): whoever could come upon what it left,
+## a pack where the player fell, after the player is gone. Falls back to near_player without a place
+func near_event(ev: Dictionary) -> Array:
+	var where = str(ev.get("location", ""))
+	if where == "":
+		return near_player()
+	var keys: Array = []
+	for key in director.get_soul_keys():
+		if director.get_npc_location(key) == where and not director.is_npc_travelling(key):
+			keys.append(key)
+	return keys
+
 ## Who a faction reckons as its own now: Reputation.faction_members (hidden members under cover,
 ## archetype generics of the faction's region) when available, else world.json members plus
 ## registered generic souls of the faction's archetypes
@@ -700,6 +734,18 @@ func faction_members(faction_id: String) -> Array:
 			if inst and str(inst.archetype_id) in archetypes and key not in members:
 				members.append(key)
 	return members
+
+## Registered generic souls of one archetype (garrison soldiers wherever they are posted)
+func archetype_members(archetype_id: String) -> Array:
+	var out: Array = []
+	var generics = director.get_generics()
+	if generics == null or not generics.has_method("get_instance"):
+		return out
+	for key in director.get_registered_souls():
+		var inst = generics.get_instance(key)
+		if inst and str(inst.archetype_id) == archetype_id:
+			out.append(key)
+	return out
 
 ## npc keys from npc ids / keys (skips the player and anything that is not an NPC with a soul or roster entry)
 func _event_keys(raw) -> Array:
@@ -787,11 +833,18 @@ func resolved_hook(inst: Dictionary, hook_id: String) -> Dictionary:
 				copy["harms"] = _as_list(option.harms).map(func(h): return subst(str(h), inst, true))
 			if option.get("crowd", false) == true:
 				copy["crowd"] = true
+			# Engine rule (docs/PLAYER_SYSTEMS.md §1.4): no NPC harms a child, whatever its soul would choose
+			if copy.get("harms", []).any(func(h): return _is_minor(str(h))):
+				continue
 			options.append(copy)
 		return {"id": hook_id, "type": str(hook.get("type", "react")), "trigger": str(hook.get("trigger", "on_open")),
 			"eligible": eligible, "situation": subst(str(hook.get("situation", "")), inst, false), "options": options,
 			"once": hook.get("once", true), "stack": hook.get("stack", false)}
 	return {}
+
+func _is_minor(key: String) -> bool:
+	var registry = director._registry() if director else null
+	return key != "" and registry != null and registry.has_method("is_minor") and registry.is_minor(key)
 
 func _subst_effect(effect, inst: Dictionary):
 	if not effect is Dictionary:
