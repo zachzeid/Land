@@ -4,14 +4,15 @@ ChromaDB CLI wrapper - Allows Godot to interact with ChromaDB via command-line c
 Usage: python3 chroma_cli.py <command> [args...]
 """
 
+import os
 import sys
 import json
 import base64
 import chromadb
 from chromadb.config import Settings
 
-# Use persistent client (local database, no server needed)
-client = chromadb.PersistentClient(path="./chroma")
+# Use persistent client (local database, no server needed); tests point LAND_CHROMA_PATH at a temp dir
+client = chromadb.PersistentClient(path=os.environ.get("LAND_CHROMA_PATH", "./chroma"))
 
 def create_collection(collection_name):
     """Create or get collection"""
