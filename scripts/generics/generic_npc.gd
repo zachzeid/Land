@@ -81,6 +81,13 @@ func get_combat_profile() -> Dictionary:
 		profile["armour"] = []
 	return profile
 
+## A generic is the kind of person its archetype's `type:` makes it (GenericManager.character_kind)
+func character_kind() -> Dictionary:
+	var manager = _manager()
+	if manager and manager.has_method("character_kind"):
+		return manager.character_kind(generic_id if generic_id != "" else npc_id)
+	return super.character_kind()
+
 ## A generic fights with its archetype's loadout (resources/combat/loadouts.json `archetypes`)
 func combat_loadout(minor: bool = false) -> Dictionary:
 	return LoadoutsScript.for_archetype(archetype_id, minor)

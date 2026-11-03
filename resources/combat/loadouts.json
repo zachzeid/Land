@@ -1,5 +1,5 @@
 {
-	"_doc": "What each person fights with when they fight (docs/PLAYER_SYSTEMS.md §3). npcs: by world.json npc key; archetypes: by generic archetype id. weapon: a weapons.json id (absent = bare fists); armour: armour.json ids, at most one per slot. Chosen from each soul and WORLD_BIBLE; why says the reason. Minors carry nothing (the validator refuses any loadout for one). BaseNPC.get_combat_profile reads it through scripts/combat/loadouts.gd; a weapon set on the scene body wins over this",
+	"_doc": "What each person fights with when they fight (docs/PLAYER_SYSTEMS.md §3). npcs: by world.json npc key; archetypes: by generic archetype id. weapon: a weapons.json id (absent = bare fists); sidearm: the melee weapon drawn when the weapon is a bow and a foe is close or the arrows are gone; arrows: how many a bow-carrier has; armour: armour.json ids, at most one per slot. Chosen from each soul and WORLD_BIBLE; why says the reason. Minors carry nothing (the validator refuses any loadout for one). BaseNPC.get_combat_profile reads it through scripts/combat/loadouts.gd; a weapon set on the scene body wins over this",
 	"npcs": {
 		"gregor": {"weapon": "knife", "armour": [], "why": "A shopkeeper's knife for twine and sacking; he has never fought and never will by choice"},
 		"elena": {"armour": [], "why": "Eighteen and five years fevered; she owns no weapon"},
@@ -13,7 +13,7 @@
 		"seraphine": {"armour": [], "why": "A noblewoman who has others carry what she needs"},
 		"hollis": {"armour": [], "why": "He never does violence himself and never says the word"},
 		"ysolde": {"armour": [], "why": "An infirmarian of the Dawn; she binds wounds, she does not make them"},
-		"renna": {"weapon": "rangers_sword", "armour": ["leather_jerkin"], "why": "Captain of the King's Rangers, in a rider's leather. She carries her father's bow too, but people fight at blade's reach here"},
+		"renna": {"weapon": "hunting_bow", "sidearm": "rangers_sword", "arrows": 20, "armour": ["leather_jerkin"], "why": "Captain of the King's Rangers, in a rider's leather. She fights with her father's bow and draws the ranger's sword when she is closed on"},
 		"rook": {"armour": [], "why": "A minor: carries nothing"},
 		"wren": {"weapon": "knife", "armour": [], "why": "Thirty years the King's Ear; she keeps a knife and says she does not"},
 		"oskar": {"weapon": "quarterstaff", "armour": [], "why": "The ferryman's pole, and the arms of a man who hauls a raft on a rope all day"},
@@ -28,6 +28,7 @@
 		"peacekeeper_recruit": {"weapon": "cudgel", "armour": ["padded_jack"], "why": "Aldric's farmers and cooper: a cudgel and a quilted jack; the cache under the well stays shut"},
 		"woodcutter": {"weapon": "hand_axe", "armour": [], "why": "The axe they work with"},
 		"miner": {"weapon": "cudgel", "armour": [], "why": "A pick-handle"},
-		"courier": {"weapon": "knife", "armour": [], "why": "Riders on the Darkwood stretch carry a knife since the ditches"}
+		"courier": {"weapon": "knife", "armour": [], "why": "Riders on the Darkwood stretch carry a knife since the ditches"},
+		"ranger": {"weapon": "hunting_bow", "sidearm": "fighting_knife", "arrows": 12, "armour": ["leather_jerkin"], "why": "A King's Ranger: a yew bow and a quiver of a dozen, a hunting knife for when someone gets close, and a rider's leather"}
 	}
 }

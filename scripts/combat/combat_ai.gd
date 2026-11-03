@@ -7,7 +7,8 @@ class_name CombatAI
 ##   the player decide it (offline appeal or Claude). Options carry harms/aids/crowd so Lines refuse
 ##   them: harm:<x> never fights x, and will not run from a fight that leaves x hurt; `crowd` never
 ##   joins a mob
-## - morale: fear of the player, wounds, allies down and the soul's own resolve. It decides which
+## - morale: fear of the player, wounds, allies down, the soul's own resolve and the character type's
+##   training (resources/characters/character_types.json `morale`). It decides which
 ##   options are on the table; people yield when it breaks, they do not fight to the death
 ## - children: no NPC, creature or crowd ever targets one, and a child fights nobody (an engine rule,
 ##   before any soul is asked: Combat.can_target). The player can (docs/PLAYER_SYSTEMS.md §1.4); a child
@@ -18,6 +19,7 @@ class_name CombatAI
 ## Static: NPC bodies, creatures, tests and other systems call it without an instance
 
 const Witnesses = preload("res://scripts/world/witnesses.gd")
+const CharacterTypes = preload("res://scripts/npcs/character_types.gd")
 
 const ACTIONS = ["fight", "yield", "flee", "call_for_help", "talk"]
 const PLAYER = "player"
@@ -200,6 +202,7 @@ static func morale_for(npc_key: String, situation: Dictionary) -> float:
 	m -= WOUND_WEIGHT * (1.0 - clampf(float(situation.get("health_fraction", 1.0)), 0.0, 1.0))
 	m -= ALLY_DOWN_WEIGHT * maxi(int(situation.get("allies_down", 0)), 0)
 	m += resolve(key)
+	m += CharacterTypes.morale_bonus(CharacterTypes.of_key(key))  # training: a ranger holds steadier
 	var soul = _soul(key)
 	var victim = _key(str(situation.get("victim", "")))
 	if soul and str(situation.get("kind", "")) == "witness" and victim != "" and soul._forbidding_rule("harm:" + victim) != "":

@@ -1,7 +1,7 @@
 {
   "id": "the_rangers_answer",
   "title": "The Rangers Answer",
-  "summary": "The player hurt or killed someone in the country where Captain Renna Thorne and the King's Rangers are riding. If Renna knows it, she answers by her own soul: bring the stranger in under crown law, warn them, look away, or take their side.",
+  "summary": "The player hurt or killed someone in the country where the King's Rangers are riding. If a ranger knows it (Captain Renna Thorne, or one of her riders), they answer by their own soul: bring the stranger in under crown law, warn them, look away, or take their side.",
   "trigger": {
     "event": {
       "kind": [
@@ -17,7 +17,11 @@
       "optional": true
     },
     "keeper": {
-      "from": "npc:renna",
+      "from": [
+        "npc:renna",
+        "archetype:ranger"
+      ],
+      "prefer": "nearest",
       "min_fidelity": 0.6,
       "near_event": "region"
     }
@@ -32,7 +36,7 @@
       "type": "react",
       "eligible_role": "keeper",
       "trigger": "on_open",
-      "situation": "The King's Rangers ride as the crown's law on these roads, and {player} broke the peace where they ride: {event.summary}. Word has reached the captain, and people are watching what the Rangers do.",
+      "situation": "The King's Rangers ride as the crown's law on these roads, and {player} broke the peace where they ride: {event.summary}. Word has reached {keeper}, and people are watching what the Rangers do.",
       "options": [
         {
           "id": "bring_them_in",

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3]
+[gd_scene load_steps=27 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
 [ext_resource type="Script" path="res://scripts/world/world_obstacle.gd" id="2_world_obstacle"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="10_dialogue_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="11_debug_interaction_panel"]
 [ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="12_debug_console"]
+[ext_resource type="Script" path="res://scripts/world/room_door.gd" id="90_room_door"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1024x40"]
 size = Vector2(1024, 40)
@@ -48,6 +49,9 @@ size = Vector2(80, 70)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_140x40"]
 size = Vector2(140, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_room_door"]
+size = Vector2(90, 40)
 
 [node name="CapitolMarketInn" type="Node2D"]
 
@@ -800,3 +804,30 @@ visible = false
 [connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
 [connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
 [connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]
+
+[node name="RoomDoor" type="Area2D" parent="Rooms/Room1"]
+position = Vector2(-314.7, -209.0)
+script = ExtResource("90_room_door")
+location_id = "capitol_market_inn"
+room = "room_1"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rooms/Room1/RoomDoor"]
+shape = SubResource("RectangleShape2D_room_door")
+
+[node name="RoomDoor" type="Area2D" parent="Rooms/Room2"]
+position = Vector2(0.0, -209.0)
+script = ExtResource("90_room_door")
+location_id = "capitol_market_inn"
+room = "room_2"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rooms/Room2/RoomDoor"]
+shape = SubResource("RectangleShape2D_room_door")
+
+[node name="RoomDoor" type="Area2D" parent="Rooms/Room3"]
+position = Vector2(314.7, -209.0)
+script = ExtResource("90_room_door")
+location_id = "capitol_market_inn"
+room = "room_3"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rooms/Room3/RoomDoor"]
+shape = SubResource("RectangleShape2D_room_door")

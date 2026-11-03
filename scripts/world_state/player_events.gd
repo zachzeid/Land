@@ -22,6 +22,7 @@ signal player_event_recorded(ev: Dictionary)
 signal player_event_changed(ev: Dictionary)          # status (kept/broken) or truth (lie exposed)
 signal player_event_heard(event_id: String, who: String, fidelity: float)
 
+const CharacterTypes = preload("res://scripts/npcs/character_types.gd")
 const KINDS = ["claim", "promise", "threat", "lie", "insult", "gift", "help", "harm", "theft", "kill",
 	"spared", "confession", "accusation", "refusal", "seen_at", "kept_company",
 	# Player systems (docs/PLAYER_SYSTEMS.md §7): physical deeds, witnessed by line of sight
@@ -270,7 +271,9 @@ func check_traces() -> Array:
 			continue
 		var f = FOUND_LINKED if seen_near(str(trace.location), int(trace.minute), str(ev.id)) else FOUND_ANON
 		for who in finders:
-			ev.heard_by[who] = {"fidelity": f, "minute": now, "from": "", "via": FOUND_VIA, "tone": "plain", "found": true}
+			# a trail reader (a ranger) reads the stranger's tracks round a body
+			var fw = CharacterTypes.trail_fidelity(CharacterTypes.of_key(who), f)
+			ev.heard_by[who] = {"fidelity": fw, "minute": now, "from": "", "via": FOUND_VIA, "tone": "plain", "found": true}
 			var dead = " and ".join(ev.about.map(func(a): return _display_name(a))) if not ev.about.is_empty() else "someone"
 			var what = compose(ev, "plain", f, abs(hash(str(ev.id) + who)))
 			_store_memory(who, ev, "I found %s dead at %s: %s" % [dead, _place_name(str(trace.location)), what], "heard")

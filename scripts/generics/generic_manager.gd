@@ -20,6 +20,7 @@ const GenericInstance = preload("res://scripts/generics/generic_instance.gd")
 const SoulBuilder = preload("res://scripts/generics/generic_soul_builder.gd")
 const RelationshipLedger = preload("res://scripts/generics/relationship_ledger.gd")
 const CreatureSpawner = preload("res://scripts/combat/creature_spawner.gd")
+const CharacterTypes = preload("res://scripts/npcs/character_types.gd")
 
 const DEFAULT_ARCHETYPE_DIR = "res://resources/generics/archetypes"
 const DEFAULT_NAMES_PATH = "res://resources/generics/names.json"
@@ -82,7 +83,10 @@ var creature_spawner: Node = null
 ## The spawner's save (culls: who was killed where, and when) while there is no spawner to hold it
 var creature_state: Dictionary = {}
 var name_pools: Dictionary = {}      # region -> {"given": [], "family": []}
-var population: Array = []           # [{location, archetype, count, hours}]
+var population: Array = []           # [{location, archetype, count, hours, posted_after, until_then}]
+## Instances posted somewhere only once a world flag holds (rangers ride west when the crown sends
+## them): id -> {flag, until (where they are before), post (where they go)}
+var postings: Dictionary = {}
 var instances: Dictionary = {}       # id -> GenericInstance
 var instance_order: Array = []
 var ledger = RelationshipLedger.new()
@@ -98,6 +102,8 @@ func _ready():
 	if bus:
 		bus.time_advanced.connect(_on_time_advanced)
 		bus.npc_relationship_changed.connect(_on_relationship_changed)
+		if bus.has_signal("world_flag_changed"):
+			bus.world_flag_changed.connect(_on_world_flag_changed)
 	var propagator = get_node_or_null("/root/EventPropagator")
 	if propagator and propagator.has_signal("news_spread"):
 		propagator.news_spread.connect(on_news_spread)
@@ -232,9 +238,11 @@ func _parse_population(data) -> Array:
 				out.append(_population_entry(str(entry.location), entry))
 	return out
 
+## posted_after + until_then: the instance waits at until_then until the flag holds, then is at location
 func _population_entry(location: String, entry: Dictionary) -> Dictionary:
 	return {"location": location, "archetype": str(entry.get("archetype", "")), "count": maxi(int(entry.get("count", 1)), 0),
-		"hours": entry.get("hours").map(func(h): return int(h)) if entry.get("hours") is Array else []}
+		"hours": entry.get("hours").map(func(h): return int(h)) if entry.get("hours") is Array else [],
+		"posted_after": str(entry.get("posted_after", "")), "until_then": str(entry.get("until_then", ""))}
 
 # =============================================================================
 # INSTANCES
@@ -254,11 +262,14 @@ func populate() -> Array:
 			var n = int(counters.get(arch.id, 0)) + 1
 			counters[arch.id] = n
 			var id = "gen_%s_%d" % [arch.id, n]
+			if str(entry.get("posted_after", "")) != "" and str(entry.get("until_then", "")) != "":
+				postings[id] = {"flag": str(entry.posted_after), "until": str(entry.until_then), "post": entry.location}
 			if instances.has(id):
 				continue
 			created.append(create_instance(arch, entry.location, n, entry.get("hours", [])).id)
 	if not unknown.is_empty():
 		push_warning("[Generics] population names unloaded archetype(s): %s" % ", ".join(unknown.keys()))
+	sync_postings()
 	return created
 
 ## Roll one instance. The seed (world seed + id) fixes its name, want weights, traits and voice variant
@@ -270,13 +281,16 @@ func create_instance(arch, location: String, n: int, hours: Array = []):
 	inst.home = location
 	inst.region = _region_of(location)
 	inst.hours = hours.duplicate()
+	var posting: Dictionary = postings.get(inst.id, {})
+	if not posting.is_empty() and not _flag_holds(str(posting.flag)):
+		inst.location = str(posting.until)  # not sent yet: they wait where they muster
 	var rng = RandomNumberGenerator.new()
 	rng.seed = inst.seed_value
-	inst.name = _roll_name(inst.region, rng)
+	# A posted instance comes from where it musters (crown riders are Capitol names, not valley ones)
+	inst.name = _roll_name(_region_of(str(posting.until)) if not posting.is_empty() else inst.region, rng)
 	for want_id in arch.want_order:
 		inst.rolled_wants[want_id] = rng.randi_range(int(arch.wants[want_id].lo), int(arch.wants[want_id].hi))
-	for t in GenericInstance.TRAITS:
-		inst.rolled_traits[t] = rng.randi_range(-40, 40)
+	inst.rolled_traits = roll_traits(rng, arch.id)
 	inst.voice_variant = rng.randi_range(0, maxi(arch.voice_variants.size() - 1, 0))
 	inst.soul_text = SoulBuilder.build_rolled_soul(inst, arch, _ctx(inst))
 	inst.note_history("created", now_minutes())
@@ -287,6 +301,15 @@ func create_instance(arch, location: String, n: int, hours: Array = []):
 	_register_soul(inst)
 	instance_created.emit(inst.id)
 	return inst
+
+## Big Five from the seed, leaned by the archetype's character type temperament (the rng draws are
+## the same for every archetype, so a type changes the lean and nothing else)
+func roll_traits(rng: RandomNumberGenerator, archetype_id: String) -> Dictionary:
+	var temper: Dictionary = character_kind_of_archetype(archetype_id).get("temperament", {})
+	var out: Dictionary = {}
+	for t in GenericInstance.TRAITS:
+		out[t] = clampi(rng.randi_range(-40, 40) + int(temper.get(t, 0)), -100, 100)
+	return out
 
 func seed_for(id: String) -> int:
 	return hash("%d|%s" % [world_seed, id]) & 0x7fffffff
@@ -401,6 +424,12 @@ func is_present(id: String, location_id: String) -> bool:
 	return _within_hours(inst)
 
 func _within_hours(inst) -> bool:
+	var kind = character_kind(inst.id)
+	if kind.type != "":
+		var registry = get_node_or_null("/root/WorldRegistry")
+		var place: Dictionary = registry.get_location(get_location(inst.id)) if registry and registry.has_method("get_location") else {}
+		if not CharacterTypes.present_at(kind, str(place.get("kind", "")) == "interior", floori((now_minutes() % 1440) / 60.0)):
+			return false  # wilds_over_towns: under a roof only by day
 	if inst.hours.size() < 2:
 		return true
 	var hour = floori((now_minutes() % 1440) / 60.0)
@@ -461,7 +490,8 @@ func _register_soul(inst) -> bool:
 	var director = _director()
 	if director == null or not director.has_method("register_soul"):
 		return false
-	var ok = director.register_soul(inst.id, inst.soul_text, {"tier": inst.tier, "npc_id": inst.id, "home": inst.home})
+	var home = inst.get_location() if postings.has(inst.id) else inst.home  # a posted ranger is where they wait
+	var ok = director.register_soul(inst.id, inst.soul_text, {"tier": inst.tier, "npc_id": inst.id, "home": home})
 	if not ok:
 		_log("register_soul refused %s (tier %s)" % [inst.id, inst.tier])
 	return bool(ok)
@@ -641,9 +671,14 @@ func get_prompt_block(npc_id: String, include_soul: bool = true) -> String:
 		if voice != "":
 			block += "Your voice: %s\n" % _flat(voice, 160)
 	var ctx = _ctx(inst)
-	block += "You are %s, %s of %s%s. Ordinary folk: you know your own life and what you have heard, nothing more.\n" % [
+	var kind = character_kind(npc_id)
+	var standing = kind.prompt if kind.prompt != "" else "Ordinary folk: you know your own life and what you have heard, nothing more."
+	block += "You are %s, %s of %s%s. %s\n" % [
 		inst.name, _article(arch.title.to_lower() if arch else inst.archetype_id), ctx.home_name,
-		"" if inst.tier == "generic" else " (the stranger matters to you now)"]
+		"" if inst.tier == "generic" else " (the stranger matters to you now)", standing]
+	var craft = CharacterTypes.craft_lines(kind, get_location(npc_id), now)
+	if not craft.is_empty():
+		block += "What your craft tells you here: %s\n" % " ".join(craft)
 	var mood = _trait_mood(inst)
 	if mood != "":
 		block += "Lately: %s\n" % mood
@@ -775,6 +810,7 @@ func process_time() -> Dictionary:
 	for id in instance_order:
 		instances[id].significance = compute_significance(instances[id])
 	_check_demotions()
+	sync_postings()
 	_refresh_presence()
 	return changed
 
@@ -795,7 +831,7 @@ func _on_time_advanced(_minutes: int, _total: int, _reason: String) -> void:
 func _refresh_presence() -> void:
 	var changed = false
 	for id in instance_order:
-		if instances[id].hours.size() < 2:
+		if instances[id].hours.size() < 2 and character_kind(id).indoor_hours.is_empty():
 			continue
 		var present = _within_hours(instances[id])
 		if _presence_cache.get(id) != present:
@@ -1054,8 +1090,60 @@ func reset() -> void:
 	_unregister_names()
 	instances.clear()
 	instance_order.clear()
+	postings.clear()
 	ledger.entries.clear()
 	log_lines.clear()
+
+# =============================================================================
+# CHARACTER TYPES AND POSTINGS (resources/characters/character_types.json, docs/WORLD_SCHEMA.md §9.1)
+# =============================================================================
+
+## The instance's character type, resolved (CharacterTypes.neutral() for ordinary folk)
+func character_kind(id: String) -> Dictionary:
+	var inst = instances.get(id)
+	return character_kind_of_archetype(str(inst.archetype_id)) if inst else CharacterTypes.neutral()
+
+func character_kind_of_archetype(archetype_id: String) -> Dictionary:
+	var arch = archetypes.get(archetype_id)
+	return CharacterTypes.resolve(arch.character_type_id) if arch and arch.character_type_id != "" else CharacterTypes.neutral()
+
+## Posted instances go to their post once its flag holds (and back to the muster if it is unset),
+## unless the story has moved them somewhere else meanwhile. Returns the ids moved
+func sync_postings() -> Array:
+	var moved: Array = []
+	var world_state = get_node_or_null("/root/WorldState")
+	for id in postings:
+		var inst = instances.get(id)
+		if inst == null:
+			continue
+		var p: Dictionary = postings[id]
+		var want = str(p.post) if _flag_holds(str(p.flag)) else str(p.until)
+		var here = get_location(id)
+		if here == want or not here in [str(p.post), str(p.until)]:
+			continue
+		if world_state and (world_state.is_npc_travelling(id) or not world_state.is_npc_alive(id)):
+			continue
+		inst.location = "" if want == inst.home else want
+		if world_state and world_state.has_method("set_npc_location"):
+			world_state.set_npc_location(id, want)
+		_register_soul(inst)
+		_presence_cache.erase(id)
+		moved.append(id)
+		_log("%s posted to %s (%s)" % [id, want, p.flag])
+	return moved
+
+func _on_world_flag_changed(flag_name: String, _old_value = null, _new_value = null) -> void:
+	for id in postings:
+		if str(postings[id].flag) == flag_name:
+			sync_postings()
+			return
+
+func _flag_holds(flag: String) -> bool:
+	var world_state = get_node_or_null("/root/WorldState")
+	if world_state == null or flag == "":
+		return false
+	var flags: Dictionary = world_state.get_flags() if world_state.has_method("get_flags") else world_state.get("world_flags")
+	return flags.get(flag, false) == true
 
 # =============================================================================
 # DEBUG

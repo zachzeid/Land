@@ -7,6 +7,7 @@ extends RefCounted
 ## (WorldPhysics.glare_factor: lamps reveal and blind). Physical deeds pass the result to
 ## PlayerEvents.record as opts.witnesses; spoken deeds keep their conversation partner
 
+const CharacterTypes = preload("res://scripts/npcs/character_types.gd")
 const SIGHT_MASK = 4             # 2d_physics layer 3, world_solid (walls, buildings)
 const DAY_RANGE = 520.0          # pixels
 const NIGHT_FACTOR = 0.5         # 21:00-05:00, by the game clock, when the world has no physics
@@ -30,6 +31,8 @@ static func in_sight(scene_root: Node, at: Vector2, opts: Dictionary = {}) -> Ar
 		if id == "" or id in exclude or (npc.get("is_alive") == false):
 			continue
 		var npc_reach = reach * (float(physics.glare_factor(npc.global_position, at, light_opts)) if glare else 1.0)
+		if npc.has_method("character_kind"):
+			npc_reach *= CharacterTypes.sight_factor(npc.character_kind(), light_opts.outdoors)  # woodwise eyes under the sky
 		if npc.global_position.distance_to(at) > npc_reach:
 			continue
 		if space and _blocked(space, npc.global_position, at):

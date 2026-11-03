@@ -98,6 +98,12 @@
       {
         "archetype": "hollow_grunt",
         "count": 1
+      },
+      {
+        "archetype": "ranger",
+        "count": 2,
+        "posted_after": "tithe_rangers_arrive",
+        "until_then": "capitol_gate"
       }
     ],
     "iron_hollow_camp": [
@@ -123,6 +129,12 @@
         "archetype": "house_companion",
         "count": 2,
         "hours": [15, 24]
+      },
+      {
+        "archetype": "ranger",
+        "count": 1,
+        "posted_after": "tithe_rangers_dispatched",
+        "until_then": "capitol_gate"
       }
     ],
     "ferrisford": [
@@ -181,6 +193,10 @@
       {
         "archetype": "courier",
         "count": 1
+      },
+      {
+        "archetype": "ranger",
+        "count": 2
       }
     ],
     "capitol_market": [

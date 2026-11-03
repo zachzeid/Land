@@ -463,6 +463,53 @@ The 60/30 gap and the dwell times are hysteresis, so nobody flickers between tie
 
 The 19 authored NPCs are **anchored**: their relationships fade like anyone's, but they never demote.
 
+### 9.1 Character types: base traits and skills
+
+Some people are a *kind* of person, and it shows in more than what they carry. A character type
+(`resources/characters/character_types.json`, read by `scripts/npcs/character_types.gd`) gives
+everyone of that kind the same base, and the engine reads it:
+
+| field | what it is | who reads it |
+|-------|------------|--------------|
+| `traits` | behaviour switches, from a fixed list (below) | the systems named per trait |
+| `skills` | 0-100 by `resources/player/skills.json` id | Combat (`profile.skills`: damage, stamina, draw speed), as for the player |
+| `temperament` | Big Five offsets, -40..40 | a generic's roll (`GenericManager.roll_traits`) |
+| `morale` | added to CombatAI morale | `CombatAI.morale_for` (training holds steadier; the soul still chooses) |
+| `tactics` | `keep_range` [lo, hi], `close_range`, `shoot_seconds`, `switch_seconds` | `BaseNPC.ranged_step` |
+| `senses` | `outdoor_sight` (multiple of anyone's sight range) | `CharacterTypes.sight_factor` |
+| `indoor_hours` | [start, end]: under a roof only these hours | generic presence (`GenericManager._within_hours`) |
+| `prompt` | replaces a generic's "ordinary folk" line | `GenericManager.get_prompt_block` |
+
+**Who has a type.** A main NPC by world.json key under `npcs` (its own `skills`, `morale`,
+`tactics` override the type's): `"renna": {"type": "ranger", "skills": {"bows": 80}}`. A generic by
+an archetype header `type: <id>` (`resources/generics/archetypes/ranger.md`). Nobody else has one, and
+every query answers neutral for them. Minors never have a type.
+
+**Traits** (the engine reads exactly these):
+- `trail_reader`: comes upon a body and reads the tracks: `CharacterTypes.trail_fidelity` lifts the
+  found fidelity to at least 0.5 (as if the stranger had been seen there), more with woodcraft.
+- `woodwise`: under the sky sees farther (`sight_factor`) and is harder to see (`concealment`, the
+  stealth skill in full outdoors, half under a roof).
+- `keeps_distance`: with a bow gives ground to hold a foe inside `keep_range`.
+- `beast_and_herb_lore`: knows the creatures that range where they stand (creatures.json `where`)
+  and what grows there this season (Herbcraft); it goes in their conversation prompt.
+- `weather_eye`: reads the sky six hours ahead (`WorldPhysics.weather_at`), in the prompt too.
+- `wilds_over_towns`: under a roof only within `indoor_hours`; outdoors at any hour.
+
+**Ranged fighting** (any NPC whose main weapon is a bow; tactics default without a type). Loadouts
+(`resources/combat/loadouts.json`) add `sidearm` (a melee weapon) and `arrows`. In a fight the archer
+closes until it has a clear line (nothing on world_solid between them) and is within the bow's reach,
+gives ground inside `keep_range[0]` when it `keeps_distance`, looses when the draw is ready, and holds
+the shot while a child stands near the line. Closed on (`close_range`) or out of arrows it draws the
+sidearm, and puts it away once the foe is well clear again. Combat refuses an NPC shot from an empty
+quiver and spends an arrow per shot; the projectile passes through children and stops on walls.
+
+**Postings.** A population entry may carry `"posted_after": "<flag>", "until_then": "<location>"`:
+the instance waits at `until_then` and goes to its post when the flag holds (rangers ride west when the
+crown sends them), unless the story has moved it elsewhere.
+
+`tools/validators/characters.py` checks the file, the archetype headers, ranged loadouts and postings.
+
 ---
 
 # Part II: A world that answers the player (non-linear rules)

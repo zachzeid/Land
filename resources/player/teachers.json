@@ -17,6 +17,7 @@
     "miner": {"skills": ["mining"], "up_to": 50, "base_copper": 12},
     "woodcutter": {"skills": ["woodcraft"], "up_to": 50, "base_copper": 12},
     "garrison_soldier": {"skills": ["blades", "defence"], "up_to": 45, "base_copper": 15},
+    "ranger": {"skills": ["bows", "woodcraft"], "up_to": 50, "base_copper": 15},
     "peacekeeper_recruit": {"skills": ["defence"], "up_to": 35, "base_copper": 10},
     "hollow_grunt": {"skills": ["blunt"], "up_to": 45, "base_copper": 12},
     "valley_farmer": {"skills": ["herbcraft", "woodcraft"], "up_to": 35, "base_copper": 8},

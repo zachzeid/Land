@@ -1,0 +1,25 @@
+{
+	"_doc": "Character types: what kind of person someone is beyond what they carry (docs/WORLD_SCHEMA.md §9.1). traits: behaviour switches the engine reads (scripts/npcs/character_types.gd TRAITS says what each does). skills: 0-100 by resources/player/skills.json id; Combat reads them as it reads the player's. temperament: offsets added to a generic's rolled Big Five (-40..40). morale: added to CombatAI morale (a trained hand holds steadier; it decides nothing by itself). tactics: how a bow is used in a fight. senses: outdoor_sight multiplies how far they see under the sky (woodwise). indoor_hours: under a roof only these hours (wilds_over_towns). prompt: replaces the generic 'ordinary folk' line. Main NPCs take a type by world.json key under npcs (their values override the type's); generics by the archetype header `type:`",
+	"types": {
+		"ranger": {
+			"name": "ranger",
+			"prompt": "A King's Ranger: you know roads, tracks, weather and the woods, and what you have heard; nothing more.",
+			"traits": ["trail_reader", "woodwise", "keeps_distance", "beast_and_herb_lore", "weather_eye", "wilds_over_towns"],
+			"skills": {"bows": 55, "athletics": 45, "stealth": 40, "woodcraft": 45, "herbcraft": 30, "blades": 30, "defence": 25, "lore": 10},
+			"temperament": {"conscientiousness": 15, "neuroticism": -15, "extraversion": -10, "openness": 5},
+			"morale": 8,
+			"tactics": {"keep_range": [150, 360], "close_range": 80, "shoot_seconds": 2.2, "switch_seconds": 0.6},
+			"senses": {"outdoor_sight": 1.25},
+			"indoor_hours": [7, 20],
+			"why": "The King's Rangers are the crown's riders on the Kingsroad and in the west: scouts, pickets and couriers who live outdoors, read the road and the woods, and fight from range with a blade for when they are closed on (WORLD_BIBLE, crowns_tithe, renna)"
+		}
+	},
+	"npcs": {
+		"renna": {
+			"type": "ranger",
+			"skills": {"bows": 80, "athletics": 60, "blades": 55, "defence": 45, "woodcraft": 50, "stealth": 45, "lore": 25},
+			"morale": 12,
+			"why": "Captain of the King's Rangers; her father's bow, Renna teaches bows and athletics to 85 (teachers.json), and she has kept a sword since Ashguard"
+		}
+	}
+}
