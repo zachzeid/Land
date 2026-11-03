@@ -21,6 +21,7 @@ var npc_agency_mode: String = "offline"  # How storyline NPCs decide: offline (d
 var story_round_seconds: float = 300.0   # Idle fallback between story rounds (unpaused seconds)
 var conversation_agency: bool = true     # NPCs may act on what is said in conversation (CONVERSATION_AGENCY=off)
 var game_minutes_per_real_minute: float = 1.0  # Idle game clock speed (0 = only travel moves time)
+var system_prompt_token_budget: int = 6000      # NPC system prompt size (SYSTEM_PROMPT_TOKENS); smaller models want less
 
 ## Where each setting came from: key -> "env" | "user://.env" | "res://.env"
 var sources: Dictionary = {}
@@ -96,6 +97,9 @@ func _apply(key: String, value: String) -> void:
 				story_round_seconds = float(value)
 		"CONVERSATION_AGENCY":
 			conversation_agency = value.to_lower() not in ["0", "off", "false", "no"]
+		"SYSTEM_PROMPT_TOKENS":
+			if value.is_valid_int() and int(value) >= 1500:
+				system_prompt_token_budget = int(value)
 		"GAME_MINUTES_PER_REAL_MINUTE":
 			if value.is_valid_float() and float(value) >= 0.0:
 				game_minutes_per_real_minute = float(value)

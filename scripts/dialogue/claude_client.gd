@@ -144,13 +144,14 @@ func _sanitize_system_prompt(prompt: String) -> String:
 	var estimated_tokens = int(char_count / 4.0)
 	print("[ClaudeClient] System prompt: %d chars (~%d tokens)" % [char_count, estimated_tokens])
 
-	# Limit system prompt length (increased for multi-dimensional context + world knowledge)
-	# 16000 chars ≈ 4000 tokens, which is reasonable for Claude's context window
-	if char_count > 16000:
-		push_warning("System prompt too long (%d chars), truncating to 16000" % char_count)
-		cleaned = cleaned.substr(0, 16000)
-	elif char_count > 12000:
-		print("[ClaudeClient] WARNING: System prompt approaching limit (%d/16000 chars)" % char_count)
+	# ContextBuilder sizes the prompt to Config.system_prompt_token_budget; this is only a backstop
+	# (budget + 25%), so it never cuts a prompt the builder already fitted
+	var config = get_node_or_null("/root/Config")
+	var budget = int(config.system_prompt_token_budget) if config and "system_prompt_token_budget" in config else 6000
+	var limit = int(budget * 4 * 1.25)
+	if char_count > limit:
+		push_warning("System prompt too long (%d chars), truncating to %d" % [char_count, limit])
+		cleaned = cleaned.substr(0, limit)
 
 	return cleaned
 

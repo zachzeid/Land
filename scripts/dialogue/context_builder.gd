@@ -114,22 +114,11 @@ func _build_system_prompt_from_personality(personality: Resource, tiered_memorie
 		prompt += "\n"
 
 	# =========================================================================
-	# SECTION 7: MEMORIES (Tiered: Pinned → Important → Relevant)
+	# SECTIONS 7-9: MEMORIES, WORLD STATE, BEHAVIORAL GUIDANCE
+	# Sized to the budget rather than cut off the end (see _fit_to_budget)
 	# =========================================================================
-	prompt += _build_tiered_memories_section(tiered_memories)
-
-	# =========================================================================
-	# SECTION 8: WORLD STATE
-	# =========================================================================
-	if world_state.size() > 0:
-		prompt += _build_world_state_section(world_state)
-
-	# =========================================================================
-	# SECTION 9: BEHAVIORAL GUIDANCE (Lowest priority - OK to truncate)
-	# =========================================================================
-	prompt += _build_behavioral_section(dimensions, personality)
-
-	return prompt
+	var world_section = _build_world_state_section(world_state) if world_state.size() > 0 else ""
+	return _fit_to_budget(prompt, tiered_memories, world_section, _build_behavioral_section(dimensions, personality))
 
 ## SOUL + pending agendas + conversation agency from StorylineDirector ("" when it has nothing for this NPC)
 func _build_storyline_section(npc_id: String) -> String:
@@ -207,6 +196,60 @@ func _build_relationship_section(dimensions: Dictionary, personality: Resource) 
 
 ## Build memories section from tiered memories (Pinned → Important → Relevant)
 ## tiered_memories: {pinned: [], important: [], relevant: []} - formatted strings
+## Prompt budget: the system prompt is held to Config.system_prompt_token_budget (≈ 4 chars a token)
+## head (format, identity, storyline, facts, personality, relationship, secrets) is never trimmed
+## Memories (most important first) come before the world state, which keeps WORLD_FLOOR_TOKENS of room;
+## memories always get at least MIN_MEMORY_TOKENS; behavioral guidance is dropped first when short
+const DEFAULT_PROMPT_TOKEN_BUDGET = 6000
+const MIN_MEMORY_TOKENS = 600
+const WORLD_FLOOR_TOKENS = 300
+const CHARS_PER_TOKEN = 4
+
+static func get_prompt_token_budget() -> int:
+	var tree = Engine.get_main_loop() as SceneTree
+	var config = tree.root.get_node_or_null("Config") if tree else null
+	if config and "system_prompt_token_budget" in config and int(config.system_prompt_token_budget) > 0:
+		return int(config.system_prompt_token_budget)
+	return DEFAULT_PROMPT_TOKEN_BUDGET
+
+func _fit_to_budget(head: String, tiered_memories: Dictionary, world_section: String, tail: String) -> String:
+	var budget = get_prompt_token_budget() * CHARS_PER_TOKEN
+	var room = budget - head.length()
+	var world_floor = min(world_section.length(), WORLD_FLOOR_TOKENS * CHARS_PER_TOKEN)
+	var memory_room = max(room - world_floor, MIN_MEMORY_TOKENS * CHARS_PER_TOKEN)
+	var memories = _build_tiered_memories_section(_fit_memories(tiered_memories, memory_room))
+	room -= memories.length()
+	if world_section.length() + tail.length() > room:
+		tail = ""  # behavioral guidance goes first
+	if world_section.length() > room:
+		world_section = _trim_lines(world_section, room)
+	var prompt = head + memories + world_section + tail
+	if prompt.length() > budget:
+		push_warning("[ContextBuilder] System prompt over budget (%d/%d chars): the fixed sections alone are too long" % [prompt.length(), budget])
+	return prompt
+
+## Keep memories in tier order (pinned, important, relevant), each tier in its given order, while they fit
+func _fit_memories(tiered_memories: Dictionary, max_chars: int) -> Dictionary:
+	var fitted = {"pinned": [], "important": [], "relevant": []}
+	var used = 300  # the tier headings
+	for tier in ["pinned", "important", "relevant"]:
+		for memory in tiered_memories.get(tier, []):
+			var cost = str(memory).length() + 3
+			if used + cost > max_chars:
+				continue
+			fitted[tier].append(memory)
+			used += cost
+	return fitted
+
+## Whole lines only, from the top, within max_chars
+func _trim_lines(text: String, max_chars: int) -> String:
+	var out = ""
+	for line in text.split("\n"):
+		if out.length() + line.length() + 1 > max_chars:
+			break
+		out += line + "\n"
+	return out
+
 func _build_tiered_memories_section(tiered_memories: Dictionary) -> String:
 	var section = ""
 	var pinned = tiered_memories.get("pinned", [])
@@ -425,43 +468,40 @@ func _build_system_prompt(base_prompt: String, npc_id: String, tiered_memories: 
 	prompt += _build_heard_section(npc_id)
 
 	# =========================================================================
-	# SECTION 5: MEMORIES (Tiered)
+	# SECTION 6: WORLD STATE (sections 5-7 are sized by _fit_to_budget)
 	# =========================================================================
-	prompt += _build_tiered_memories_section(tiered_memories)
-
-	# =========================================================================
-	# SECTION 6: WORLD STATE
-	# =========================================================================
+	var world_section = ""
 	if world_state.size() > 0:
-		prompt += "## Current World Situation\n"
+		world_section += "## Current World Situation\n"
 
 		if world_state.has("active_quests") and world_state.active_quests.size() > 0:
-			prompt += "Active quests involving you: %s\n" % ", ".join(world_state.active_quests)
+			world_section += "Active quests involving you: %s\n" % ", ".join(world_state.active_quests)
 
 		if world_state.has("world_flags"):
 			for flag in world_state.world_flags:
 				if world_state.world_flags[flag]:
-					prompt += "- %s is happening\n" % flag.replace("_", " ").capitalize()
+					world_section += "- %s is happening\n" % flag.replace("_", " ").capitalize()
 
-		prompt += "\n"
+		world_section += "\n"
 
 	# =========================================================================
-	# SECTION 7: BEHAVIORAL GUIDANCE (Lowest priority - OK to truncate)
+	# SECTION 7: BEHAVIORAL GUIDANCE (lowest priority: dropped first)
 	# =========================================================================
+	var tail = ""
 	if dimensions.size() > 0:
-		prompt += _generate_behavioral_guidance(dimensions)
-		prompt += "\n"
+		tail += _generate_behavioral_guidance(dimensions)
+		tail += "\n"
 
-	prompt += "## Roleplay Instructions\n"
-	prompt += "- Stay in character - these dimensions shape your personality, not scripts\n"
-	prompt += "- Generate ALL dialogue based on your feelings (dimensions + memories)\n"
-	prompt += "- Reference memories naturally - weave them into conversation organically\n"
-	prompt += "- Let your emotional state guide tone: high affection = warmth, high fear = caution\n"
-	prompt += "- Keep responses concise (2-4 sentences unless player asks for details)\n"
-	prompt += "- Speak like a character in a JRPG world\n"
-	prompt += "- NEVER use pre-written dialogue - every response is unique to this relationship\n\n"
+	tail += "## Roleplay Instructions\n"
+	tail += "- Stay in character - these dimensions shape your personality, not scripts\n"
+	tail += "- Generate ALL dialogue based on your feelings (dimensions + memories)\n"
+	tail += "- Reference memories naturally - weave them into conversation organically\n"
+	tail += "- Let your emotional state guide tone: high affection = warmth, high fear = caution\n"
+	tail += "- Keep responses concise (2-4 sentences unless player asks for details)\n"
+	tail += "- Speak like a character in a JRPG world\n"
+	tail += "- NEVER use pre-written dialogue - every response is unique to this relationship\n\n"
 
-	return prompt
+	return _fit_to_budget(prompt, tiered_memories, world_section, tail)
 
 ## Convert conversation history into Claude message format
 func _build_message_history(history: Array, current_input: String) -> Array:

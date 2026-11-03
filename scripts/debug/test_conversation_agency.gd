@@ -589,7 +589,9 @@ func _test_agency_block_budget_all_npcs():
 			worst_key = key
 	print("    worst full per-turn prompt with every beat open: %d tokens (%s)" % [worst_full, worst_key])
 	_check("Every full prompt stays under ClaudeClient's ~4000-token cap", worst_full > 0 and worst_full <= 4000)
+	_test_budget_with_heavy_memory(builder)
 	builder.free()
+
 	world_state.world_flags = real_flags
 	world_state.npc_states = real_states
 	director.load_content(FIXTURE_STORYLINES, FIXTURE_SOULS)
@@ -675,3 +677,39 @@ func _check(label: String, passed: bool):
 	print("  %s %s" % ["✓" if passed else "✗", label])
 	if not passed:
 		failures += 1
+
+## Real play: a full memory budget (~2500 tokens) and a crowded world. The prompt is sized, not cut
+func _test_budget_with_heavy_memory(builder) -> void:
+	var budget_chars = builder.get_prompt_token_budget() * builder.CHARS_PER_TOKEN
+	var pinned = ["PINNED: the stranger pulled Elena from the river on the second night."]
+	var important = []
+	var relevant = []
+	for i in 40:
+		important.append("IMPORTANT %d: the stranger said something about the tithe that stayed with you, word for word, long after." % i)
+		relevant.append("RELEVANT %d: the stranger bought bread and asked after the mill road, idly, by the fire." % i)
+	var flags = {}
+	for i in 120:
+		flags["test_world_flag_number_%d" % i] = true
+	var personality = load("res://resources/npc_personalities/gregor_merchant.tres")
+	var npc_id = registry.get_npc_id("gregor")
+	var context = builder.build_context({"personality": personality, "npc_id": npc_id,
+		"tiered_memories": {"pinned": pinned, "important": important, "relevant": relevant},
+		"relationship_dimensions": {"trust": 10, "respect": 5, "affection": 5, "fear": 0, "familiarity": 20, "memory_count": 81},
+		"world_state": {"npc_id": npc_id, "world_flags": flags, "active_quests": []}, "conversation_history": [], "player_input": "What news?"})
+	var system: String = context.system_prompt
+	print("    heavy memory: %d chars of a %d budget" % [system.length(), budget_chars])
+	_check("Heavy memory: the system prompt stays within the budget", system.length() <= budget_chars)
+	_check("Heavy memory: the response format still opens the prompt", system.begins_with(builder._build_response_format_section()))
+	_check("Heavy memory: the storyline/agency block survives whole", builder._build_storyline_section(npc_id) in system)
+	_check("Heavy memory: the pinned memory survives", "PINNED:" in system)
+	_check("Heavy memory: important memories come before relevant ones", "IMPORTANT 0:" in system and ("RELEVANT 0:" not in system or system.find("IMPORTANT 0:") < system.find("RELEVANT 0:")))
+	var memory_chars = 0
+	for line in system.split("\n"):
+		if line.begins_with("- IMPORTANT ") or line.begins_with("- RELEVANT ") or line.begins_with("- PINNED"):
+			memory_chars += line.length() + 1
+	print("    heavy memory: %d chars of memories kept" % memory_chars)
+	_check("Heavy memory: memories get at least their guaranteed share", memory_chars >= builder.MIN_MEMORY_TOKENS * builder.CHARS_PER_TOKEN - 300)
+	_check("Heavy memory: memories are kept ahead of the world flag list", memory_chars > system.count("Test World Flag Number") * 30)
+	_check("Heavy memory: the world state keeps a little room", "## " in system.substr(system.find("PINNED:")) and system.count("Test World Flag Number") > 0)
+	_check("ClaudeClient's backstop sits above the budget", int(builder.get_prompt_token_budget() * 4 * 1.25) > budget_chars)
+	_check("Heavy memory: nothing is cut mid-line", system.ends_with("\n"))
