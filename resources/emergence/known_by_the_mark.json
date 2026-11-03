@@ -1,0 +1,132 @@
+{
+  "id": "known_by_the_mark",
+  "title": "Whose Work Is This?",
+  "summary": "Something the player made is seen, and the maker's name travels with it: passed on, asked after, or shrugged off, as each who sees it chooses.",
+  "trigger": {
+    "event": {
+      "kind": "crafted"
+    }
+  },
+  "roles": {
+    "seer": {
+      "from": "event_witness",
+      "prefer": "familiarity_desc"
+    },
+    "bearer": {
+      "from": "event_about",
+      "prefer": "nearest",
+      "optional": true
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 1,
+  "expires_days": 4,
+  "location": "{seer.home}",
+  "hooks": [
+    {
+      "id": "whose_work",
+      "type": "react",
+      "eligible_role": "seer",
+      "trigger": "on_open",
+      "situation": "You saw it: {player} {event.summary}. Good work carries its maker's name further than any crier, and you know whose name this is.",
+      "options": [
+        {
+          "id": "pass_the_name_on",
+          "label": "Tell people whose work it is",
+          "appeal": {
+            "respect": 0.5,
+            "familiarity": 0.2
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{seer}",
+              "dimension": "respect",
+              "delta": 5
+            }
+          ]
+        },
+        {
+          "id": "ask_for_one",
+          "label": "Ask the maker for one of your own",
+          "appeal": {
+            "respect": 0.4,
+            "trust": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{seer}",
+              "text": "Ask {player} to make you one like it, and say what you can pay: pennies now, or a sack of meal at harvest."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{seer}",
+              "dimension": "respect",
+              "delta": 4
+            }
+          ]
+        },
+        {
+          "id": "think_nothing_of_it",
+          "label": "Think nothing of it; plenty of hands make things",
+          "appeal": {
+            "respect": -0.3
+          },
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "carried_about",
+      "type": "aid",
+      "eligible_role": "bearer",
+      "trigger": "on_open",
+      "situation": "What you have now came from {player}'s hands: {event.summary}. People notice it and ask where it came from.",
+      "options": [
+        {
+          "id": "name_the_maker",
+          "label": "Name the maker to whoever asks",
+          "appeal": {
+            "affection": 0.4,
+            "respect": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{bearer}",
+              "text": "Tell {player} who has asked after the thing they made, and that you named them each time."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{bearer}",
+              "dimension": "affection",
+              "delta": 5
+            }
+          ]
+        },
+        {
+          "id": "keep_it_close",
+          "label": "Keep it close and say nothing",
+          "appeal": {
+            "fear": 0.3,
+            "trust": -0.3
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:seer",
+    "talked_to:bearer",
+    "expired"
+  ]
+}

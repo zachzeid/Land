@@ -1,0 +1,183 @@
+{
+  "id": "debt_of_the_spared",
+  "title": "What a Life Is Worth",
+  "summary": "The one the player spared carries a debt they cannot put down: they repay it, swear to it, or resent it. Whoever saw it decides how it is told.",
+  "trigger": {
+    "event": {
+      "kind": "spared"
+    }
+  },
+  "roles": {
+    "spared": {
+      "from": "event_about",
+      "prefer": "fear_desc"
+    },
+    "onlooker": {
+      "from": "event_witness",
+      "prefer": "respect_asc",
+      "optional": true
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 2,
+  "expires_days": 6,
+  "location": "{spared.home}",
+  "hooks": [
+    {
+      "id": "the_debt",
+      "type": "react",
+      "eligible_role": "spared",
+      "trigger": "on_open",
+      "situation": "{player} {event.summary}. You were on the ground and it was theirs to finish, and they did not. Now there is a debt, and everyone who saw it knows.",
+      "options": [
+        {
+          "id": "pay_it_back",
+          "label": "Pay it back: a road to avoid, a name to watch",
+          "appeal": {
+            "trust": 0.5,
+            "affection": 0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{spared}",
+              "text": "Find {player} and pay what you owe: one road to stay off, one name to watch. Then call it square."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{spared}",
+              "dimension": "trust",
+              "delta": 10
+            }
+          ]
+        },
+        {
+          "id": "swear_to_it",
+          "label": "Swear to stand with them once, when it counts",
+          "appeal": {
+            "respect": 0.6,
+            "fear": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{spared}",
+              "text": "Tell {player} you owe them a life, and that once, when it counts, you will stand where they ask."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{spared}",
+              "dimension": "respect",
+              "delta": 8
+            }
+          ]
+        },
+        {
+          "id": "resent_it",
+          "label": "Hate them for it; nobody asked for their mercy",
+          "appeal": {
+            "respect": -0.5,
+            "affection": -0.5
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{spared}",
+              "text": "Tell {player} you would rather they had finished it than leave you owing them."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{spared}",
+              "dimension": "affection",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "keep_away",
+          "label": "Keep well away, and keep breathing",
+          "appeal": {
+            "fear": 0.5
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{spared}",
+              "dimension": "fear",
+              "delta": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "how_it_is_told",
+      "type": "react",
+      "eligible_role": "onlooker",
+      "trigger": "on_open",
+      "situation": "You saw {player} spare {spared}: {event.summary}. People will say {spared} begged. Some will say worse.",
+      "options": [
+        {
+          "id": "speak_for_them",
+          "label": "Say {spared} faced it standing",
+          "aids": "{spared}",
+          "appeal": {
+            "affection": 0.3,
+            "respect": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{onlooker}",
+              "text": "Tell {player} that {spared} faced it standing, whatever is said now, and that you saw the mercy too."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{onlooker}",
+              "dimension": "respect",
+              "delta": 5
+            }
+          ]
+        },
+        {
+          "id": "call_them_a_coward",
+          "label": "Call {spared} a coward where they can hear it",
+          "harms": [
+            "{spared}"
+          ],
+          "appeal": {
+            "respect": -0.4,
+            "fear": -0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{onlooker}",
+              "text": "Tell {player} that {spared} should have died on their feet, and their mercy made a coward of a fighter."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{onlooker}",
+              "dimension": "respect",
+              "delta": -5
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing about it",
+          "appeal": {
+            "familiarity": 0.1,
+            "fear": 0.3
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:spared",
+    "talked_to:onlooker",
+    "expired"
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "id": "a_wolf_at_the_fold",
+  "title": "A Wolf at the Fold",
+  "summary": "Wolves out of the Darkwood are taking a valley household's beasts. Hearing the stranger is handy, the keeper of the fold asks for help, goes to the watch, or pens them in and hopes.",
+  "trigger": {
+    "event": {
+      "kind": "feat",
+      "region": "western_valley"
+    }
+  },
+  "roles": {
+    "keeper": {
+      "from": "faction:thornhaven",
+      "tiers": [
+        "generic"
+      ],
+      "min_fidelity": 0.3,
+      "prefer": "trust_desc"
+    }
+  },
+  "cooldown_days": 3,
+  "max_active": 1,
+  "expires_days": 4,
+  "location": "{keeper.home}",
+  "hooks": [
+    {
+      "id": "the_fold",
+      "type": "aid",
+      "eligible_role": "keeper",
+      "trigger": "on_open",
+      "situation": "Twice this week something came out of the Darkwood after moonrise and took from your fold, and the tracks were wolf. Then you heard {player} {event.summary}.",
+      "options": [
+        {
+          "id": "ask_the_stranger",
+          "label": "Ask the stranger to sit up with you at the fold",
+          "appeal": {
+            "trust": 0.5,
+            "respect": 0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{keeper}",
+              "text": "Ask {player} to sit up one night at your fold: the wolves come after moonrise. Offer a hot meal and what pennies you have."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{keeper}",
+              "dimension": "trust",
+              "delta": 4
+            }
+          ]
+        },
+        {
+          "id": "go_to_the_watch",
+          "label": "Take it to Captain Aldric instead",
+          "appeal": {
+            "trust": -0.4,
+            "fear": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "aldric",
+              "text": "Hear {keeper} out: wolves out of the Darkwood are taking from their fold, and they want a spear at night."
+            }
+          ]
+        },
+        {
+          "id": "tell_the_neighbours",
+          "label": "Tell the neighbours the stranger might deal with it",
+          "appeal": {
+            "familiarity": 0.3,
+            "respect": 0.2
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "pen_and_hope",
+          "label": "Pen the beasts in and hope",
+          "appeal": {
+            "fear": 0.4
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:keeper",
+    "expired"
+  ]
+}

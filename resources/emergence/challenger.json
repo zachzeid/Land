@@ -1,0 +1,170 @@
+{
+  "id": "challenger",
+  "title": "Someone Wants to Try You",
+  "summary": "A fighter who heard of the player's skill wants to test it: a Hollow man for his standing in the camp, an Ashguard soldier for the yard. A duel, refused or fought; losing is fled, winning a feat.",
+  "trigger": {
+    "event": {
+      "kind": "feat"
+    }
+  },
+  "roles": {
+    "hollow": {
+      "from": "faction:iron_hollow",
+      "min_fidelity": 0.3,
+      "prefer": "respect_asc",
+      "optional": true
+    },
+    "soldier": {
+      "from": "faction:ashguard",
+      "min_fidelity": 0.3,
+      "prefer": "respect_asc",
+      "optional": true
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 1,
+  "expires_days": 4,
+  "location": "{event.location}",
+  "hooks": [
+    {
+      "id": "the_camp_wants_a_look",
+      "type": "react",
+      "eligible_role": "hollow",
+      "trigger": "on_open",
+      "situation": "Word is {player} {event.summary}. The camp talks about the stranger as if they were someone. You'd like to see that for yourself, with steel.",
+      "options": [
+        {
+          "id": "call_them_out",
+          "label": "Call the stranger out, in front of your own lot",
+          "appeal": {
+            "respect": -0.5,
+            "fear": -0.5
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{hollow}",
+              "text": "Call {player} out: steel, a ring of your own lot watching, first to yield loses. Don't let them refuse it quietly."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{hollow}",
+              "dimension": "respect",
+              "delta": -5
+            }
+          ]
+        },
+        {
+          "id": "size_them_up",
+          "label": "Stand them a drink and size them up first",
+          "appeal": {
+            "fear": 0.3,
+            "familiarity": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{hollow}",
+              "text": "Stand {player} a drink, ask how they learned it, and decide whether they are worth the fight."
+            }
+          ]
+        },
+        {
+          "id": "talk_it_round_the_camp",
+          "label": "Tell the camp the stranger is for testing",
+          "appeal": {
+            "respect": -0.3
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "let_it_lie",
+          "label": "Leave it; nobody fights for free",
+          "appeal": {
+            "fear": 0.6
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{hollow}",
+              "dimension": "respect",
+              "delta": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_yard_at_ashguard",
+      "type": "react",
+      "eligible_role": "soldier",
+      "trigger": "on_open",
+      "situation": "Word reached the fort that {player} {event.summary}. In a garrison, a name is something you test in the yard.",
+      "options": [
+        {
+          "id": "a_bout_in_the_yard",
+          "label": "Challenge them to a bout in the yard, blunted steel",
+          "appeal": {
+            "respect": -0.4,
+            "fear": -0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{soldier}",
+              "text": "Challenge {player} to a bout in the Ashguard yard: blunted steel, first to yield, the garrison watching."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{soldier}",
+              "dimension": "respect",
+              "delta": -4
+            }
+          ]
+        },
+        {
+          "id": "ask_them_to_drill",
+          "label": "Ask them to show the lads how it's done",
+          "appeal": {
+            "respect": 0.5
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{soldier}",
+              "text": "Ask {player} to spend an hour in the yard showing the lads how it's done."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{soldier}",
+              "dimension": "respect",
+              "delta": 6
+            }
+          ]
+        },
+        {
+          "id": "let_it_be",
+          "label": "Let it be; the commander wants no trouble",
+          "appeal": {
+            "fear": 0.4,
+            "familiarity": 0.1
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:hollow",
+    "talked_to:soldier",
+    "expired"
+  ]
+}

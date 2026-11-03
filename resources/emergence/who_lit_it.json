@@ -1,0 +1,171 @@
+{
+  "id": "who_lit_it",
+  "title": "Who Lit It",
+  "summary": "A fire cost someone what was theirs. The one who lost by it and the neighbours who saw it look for whoever lit it, fairly or not; a street roused against the stranger is where a crowd begins.",
+  "memory": "Fire took what was {victim}'s: {event.summary}",
+  "trigger": {
+    "event": {
+      "kind": "fire"
+    }
+  },
+  "roles": {
+    "victim": {
+      "from": "event_about",
+      "prefer": "nearest"
+    },
+    "neighbour": {
+      "from": "event_witness",
+      "prefer": "trust_asc",
+      "optional": true
+    }
+  },
+  "cooldown_days": 1,
+  "max_active": 2,
+  "expires_days": 3,
+  "location": "{victim.home}",
+  "hooks": [
+    {
+      "id": "the_burned",
+      "type": "react",
+      "eligible_role": "victim",
+      "trigger": "on_open",
+      "situation": "Fire took what was yours: {event.summary}. The ash is still warm and somebody lit it. You mean to know who.",
+      "options": [
+        {
+          "id": "name_the_stranger",
+          "label": "Say it was the stranger, to anyone who will listen",
+          "appeal": {
+            "trust": -0.6,
+            "affection": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{victim}",
+              "text": "Tell {player} to their face that you know who lit it, and that the valley will hear it from you."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{victim}",
+              "dimension": "trust",
+              "delta": -15
+            }
+          ]
+        },
+        {
+          "id": "ask_them_to_help_rebuild",
+          "label": "Ask the stranger to help raise what burned",
+          "appeal": {
+            "trust": 0.5,
+            "affection": 0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{victim}",
+              "text": "Ask {player} to help raise what burned: timber, a day's work, or a few marks toward it."
+            }
+          ]
+        },
+        {
+          "id": "ask_who_was_near",
+          "label": "Ask who was near when it caught",
+          "appeal": {
+            "familiarity": 0.3,
+            "respect": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{victim}",
+              "text": "Ask {player} who they saw near when the fire caught, and watch their face as they answer."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_neighbour",
+      "type": "react",
+      "eligible_role": "neighbour",
+      "trigger": "on_open",
+      "situation": "You saw the fire: {event.summary}. {victim} lost by it. Somebody lit it, and people are already asking who.",
+      "options": [
+        {
+          "id": "rouse_the_street",
+          "label": "Rouse the street and go looking for whoever lit it",
+          "crowd": true,
+          "appeal": {
+            "trust": -0.5,
+            "affection": -0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{neighbour}",
+              "text": "Tell {player} the street is out looking for whoever lit the fire at {victim}'s, and ask where they were."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{neighbour}",
+              "dimension": "trust",
+              "delta": -12
+            }
+          ]
+        },
+        {
+          "id": "tell_what_you_saw",
+          "label": "Tell everyone what you saw",
+          "appeal": {
+            "trust": -0.3,
+            "respect": 0.2
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{neighbour}",
+              "dimension": "trust",
+              "delta": -6
+            }
+          ]
+        },
+        {
+          "id": "haul_water",
+          "label": "Help {victim} save what can be saved",
+          "aids": "{victim}",
+          "appeal": {
+            "affection": 0.3,
+            "familiarity": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{neighbour}",
+              "text": "Tell {player} you hauled water for {victim} while others stood and stared, and ask if they will lend a hand."
+            }
+          ]
+        },
+        {
+          "id": "keep_out_of_it",
+          "label": "Keep out of it; fire finds those who talk",
+          "appeal": {
+            "fear": 0.5
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:victim",
+    "talked_to:neighbour",
+    "expired"
+  ]
+}
