@@ -96,7 +96,7 @@ name said aloud. He never boasts and never blames anyone but himself.
 - Corin Ashby is alive, and leads the diggers in secret: rations, stories, who works the wet end. Willa Brand is alive. Hesk Marlow is dead; Davin cut his name into the seam wall with a nail.
 - The night of the escape, three of them went for the old air-shaft. Willa slipped on the wet stone. The guards came. Davin did not go back for her. He has told no one, not even Maud.
 - The night the cart took him up the ridge, he saw a face in the trees near the Pit: Marcus from the tavern, who had followed them. Davin waited a long time for Marcus to bring help. Nobody came. He does not know what happened to Marcus.
-- The spring before the first Tithe, while Bjorn was at market, Gregor paid him a silver mark to pour a few spare lot tiles from the leftover iron "for the chapel, in case one cracks; no need to trouble your master." He thought nothing of it. He does not know what they were for.
+- The spring before the first Tithe, while Bjorn was at market, Gregor paid him a dozen copper to pour a few spare lot tiles from the leftover iron "for the chapel, in case one cracks; no need to trouble your master." He thought nothing of it. He does not know what they were for.
 - He does not know what the white stone is for. He heard a guard once call it "the cure" and laugh.
 - He loves Bjorn like a father, and is afraid that Bjorn will look at the hand and see a boy who ran.
 

@@ -639,7 +639,7 @@
                 {
                   "type": "agenda",
                   "npc": "rook",
-                  "text": "Offer the stranger the counting-room door, the four minutes and the right pocket, for five marks, and wish them luck."
+                  "text": "Offer the stranger the counting-room door, the four minutes and the right pocket, for sixty copper, and wish them luck."
                 }
               ]
             }
@@ -1438,7 +1438,7 @@
           "options": [
             {
               "id": "offer_coin",
-              "label": "Send word into the Warrens: a hundred crowns for the book, no questions",
+              "label": "Send word into the Warrens: two and a half gold for the book, no questions",
               "serves": [
                 "hold_every_patron",
                 "turn_a_profit"
@@ -1447,7 +1447,7 @@
                 {
                   "type": "agenda",
                   "npc": "rook",
-                  "text": "Tell the stranger the Guildmaster offered a hundred crowns for his book back, no questions, and ask what they'd offer."
+                  "text": "Tell the stranger the Guildmaster offered two and a half gold for his book back, no questions, and ask what they'd offer."
                 }
               ]
             },
@@ -1485,11 +1485,11 @@
           "eligible": [
             "rook"
           ],
-          "situation": "Guild porters are in the Warrens with clubs, asking for you by name. The book in your coat is worth a hundred crowns to Hollis, or your life to anyone else who wants it.",
+          "situation": "Guild porters are in the Warrens with clubs, asking for you by name. The book in your coat is worth two and a half gold to Hollis, or your life to anyone else who wants it.",
           "options": [
             {
               "id": "sell_it_back",
-              "label": "Sell the book back to Hollis for a hundred crowns and a boat downriver",
+              "label": "Sell the book back to Hollis for two and a half gold and a boat downriver",
               "serves": [
                 "get_out_rich",
                 "get_out_alive"
@@ -1731,7 +1731,7 @@
                 {
                   "type": "agenda",
                   "npc": "seraphine",
-                  "text": "Offer the stranger, without quite saying why, two hundred crowns for any loose pages of the Guildmaster's accounts."
+                  "text": "Offer the stranger, without quite saying why, five gold for any loose pages of the Guildmaster's accounts."
                 }
               ]
             },
@@ -1893,7 +1893,7 @@
                 {
                   "type": "agenda",
                   "npc": "rook",
-                  "text": "Tell the stranger there's a page in the black book that's all white salt from the Hollow, and it costs ten marks to see it."
+                  "text": "Tell the stranger there's a page in the black book that's all white salt from the Hollow, and it costs a silver and twenty copper to see it."
                 }
               ]
             },

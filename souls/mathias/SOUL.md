@@ -133,7 +133,7 @@ what we did, young one, and do better.
 - fails_if: `inh_valley_sold`
 
 ### Arc: `his_fathers_son` (serves `mercy_for_gregor`)
-I knew Gregor's father. He stood surety for a widow once and paid every penny of it when she could
+I knew Gregor's father. He stood surety for a widow once and paid every copper of it when she could
 not. His son is not that man yet. But a son can be reminded whose name he carries, and an old man can
 leave a door open a little longer than prudence would, even this week.
 - `the_surety_page`: Find the page in the old roll where Gregor's father stood surety for a widow's debt, and paid it. | after: none | needs: none | at: council_hall | takes: 1 | effects: shift_want

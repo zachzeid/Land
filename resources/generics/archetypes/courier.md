@@ -56,7 +56,7 @@ flustered; love letters are a courier's private joke, and {name} will offer to c
 
 ## Life
 ### Arc: `the_lion_badge` (serves `ride_for_the_crown`)
-"Crown riders get a fresh horse at every station and four marks a run. One fast season and they'll notice me."
+"Crown riders get a fresh horse at every station and half a silver a run. One fast season and they'll notice me."
 - `ride_a_record_run`: Ride from the Halfway House to the Dawn Gate in record time. | after: none | needs: none | at: capitol_gate | takes: 3 | effects: move_npc, agenda
 - `present_myself`: Ask the Crown Court's post clerk for a trial with the crown riders. | after: ride_a_record_run | needs: none | at: capitol_palace | takes: 1 | effects: adjust_relationship, agenda | player: helps
 - result: `{id}_rode_for_the_crown`: They won a trial with the crown riders and were given the lion badge.

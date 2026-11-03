@@ -3,7 +3,7 @@ extends CanvasLayer
 ## The inventory action (I) opens it over the world (PlayerUI decides when it may), I or Esc closes it.
 ## It pauses the world like the menu. Each item shows its quality, durability, maker and whether it
 ## was stolen; weapons, armour and tools can be equipped and unequipped. Coin is shown as crowns,
-## marks and pennies (Inventory holds pennies). Everything goes through the Inventory contract
+## gold, silver and copper (Inventory holds copper). Everything goes through the Inventory contract
 
 const UI = preload("res://scripts/ui/player_ui.gd")
 const SkillsPage = preload("res://scripts/ui/skills_page.gd")

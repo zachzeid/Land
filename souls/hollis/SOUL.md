@@ -5,7 +5,7 @@ npc_id: hollis_guildmaster_001
 ## Essence
 Hollis Marrow is fifty-seven, Guildmaster of the Merchants' Guild of Highmarch, and the most
 pleasant man most people in the Capitol have ever been robbed by. He started as a tally-boy on the
-River Quarter docks, counting sacks for a penny a hundred, and he never forgot what a penny was
+River Quarter docks, counting sacks for a copper a hundred, and he never forgot what a copper was
 worth. Now the Guild's warehouses line half the river, its factors sit in every market town from
 Ferrisford to the eastern border, and its notes of credit are worth more than some crown coin.
 
@@ -105,7 +105,7 @@ Cathedral is "a steady customer".
 
 ## Life
 ### Arc: `the_salt_shed_school` (serves `keep_the_guild_clean`)
-"I learned my numbers off chalk marks on sacks, friend, a penny a hundred. Half the boys I counted beside went in the river before they could count to twenty. A Guildmaster who teaches porters' children their sums is a Guildmaster nobody asks awkward questions of. And the children do learn their sums. Both things are true. Most things are."
+"I learned my numbers off chalk marks on sacks, friend, a copper a hundred. Half the boys I counted beside went in the river before they could count to twenty. A Guildmaster who teaches porters' children their sums is a Guildmaster nobody asks awkward questions of. And the children do learn their sums. Both things are true. Most things are."
 - `buy_the_salt_shed`: Buy the old salt shed on the River Quarter wharf for a schoolroom, at a price nobody else would have taken. | after: none | needs: none | at: capitol_docks | takes: 2 | effects: move_npc, agenda
 - `a_judge_for_the_board`: Call on High Magistrate Corwin Vane, who quietly pays for clerks' children's schooling, and ask him to lend the school his name. | after: buy_the_salt_shed | needs: none | at: capitol_magistry | takes: 1 | effects: move_npc, agenda
 - `the_first_slates`: Stand at the schoolroom door on the first morning handing out slates, and send word into the Warrens that Rook's little ones are welcome and will be fed. | after: a_judge_for_the_board | needs: none | at: capitol_docks | takes: 2 | effects: agenda, adjust_relationship | when: morning | player: helps

@@ -169,11 +169,11 @@ discovery_text = "[b]You found a hidden ledger![/b]
 
 Tucked behind the crates is a worn leather-bound book in Gregor's careful merchant's hand. The front pages are an honest shop's: flour, lamp oil, nails. Turn it over and start from the back, and it is something else.
 
-One page for each autumn of the Tithe, five of them. On each: the year, the tile he palmed from the urn, and not a name but a sum, as if a life were a debt on the books. Year one: two marks six pennies. Year two: one mark four pennies. Year three: one mark nine pennies. Year four: two marks two pennies. Year five: one mark one penny, written in, and then struck through so hard the nib tore the page.
+One page for each autumn of the Tithe, five of them. On each: the year, the tile he palmed from the urn, and not a name but a sum, as if a life were a debt on the books. Year one: thirty copper. Year two: sixteen copper. Year three: twenty-one copper. Year four: twenty-six copper. Year five: thirteen copper, written in, and then struck through so hard the nib tore the page.
 
 The sums mean nothing on their own. Somewhere in this book they mean someone.
 
-The honest front pages, as written: Ashby, seed grain, two marks six pennies. The forge, boots for the smith's boy, one mark four pennies. The Rusty Nail, ale casks, three marks. Marlow, lamp oil through the winter, one mark nine pennies. The chapel, candles, eight pennies. Brand, a roof mended, two marks two pennies. Fenn, flour, one mark one penny.
+The honest front pages, as written: Ashby, seed grain, thirty copper. The forge, boots for the smith's boy, sixteen copper. The Rusty Nail, ale casks, thirty-six copper. Marlow, lamp oil through the winter, twenty-one copper. The chapel, candles, eight copper. Brand, a roof mended, twenty-six copper. Fenn, flour, thirteen copper.
 
 Beside the draws run his other accounts with the Hollow: blades from the forge, salt, sacks, a cart axle, all 'collected at night', and against them, small and regular, 'one packet, for E.'"
 reexamine_text = "Five autumns of palmed tiles, each set against a sum instead of a name. The fifth is struck through."

@@ -5,7 +5,7 @@ extends SceneTree
 #   closes with Esc (and I / B for their own keys) without errors, headless
 # - the HUD reads PlayerStats (stub and fake), shows the level, flashes when health falls, and hides
 #   during the opening card and the epilogue
-# - coin as crowns, marks and pennies
+# - coin as crowns, gold, silver and copper
 # - the inventory panel: quality, durability, maker, the stolen marker, equip / unequip; the skills
 #   page beside it: skills, derived level, perks, deaths, difficulty
 # - the crafting panel at a station: recipes, inputs, quality preview, make; cooking through Crafting.cook
@@ -34,7 +34,7 @@ class FakeStats extends Node:
 
 class FakeInventory extends Node:
 	signal changed()
-	var coin: int = 2 * 240 + 3 * 12 + 5
+	var coin: int = 2 * 10000 + 3 * 100 + 5
 	var equipped: Dictionary = {}
 	var calls: Array = []
 	var items: Array = [
@@ -156,11 +156,13 @@ func _test_keys():
 
 func _test_coin():
 	print("\nCoin")
-	_check("0 → 0 pennies", UI.format_coin(0) == "0 pennies")
-	_check("1 → 1 penny", UI.format_coin(1) == "1 penny")
-	_check("12 → 1 mark", UI.format_coin(12) == "1 mark")
-	_check("240 → 1 crown", UI.format_coin(240) == "1 crown")
-	_check("521 → 2 crowns, 3 marks, 5 pennies", UI.format_coin(521) == "2 crowns, 3 marks, 5 pennies")
+	_check("0 → 0 copper", UI.format_coin(0) == "0 copper")
+	_check("1 → 1 copper", UI.format_coin(1) == "1 copper")
+	_check("100 → 1 silver", UI.format_coin(100) == "1 silver")
+	_check("10,000 → 1 gold", UI.format_coin(10000) == "1 gold")
+	_check("1,000,000 → 1 crown", UI.format_coin(1000000) == "1 crown")
+	_check("1,010,203 → 1 crown, 1 gold, 2 silver, 3 copper", UI.format_coin(1010203) == "1 crown, 1 gold, 2 silver, 3 copper")
+	_check("2,000,000 → 2 crowns", UI.format_coin(2000000) == "2 crowns")
 
 func _test_hud():
 	print("\nHUD")
@@ -202,7 +204,7 @@ func _test_inventory():
 	_press(player_ui, "inventory", true)
 	_check("I opens it over the world, and it pauses", panel.is_open and paused and player_ui.is_panel_open())
 	_check("The menu will not open over it", not player_ui.can_open_menu())
-	_check("Coin in crowns, marks and pennies", panel.get_coin_text() == "Coin: 2 crowns, 3 marks, 5 pennies")
+	_check("Coin in gold, silver and copper", panel.get_coin_text() == "Coin: 2 gold, 3 silver, 5 copper")
 	var lines: Array = panel.get_item_lines()
 	_check("An item shows quality, durability and maker", lines.any(func(l): return l.contains("Iron knife") and l.contains("fine (72)") and l.contains("18/40") and l.contains("made by Bjorn")))
 	_check("A stolen item is marked; an honest one is not", lines.any(func(l): return l.contains("Ranger's sword") and l.contains("stolen"))
@@ -355,7 +357,7 @@ func _test_difficulty_and_opening():
 func _test_stubs():
 	print("\nWith the Phase 0 stubs")
 	paused = false
-	_check("The pack opens empty", player_ui.open_inventory() and player_ui.inventory_panel.get_coin_text() == "Coin: 0 pennies")
+	_check("The pack opens empty", player_ui.open_inventory() and player_ui.inventory_panel.get_coin_text() == "Coin: 0 copper")
 	player_ui.inventory_panel.show_tab("skills")
 	_check("...the skills page lists the twelve at 0", player_ui.inventory_panel.skills_page.get_text().contains("Herbcraft") and player_ui.inventory_panel.skills_page.get_text().contains("never died"))
 	player_ui.inventory_panel.show_tab("pack")

@@ -64,7 +64,7 @@
             {
               "type": "agenda",
               "npc": "{seer}",
-              "text": "Ask {player} to make you one like it, and say what you can pay: pennies now, or a sack of meal at harvest."
+              "text": "Ask {player} to make you one like it, and say what you can pay: copper now, or a sack of meal at harvest."
             },
             {
               "type": "adjust_relationship",

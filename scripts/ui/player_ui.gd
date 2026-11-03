@@ -19,10 +19,8 @@ const SEASON_END = "season_end"
 ## How close the player must stand to a crafting station for B to open it (px)
 const STATION_REACH = 96.0
 
-## Pennies to the mark and marks to the crown: the old reckoning (12 pence a shilling, 20 a pound).
-## Canon names the coins but not the rates; Inventory's own constants win once it declares them
-const PENNIES_PER_MARK = 12
-const MARKS_PER_CROWN = 20
+## Coin is counted by Inventory (copper, silver, gold, crowns at 100 each); the UI only shows it
+const InventoryScript = preload("res://scripts/player/inventory.gd")
 
 var inner_voice_ui: CanvasLayer
 var epilogue_screen: CanvasLayer
@@ -246,28 +244,11 @@ func _opening_card_open() -> bool:
 	var opening = _opening()
 	return opening != null and opening.has_method("is_card_open") and opening.is_card_open()
 
-## Coin as the valley counts it: "2 crowns, 3 marks, 5 pennies" (pennies held internally)
-static func format_coin(pennies: int) -> String:
-	var per_mark = PENNIES_PER_MARK
-	var per_crown = MARKS_PER_CROWN
-	var inventory = autoload("Inventory")
-	if inventory and "PENNIES_PER_MARK" in inventory:
-		per_mark = int(inventory.PENNIES_PER_MARK)
-	if inventory and "MARKS_PER_CROWN" in inventory:
-		per_crown = int(inventory.MARKS_PER_CROWN)
-	var neg = "-" if pennies < 0 else ""
-	pennies = absi(pennies)
-	var crowns = pennies / (per_mark * per_crown)
-	var marks = (pennies / per_mark) % per_crown
-	var pence = pennies % per_mark
-	var parts: Array = []
-	if crowns > 0:
-		parts.append("%d crown%s" % [crowns, "" if crowns == 1 else "s"])
-	if marks > 0:
-		parts.append("%d mark%s" % [marks, "" if marks == 1 else "s"])
-	if pence > 0 or parts.is_empty():
-		parts.append("%d penn%s" % [pence, "y" if pence == 1 else "ies"])
-	return neg + ", ".join(parts)
+## Coin as the valley counts it: "2 silver, 5 copper" (copper held internally; "0 copper" when empty)
+static func format_coin(copper: int) -> String:
+	if copper == 0:
+		return "0 copper"
+	return ("-" if copper < 0 else "") + InventoryScript.format_coin(absi(copper))
 
 # =============================================================================
 # STYLE (shared by the panels: the travel map's palette)

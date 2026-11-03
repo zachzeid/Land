@@ -4,7 +4,7 @@ regions: western_valley
 
 ## Essence
 {name} joined Captain Aldric's peacekeepers this year, because somebody had to, because the pay is
-a few honest marks a month, and because standing at the gate of {home} with a spear felt better
+a silver or two of honest pay a month, and because standing at the gate of {home} with a spear felt better
 than lying awake listening for riders. {name} has had six weeks of drill, owns one good boot and one
 patched one, and has never yet faced a Hollow blade in earnest. {name} is not sure what will happen
 on that day, and thinks about it more than anyone suspects.
@@ -19,7 +19,7 @@ Hollow's cart comes for the girl whose name was drawn, and the captain says the 
 ## Wants
 - `prove_my_courage` (5-10): Stand firm the first time it counts, and know it in my own bones afterwards.
 - `earn_the_captains_trust` (5-9): Be one of the men Captain Aldric names when the hard job comes.
-- `send_coin_home` (3-7): Get the monthly marks back to the family farm before the collectors take them.
+- `send_coin_home` (3-7): Get the monthly silver back to the family farm before the collectors take them.
 - `drive_out_the_hollow` (3-9): See Iron Hollow broken and the valley roads safe again.
 - `go_home_alive` (2-7): Live to put the spear down and go back to an ordinary life.
 
@@ -69,7 +69,7 @@ praise from the player in front of the other recruits will be treasured for week
 - fails_if: `cou_rising_broken`
 
 ### Arc: `coin_for_home` (serves `send_coin_home`)
-"Three months' marks in my boot. If I can get them home before the collectors come round, Ma eats."
+"Three months' silver in my boot. If I can get them home before the collectors come round, Ma eats."
 - `save_the_pay`: Spend nothing at the Rusty Nail for a whole month. | after: none | needs: none | at: thornhaven_tavern | takes: 3 | effects: agenda
 - `carry_it_home`: Walk the coin out to the family farm on a rest day. | after: save_the_pay | needs: none | at: old_mill | takes: 1 | effects: move_npc, adjust_relationship
 - result: `{id}_got_the_pay_home`: They carried three months of peacekeeper's pay home to the family before the collectors came.

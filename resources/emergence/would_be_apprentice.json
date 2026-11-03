@@ -50,7 +50,7 @@
             {
               "type": "agenda",
               "npc": "{recruit}",
-              "text": "Ask {player} to teach you what they did, and offer what you have: a few marks, a strong back, the worst watch of the night."
+              "text": "Ask {player} to teach you what they did, and offer what you have: a handful of copper, a strong back, the worst watch of the night."
             },
             {
               "type": "adjust_relationship",
@@ -126,7 +126,7 @@
             {
               "type": "agenda",
               "npc": "{courier}",
-              "text": "Ask {player} to teach you what they did, and offer what you have: a few marks, a strong back, the worst watch of the night."
+              "text": "Ask {player} to teach you what they did, and offer what you have: a handful of copper, a strong back, the worst watch of the night."
             },
             {
               "type": "adjust_relationship",

@@ -88,7 +88,7 @@ secrets = [{
 	"unlock_trust": 70,
 	"unlock_affection": 55
 }, {
-	"secret": "Before the first Tithe, Gregor paid me a mark to pour spare lot tiles from the leftover iron while the master was at market. For the chapel, he said. I never told the master.",
+	"secret": "Before the first Tithe, Gregor paid me a dozen copper to pour spare lot tiles from the leftover iron while the master was at market. For the chapel, he said. I never told the master.",
 	"unlock_trust": 80,
 	"unlock_affection": 65
 }]

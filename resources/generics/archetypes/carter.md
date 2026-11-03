@@ -67,10 +67,10 @@ a share of the bread, and an honest "I'll be back through in a fortnight" that {
 
 ## Life
 ### Arc: `clear_the_note` (serves `pay_off_the_wagon`)
-"Six crowns still on that note. Two good runs and a bit of luck, and the wagon is mine. Mine."
+"Fourteen silver still on that note. Two good runs and a bit of luck, and the wagon is mine. Mine."
 - `take_the_long_run`: Take a full load east to the Capitol and back without stopping. | after: none | needs: none | at: capitol_gate | takes: 4 | effects: move_npc, agenda
 - `haggle_the_rate`: Argue the haul rate up with a Greystone tallyman. | after: take_the_long_run | needs: !vein_ore_road_closed | at: greystone_mines | takes: 2 | effects: agenda, adjust_relationship | player: helps
-- `pay_the_factor`: Walk into the Guildhall and lay the last crowns on the factor's desk. | after: haggle_the_rate | needs: none | at: capitol_guildhall | takes: 1 | effects: shift_want, adjust_relationship
+- `pay_the_factor`: Walk into the Guildhall and lay the last silver on the factor's desk. | after: haggle_the_rate | needs: none | at: capitol_guildhall | takes: 1 | effects: shift_want, adjust_relationship
 - result: `{id}_owns_the_wagon`: They paid off the Guild factor's note and now own their wagon and team outright.
 - fails_if: `vein_strike_broken`
 

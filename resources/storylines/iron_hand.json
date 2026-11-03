@@ -1619,7 +1619,7 @@
           "eligible": [
             "bjorn"
           ],
-          "situation": "Your boy poured the spare tiles in this forge, for Gregor's silver. The Hollow's order is still on the peg.",
+          "situation": "Your boy poured the spare tiles in this forge, for Gregor's coin. The Hollow's order is still on the peg.",
           "options": [
             {
               "id": "melt_it",

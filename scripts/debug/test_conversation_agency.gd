@@ -445,7 +445,7 @@ func _test_forbidden_concepts_regenerate_then_sanitise():
 	_check("Speech is sanitised", reply.response == "Aye, my cart is outside.")
 	_check("Action text is sanitised", reply.actions[0].text == "Letter the stranger.")
 	fake.calls = 0
-	fake.replies = ['{"response": "Ale is two pennies.", "actions": []}']
+	fake.replies = ['{"response": "Ale is two copper.", "actions": []}']
 	reply = await npc.request_checked_reply([{"role": "user", "content": "Price?"}], "SYSTEM")
 	_check("Clean replies cost one call", fake.calls == 1 and not reply.regenerated)
 	_free_base_npc(npc)

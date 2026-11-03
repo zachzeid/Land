@@ -28,7 +28,7 @@ everything in the Capitol, including news, and sells both.
 - Selling the wrong rumour to the wrong great house.
 
 ## Lines I Will Not Cross
-- `ally:hollis`: "The Guildmaster takes a penny of every mark I make and never once smiled for it."
+- `ally:hollis`: "The Guildmaster takes a copper of every ten I make and never once smiled for it."
 - `harm:ysolde`: "The Sister came down to the market in the bad winter with bread and no sermon. You remember that."
 - `effect:spread_rumor:inh_ashdown_named_as_buyer`: "Selling gossip about the great houses is how hawkers end up in the river."
 

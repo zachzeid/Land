@@ -12,6 +12,11 @@ uncle, **Lord Protector Edric Hale**, has ruled as regent for four years. The tr
 border war in the east, and the Lord Protector's hold on the regency council depends on revenue,
 victories and the support of the great houses.
 
+**Coin** is copper, silver, gold and crowns: 100 copper a silver, 100 silver a gold, 100 gold a
+crown (the coin, not the throne). Ale is 2 copper, a labourer's day about 9, a season's wage about 7
+silver. Valley folk count in copper and silver; a gold is a fortune, and a crown is a treasury sum
+almost no one holds.
+
 **The Capitol** is the city of Highmarch, which everyone simply calls the Capitol. It sits on the
 River Ferris, three days' ride east of Thornhaven along the Kingsroad, or two days by road and barge
 from Ferrisford. Its districts:

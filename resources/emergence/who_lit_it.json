@@ -63,7 +63,7 @@
             {
               "type": "agenda",
               "npc": "{victim}",
-              "text": "Ask {player} to help raise what burned: timber, a day's work, or a few marks toward it."
+              "text": "Ask {player} to help raise what burned: timber, a day's work, or a handful of copper toward it."
             }
           ]
         },

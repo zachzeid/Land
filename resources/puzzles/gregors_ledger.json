@@ -11,16 +11,16 @@
     {"id": "SecretLedger", "kind": "story_item", "scene": "res://scenes/interiors/gregor_shop_interior.tscn", "flag": "ledger_found",
       "note": "One page for each autumn of the Tithe, five of them, in Gregor's careful merchant's hand. The fifth is struck through so hard the nib tore the page."},
     {"id": "ledger_front_pages", "kind": "object", "location": "thornhaven_gregor_shop",
-      "text": "The honest front of the book: flour, lamp oil, nails, seed grain on credit. The accounts, as written: Ashby, seed grain, two marks six pennies. The forge, boots for the smith's boy, one mark four pennies. The Rusty Nail, ale casks, three marks. Marlow, lamp oil through the winter, one mark nine pennies. The chapel, candles, eight pennies. Brand, a roof mended, two marks two pennies. Fenn, flour, one mark one penny."}
+      "text": "The honest front of the book: flour, lamp oil, nails, seed grain on credit. The accounts, as written: Ashby, seed grain, thirty copper. The forge, boots for the smith's boy, sixteen copper. The Rusty Nail, ale casks, thirty-six copper. Marlow, lamp oil through the winter, twenty-one copper. The chapel, candles, eight copper. Brand, a roof mended, twenty-six copper. Fenn, flour, thirteen copper."}
   ],
   "answer": {
     "shape": "decode",
     "lines": [
-      {"id": "year_1", "cipher": "Year one: two marks six pennies", "correct": "corin_ashby", "aliases": ["corin ashby", "corin", "ashby"]},
-      {"id": "year_2", "cipher": "Year two: one mark four pennies", "correct": "davin", "aliases": ["davin", "the smith's boy"]},
-      {"id": "year_3", "cipher": "Year three: one mark nine pennies", "correct": "hesk_marlow", "aliases": ["hesk marlow", "hesk", "marlow"]},
-      {"id": "year_4", "cipher": "Year four: two marks two pennies", "correct": "willa_brand", "aliases": ["willa brand", "willa", "brand"]},
-      {"id": "year_5", "cipher": "Year five: one mark one penny, struck through", "correct": "ada_fenn", "aliases": ["ada fenn", "ada", "fenn"]}
+      {"id": "year_1", "cipher": "Year one: thirty copper", "correct": "corin_ashby", "aliases": ["corin ashby", "corin", "ashby"]},
+      {"id": "year_2", "cipher": "Year two: sixteen copper", "correct": "davin", "aliases": ["davin", "the smith's boy"]},
+      {"id": "year_3", "cipher": "Year three: twenty-one copper", "correct": "hesk_marlow", "aliases": ["hesk marlow", "hesk", "marlow"]},
+      {"id": "year_4", "cipher": "Year four: twenty-six copper", "correct": "willa_brand", "aliases": ["willa brand", "willa", "brand"]},
+      {"id": "year_5", "cipher": "Year five: thirteen copper, struck through", "correct": "ada_fenn", "aliases": ["ada fenn", "ada", "fenn"]}
     ]
   },
   "hints": [

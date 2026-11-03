@@ -1,5 +1,5 @@
 {
-  "_note": "Herbcraft and cooking ingredients (Herbcraft, resources/crafting/ingredients.json, owns their effects). value in pennies.",
+  "_note": "Herbcraft and cooking ingredients (Herbcraft, resources/crafting/ingredients.json, owns their effects). value in copper.",
   "items": [
     {
       "id": "common_salt",

@@ -618,7 +618,7 @@
             },
             {
               "id": "sell_the_name",
-              "label": "Let it be known, for a price: two marks to whoever wants the boy found",
+              "label": "Let it be known, for a price: two dozen copper to whoever wants the boy found",
               "serves": [
                 "get_out_rich",
                 "look_after_the_little_ones"
@@ -632,7 +632,7 @@
                 {
                   "type": "agenda",
                   "npc": "rook",
-                  "text": "Ask the stranger two marks before she says another word about the river boy, and take one if they haggle hard."
+                  "text": "Ask the stranger two dozen copper before she says another word about the river boy, and take one if they haggle hard."
                 }
               ]
             },

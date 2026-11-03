@@ -48,7 +48,7 @@
             {
               "type": "agenda",
               "npc": "{asker}",
-              "text": "Ask {player} for whatever did {patient} good, for your youngest with the fever. Offer what you have: pennies, a hen."
+              "text": "Ask {player} for whatever did {patient} good, for your youngest with the fever. Offer what you have: a few copper, a hen."
             },
             {
               "type": "adjust_relationship",

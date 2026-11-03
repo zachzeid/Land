@@ -63,10 +63,10 @@ Every agent also owns its own `scripts/debug/test_<system>.gd`.
   `get_stamina()`, `get_max_stamina()`, `heal(amount)`, `has_perk(id)`.
 - `Inventory`: `add(item_id, qty, props) -> bool`, `remove(item_id, qty) -> bool`, `has(item_id, qty) -> bool`,
   `equip(item_id, slot) -> bool`, `get_equipped(slot) -> Dictionary`, signal `changed`. Also:
-  `get_items() -> Array`, `get_coin() -> int` (pennies), `add_coin(pennies)`, `wear(slot, amount)`
+  `get_items() -> Array`, `get_coin() -> int` (copper), `add_coin(copper)`, `wear(slot, amount)`
   (durability; returns `{broke}`), `drop_all_at(scene_root, position) -> Node` (the pack).
   Item record: `{id, qty, quality (0-100), durability, max_durability, maker, provenance: {from, stolen, owner}}`.
-  Item definitions live in `resources/items/*.json`: `{id, name, kind (weapon|armour|tool|material|food|remedy|misc), weight, stack, value (pennies), tags, ...}`.
+  Item definitions live in `resources/items/*.json`: `{id, name, kind (weapon|armour|tool|material|food|remedy|misc), weight, stack, value (copper), tags, ...}`.
 - `Combat`: `attack(attacker, target, action) -> Dictionary`, `can_target(key) -> bool`,
   signals `hit_landed(info)`, `fight_ended(info)`. Also `resolve_hit(attacker, target, weapon, action) -> {damage, type, staggered, killed}`.
   Combat world (4) adds `CombatAI.decide(npc_key, situation) -> String` (fight|yield|flee|call_for_help|talk).
