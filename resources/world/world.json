@@ -683,7 +683,8 @@
       "name": "Rook",
       "home": "capitol_warrens",
       "role": "Information broker and fence of the Warrens",
-      "scene": "res://scenes/npcs/rook.tscn"
+      "scene": "res://scenes/npcs/rook.tscn",
+      "minor": true
     },
     {
       "key": "wren",

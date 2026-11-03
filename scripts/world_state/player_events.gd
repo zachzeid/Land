@@ -18,12 +18,15 @@ signal player_event_changed(ev: Dictionary)          # status (kept/broken) or t
 signal player_event_heard(event_id: String, who: String, fidelity: float)
 
 const KINDS = ["claim", "promise", "threat", "lie", "insult", "gift", "help", "harm", "theft", "kill",
-	"spared", "confession", "accusation", "refusal", "seen_at", "kept_company"]
+	"spared", "confession", "accusation", "refusal", "seen_at", "kept_company",
+	# Player systems (docs/PLAYER_SYSTEMS.md §7): physical deeds, witnessed by line of sight
+	"feat", "crafted", "fled", "fire", "trespass", "solved", "fell"]
 ## What an NPC may report from a conversation (deeds of place and time are captured, not reported)
 const UTTERANCE_KINDS = ["claim", "promise", "threat", "lie", "insult", "gift", "help", "harm", "theft",
 	"kill", "spared", "confession", "accusation", "refusal"]
 ## Loud deeds: witnesses talk, so word goes round the region on its own
-const AUTO_SPREAD_KINDS = ["threat", "harm", "theft", "kill", "spared", "help", "gift", "confession", "accusation"]
+const AUTO_SPREAD_KINDS = ["threat", "harm", "theft", "kill", "spared", "help", "gift", "confession", "accusation",
+	"feat", "fire", "fell", "fled"]
 const AUTO_SPREAD_VIA = "talk going round"
 
 const FIDELITY_HOP = 0.15        # lost per retelling
@@ -43,14 +46,18 @@ const PROMPT_LINE_MAX = 150
 
 const IMPORTANCE = {"kill": 9, "harm": 8, "spared": 8, "theft": 7, "threat": 7, "lie": 7, "confession": 7,
 	"promise": 6, "gift": 6, "help": 6, "accusation": 6, "insult": 5, "refusal": 5, "claim": 4,
-	"seen_at": 3, "kept_company": 3}
+	"seen_at": 3, "kept_company": 3,
+	"fire": 8, "fell": 6, "feat": 5, "fled": 5, "trespass": 5, "solved": 4, "crafted": 3}
 
 ## Anonymous rumours: what is left of the deed when nobody remembers who did it
 const VAGUE = {"claim": "told some tale", "promise": "made someone a promise", "threat": "threatened someone",
 	"lie": "told lies", "insult": "insulted someone", "gift": "gave something away", "help": "helped someone",
 	"harm": "hurt someone", "theft": "stole something", "kill": "killed a man", "spared": "spared someone's life",
 	"confession": "confessed to something", "accusation": "accused someone", "refusal": "refused someone",
-	"seen_at": "was seen about", "kept_company": "kept company with someone"}
+	"seen_at": "was seen about", "kept_company": "kept company with someone",
+	"feat": "did something few could", "crafted": "made something", "fled": "ran from a fight",
+	"fire": "set a fire", "trespass": "went where they had no right to", "solved": "worked out a puzzle",
+	"fell": "fell, and lay still"}
 
 ## Retelling drift, keyed by the teller's attitude and whether the deed reads well or ill
 const TONE_TEMPLATES = {

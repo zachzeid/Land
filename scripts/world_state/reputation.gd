@@ -19,13 +19,15 @@ const RECENCY_FLOOR = 0.25
 const ANON_BELOW = 0.3
 const ABOUT_MULT = 1.5
 const ABOUT_MULT_HOSTILE = 2.0
-const HOSTILE = ["threat", "insult", "harm", "theft", "kill", "accusation", "lie"]
+const HOSTILE = ["threat", "insult", "harm", "theft", "kill", "accusation", "lie", "fire", "trespass"]
 
 ## Per-event weight (points) by kind; promises and claims depend on status / truth (kind_weight)
 const KIND_WEIGHTS = {
 	"help": 12.0, "gift": 10.0, "spared": 14.0, "confession": 4.0, "refusal": -4.0,
 	"threat": -12.0, "insult": -8.0, "harm": -15.0, "theft": -14.0, "kill": -30.0,
 	"accusation": -3.0, "lie": -18.0, "seen_at": 0.0, "kept_company": 1.5,
+	# Player systems (docs/PLAYER_SYSTEMS.md §7)
+	"feat": 6.0, "crafted": 2.0, "solved": 3.0, "fled": -6.0, "fell": -2.0, "fire": -16.0, "trespass": -6.0,
 }
 const PROMISE_OPEN = 2.0
 const PROMISE_KEPT = 15.0

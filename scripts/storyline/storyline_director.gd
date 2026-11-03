@@ -2464,6 +2464,34 @@ func get_player_name() -> String:
 func get_agent():
 	return _agent
 
+## A one-off choice put to an NPC's soul, outside any storyline (docs/PLAYER_SYSTEMS.md §8): fight or
+## yield, teach or refuse, take a dropped pack or leave it. hook: {id, type, situation, options:
+## [{id, label, appeal, effects, aids?, harms?, crowd?}]}. Chosen like an emergent beat's hook (offline
+## appeal or Claude, under the soul's Agency and Lines). Returns the decision; nothing is applied
+## (the caller acts on decision.choice and applies decision.effects through apply_situation_effects)
+func decide_situation(npc_key: String, hook: Dictionary, title: String = "") -> Dictionary:
+	var key = _npc_key(npc_key)
+	var soul = _souls.get(key)
+	if soul == null:
+		return {"choice": "pass", "option": {}, "effects": [], "reason": "no soul for this NPC", "mode": "offline", "fallback_reason": ""}
+	var ask = hook.duplicate(true)
+	ask["id"] = str(ask.get("id", "situation"))
+	ask["type"] = str(ask.get("type", "react"))
+	return await _emergence.decide_one(soul, key, ask, {"title": title if title != "" else str(ask.get("situation", "")), "roles": {}})
+
+## Apply a situation decision's effects as that NPC (each checked against its soul, like any effect)
+func apply_situation_effects(npc_key: String, decision: Dictionary, source: Dictionary = {}) -> Array:
+	var results: Array = []
+	for effect in decision.get("effects", []):
+		var checked = _effects.validate(effect)
+		if not checked.ok:
+			results.append({"ok": false, "reason": checked.reason})
+			continue
+		results.append(_apply_effect_as_director(checked.effect, _npc_key(npc_key), source.merged({"situation": true})))
+	if not _processing:
+		_process_queue()
+	return results
+
 func get_claude_client_for_agents() -> Object:
 	return _get_claude_client()
 

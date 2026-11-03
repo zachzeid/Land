@@ -340,6 +340,17 @@ func get_era() -> String:
 func get_world_rules() -> Array:
 	return data.get("world_rules", []).duplicate()
 
+## Children are never combat targets (docs/PLAYER_SYSTEMS.md §1.4): world.json npcs[].minor. Generic
+## instances answer through their archetype's `minor:` header (GenericManager)
+func is_minor(key_or_id: String) -> bool:
+	var key = key_or_id if _npcs.has(key_or_id) else get_npc_key(key_or_id)
+	if key != "" and _npcs.has(key):
+		return bool(_npcs[key].get("minor", false))
+	var tree = Engine.get_main_loop() as SceneTree
+	var registry = tree.root.get_node_or_null("DynamicNPCRegistry") if tree else null
+	var generics = registry.generics if registry and "generics" in registry else null
+	return generics != null and generics.has_method("is_minor") and generics.is_minor(key_or_id)
+
 ## world.json "opening_hours": [open_hour, close_hour) on the game clock, for every place and NPC
 ## (nobody acts or arrives anywhere outside them). Without the key the world never closes
 func get_opening_hours() -> Array:

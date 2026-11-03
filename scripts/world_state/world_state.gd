@@ -11,6 +11,9 @@ var event_propagation_state := {}  # Loaded EventPropagator state (it autoloads 
 var storyline_state := {}  # Loaded StorylineDirector state (it autoloads after us)
 var generics_state := {}  # Loaded generic NPC state (DynamicNPCRegistry.generics autoloads after us)
 var quest_state := {}  # Loaded QuestManager state (it autoloads after us)
+## Player systems (docs/PLAYER_SYSTEMS.md §8): each autoload's save(), restored once they are ready
+const PLAYER_SYSTEMS = ["PlayerStats", "Inventory", "Crafting", "Combat", "WorldPhysics", "Puzzles"]
+var player_systems_state := {}
 var player_location := ""  # Where the player stood when the game was saved ("" = a new game)
 
 const SAVE_PATH = "user://game_save.json"
@@ -685,8 +688,23 @@ func save() -> Dictionary:
 		"storylines": _get_storyline_state(),
 		"generics": _get_generics_state(),
 		"quests": _get_quest_state(),
+		"player_systems": _get_player_systems_state(),
 		"player_location": _get_player_location()
 	}
+
+func _get_player_systems_state() -> Dictionary:
+	var out = player_systems_state.duplicate(true)
+	for name in PLAYER_SYSTEMS:
+		var system = get_node_or_null("/root/" + name)
+		if system and system.has_method("save"):
+			out[name] = system.save()
+	return out
+
+func _apply_player_systems_state() -> void:
+	for name in PLAYER_SYSTEMS:
+		var system = get_node_or_null("/root/" + name)
+		if system and system.has_method("load_from_dict") and player_systems_state.get(name) is Dictionary:
+			system.load_from_dict(player_systems_state[name])
 
 func _get_quest_state() -> Dictionary:
 	var quests = get_node_or_null("/root/QuestManager")
@@ -703,6 +721,7 @@ func _get_player_location() -> String:
 func _apply_late_save_state() -> void:
 	if not loaded_from_save:
 		return
+	_apply_player_systems_state()
 	var quests = get_node_or_null("/root/QuestManager")
 	if quests and quests.has_method("load_save_data") and not quest_state.is_empty():
 		quests.load_save_data(quest_state)
@@ -777,6 +796,7 @@ func load_from_dict(data: Dictionary):
 	faction_reputations = data.get("faction_reputations", {})
 	quest_state = data.get("quests", {}) if data.get("quests") is Dictionary else {}
 	player_location = str(data.get("player_location", ""))
+	player_systems_state = data.get("player_systems", {}) if data.get("player_systems") is Dictionary else {}
 	npc_relationships = data.get("npc_relationships", {})
 	active_quests = data.get("active_quests", [])
 	completed_quests = data.get("completed_quests", [])
@@ -931,6 +951,7 @@ func load_state(data: Dictionary):
 	faction_reputations = data.get("faction_reputations", {})
 	quest_state = data.get("quests", {}) if data.get("quests") is Dictionary else {}
 	player_location = str(data.get("player_location", ""))
+	player_systems_state = data.get("player_systems", {}) if data.get("player_systems") is Dictionary else {}
 	npc_relationships = data.get("npc_relationships", {})
 	active_quests = data.get("active_quests", [])
 	completed_quests = data.get("completed_quests", [])

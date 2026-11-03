@@ -21,8 +21,8 @@ const REPUTATION_PATH = "res://scripts/world_state/reputation.gd"
 const TOUCH_DIMENSION = 1.0       # any feeling at least this far from 0 means the player touched them
 const FEELING_AT = 15.0           # a feeling worth naming
 const MAX_INTENTIONS = 10
-const POSITIVE_KINDS = ["help", "gift", "spared", "confession"]
-const NEGATIVE_KINDS = ["harm", "kill", "theft", "threat", "insult", "lie", "accusation"]
+const POSITIVE_KINDS = ["help", "gift", "spared", "confession", "feat", "solved"]
+const NEGATIVE_KINDS = ["harm", "kill", "theft", "threat", "insult", "lie", "accusation", "fire", "trespass"]
 const COMMON_CAPITALS = ["You", "Your", "The", "A", "An", "In", "At", "On", "Of", "And", "But", "When", "Day",
 	"It", "He", "She", "They", "His", "Her", "Their", "What", "Who", "Across", "Among", "Nothing", "No", "I"]
 

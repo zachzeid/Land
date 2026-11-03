@@ -162,7 +162,8 @@ def validate_soul(path, flags_known):
 PERSONAL_EFFECTS = {"agenda", "move_npc", "adjust_relationship", "shift_want", "spread_rumor"}
 EMERGENT_EFFECTS = PERSONAL_EFFECTS | {"spread_event", "shift_fixed_point"}
 EVENT_KINDS = {"claim", "promise", "threat", "lie", "insult", "gift", "help", "harm", "theft", "kill",
-               "spared", "confession", "accusation", "refusal", "seen_at", "kept_company"}
+               "spared", "confession", "accusation", "refusal", "seen_at", "kept_company",
+               "feat", "crafted", "fled", "fire", "trespass", "solved", "fell"}
 ARC_RE = re.compile(r"^### Arc: `([a-z][a-z0-9_]*)` \(serves `([a-z][a-z0-9_]*)`\)\s*$")
 STEP_RE = re.compile(r"^- `([a-z][a-z0-9_]*)`: (.+?) \| after: ([a-z0-9_]+) \| needs: ([!a-z0-9_, ]+) \| at: ([a-z0-9_]+) \| takes: (\d+) \| effects: ([a-z_, ]+?)(?: \| when: ([a-z0-9-]+))?(?: \| player: (helps|needed))?\s*$")
 # SOUL.md `when` windows (scripts/storyline/time_window.gd)
@@ -299,6 +300,24 @@ def validate_population():
 
 
 ROLE_SOURCES = ("event_witness", "event_about", "heard_event", "near_player", "trigger_match", "crowd_target", "crowd_aggrieved", "crowd_protector")
+
+
+def run_validator_plugins(souls, flags_known):
+    """tools/validators/<name>.py modules, one per player system (docs/PLAYER_SYSTEMS.md §8), each with
+    validate(ctx). ctx: root, world, souls, flags_known, npc_keys, locations, event_kinds,
+    forbidden (concepts), err(where, msg), warn(where, msg)"""
+    import importlib.util
+    ctx = {"root": ROOT, "world": WORLD, "souls": souls, "flags_known": flags_known, "npc_keys": list(NPC_KEYS),
+           "locations": set(LOCATIONS), "event_kinds": set(EVENT_KINDS), "forbidden": list(WORLD.get("forbidden_concepts", [])),
+           "err": err, "warn": lambda where, msg: warnings.append(f"warn  {where}: {msg}")}
+    for path in sorted((ROOT / "tools/validators").glob("*.py")):
+        if path.name.startswith("_"):
+            continue
+        spec = importlib.util.spec_from_file_location(f"validators.{path.stem}", path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        if hasattr(module, "validate"):
+            module.validate(ctx)
 
 
 def all_declared_flags():
@@ -737,6 +756,7 @@ def main():
         validate_world_rules(known)
         for p in sorted((ROOT / "resources/emergence").glob("*.json")):
             validate_emergence(p, souls, known)
+        run_validator_plugins(souls, known)
     for w in warnings:
         print(w)
     for e in errors:
