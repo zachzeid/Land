@@ -204,6 +204,8 @@ func _test_yield_and_spare():
 	_check("...still one harm deed for the whole fight", _events("harm", "hollis").size() == 1)
 	_check("A fight against someone who has not yielded cannot be 'spared'", not onlooker.spare(player) or onlooker.combat_state == "")
 	_check("Letting him go records spared", hollis.spare(player) and _events("spared", "hollis").size() == 1)
+	var hc = hollis.get_combat_profile()
+	_check("Hollis's combat profile is Combat's shape (fists, health, not a minor)", hc.weapon == "fists" and hc.health == 100.0 and hc.minor == false and hc.has("resist"))
 	_check("...witnessed by Wren, and the fight is over", registry.get_npc_id("wren") in _events("spared", "hollis")[0].witnesses and hollis.combat_state == "")
 
 	# Left unhit long enough, a yielded person has been let go
@@ -232,6 +234,17 @@ func _test_kill():
 	_check("...records kill about Corwin, witnessed by Oskar", kills.size() == 1 and registry.get_npc_id("oskar") in kills[0].witnesses)
 	_check("...and he is dead for WorldState and the Director", not world_state.is_npc_alive(registry.get_npc_id("corwin")) and not director._is_npc_alive("corwin"))
 	_check("The dead cannot be hit again", corwin.take_hit(_hit(5), player).get("refused", false))
+	var renna = _body("renna", Vector2(-30, 30))
+	await physics_frame
+	var harm_before = _events("harm", "renna").size()
+	var through = renna.take_combat_hit(_hit(10), player)
+	_check("Through Combat (take_combat_hit) a hit wounds, and Combat keeps the harm deed (%s)" % through, through.health == 90.0 and _events("harm", "renna").size() == harm_before)
+	renna.on_staggered(0.5)
+	_check("Combat's stagger reaches the body (on_staggered)", renna.is_staggered())
+	var r2 = renna.take_combat_hit(_hit(500), player)
+	await process_frame
+	_check("A killing blow through Combat: the body records kill and dies (Combat records neither)", r2.dead and _events("kill", "renna").size() == 1 and not director._is_npc_alive("renna"))
+	renna.queue_free()
 	var lucan = _body("lucan", Vector2(30, 30))
 	lucan.take_hit(_hit(150), player)
 	_check("Health run out is death too, by any adult", not lucan.is_alive and not director._is_npc_alive("lucan"))
@@ -273,6 +286,7 @@ func _test_minors():
 	var r = rook.take_hit(_hit(30), player)
 	_check("Rook cannot be hit (%s)" % r.get("reason", ""), r.get("refused", false) and rook.health == rook.max_health and rook.is_alive)
 	_check("...and no deed is recorded", pe.order.size() == before)
+	_check("Rook's combat profile says minor", rook.get_combat_profile().minor == true)
 	rook.queue_free()
 
 	var dyn = root.get_node("DynamicNPCRegistry")
@@ -370,7 +384,8 @@ func _test_creature_behaviour():
 	wolf._cooldown = 0.0
 	wolf.think(0.1)
 	_check("In reach, it strikes (then waits out its attack time)", wolf._cooldown > 0.0)
-	_check("Its natural weapon is data (%s)" % wolf.get_weapon(), wolf.get_weapon().damage == float(wolf.def.damage) and wolf.get_weapon().type == "cut")
+	_check("Its natural weapon is data (%s)" % wolf.get_weapon(), float(wolf.get_weapon().damage.get("cut", 0)) == float(wolf.def.damage) and wolf.get_weapon().type == "cut")
+	_check("...and its profile is Combat's shape", wolf.get_combat_profile().weapon.id == "wolf_natural" and wolf.get_combat_profile().health == wolf.max_health and not wolf.get_combat_profile().minor)
 	wolf.take_hit(_hit(wolf.max_health * 0.8), player)
 	var fv = wolf.think(0.1)
 	_check("Hurt badly, the wolf flees (%s)" % wolf.state, wolf.state == "flee" and fv.x < 0)

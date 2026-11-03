@@ -71,10 +71,32 @@ func setup(id: String) -> void:
 func has(behaviour: String) -> bool:
 	return behaviour in def.get("behaviour", [])
 
-## The natural weapon Combat resolves its strikes with
+## The natural weapon Combat resolves its strikes with, in weapons.json's shape (damage by type)
 func get_weapon() -> Dictionary:
-	return {"id": creature_id + "_natural", "name": str(def.get("name", creature_id)), "damage": float(def.get("damage", 0.0)),
-		"type": str(def.get("damage_type", "cut")), "poise_damage": float(def.get("poise", 0.0)) * 0.3, "natural": true}
+	var dtype = str(def.get("damage_type", "cut"))
+	return {"id": creature_id + "_natural", "name": str(def.get("name", creature_id)), "kind": "melee",
+		"damage": {dtype: float(def.get("damage", 0.0))}, "type": dtype, "reach": float(def.get("reach", 32.0)),
+		"arc": 90, "speed": 1.0 / maxf(float(def.get("attack_seconds", 1.0)), 0.1), "poise": float(def.get("poise", 0.0)) * 0.3,
+		"stamina": {"light": 0, "heavy": 0}, "durability_per_hit": 0, "skill": "", "block": 0.0, "natural": true}
+
+## What Combat resolves hits with (scripts/combat/combat.gd get_combat_profile)
+func get_combat_profile() -> Dictionary:
+	return {"weapon": get_weapon(), "armour": [], "resist": get_resistances(), "poise": float(def.get("poise", 0.0)),
+		"health": max_health, "skills": {}, "difficulty": clampf(max_health / 50.0, 0.2, 3.0), "minor": false}
+
+## Combat.apply_hit_to's entry point
+func take_combat_hit(result: Dictionary, attacker) -> Dictionary:
+	return take_hit(result, attacker)
+
+func on_staggered(seconds: float) -> void:
+	staggered_until_ms = maxi(staggered_until_ms, Time.get_ticks_msec() + int(seconds * 1000.0))
+
+## Creatures spend no stamina (their pace is their attack time)
+func spend_stamina(_amount: float) -> bool:
+	return true
+
+func get_stamina() -> float:
+	return 100.0
 
 func get_resistances() -> Dictionary:
 	return def.get("resist", {}).duplicate()

@@ -71,6 +71,18 @@ func refresh_from_instance() -> void:
 		if personality_resource:
 			system_prompt = personality_resource.generate_system_prompt()
 
+## Combat's view of a generic: BaseNPC's, with minor answered by the archetype header (GenericManager)
+func get_combat_profile() -> Dictionary:
+	var profile = super.get_combat_profile()
+	var manager = _manager()
+	if manager and manager.has_method("is_minor") and manager.is_minor(generic_id if generic_id != "" else npc_id):
+		profile["minor"] = true
+	return profile
+
+## Combat.apply_hit_to's entry point (BaseNPC.take_hit, with Combat recording the harm)
+func take_combat_hit(result: Dictionary, attacker) -> Dictionary:
+	return super.take_combat_hit(result, attacker)
+
 ## A generic dies like anyone (any adult can, lead's ruling); its instance remembers how
 func die(cause: String = "unknown", killer: String = "unknown"):
 	var was_alive = is_alive
