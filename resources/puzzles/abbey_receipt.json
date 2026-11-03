@@ -1,0 +1,41 @@
+{
+  "id": "abbey_receipt",
+  "type": "lore",
+  "title": "The Abbey's Receipt",
+  "storyline": "grey_fever",
+  "location": "brackenmoor_abbey",
+  "summary": "Brother Anselm keeps his shelves by an index, every book by shelf and place. Somewhere among them is his own copy of the receipt for the Grey Fever.",
+  "question": "Find the cure's page by Anselm's index. Where is the receipt?",
+  "requires": ["abbey_fever_records_read"],
+  "clues": [
+    {"id": "FeverRecords", "kind": "story_item", "scene": "res://scenes/interiors/brackenmoor_abbey.tscn", "flag": "abbey_fever_records_read",
+      "note": "The fever books: the dead by parish, the remedies tried and failed, and in the last book the one that worked."},
+    {"id": "CopyDesk", "kind": "story_item", "scene": "res://scenes/interiors/brackenmoor_abbey.tscn",
+      "note": "A novice's copy of a herbal, stopped mid-sentence in the chapter on fever-root."},
+    {"id": "anselm_shelf_index", "kind": "object", "location": "brackenmoor_abbey",
+      "text": "Anselm's index, in a small square hand, each book by shelf and place. Shelf I: psalters and offices. Shelf II: herbals; II.4, the herbal under copy, fever-root at leaf thirty-one. Shelf III: the Grey Fever, one book to a year, III.1 the first year to III.7 the last, 'the remedy that answered', a receipt bound in at leaf twelve. Shelf IV: chronicles of the house. Saints' days and the other dull books below, in the undercroft."}
+  ],
+  "answer": {
+    "shape": "choose",
+    "options": [
+      {"id": "ii_4_leaf_31", "label": "Shelf II, the fourth book, leaf thirty-one"},
+      {"id": "iii_1", "label": "Shelf III, the first book"},
+      {"id": "iii_7_leaf_12", "label": "Shelf III, the seventh book, leaf twelve"},
+      {"id": "iv_chronicle", "label": "Shelf IV, the house chronicle"}
+    ],
+    "correct": "iii_7_leaf_12",
+    "wrong": {
+      "ii_4_leaf_31": "The herbal has fever-root and only fever-root. The root alone is only comfort.",
+      "iii_1": "The first fever book is the dead by parish and the remedies that failed.",
+      "iv_chronicle": "The chronicle rings the bells for the fever years and says nothing of how it was cured."
+    }
+  },
+  "hints": [
+    {"min_lore": 0, "text": "The fever books say the last one recorded the remedy that worked."},
+    {"min_lore": 15, "text": "A receipt is a page, not a book. The index gives a leaf."}
+  ],
+  "difficulty": 1.0,
+  "flag": "grey_cure_recipe_known",
+  "about": ["anselm"],
+  "solved_summary": "found Brother Anselm's receipt for the Grey Fever on his shelves by its index: fever-root steeped with Greystone's deep-vein salt"
+}

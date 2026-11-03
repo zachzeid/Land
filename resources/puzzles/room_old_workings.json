@@ -1,0 +1,25 @@
+{
+  "id": "old_workings",
+  "type": "room",
+  "title": "The Old Workings",
+  "location": "greystone_mines",
+  "scene": "res://scenes/puzzles/old_workings.tscn",
+  "summary": "Greystone's abandoned workings above the seventh level, worked out before Dagna's time. An old winze drops past her boards to the old fall, where picks can be heard on the far side.",
+  "components": {
+    "brake_plate": "pressure_plate",
+    "cage_rope": "rope",
+    "barricade": "flammable",
+    "lamp": "lamp",
+    "sump": "basin",
+    "winch_chain": "metal"
+  },
+  "ways": [
+    "Weigh the winch brake down (an ore tub on the plate), then cut the cage rope: the cage goes down the winze on the brake.",
+    "Burn out the rotten timber barricade across the old adit, in a mine full of Greystone's own timber."
+  ],
+  "failure": "Cut the cage rope with the brake off and the cage falls the length of the winze and jams there; only the adit is left.",
+  "flag": "old_workings_way_found",
+  "about": ["dagna"],
+  "solved_summary": "found the old winze in Greystone's abandoned workings, down past Dagna's boards to the old fall: a way to the Pit the Hollow does not watch",
+  "reward": "A way to the Pit's back-seam the Hollow does not watch."
+}

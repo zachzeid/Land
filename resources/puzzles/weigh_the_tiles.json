@@ -1,0 +1,43 @@
+{
+  "id": "weigh_the_tiles",
+  "type": "lore",
+  "title": "Weigh the Tiles",
+  "storyline": "smiths_oath",
+  "location": "thornhaven_blacksmith",
+  "summary": "Bjorn cut every lot tile to one weight. Two tiles carry Elena's name now, and only one of them is as he cast it.",
+  "question": "Lay the tiles on Bjorn's scale against his card. Which tile is light, filed down from the weight he cast?",
+  "requires": ["recut_tile_seen"],
+  "clues": [
+    {"id": "DrawnTile", "kind": "story_item", "scene": "res://scenes/interiors/thornhaven_chapel.tscn", "flag": "recut_tile_seen",
+      "note": "The drawn tile on the lectern: ELENA, Bjorn's hammer and pine on the back, the face filed low and bright."},
+    {"id": "TileMould", "kind": "story_item", "scene": "res://scenes/interiors/blacksmith_interior.tscn",
+      "note": "Bjorn's card in the mould's leather: each tile two ounces and a half, filed square, name cut once and clean."},
+    {"id": "lot_urn", "kind": "object", "location": "thornhaven_chapel",
+      "note": "The chapel's lot urn, its tiles poured out on the cloth. Among the village's names is a second ELENA, cut once and clean."},
+    {"id": "bjorns_scale", "kind": "object", "location": "thornhaven_blacksmith",
+      "text": "Bjorn's brass beam scale by the anvil, with a nest of iron weights down to the quarter-ounce. Every tile from the urn balances two ounces and a half. The tile from the lectern does not: the beam lifts it before the quarter-ounce weight is off the pan."}
+  ],
+  "answer": {
+    "shape": "choose",
+    "options": [
+      {"id": "lectern_tile", "label": "The drawn tile from the lectern, ELENA"},
+      {"id": "urn_elena", "label": "The ELENA tile still in the urn"},
+      {"id": "urn_first", "label": "The first tile poured from the urn"},
+      {"id": "urn_last", "label": "The last tile poured from the urn"}
+    ],
+    "correct": "lectern_tile",
+    "wrong": {
+      "urn_elena": "It balances true at two ounces and a half, its letters cut once. Bjorn cast this one, and it never left the urn.",
+      "urn_first": "It balances true. Whatever name is on it, nobody filed it.",
+      "urn_last": "It balances true. Whatever name is on it, nobody filed it."
+    }
+  },
+  "hints": [
+    {"min_lore": 0, "text": "A file takes iron away. A tile that lost a name lost weight with it."},
+    {"min_lore": 20, "text": "Two tiles say ELENA. One of them is cut twice where a smith cuts once."}
+  ],
+  "difficulty": 1.0,
+  "flag": "tn_lot_rigged_known",
+  "about": ["elena", "bjorn"],
+  "solved_summary": "weighed the lot tiles on Bjorn's scale and found the drawn ELENA tile light: filed and recut"
+}

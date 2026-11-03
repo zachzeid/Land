@@ -1,0 +1,325 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="Script" path="res://scripts/puzzles/room_abbey_undercroft.gd" id="room"]
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="solid"]
+[ext_resource type="Script" path="res://scripts/world/physics/flammable.gd" id="flammable"]
+[ext_resource type="Script" path="res://scripts/world/physics/pressure_plate.gd" id="pressure_plate"]
+[ext_resource type="Script" path="res://scripts/world/physics/rope.gd" id="rope"]
+[ext_resource type="Script" path="res://scripts/world/physics/lamp.gd" id="lamp"]
+[ext_resource type="Script" path="res://scripts/world/physics/basin.gd" id="basin"]
+[ext_resource type="Script" path="res://scripts/world/physics/metal.gd" id="metal"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="story_item"]
+
+[sub_resource type="RectangleShape2D" id="Rect_1024x40"]
+size = Vector2(1024, 40)
+
+[sub_resource type="RectangleShape2D" id="Rect_40x944"]
+size = Vector2(40, 944)
+
+[sub_resource type="RectangleShape2D" id="Rect_80x50"]
+size = Vector2(80, 50)
+
+[sub_resource type="RectangleShape2D" id="Rect_120x16"]
+size = Vector2(120, 16)
+
+[sub_resource type="RectangleShape2D" id="Rect_60x40"]
+size = Vector2(60, 40)
+
+[node name="AbbeyUndercroft" type="Node2D"]
+script = ExtResource("room")
+
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+color = Color(0.2, 0.19, 0.18, 1)
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, -492)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/North"]
+shape = SubResource("Rect_1024x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/North"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+color = Color(0.3, 0.28, 0.25, 1)
+
+[node name="South" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, 492)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/South"]
+shape = SubResource("Rect_1024x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/South"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+color = Color(0.3, 0.28, 0.25, 1)
+
+[node name="West" type="StaticBody2D" parent="Walls"]
+position = Vector2(-492, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/West"]
+shape = SubResource("Rect_40x944")
+
+[node name="Visual" type="ColorRect" parent="Walls/West"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+color = Color(0.3, 0.28, 0.25, 1)
+
+[node name="East" type="StaticBody2D" parent="Walls"]
+position = Vector2(492, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/East"]
+shape = SubResource("Rect_40x944")
+
+[node name="Visual" type="ColorRect" parent="Walls/East"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+color = Color(0.3, 0.28, 0.25, 1)
+
+[node name="Title" type="Label" parent="."]
+offset_left = -200.0
+offset_top = -460.0
+offset_right = 200.0
+offset_bottom = -436.0
+text = "Brackenmoor, the undercroft"
+horizontal_alignment = 1
+
+[node name="Parts" type="Node2D" parent="."]
+
+[node name="KneelerNorth" type="Area2D" parent="Parts"]
+position = Vector2(-200, -60)
+script = ExtResource("pressure_plate")
+weight_needed = 40.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/KneelerNorth"]
+shape = SubResource("Rect_80x50")
+
+[node name="Visual" type="ColorRect" parent="Parts/KneelerNorth"]
+offset_left = -40.0
+offset_top = -25.0
+offset_right = 40.0
+offset_bottom = 25.0
+color = Color(0.5, 0.48, 0.44, 1)
+
+[node name="Label" type="Label" parent="Parts/KneelerNorth"]
+offset_left = -200.0
+offset_top = 29.0
+offset_right = 200.0
+offset_bottom = 53.0
+text = "Kneeling stone"
+horizontal_alignment = 1
+
+[node name="KneelerSouth" type="Area2D" parent="Parts"]
+position = Vector2(-200, 140)
+script = ExtResource("pressure_plate")
+weight_needed = 40.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/KneelerSouth"]
+shape = SubResource("Rect_80x50")
+
+[node name="Visual" type="ColorRect" parent="Parts/KneelerSouth"]
+offset_left = -40.0
+offset_top = -25.0
+offset_right = 40.0
+offset_bottom = 25.0
+color = Color(0.5, 0.48, 0.44, 1)
+
+[node name="Label" type="Label" parent="Parts/KneelerSouth"]
+offset_left = -200.0
+offset_top = 29.0
+offset_right = 200.0
+offset_bottom = 53.0
+text = "Kneeling stone"
+horizontal_alignment = 1
+
+[node name="ReliquaryChest" type="Node2D" parent="Parts"]
+position = Vector2(-360, 260)
+
+[node name="Visual" type="ColorRect" parent="Parts/ReliquaryChest"]
+offset_left = -35.0
+offset_top = -25.0
+offset_right = 35.0
+offset_bottom = 25.0
+color = Color(0.35, 0.27, 0.18, 1)
+
+[node name="Label" type="Label" parent="Parts/ReliquaryChest"]
+offset_left = -200.0
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 54.0
+text = "Iron-bound reliquary chest"
+horizontal_alignment = 1
+
+[node name="LampRope" type="Node2D" parent="Parts"]
+position = Vector2(150, -230)
+script = ExtResource("rope")
+
+[node name="Visual" type="ColorRect" parent="Parts/LampRope"]
+offset_left = -3.0
+offset_top = -50.0
+offset_right = 3.0
+offset_bottom = 50.0
+color = Color(0.55, 0.45, 0.3, 1)
+
+[node name="Label" type="Label" parent="Parts/LampRope"]
+offset_left = -200.0
+offset_top = 54.0
+offset_right = 200.0
+offset_bottom = 78.0
+text = "Lamp rope"
+horizontal_alignment = 1
+
+[node name="HangingLamp" type="Node2D" parent="Parts"]
+position = Vector2(150, -170)
+script = ExtResource("lamp")
+
+[node name="Visual" type="ColorRect" parent="Parts/HangingLamp"]
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+color = Color(0.95, 0.8, 0.35, 1)
+
+[node name="DullShelves" type="Node2D" parent="Parts"]
+position = Vector2(150, -120)
+script = ExtResource("flammable")
+owner_key = "anselm"
+burn_seconds = 30.0
+
+[node name="Visual" type="ColorRect" parent="Parts/DullShelves"]
+offset_left = -130.0
+offset_top = -25.0
+offset_right = 130.0
+offset_bottom = 25.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="Label" type="Label" parent="Parts/DullShelves"]
+offset_left = -200.0
+offset_top = 29.0
+offset_right = 200.0
+offset_bottom = 53.0
+text = "Chronicles, saints' days, dull books"
+horizontal_alignment = 1
+
+[node name="AumbryGrate" type="Node2D" parent="Parts"]
+position = Vector2(300, 180)
+script = ExtResource("metal")
+
+[node name="Visual" type="ColorRect" parent="Parts/AumbryGrate"]
+offset_left = -60.0
+offset_top = -8.0
+offset_right = 60.0
+offset_bottom = 8.0
+color = Color(0.3, 0.3, 0.33, 1)
+
+[node name="Label" type="Label" parent="Parts/AumbryGrate"]
+offset_left = -200.0
+offset_top = 12.0
+offset_right = 200.0
+offset_bottom = 36.0
+text = "Aumbry grate"
+horizontal_alignment = 1
+
+[node name="GrateShut" type="StaticBody2D" parent="Parts"]
+position = Vector2(300, 180)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/GrateShut"]
+shape = SubResource("Rect_120x16")
+
+[node name="Visual" type="ColorRect" parent="Parts/GrateShut"]
+offset_left = -60.0
+offset_top = -8.0
+offset_right = 60.0
+offset_bottom = 8.0
+color = Color(0.3, 0.3, 0.33, 1)
+
+[node name="Ashes" type="Node2D" parent="Parts"]
+position = Vector2(150, -120)
+visible = false
+
+[node name="Visual" type="ColorRect" parent="Parts/Ashes"]
+offset_left = -130.0
+offset_top = -25.0
+offset_right = 130.0
+offset_bottom = 25.0
+color = Color(0.15, 0.14, 0.13, 1)
+
+[node name="Font" type="Node2D" parent="Parts"]
+position = Vector2(-60, 300)
+script = ExtResource("basin")
+
+[node name="Visual" type="ColorRect" parent="Parts/Font"]
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.2, 0.25, 0.3, 1)
+
+[node name="Label" type="Label" parent="Parts/Font"]
+offset_left = -200.0
+offset_top = 44.0
+offset_right = 200.0
+offset_bottom = 68.0
+text = "Old font"
+horizontal_alignment = 1
+
+[node name="SaintsDaysBook" type="Area2D" parent="Parts"]
+visible = false
+position = Vector2(300, 230)
+script = ExtResource("story_item")
+interaction_name = "Open the book of saints' days"
+enabled = false
+discovery_text = "[b]A book of saints' days[/b]
+
+The dullest book in the aumbry, a calendar of feasts in a plain hand. The binding is too thick for the boards. Cut along the spine, and folded inside it are letters: Brackenmoor's salt letters, a second set, who bought the deep-vein salt in the Grey Year and who sold it, and behind them a fair copy of the receipt in Brother Anselm's hand."
+reexamine_text = "The saints' days book, its spine cut open."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/SaintsDaysBook"]
+shape = SubResource("Rect_60x40")
+
+[node name="Visual" type="ColorRect" parent="Parts/SaintsDaysBook"]
+offset_left = -30.0
+offset_top = -20.0
+offset_right = 30.0
+offset_bottom = 20.0
+color = Color(0.45, 0.2, 0.18, 1)
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 400)
+
+[node name="from_travel" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 430)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.9, 0.9)

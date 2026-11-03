@@ -1,0 +1,34 @@
+{
+  "id": "gregors_ledger",
+  "type": "lore",
+  "title": "Gregor's Ledger",
+  "storyline": "iron_hand",
+  "location": "thornhaven_gregor_shop",
+  "summary": "Read from the back, Gregor's ledger keeps one page for each autumn of the Tithe. He did not trust the names to ink: each is a sum, and every sum is an account in the honest front pages.",
+  "question": "Match each autumn's sum to its account in the front pages. Whose name did the Tithe fall to, year by year?",
+  "requires": ["ledger_found"],
+  "clues": [
+    {"id": "SecretLedger", "kind": "story_item", "scene": "res://scenes/interiors/gregor_shop_interior.tscn", "flag": "ledger_found",
+      "note": "One page for each autumn of the Tithe, five of them, in Gregor's careful merchant's hand. The fifth is struck through so hard the nib tore the page."},
+    {"id": "ledger_front_pages", "kind": "object", "location": "thornhaven_gregor_shop",
+      "text": "The honest front of the book: flour, lamp oil, nails, seed grain on credit. The accounts, as written: Ashby, seed grain, two marks six pennies. The forge, boots for the smith's boy, one mark four pennies. The Rusty Nail, ale casks, three marks. Marlow, lamp oil through the winter, one mark nine pennies. The chapel, candles, eight pennies. Brand, a roof mended, two marks two pennies. Fenn, flour, one mark one penny."}
+  ],
+  "answer": {
+    "shape": "decode",
+    "lines": [
+      {"id": "year_1", "cipher": "Year one: two marks six pennies", "correct": "corin_ashby", "aliases": ["corin ashby", "corin", "ashby"]},
+      {"id": "year_2", "cipher": "Year two: one mark four pennies", "correct": "davin", "aliases": ["davin", "the smith's boy"]},
+      {"id": "year_3", "cipher": "Year three: one mark nine pennies", "correct": "hesk_marlow", "aliases": ["hesk marlow", "hesk", "marlow"]},
+      {"id": "year_4", "cipher": "Year four: two marks two pennies", "correct": "willa_brand", "aliases": ["willa brand", "willa", "brand"]},
+      {"id": "year_5", "cipher": "Year five: one mark one penny, struck through", "correct": "ada_fenn", "aliases": ["ada fenn", "ada", "fenn"]}
+    ]
+  },
+  "hints": [
+    {"min_lore": 0, "text": "A merchant who hides a name writes it where he would never look twice: in what the family owes."},
+    {"min_lore": 20, "text": "The smith has no family in the book. The forge does, and a boy's boots."}
+  ],
+  "difficulty": 1.5,
+  "flag": "ledger_names_decoded",
+  "about": ["gregor"],
+  "solved_summary": "read Gregor's ledger back from its sums to five names, one for each autumn of the Tithe"
+}
