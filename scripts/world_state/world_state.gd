@@ -639,6 +639,14 @@ func register_npc_death(npc_id: String, death_data: Dictionary):
 	request_save("npc_death")
 	print("[WorldState] NPC death registered: %s" % npc_id)
 
+## An NPC at a gathering the world holds them to (the Tithe drawing's congregation) acts where they
+## stand but does not leave until it ends. Each marker is an npc_states key its owner clears
+const ATTENDING_MARKERS = ["at_drawing"]
+
+func is_npc_attending(npc_id: String) -> bool:
+	var state = npc_states.get(npc_id, {})
+	return state is Dictionary and ATTENDING_MARKERS.any(func(m): return state.has(m))
+
 func is_npc_alive(npc_id: String) -> bool:
 	if npc_id in npc_states:
 		return npc_states[npc_id].get("is_alive", true)

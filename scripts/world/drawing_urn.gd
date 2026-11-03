@@ -43,7 +43,7 @@ func show_choices() -> void:
 	_choice_canvas = CanvasLayer.new()
 	_choice_canvas.name = "UrnChoices"
 	_choice_canvas.layer = 100
-	var popup = Panel.new()
+	var popup = PanelContainer.new()  # sizes to its contents
 	var margin = MarginContainer.new()
 	for side in ["left", "right", "top", "bottom"]:
 		margin.add_theme_constant_override("margin_" + side, 18 if side in ["left", "right"] else 14)
@@ -69,8 +69,9 @@ func show_choices() -> void:
 	popup.size = popup.get_combined_minimum_size()
 	await get_tree().process_frame
 	if is_instance_valid(popup):
-		popup.size = popup.get_combined_minimum_size()
-		popup.position = (popup.get_viewport_rect().size - popup.size) / 2
+		popup.grow_horizontal = Control.GROW_DIRECTION_BOTH
+		popup.grow_vertical = Control.GROW_DIRECTION_BOTH
+		popup.set_anchors_and_offsets_preset(Control.PRESET_CENTER, Control.PRESET_MODE_MINSIZE)
 
 ## "look" | "accusation" | "refusal" | "leave"
 func choose(choice_id: String) -> void:

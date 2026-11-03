@@ -137,6 +137,7 @@ func transition_to(location_id: String, spawn_point: String = "default", fade_du
 
 	# Position player at spawn point
 	_position_player_at_spawn(spawn_point)
+	_ensure_camera()
 
 	# Roster NPCs: spawn / show / hide by where they are; others by their own location
 	_reconcile_npcs(location_id)
@@ -277,6 +278,34 @@ func _position_player_at_spawn(spawn_point_name: String):
 	push_warning("[SceneManager] Spawn point '%s' not found, using origin" % spawn_point_name)
 	player_instance.global_position = Vector2.ZERO
 
+## The view follows the player. Exteriors build a Camera2D into their Player; interiors have no player
+## of their own, and a camera carried in from another scene is not made current by being reparented
+## A scene with its own camera elsewhere (a fixed view) keeps it
+const PLAYER_CAMERA_ZOOM = Vector2(1.5, 1.5)
+
+func _ensure_camera() -> void:
+	if player_instance == null or not is_instance_valid(player_instance) or not player_instance.is_inside_tree():
+		return
+	var camera: Camera2D = null
+	for child in player_instance.get_children():
+		if child is Camera2D:
+			camera = child
+			break
+	if camera == null:
+		var scene_root = get_tree().current_scene
+		for other in (scene_root.find_children("*", "Camera2D", true, false) if scene_root else []):
+			if not player_instance.is_ancestor_of(other):
+				other.make_current()
+				return
+		camera = Camera2D.new()
+		camera.name = "Camera2D"
+		camera.zoom = PLAYER_CAMERA_ZOOM
+		camera.position_smoothing_enabled = true
+		camera.position_smoothing_speed = 5.0
+		player_instance.add_child(camera)
+	camera.make_current()
+	camera.reset_smoothing()  # no swoop across the new room from where the last one left the camera
+
 ## Advance the clock by the direct route's minutes (no route: no time, e.g. a debug jump)
 func _advance_time_for_walk(from_id: String, to_id: String) -> int:
 	var registry = get_node_or_null("/root/WorldRegistry")
@@ -317,6 +346,7 @@ func _adopt_initial_scene() -> void:
 	if current_location:
 		print("[SceneManager] Initial scene is %s" % current_location.location_id)
 		_reconcile_npcs(current_location.location_id)
+	_ensure_camera()
 
 ## A loaded save: put the player back where they stood, with no walking time and no fade
 func restore_location(location_id: String) -> void:

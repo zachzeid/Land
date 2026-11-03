@@ -165,6 +165,26 @@ func _test_congregation():
 	else:
 		_check("No generics loaded: the five alone", opening.gathered_generics.is_empty())
 	_check("The urn is a DrawingUrn and the recut tile waits for the drawing", _chapel_wiring())
+	_test_held_at_the_drawing(gathered)
+
+## Before the drawing nobody gathered may walk out (the first round once ran Elena off to the forest
+## path ten minutes before her name was read); steps where they stand are still theirs to take
+func _test_held_at_the_drawing(gathered: Array):
+	_check("Everyone gathered is attending", gathered.all(func(k): return director.is_npc_attending(k)))
+	var sent: Dictionary = director.send_npc("elena", "forest_path")
+	_check("Elena cannot be sent away before the drawing", not sent.ok and str(sent.reason).begins_with("attending"))
+	_check("...and she is still in the chapel", director.get_npc_location("elena") == CHAPEL and not director.is_npc_travelling("elena"))
+	var leaving = []
+	for key in gathered:
+		var plan: Dictionary = director._plan_personal_turn(key, true)
+		if not plan.is_empty() and plan.action == "travel":
+			leaving.append(key)
+	_check("No personal step takes anyone out of the chapel (%s)" % [leaving], leaving.is_empty())
+	var mathias = director.get_soul("mathias") if director.has_method("get_soul") else null
+	if mathias:
+		var urn: Dictionary = mathias.get_step("the_weight_of_the_tiles", "count_the_urn")
+		_check("Mathias counts the urn only after the drawing", "tn_drawing" in urn.get("needs", []))
+	_check("Not attending once dispersed", opening.disperse("force") is Array and not director.is_npc_attending("elena"))
 
 func _test_drawing_witnessed():
 	print("The drawing at 20:10, watched")

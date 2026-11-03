@@ -862,6 +862,10 @@ func get_npc_location(npc: String) -> String:
 		home = str(_registered[key].get("home", ""))
 	return home
 
+func is_npc_attending(npc: String) -> bool:
+	var world_state = _world_state()
+	return world_state != null and world_state.has_method("is_npc_attending") and world_state.is_npc_attending(_npc_id(_npc_key(npc)))
+
 func is_npc_travelling(npc: String) -> bool:
 	var world_state = _world_state()
 	return world_state != null and world_state.has_method("is_npc_travelling") and world_state.is_npc_travelling(_npc_id(_npc_key(npc)))
@@ -879,6 +883,8 @@ func send_npc(npc: String, location: String) -> Dictionary:
 	var world_state = _world_state()
 	var from = get_npc_location(key)
 	var minutes = 0
+	if from != location and is_npc_attending(key):
+		return {"ok": false, "reason": "attending: %s cannot leave %s until the gathering ends" % [key, from], "minutes": 0}
 	if world_state and world_state.has_method("is_npc_travelling") and world_state.is_npc_travelling(npc_id):
 		var travel: Dictionary = world_state.get_npc_travel(npc_id)
 		from = str(travel.get("to", from))
@@ -1940,6 +1946,8 @@ func _first_available_step(key: String, soul, arc: Dictionary) -> Dictionary:
 		var place = _personal_place(key, str(step.at))
 		if place.is_empty():
 			continue
+		if place.action == "travel" and is_npc_attending(key):
+			continue  # held where they stand: a step here may still be taken
 		return {"npc": key, "arc": arc.id, "step": step.id, "serves": arc.serves, "action": place.action, "minutes": int(place.minutes)}
 	return {}
 

@@ -2,7 +2,7 @@ extends CanvasLayer
 ## Debug overlay showing interaction zones and available actions
 ## Toggle with F3 key
 
-var enabled: bool = true
+var enabled: bool = false  # F3 toggles; --debug-overlay (after --) starts it shown
 var player: Node2D = null
 
 # UI elements
@@ -12,6 +12,8 @@ var interaction_indicators: Array[Node2D] = []
 func _ready():
 	layer = 99  # Above most UI
 	_create_ui()
+	enabled = "--debug-overlay" in OS.get_cmdline_user_args()
+	visible = enabled
 	print("[DebugOverlay] Interaction debug overlay ready (F3 to toggle)")
 
 func _create_ui():

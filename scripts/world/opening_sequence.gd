@@ -246,7 +246,7 @@ func _build_popup() -> void:
 	_canvas.name = "OpeningNarration"
 	_canvas.layer = 100
 	_canvas.process_mode = Node.PROCESS_MODE_ALWAYS
-	var popup = Panel.new()
+	var popup = PanelContainer.new()  # sizes to its text (a plain Panel stays 0x0 and centres its corner)
 	popup.name = "DiscoveryPopup"
 	var margin = MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 20)
@@ -280,8 +280,13 @@ func _build_popup() -> void:
 
 func _center_popup(popup: Control) -> void:
 	if is_instance_valid(popup) and popup.is_inside_tree():
-		popup.size = popup.get_combined_minimum_size()
-		popup.position = (popup.get_viewport_rect().size - popup.size) / 2
+		_center_on_screen(popup)
+
+## Anchored to the centre, growing both ways, so it stays centred at any window size or text length
+static func _center_on_screen(popup: Control) -> void:
+	popup.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	popup.grow_vertical = Control.GROW_DIRECTION_BOTH
+	popup.set_anchors_and_offsets_preset(Control.PRESET_CENTER, Control.PRESET_MODE_MINSIZE)
 
 ## Show a card once no conversation (or other pausing UI) is up, so it never lands mid-sentence
 func _show_card_when_free(kind: String, pages: Array) -> void:

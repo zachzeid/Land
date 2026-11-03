@@ -115,7 +115,7 @@ I will prove it clean, so that I can sleep. I have lifted a tile from that urn f
 once held one still in my palm. Let me hold them all now. Let me ask the smith who poured them
 whether iron can lie, and let me sit with the gods all night and ask them whether the lot was ever
 theirs. If they answer, I will be a happy old man.
-- `count_the_urn`: Empty the chapel urn onto the altar cloth after the drawing and count every tile, as he has every year, and this time hold each one until his hand is still. | after: none | needs: none | at: thornhaven_chapel | takes: 1 | effects: shift_want
+- `count_the_urn`: Empty the chapel urn onto the altar cloth after the drawing and count every tile, as he has every year, and this time hold each one until his hand is still. | after: none | needs: tn_drawing | at: thornhaven_chapel | takes: 1 | effects: shift_want
 - `ask_the_smith`: Carry one tile to Bjorn and ask him, one old man to a younger, whether iron can lie. | after: count_the_urn | needs: tn_day_2 | at: thornhaven_blacksmith | takes: 1 | effects: agenda, adjust_relationship | player: helps
 - `a_night_at_the_altar`: Keep vigil in the chapel all night with the urn in his lap, and ask the gods aloud whether the lot was ever theirs. | after: ask_the_smith | needs: none | at: thornhaven_chapel | takes: 2 | effects: shift_want
 - result: `mathias_weighed_the_tiles`: Mathias held every tile from the chapel urn, asked the smith whether iron could lie, and kept a night's vigil asking the gods whether the lot had ever been theirs.
