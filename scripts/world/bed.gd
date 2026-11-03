@@ -5,15 +5,20 @@ class_name Bed
 ## SpawnPoints). An inn room costs rent for the night (Inventory.spend_coin; refused when the purse is
 ## short); a bed of the player's own costs nothing. Outdoors, a bedroll and a campfire do the same
 ## (camp.gd)
+## In a tavern (world.json `tavern` block) each Bed is one room, named by its spawn_point, and the
+## night goes through Taverns: a room already rented tonight costs nothing more, a lodger's room is
+## locked, a back room is not let, and a keeper who thinks badly of the player will not let one
 
 ## The location this bed is in ("" = the current scene's)
 @export var location_id: String = ""
-## The spawn marker the player wakes at
+## The spawn marker the player wakes at (in a tavern, also the room's id)
 @export var spawn_point: String = "bed"
 ## Coin for the night (an inn room); 0 = the player's own bed
 @export var rent: int = 0
 ## Whose room it is (an npc key), for the prompt
 @export var keeper: String = ""
+## A back room of a house that keeps companions (tavern brothel: true): never let to lodgers
+@export var back_room: bool = false
 
 signal slept(info: Dictionary)
 
@@ -21,14 +26,19 @@ func _ready():
 	super._ready()
 	add_to_group("beds")
 	if interaction_name == "Interact":
-		interaction_name = "Sleep here" if rent <= 0 else "Take a room for the night"
-	if rent > 0:
+		if back_room:
+			interaction_name = "A back room"
+		else:
+			interaction_name = "Sleep here" if rent <= 0 else "Take a room for the night"
+	if rent > 0 and not back_room:
 		interaction_name += " (%s)" % _coin_text(rent)
 
 func _on_interact():
 	var r = sleep()
 	if r.ok:
 		interacted.emit(self)
+	elif has_node("InteractionPrompt") and get_node("InteractionPrompt") is Label:
+		get_node("InteractionPrompt").text = str(r.reason).capitalize()
 
 ## Sleep here: pay the rent, and wake here after a death. Returns {ok, reason, location, spawn_point, paid}
 func sleep() -> Dictionary:
@@ -40,7 +50,25 @@ func sleep() -> Dictionary:
 	if out.location == "":
 		out.reason = "nowhere known"
 		return out
-	if rent > 0:
+	var taverns = get_node_or_null("/root/Taverns")
+	if taverns and taverns.is_tavern(out.location) and spawn_point in taverns.lettable(out.location) + taverns.back_rooms(out.location):
+		match taverns.room_status(out.location, spawn_point):
+			"back_room":
+				out.reason = "this room is not let to lodgers"
+				return out
+			"taken":
+				out.reason = "the door is locked: someone has this room tonight"
+				return out
+			"free":
+				var r: Dictionary = taverns.rent(out.location, spawn_point, rent, "bed")
+				if not r.ok:
+					out.reason = str(r.reason)
+					return out
+				out.paid = int(r.paid)
+	elif back_room:
+		out.reason = "this room is not let to lodgers"
+		return out
+	elif rent > 0:
 		var inv = get_node_or_null("/root/Inventory")
 		if inv == null or not inv.spend_coin(rent):
 			out.reason = "you cannot pay for the room"

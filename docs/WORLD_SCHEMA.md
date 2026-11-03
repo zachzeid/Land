@@ -612,3 +612,56 @@ When the player ends the game (any time, or at a season's end, `season_end`, a f
 Authored storyline endings that were reached are **named highlights** inside the epilogue, not the
 destination. The prose is assembled offline from templates; in Claude or local-LLM mode it is
 written in the world's voice and validated against the facts.
+
+## 16. Taverns: rooms by the night, and back rooms
+
+A tavern is a world.json location with a `tavern` block. Keep these four keys exactly (no others;
+`tools/validators/taverns.py` refuses unknown ones):
+
+```json
+"tavern": {"keeper": "wren", "rooms": 5, "rent_copper": 4, "brothel": true}
+```
+
+- `keeper`: who lets the rooms: an NPC key, a generic archetype id (any instance of it keeps the
+  house) or a generic id (`gen_<archetype>_<n>`).
+- `rooms` (>= 1): how many rooms are let to lodgers. `rent_copper` (> 0): one night, in copper
+  (a labourer's day is about 9; the Rusty Nail asks 3, the Halfway House 4).
+- `brothel`: true only where a house keeps back rooms (today the Halfway House alone). Any tavern
+  can switch it on; nothing else changes in code.
+
+**The scene.** Every room is a physical place: walls (StaticBody2D, `collision_layer = 4`, layer 3),
+a doorway, a bed prop, and a **Bed** node (`res://scripts/world/bed.gd`) with `location_id`,
+`spawn_point`, `rent` (= `rent_copper`) and `keeper`, plus its own **Marker2D under SpawnPoints**
+named as the Bed's `spawn_point`. The spawn point is the room's id. The scene needs at least `rooms`
+such Beds at the rent. A **RoomDoor** (`res://scripts/world/room_door.gd`, `location_id`, `room` =
+the spawn point) in the doorway makes walking into someone else's room a deed; without one the room
+still locks at the bed but cannot be trespassed. Back rooms are Beds with `back_room = true` (rent 0,
+never let to lodgers), only in a scene whose tavern has `brothel: true`.
+
+**Renting** (`scripts/world/taverns.gd`, autoload `Taverns`). From the keeper in conversation (trade
+action `{"type":"rent_room","price":N}`, offered in the keeper's "what you can do" block; the soul's
+Lines may refuse it, and the keeper may name a price or give a room on the house) or at the bed for
+the house rent. A rented room is the player's until 10:00 the next morning (before dawn it is still
+last night's); sleeping in it again that night costs nothing, and sleeping sets where the player
+wakes. A keeper whose opinion of the player (Reputation) is below -30 lets them no room at all.
+Saved in WorldState's player systems block.
+
+**Lodgers.** From 21:00, travellers present at a tavern (courier, pilgrim and carter archetypes, and
+roster NPCs away from home) take its free rooms in order, one to a room; never the keeper, a
+companion or a child. A lodger's room is locked to the player, and walking into it is a `trespass`
+deed about the lodger, seen by whoever has line of sight. An empty, unlet room is nobody's.
+
+**Back rooms.** Adult companions (archetype `house_companion`, `age: 20-45`, never `minor:`) keep
+them by the keeper's leave; they live only at brothel taverns (population.json). The player may ask
+one for company in conversation; the companion alone decides (trade action
+`{"type":"company","price":N}`, usual fee 15 copper). It costs coin, an hour passes, and the scene
+fades to black: nothing behind the door is ever described, in any prompt, line or soul, and the
+validator refuses explicit words in the archetype. The visit is a `seen_at` deed ("went through to
+the back rooms at ...") recorded with `opts.morals = "company"`: weightless for most, judged by
+those whose nature disapproves (devout archetypes, church callings, faith among a soul's core
+values); PlayerEvents keeps `morals` on the event and Reputation adds `Taverns.judgement(parties)`
+to its weight. Those present may remember it and talk of it in their own voice. The back rooms
+shut, and company is not even offered, while any child is in the house; no child may live in a
+brothel tavern (validator). Each night the companions hear what the lodgers
+know of the stranger (`Taverns.pillow_talk`: PlayerEvents.spread, via "talk in the back rooms"),
+and their own `spread_rumor` and Life arcs carry it on.

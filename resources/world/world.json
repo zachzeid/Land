@@ -89,7 +89,8 @@
       "area": "Thornhaven Village",
       "kind": "interior",
       "scene": "res://scenes/interiors/tavern_interior.tscn",
-      "built": true
+      "built": true,
+      "tavern": {"keeper": "mira", "rooms": 3, "rent_copper": 3, "brothel": false}
     },
     {
       "id": "thornhaven_blacksmith",
@@ -173,7 +174,8 @@
       "kind": "interior",
       "scene": "res://scenes/interiors/kingsroad_waystation.tscn",
       "built": true,
-      "travel_point": true
+      "travel_point": true,
+      "tavern": {"keeper": "wren", "rooms": 5, "rent_copper": 4, "brothel": true}
     },
     {
       "id": "ferrisford",

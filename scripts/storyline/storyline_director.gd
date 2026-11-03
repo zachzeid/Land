@@ -1017,11 +1017,15 @@ const CONVERSE_SHAPES = {
 ## make them where they apply (it holds the player's pack; the ask is its trade), and its Lines
 ## (hook:converse, effect:<type>) still refuse them. Asked, demanded or offered coin, the NPC decides:
 ## a thief may give the pack back, sell it, refuse or deny it (no action); a teacher may teach for coin
-## or a favour, or not. price is in the smallest coin (Inventory.spend_coin)
-const TRADE_ACTIONS = ["return_pack", "teach"]
+## or a favour, or not; a tavern keeper may let a room for the night (rent_room, Taverns), and a
+## companion of a house's back rooms may give their company (company), or not. price is in the
+## smallest coin (Inventory.spend_coin)
+const TRADE_ACTIONS = ["return_pack", "teach", "rent_room", "company"]
 const TRADE_SHAPES = {
 	"return_pack": '{"type":"return_pack","price":N}',
 	"teach": '{"type":"teach","skill":S,"price":N} or {"type":"teach","skill":S,"favour":true}',
+	"rent_room": '{"type":"rent_room","price":N}',
+	"company": '{"type":"company","price":N}',
 }
 ## Hard budget for the agency block (~4 chars per token). Caps tighten level by level until it fits
 const AGENCY_BLOCK_CHAR_BUDGET = 3400
@@ -1121,6 +1125,21 @@ func _trade_block(key: String, soul) -> String:
 				offers.append("%s (your usual fee N=%d, %s)" % [skill, cost, _coin_text(cost)])
 		if not offers.is_empty():
 			lines.append("You could teach the stranger %s; a lesson takes %s. Only if you choose to, add %s." % [", ".join(offers), _format_minutes(int(teaching.lesson_minutes())), TRADE_SHAPES.teach])
+	var taverns = get_node_or_null("/root/Taverns")
+	var here = get_npc_location(key)
+	if taverns and taverns.is_keeper(key, here) and soul.get_trade_denial_reason({"type": "rent_room"}) == "":
+		var rent = int(taverns.rent_of(here))
+		if taverns.refusal(here, key) != "":
+			lines.append("You will not let this stranger a room, after what you know of them.")
+		elif not taverns.my_room(here).is_empty():
+			lines.append("The stranger already has a room here tonight.")
+		elif not taverns.free_rooms(here).is_empty():
+			lines.append("You let rooms by the night (%d free tonight; your usual N=%d, %s). Only if the stranger asks and you choose to let one, add %s." % [taverns.free_rooms(here).size(), rent, _coin_text(rent), TRADE_SHAPES.rent_room])
+		else:
+			lines.append("Every room is taken tonight.")
+	if taverns and taverns.is_companion(key) and soul.get_trade_denial_reason({"type": "company"}) == "" and taverns.company_denial(key, here) == "":
+		var fee = int(taverns.COMPANY_COPPER)
+		lines.append("You keep a back room here. If the stranger asks for your company, it is your choice alone, and you may refuse anyone; only if you say yes, add %s (your usual N=%d, %s). What passes behind the door is private: never describe it, the scene ends at the door." % [TRADE_SHAPES.company, fee, _coin_text(fee)])
 	return "" if lines.is_empty() else "\n".join(lines) + "\n"
 
 ## A trade action, checked against the soul's Lines and the world, then done.
@@ -1174,6 +1193,35 @@ func _apply_trade_action(key: String, soul, raw: Dictionary) -> Dictionary:
 				return out
 			e["favour"] = favour
 			e["minutes"] = int(lesson.minutes)
+		"rent_room":
+			var taverns = get_node_or_null("/root/Taverns")
+			var here = get_npc_location(key)
+			if taverns == null or not taverns.is_keeper(key, here):
+				out.reason = "truth: %s lets no rooms here" % key
+				return out
+			var why = taverns.refusal(here, key)
+			if why != "":
+				out.reason = "rent: " + why
+				return out
+			var let: Dictionary = taverns.rent(here, "", price if priced else -1, "keeper")
+			if not let.ok:
+				out.reason = "rent: " + str(let.reason)
+				return out
+			e["price"] = int(let.paid)
+			e["room"] = str(let.room)
+			e["until"] = int(let.until)
+		"company":
+			var taverns = get_node_or_null("/root/Taverns")
+			var here = get_npc_location(key)
+			if taverns == null:
+				out.reason = "no back rooms"
+				return out
+			var visit: Dictionary = taverns.company(key, here, price if priced else -1)
+			if not visit.ok:
+				out.reason = "company: " + str(visit.reason)
+				return out
+			e["price"] = int(visit.paid)
+			e["minutes"] = int(visit.minutes)
 	out.ok = true
 	out.effect = e
 	print("[StorylineDirector] %s: %s" % [key, e])
