@@ -1,0 +1,93 @@
+{
+  "_note": "Armour: resistances by type live in resources/combat/armour.json (Combat), keyed by these ids. Worn in body, head and off_hand.",
+  "items": [
+    {
+      "id": "padded_jack",
+      "name": "Padded jack",
+      "kind": "armour",
+      "weight": 4.0,
+      "stack": 1,
+      "value": 60,
+      "tags": [
+        "padding",
+        "body",
+        "flammable"
+      ],
+      "description": "Quilted linen stuffed with tow. Turns a club better than a blade.",
+      "slots": [
+        "body"
+      ],
+      "max_durability": 120
+    },
+    {
+      "id": "leather_jerkin",
+      "name": "Leather jerkin",
+      "kind": "armour",
+      "weight": 5.0,
+      "stack": 1,
+      "value": 90,
+      "tags": [
+        "leather",
+        "body"
+      ],
+      "description": "Hardened hide over the chest and shoulders.",
+      "slots": [
+        "body"
+      ],
+      "max_durability": 150
+    },
+    {
+      "id": "mail_shirt",
+      "name": "Mail shirt",
+      "kind": "armour",
+      "weight": 10.0,
+      "stack": 1,
+      "value": 720,
+      "tags": [
+        "mail",
+        "metal",
+        "body"
+      ],
+      "description": "Riveted rings to the hip. A season's wage for a labourer, and heavy as a child.",
+      "slots": [
+        "body"
+      ],
+      "max_durability": 300
+    },
+    {
+      "id": "helm",
+      "name": "Helm",
+      "kind": "armour",
+      "weight": 2.0,
+      "stack": 1,
+      "value": 120,
+      "tags": [
+        "metal",
+        "head"
+      ],
+      "description": "A plain kettle helm.",
+      "slots": [
+        "head"
+      ],
+      "max_durability": 200
+    },
+    {
+      "id": "shield",
+      "name": "Shield",
+      "kind": "armour",
+      "weight": 4.0,
+      "stack": 1,
+      "value": 48,
+      "tags": [
+        "shield",
+        "wood",
+        "off_hand"
+      ],
+      "description": "A round shield of lime-wood boards, rimmed in rawhide.",
+      "slots": [
+        "off_hand"
+      ],
+      "max_durability": 160
+    }
+  ]
+}

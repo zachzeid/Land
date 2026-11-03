@@ -1,0 +1,218 @@
+{
+  "_note": "Weapons: combat stats are keyed by these ids in resources/combat/weapons.json (Combat). Two-handed weapons free the off hand. Ammunition stacks.",
+  "items": [
+    {
+      "id": "fighting_knife",
+      "name": "Fighting knife",
+      "kind": "weapon",
+      "weight": 0.4,
+      "stack": 1,
+      "value": 18,
+      "tags": [
+        "blade",
+        "one_handed",
+        "cut",
+        "pierce"
+      ],
+      "description": "A long knife ground for fighting, with a guard.",
+      "slots": [
+        "main_hand",
+        "off_hand"
+      ],
+      "max_durability": 90,
+      "skill": "blades"
+    },
+    {
+      "id": "short_sword",
+      "name": "Short sword",
+      "kind": "weapon",
+      "weight": 1.2,
+      "stack": 1,
+      "value": 120,
+      "tags": [
+        "blade",
+        "one_handed",
+        "cut",
+        "pierce"
+      ],
+      "description": "A broad short blade, the kind a watchman wears.",
+      "slots": [
+        "main_hand"
+      ],
+      "max_durability": 160,
+      "skill": "blades"
+    },
+    {
+      "id": "arming_sword",
+      "name": "Arming sword",
+      "kind": "weapon",
+      "weight": 1.5,
+      "stack": 1,
+      "value": 240,
+      "tags": [
+        "blade",
+        "one_handed",
+        "cut",
+        "pierce"
+      ],
+      "description": "A knight's sword: a crown's worth of steel and balance.",
+      "slots": [
+        "main_hand"
+      ],
+      "max_durability": 200,
+      "skill": "blades"
+    },
+    {
+      "id": "hand_axe",
+      "name": "Hand axe",
+      "kind": "weapon",
+      "weight": 1.5,
+      "stack": 1,
+      "value": 40,
+      "tags": [
+        "axe",
+        "blade",
+        "one_handed",
+        "cut"
+      ],
+      "description": "A short axe that bites wood or mail.",
+      "slots": [
+        "main_hand",
+        "off_hand"
+      ],
+      "max_durability": 140,
+      "skill": "blades"
+    },
+    {
+      "id": "war_hammer",
+      "name": "War hammer",
+      "kind": "weapon",
+      "weight": 3.0,
+      "stack": 1,
+      "value": 180,
+      "tags": [
+        "hammer",
+        "blunt",
+        "two_handed"
+      ],
+      "description": "A long-hafted hammer with a beak behind. Plate and bone give way alike.",
+      "slots": [
+        "main_hand"
+      ],
+      "max_durability": 220,
+      "skill": "blunt"
+    },
+    {
+      "id": "quarterstaff",
+      "name": "Quarterstaff",
+      "kind": "weapon",
+      "weight": 2.0,
+      "stack": 1,
+      "value": 6,
+      "tags": [
+        "staff",
+        "blunt",
+        "two_handed"
+      ],
+      "description": "Six feet of seasoned ash. A traveller's weapon.",
+      "slots": [
+        "main_hand"
+      ],
+      "max_durability": 120,
+      "skill": "blunt"
+    },
+    {
+      "id": "hunting_bow",
+      "name": "Hunting bow",
+      "kind": "weapon",
+      "weight": 1.0,
+      "stack": 1,
+      "value": 60,
+      "tags": [
+        "bow",
+        "ranged",
+        "two_handed"
+      ],
+      "description": "A yew bow with a flax string. Needs arrows.",
+      "slots": [
+        "main_hand"
+      ],
+      "max_durability": 150,
+      "skill": "bows",
+      "ammunition": "arrows"
+    },
+    {
+      "id": "sling",
+      "name": "Sling",
+      "kind": "weapon",
+      "weight": 0.1,
+      "stack": 1,
+      "value": 3,
+      "tags": [
+        "sling",
+        "ranged",
+        "one_handed"
+      ],
+      "description": "Two cords and a pouch. A shepherd's weapon, and a good one.",
+      "slots": [
+        "main_hand"
+      ],
+      "max_durability": 60,
+      "skill": "bows",
+      "ammunition": "sling_stones"
+    },
+    {
+      "id": "arrows",
+      "name": "Arrows",
+      "kind": "weapon",
+      "weight": 0.05,
+      "stack": 50,
+      "value": 1,
+      "tags": [
+        "ammunition",
+        "pierce"
+      ],
+      "description": "Goose-fletched arrows with bodkin heads."
+    },
+    {
+      "id": "sling_stones",
+      "name": "Sling stones",
+      "kind": "weapon",
+      "weight": 0.1,
+      "stack": 30,
+      "value": 0,
+      "tags": [
+        "ammunition",
+        "blunt"
+      ],
+      "description": "Smooth river stones, chosen for weight."
+    },
+    {
+      "id": "rangers_sword",
+      "name": "Ranger's sword",
+      "kind": "weapon",
+      "weight": 1.5,
+      "stack": 1,
+      "value": 300,
+      "tags": [
+        "blade",
+        "one_handed",
+        "cut",
+        "pierce",
+        "crown"
+      ],
+      "description": "An arming sword with the King's Rangers' oak leaf on the pommel. A ranger knows one at a glance.",
+      "slots": [
+        "main_hand"
+      ],
+      "max_durability": 220,
+      "skill": "blades",
+      "known_by": [
+        "renna"
+      ],
+      "known_by_faction": [
+        "the_crown"
+      ]
+    }
+  ]
+}

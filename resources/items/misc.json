@@ -1,0 +1,32 @@
+{
+  "_note": "Misc and story items. Story items that set flags are StoryItems in scenes; these are the things the player can carry.",
+  "items": [
+    {
+      "id": "spare_lot_tile",
+      "name": "Spare lot tile",
+      "kind": "misc",
+      "weight": 0.2,
+      "stack": 1,
+      "value": 0,
+      "tags": [
+        "evidence",
+        "story",
+        "tile"
+      ],
+      "description": "A clay lot tile like the ones in the drawing urn, but lighter in the hand. Someone recut it."
+    },
+    {
+      "id": "bedroll",
+      "name": "Bedroll",
+      "kind": "misc",
+      "weight": 3.0,
+      "stack": 1,
+      "value": 24,
+      "tags": [
+        "camp",
+        "flammable"
+      ],
+      "description": "A rolled blanket and oilcloth. Laid down outdoors, it is a place to wake."
+    }
+  ]
+}

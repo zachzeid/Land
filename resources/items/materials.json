@@ -1,0 +1,125 @@
+{
+  "_note": "Raw materials: gathered (resources/crafting/nodes.json) and worked at stations. value is in pennies (Inventory: 12 pennies a mark, 20 marks a crown).",
+  "items": [
+    {
+      "id": "iron_ore",
+      "name": "Iron ore",
+      "kind": "material",
+      "weight": 2.0,
+      "stack": 20,
+      "value": 2,
+      "tags": [
+        "ore",
+        "metal"
+      ],
+      "description": "Rust-red rock from Greystone's levels. Wants a forge to be any use."
+    },
+    {
+      "id": "steel_bar",
+      "name": "Steel bar",
+      "kind": "material",
+      "weight": 1.5,
+      "stack": 10,
+      "value": 24,
+      "tags": [
+        "metal",
+        "steel"
+      ],
+      "description": "A short bar of good steel, folded and quenched. Blades and gate-bands are made from these."
+    },
+    {
+      "id": "wood",
+      "name": "Wood",
+      "kind": "material",
+      "weight": 2.0,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "wood",
+        "fuel",
+        "flammable"
+      ],
+      "description": "Split lengths of ash and oak, dry enough to work or burn."
+    },
+    {
+      "id": "hide",
+      "name": "Hide",
+      "kind": "material",
+      "weight": 1.5,
+      "stack": 10,
+      "value": 6,
+      "tags": [
+        "leather",
+        "hide"
+      ],
+      "description": "A scraped hide, salted against rot. Tanned, it makes jerkins and straps."
+    },
+    {
+      "id": "flax",
+      "name": "Flax",
+      "kind": "material",
+      "weight": 0.5,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "fibre",
+        "flammable"
+      ],
+      "description": "Retted flax stalks, ready for the loom or for bowstrings."
+    },
+    {
+      "id": "cloth",
+      "name": "Cloth",
+      "kind": "material",
+      "weight": 0.5,
+      "stack": 10,
+      "value": 8,
+      "tags": [
+        "cloth",
+        "flammable"
+      ],
+      "description": "A length of plain linen. Padding, bandages, sacks."
+    },
+    {
+      "id": "charcoal",
+      "name": "Charcoal",
+      "kind": "material",
+      "weight": 0.5,
+      "stack": 30,
+      "value": 1,
+      "tags": [
+        "fuel",
+        "flammable"
+      ],
+      "description": "Black, light and hot-burning. A forge eats it by the sack."
+    },
+    {
+      "id": "fever_root",
+      "name": "Fever-root",
+      "kind": "material",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 3,
+      "tags": [
+        "herb",
+        "fever",
+        "darkwood"
+      ],
+      "description": "A knuckled root from the Darkwood. Steeped, it quiets the Grey Fever. It does not cure it."
+    },
+    {
+      "id": "white_salt",
+      "name": "White salt",
+      "kind": "material",
+      "weight": 0.2,
+      "stack": 20,
+      "value": 12,
+      "tags": [
+        "salt",
+        "mineral",
+        "greystone"
+      ],
+      "description": "Salt as white as frost, from Greystone's deep vein. Rare, and not what the miners are paid to dig."
+    }
+  ]
+}

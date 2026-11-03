@@ -1,0 +1,110 @@
+{
+  "id": "a_pack_by_the_road",
+  "title": "A Pack by the Road",
+  "summary": "The player fell and their pack lies where they dropped; whoever comes upon it decides what to do with it.",
+  "trigger": {
+    "event": {
+      "kind": "fell"
+    }
+  },
+  "roles": {
+    "finder": {
+      "from": "near_player",
+      "prefer": "nearest"
+    },
+    "watch": {
+      "from": "faction:peacekeepers",
+      "prefer": "nearest",
+      "optional": true
+    }
+  },
+  "cooldown_days": 0,
+  "max_active": 3,
+  "expires_days": 14,
+  "location": "{event.location}",
+  "memory": "Came upon the stranger's pack lying where they fell.",
+  "hooks": [
+    {
+      "id": "come_upon_it",
+      "type": "react",
+      "eligible_role": "finder",
+      "trigger": "on_open",
+      "situation": "{player} {event.summary}, and their pack lies there still: everything they carried, and a purse. Nobody is watching it but you.",
+      "options": [
+        {
+          "id": "take_it",
+          "label": "Take it; the dead or the careless don't need it",
+          "appeal": {
+            "trust": -0.5,
+            "affection": -0.4,
+            "respect": -0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{finder}",
+              "text": "If {player} asks about their pack, say you never saw it. Keep what was in it out of sight."
+            }
+          ]
+        },
+        {
+          "id": "keep_it_safe",
+          "label": "Keep it safe until they come for it",
+          "appeal": {
+            "trust": 0.4,
+            "affection": 0.5,
+            "familiarity": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{finder}",
+              "text": "Tell {player} you found their pack where they fell and kept it safe for them; give it back."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{finder}",
+              "dimension": "affection",
+              "delta": 3
+            }
+          ]
+        },
+        {
+          "id": "hand_to_watch",
+          "label": "Hand it to the watch, and let them sort it out",
+          "appeal": {
+            "respect": 0.4,
+            "familiarity": -0.3,
+            "fear": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{watch}",
+              "text": "{finder} brought in a pack found where {player} fell. Hand it back if they ask for it, after a question or two."
+            },
+            {
+              "type": "agenda",
+              "npc": "{finder}",
+              "text": "Tell {player} their pack went to the watch, if they ask."
+            }
+          ]
+        },
+        {
+          "id": "leave_it",
+          "label": "Leave it lie; it's none of yours",
+          "appeal": {
+            "familiarity": -0.1,
+            "fear": 0.4
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:finder",
+    "talked_to:watch",
+    "expired"
+  ]
+}
