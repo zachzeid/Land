@@ -528,7 +528,7 @@ func _calculate_session_metrics() -> Dictionary:
 	if m.world_accuracy.total > 0:
 		world_rate = float(m.world_accuracy.passed) / m.world_accuracy.total * 100
 
-	return {
+	var metrics = {
 		"identity_anchor_adherence": {
 			"rate": identity_rate,
 			"target": 100.0,
@@ -557,13 +557,13 @@ func _calculate_session_metrics() -> Dictionary:
 			"passed": world_rate >= 100.0
 		},
 		"total_responses_analyzed": kpi_data.current_session.responses.size(),
-		"total_violations": kpi_data.current_session.violations.size(),
-		"overall_health": _calculate_overall_health()
+		"total_violations": kpi_data.current_session.violations.size()
 	}
+	metrics["overall_health"] = _calculate_overall_health(metrics)
+	return metrics
 
-## Calculate overall personality health score
-func _calculate_overall_health() -> String:
-	var metrics = _calculate_session_metrics()
+## Calculate overall personality health score from session metrics
+func _calculate_overall_health(metrics: Dictionary) -> String:
 	var passed_count = 0
 	var total_count = 5
 
@@ -604,7 +604,7 @@ func generate_report() -> String:
 	if session == null:
 		return "No session data available"
 
-	var metrics = session.get("final_metrics", _calculate_session_metrics())
+	var metrics = session.final_metrics if session.get("final_metrics") else _calculate_session_metrics()
 
 	var report = "=" .repeat(60) + "\n"
 	report += "PERSONALITY CONSISTENCY KPI REPORT\n"
