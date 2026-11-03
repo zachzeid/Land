@@ -105,8 +105,8 @@ in the saddle than right in a council chamber.
 
 ### Arc: `all_forty_home` (serves `bring_my_rangers_home`)
 "Forty rode out. I can give you every name and every horse's. I'll call them every dawn till we're back under the Dawn Gate, and on the way home I'm stopping at the Halfway House to pay for a supper I ate when I was sixteen. Seventeen years late. Wren'll charge interest. She should."
-- `the_dawn_roll`: Call the roll of all forty riders by name at dawn, wherever the company has slept. | after: none | needs: none | at: any | takes: 1 | effects: shift_want
-- `a_supper_paid_for`: Put a crown on Old Wren's table for a supper seventeen years late, and tell her, aloud, the name she never asked. | after: the_dawn_roll | needs: tithe_report_sent | at: kingsroad_waystation | takes: 1 | effects: move_npc, agenda
+- `the_dawn_roll`: Call the roll of all forty riders by name at dawn, wherever the company has slept. | after: none | needs: none | at: any | takes: 1 | effects: shift_want | when: dawn
+- `a_supper_paid_for`: Put a crown on Old Wren's table for a supper seventeen years late, and tell her, aloud, the name she never asked. | after: the_dawn_roll | needs: tithe_report_sent | at: kingsroad_waystation | takes: 1 | effects: move_npc, agenda | when: evening
 - `forty_through_the_gate`: Ride back through the Dawn Gate at the head of the company and call the roll once more under the arch. | after: a_supper_paid_for | needs: tithe_report_sent | at: capitol_gate | takes: 2 | effects: move_npc, agenda
 - result: `renna_brought_all_forty_home`: Captain Renna Thorne rode back through the Dawn Gate with all forty of her rangers alive, and on the way paid Old Wren for a supper seventeen years late.
 - fails_if: `tithe_ranger_picket_cut`, `reg_strike_broken`

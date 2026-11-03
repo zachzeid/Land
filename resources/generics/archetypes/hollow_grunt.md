@@ -73,7 +73,7 @@ and only slowly as the first kindness in years.
 ### Arc: `the_long_walk_out` (serves `get_out_of_the_hollow`)
 "Coin in the boot, a night with no moon, and the ford by morning. That's all it takes. That's all."
 - `hide_a_share`: Skim a little of each share and hide it under a stone on the forest path. | after: none | needs: none | at: forest_path | takes: 3 | effects: agenda
-- `find_a_way_past_the_watch`: Learn which nights the Hollow's lookouts drink. | after: hide_a_share | needs: none | at: iron_hollow_camp | takes: 2 | effects: agenda, adjust_relationship
+- `find_a_way_past_the_watch`: Learn which nights the Hollow's lookouts drink. | after: hide_a_share | needs: none | at: iron_hollow_camp | takes: 2 | effects: agenda, adjust_relationship | when: night
 - `walk_out`: Take the coin and go, east toward the Kingsroad. | after: find_a_way_past_the_watch | needs: !hc_varn_ascendant | at: village_gate | takes: 2 | effects: move_npc, shift_want | player: helps
 - result: `{id}_walked_out_of_the_hollow`: They slipped away from Iron Hollow on a moonless night with their savings in a boot.
 - fails_if: `hc_varn_ascendant`

@@ -56,7 +56,7 @@ quite seriously, whether such a thing would break it; the answer {name} arrives 
 ## Life
 ### Arc: `the_dawn_road` (serves `reach_the_cathedral`)
 "I swore it at the chapel at home: Brackenmoor, then the Cathedral, on foot. I mean to keep it."
-- `pray_at_brackenmoor`: Keep the night vigil at Brackenmoor Abbey. | after: none | needs: none | at: brackenmoor_abbey | takes: 2 | effects: agenda, shift_want
+- `pray_at_brackenmoor`: Keep the night vigil at Brackenmoor Abbey. | after: none | needs: none | at: brackenmoor_abbey | takes: 2 | effects: agenda, shift_want | when: night
 - `walk_the_last_miles`: Walk the last miles to the Dawn Gate on blistered feet. | after: pray_at_brackenmoor | needs: none | at: capitol_gate | takes: 3 | effects: move_npc | player: helps
 - `lay_the_vow`: Lay the vow down before the Cathedral's altar. | after: walk_the_last_miles | needs: none | at: capitol_cathedral | takes: 1 | effects: shift_want, adjust_relationship
 - result: `{id}_kept_the_pilgrim_vow`: They walked the Dawn Road on foot and laid their vow before the Cathedral's altar.

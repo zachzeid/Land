@@ -91,8 +91,8 @@ always has the next three in her head.
 ## Life
 ### Arc: `teach_the_boy` (serves `one_last_game`)
 "That stable boy's got eyes, love, and nobody's ever taught him to use them. Every horse and the face that rode it in. Which traveller lies about where he's from, and which about where he's going. Thirty years I did it for a king. I can do it for a boy who mucks out. Everything but the knife. The knife he'll not have."
-- `horses_and_faces`: Sit the stable boy by the fire every evening and teach him to remember every horse and the face that rode it. | after: none | needs: none | at: kingsroad_waystation | takes: 3 | effects: agenda
-- `the_lying_traveller`: Put someone at the corner table to lie to the boy over supper, and make him catch it. | after: horses_and_faces | needs: none | at: kingsroad_waystation | takes: 2 | effects: agenda, adjust_relationship | player: helps
+- `horses_and_faces`: Sit the stable boy by the fire every evening and teach him to remember every horse and the face that rode it. | after: none | needs: none | at: kingsroad_waystation | takes: 3 | effects: agenda | when: evening
+- `the_lying_traveller`: Put someone at the corner table to lie to the boy over supper, and make him catch it. | after: horses_and_faces | needs: none | at: kingsroad_waystation | takes: 2 | effects: agenda, adjust_relationship | when: evening | player: helps
 - `not_the_knife`: Show him everything the King's Ear ever knew except the warm knife, and tell him plainly why not. | after: the_lying_traveller | needs: none | at: kingsroad_waystation | takes: 1 | effects: shift_want
 - result: `wren_taught_the_stable_boy`: Old Wren taught the Halfway House stable boy to read faces, horses and lies the way the King's Ear once did, and kept the warm knife to herself.
 - fails_if: `way_letters_read`

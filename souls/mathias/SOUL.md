@@ -117,7 +117,7 @@ whether iron can lie, and let me sit with the gods all night and ask them whethe
 theirs. If they answer, I will be a happy old man.
 - `count_the_urn`: Empty the chapel urn onto the altar cloth after the drawing and count every tile, as he has every year, and this time hold each one until his hand is still. | after: none | needs: tn_drawing | at: thornhaven_chapel | takes: 1 | effects: shift_want
 - `ask_the_smith`: Carry one tile to Bjorn and ask him, one old man to a younger, whether iron can lie. | after: count_the_urn | needs: tn_day_2 | at: thornhaven_blacksmith | takes: 1 | effects: agenda, adjust_relationship | player: helps
-- `a_night_at_the_altar`: Keep vigil in the chapel all night with the urn in his lap, and ask the gods aloud whether the lot was ever theirs. | after: ask_the_smith | needs: none | at: thornhaven_chapel | takes: 2 | effects: shift_want
+- `a_night_at_the_altar`: Keep vigil in the chapel all night with the urn in his lap, and ask the gods aloud whether the lot was ever theirs. | after: ask_the_smith | needs: none | at: thornhaven_chapel | takes: 2 | effects: shift_want | when: night
 - result: `mathias_weighed_the_tiles`: Mathias held every tile from the chapel urn, asked the smith whether iron could lie, and kept a night's vigil asking the gods whether the lot had ever been theirs.
 
 ### Arc: `the_true_chronicle` (serves `leave_a_legacy`)
@@ -125,7 +125,7 @@ I have kept this village's record for forty years, and for five of them I have w
 fell" and a name, and nothing more. Flood, famine, the plague winter: all of it is in my hand. The
 Tithe belongs there too, honestly, with every name and my own beside them. Let the young ones read
 what we did, young one, and do better.
-- `rolls_from_the_undercroft`: Carry the old council rolls up from the undercroft past the tribute chests, a few each evening, resting on the stair. | after: none | needs: none | at: thornhaven_chapel | takes: 2 | effects: shift_want
+- `rolls_from_the_undercroft`: Carry the old council rolls up from the undercroft past the tribute chests, a few each evening, resting on the stair. | after: none | needs: none | at: thornhaven_chapel | takes: 2 | effects: shift_want | when: evening
 - `the_five_names`: Write down the five Tithes as they truly were: Corin Ashby, Davin the smith's boy, Hesk Marlow who argued, Willa Brand, and Elena, with the families and what each one cost. | after: rolls_from_the_undercroft | needs: none | at: council_hall | takes: 2 | effects: shift_want
 - `the_lucky_draws`: Write down that the lot passed over one house four years running, that he saw it, and that he blessed it and never asked. | after: the_five_names | needs: mathias_informed | at: council_hall | takes: 2 | effects: shift_want | player: helps
 - `a_young_keeper`: Put the finished chronicle into Elena's hands before the cart comes, because she reads everything and forgets nothing. | after: the_lucky_draws | needs: !tn_collection_night | at: thornhaven_gregor_shop | takes: 1 | effects: agenda, adjust_relationship
@@ -137,7 +137,7 @@ I knew Gregor's father. He stood surety for a widow once and paid every penny of
 not. His son is not that man yet. But a son can be reminded whose name he carries, and an old man can
 leave a door open a little longer than prudence would, even this week.
 - `the_surety_page`: Find the page in the old roll where Gregor's father stood surety for a widow's debt, and paid it. | after: none | needs: none | at: council_hall | takes: 1 | effects: shift_want
-- `a_cup_after_closing`: Sit with Gregor after closing, in the week his daughter's name was read, and talk about his father, and not one word about the lot. | after: the_surety_page | needs: none | at: thornhaven_gregor_shop | takes: 1 | effects: agenda, adjust_relationship
+- `a_cup_after_closing`: Sit with Gregor after closing, in the week his daughter's name was read, and talk about his father, and not one word about the lot. | after: the_surety_page | needs: none | at: thornhaven_gregor_shop | takes: 1 | effects: agenda, adjust_relationship | when: dark
 - `the_door_left_open`: Tell Gregor plainly that the council would hear a man who came to it of his own will before Collection Night, and not one hour after. | after: a_cup_after_closing | needs: mathias_informed | at: thornhaven_gregor_shop | takes: 1 | effects: agenda | player: helps
 - result: `mathias_kept_gregors_door_open`: Mathias showed Gregor the page his honest father had signed and told him the council would hear him if he came of his own will before the cart.
 - fails_if: `gregor_exposed`, `ih_gregor_fled`

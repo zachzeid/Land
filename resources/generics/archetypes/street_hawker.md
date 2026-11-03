@@ -55,13 +55,13 @@ across the market, then go very serious and private about anything that is actua
 ## Life
 ### Arc: `the_painted_sign` (serves `a_shop_with_a_sign`)
 "There's an empty shop by the Cathedral steps. One season's rent. I can smell the paint already."
-- `save_the_seasons_rent`: Sell from the barrow every day from dawn to the lamps. | after: none | needs: none | at: capitol_market | takes: 4 | effects: agenda
+- `save_the_seasons_rent`: Sell from the barrow every day from dawn to the lamps. | after: none | needs: none | at: capitol_market | takes: 4 | effects: agenda | when: day
 - `talk_down_the_landlord`: Haggle the rent down with a landlord on Cathedral Row. | after: save_the_seasons_rent | needs: none | at: capitol_cathedral | takes: 2 | effects: adjust_relationship, agenda | player: helps
 - `hang_the_sign`: Hang the painted sign and open the door. | after: talk_down_the_landlord | needs: none | at: capitol_market | takes: 1 | effects: shift_want, spread_rumor
 - result: `{id}_opened_a_shop`: They saved a season's rent and opened a little shop with a painted sign by the Cathedral steps.
 
 ### Arc: `hold_the_pitch` (serves `keep_my_pitch`)
 "Some loudmouth from the river end wants my lantern-post. He'll have to shout louder than me."
-- `be_there_first`: Be at the lantern-post before dawn every day for a week. | after: none | needs: none | at: capitol_market | takes: 3 | effects: agenda
+- `be_there_first`: Be at the lantern-post before dawn every day for a week. | after: none | needs: none | at: capitol_market | takes: 3 | effects: agenda | when: 04-07
 - `win_over_the_warden`: Charm the Guild's market warden into confirming the pitch. | after: be_there_first | needs: none | at: capitol_market | takes: 1 | effects: adjust_relationship, shift_want
 - result: `{id}_kept_the_good_pitch`: They held the best pitch by the lantern-post against a rival and kept it for the season.

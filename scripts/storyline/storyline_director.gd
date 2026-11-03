@@ -32,6 +32,7 @@ signal emergent_acted(entry: Dictionary)                       # an NPC acted in
 signal epilogue_ready(epilogue: Dictionary)                    # end_game(): the world the player made
 
 const Soul = preload("res://scripts/storyline/soul.gd")
+const TimeWindowScript = preload("res://scripts/storyline/time_window.gd")
 const EffectApplier = preload("res://scripts/storyline/effect_applier.gd")
 const NpcAgent = preload("res://scripts/storyline/npc_agent.gd")
 const Emergence = preload("res://scripts/storyline/emergence.gd")
@@ -1948,10 +1949,20 @@ func _first_available_step(key: String, soul, arc: Dictionary) -> Dictionary:
 			continue
 		if place.action == "travel" and is_npc_attending(key):
 			continue  # held where they stand: a step here may still be taken
+		if not _in_step_window(step, int(place.minutes)):
+			continue  # not at this hour: people keep hours (SOUL.md `when`, waking hours by default)
 		return {"npc": key, "arc": arc.id, "step": step.id, "serves": arc.serves, "action": place.action, "minutes": int(place.minutes)}
 	return {}
 
 ## {"action": "work"|"travel", "minutes"} for a step's `at`, {} when it cannot get there
+## The step's window holds at the hour the NPC would be there (now, plus any walk to it)
+func _in_step_window(step: Dictionary, travel_minutes: int = 0) -> bool:
+	var world_state = _world_state()
+	if world_state == null or not world_state.has_method("get_game_minutes"):
+		return true
+	var hour = floori(((int(world_state.get_game_minutes()) + travel_minutes) % (24 * 60)) / 60.0)
+	return TimeWindowScript.contains(str(step.get("when", "")), hour)
+
 func _personal_place(key: String, at: String) -> Dictionary:
 	if at == "any":
 		return {"action": "work", "minutes": 0}

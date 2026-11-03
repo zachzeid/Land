@@ -111,7 +111,7 @@ commits, it is because the arithmetic came out, not because he was angry.
 "I have given that boy four years of council minutes and not one afternoon. His father would have taken him down to the market, bought him a kite and let him lose it in the river. I counted wagons for Ostric; I can count to one afternoon. The regent will be unwell. Nobody need know he arranged it."
 - `clear_the_book`: Strike every audience from one afternoon's book and tell the chamberlain the Lord Protector has a fever. | after: none | needs: none | at: capitol_palace | takes: 1 | effects: agenda
 - `the_lantern_market`: Walk King Aubren down to the Lantern Market in a plain cloak, two guards told to look like porters, and buy him whatever he points at. | after: clear_the_book | needs: !grey_fever_returned | at: capitol_market | takes: 2 | effects: move_npc, agenda | player: helps
-- `say_it_once`: Sit on the end of the boy's bed that night and say aloud, once, the thing he has never said to him. | after: the_lantern_market | needs: none | at: capitol_palace | takes: 1 | effects: shift_want
+- `say_it_once`: Sit on the end of the boy's bed that night and say aloud, once, the thing he has never said to him. | after: the_lantern_market | needs: none | at: capitol_palace | takes: 1 | effects: shift_want | when: night
 - result: `edric_was_an_uncle`: Edric Hale spent an afternoon in the Lantern Market with King Aubren as his uncle and not his regent, and that night told the boy he loved him.
 - fails_if: `reg_terms_exposed`
 
@@ -125,7 +125,7 @@ commits, it is because the arithmetic came out, not because he was angry.
 
 ### Arc: `plate_for_ashguard` (serves `fill_the_treasury`)
 "The council thinks the treasury is thin. It is empty. Ashguard eats until midwinter, then it eats its boots, and then Hollis Marrow offers me a loan with a council seat folded inside it. My brother's silver is in a cellar doing nothing. Plate does not vote, and it does not ask for favours."
-- `count_the_plate`: Go down to the palace cellars with a lamp and count his dead brother's silver plate himself. | after: none | needs: none | at: capitol_palace | takes: 1 | effects: shift_want
+- `count_the_plate`: Go down to the palace cellars with a lamp and count his dead brother's silver plate himself. | after: none | needs: none | at: capitol_palace | takes: 1 | effects: shift_want | when: any
 - `a_silversmith_not_the_guild`: Send a steward to a Lantern Market silversmith who owes the Guild nothing, and sell the plate a piece at a time. | after: count_the_plate | needs: none | at: capitol_palace | takes: 3 | effects: agenda
 - `pay_the_garrison`: Send the coin to Fort Ashguard under his own seal, with a line for Commander Lucan that it is the regent's purse and not the Guild's. | after: a_silversmith_not_the_guild | needs: !des_lucan_disgraced | at: capitol_palace | takes: 1 | effects: agenda
 - result: `edric_paid_ashguard_from_his_own_plate`: Edric Hale sold his dead brother's silver plate piece by piece and paid Fort Ashguard's winter wage from it, owing the Guild nothing.

@@ -12,7 +12,8 @@ const CONVERSE_FALLBACK = ["react", "reveal", "aid"]
 ## never set_flag, block_beat or unlock_beat. A `hook:personal` line forbids personal acts outright
 const PERSONAL = "personal"
 const PERSONAL_EFFECTS = ["agenda", "move_npc", "adjust_relationship", "shift_want", "spread_rumor"]
-const STEP_FIELDS = ["after", "needs", "at", "takes", "effects", "player"]
+const STEP_FIELDS = ["after", "needs", "at", "takes", "effects", "when", "player"]
+const TimeWindow = preload("res://scripts/storyline/time_window.gd")
 const STEP_REQUIRED = ["after", "needs", "at", "takes", "effects"]
 const MAX_TAKES = 6
 
@@ -252,10 +253,10 @@ func _parse_life_line(line: String, raw_arcs: Array) -> void:
 	else:
 		arc.steps.append(parsed.step)
 
-## "<text> | after: x | needs: a, !b | at: loc | takes: 2 | effects: agenda, move_npc [| player: helps]"
+## "<text> | after: x | needs: a, !b | at: loc | takes: 2 | effects: agenda, move_npc [| when: night] [| player: helps]"
 func _parse_step(step_id: String, rest: String) -> Dictionary:
 	var parts = rest.split("|")
-	var step = {"id": step_id, "text": parts[0].strip_edges(), "after": "", "needs": [], "at": "any", "takes": 1, "effects": [], "player": ""}
+	var step = {"id": step_id, "text": parts[0].strip_edges(), "after": "", "needs": [], "at": "any", "takes": 1, "effects": [], "when": "", "player": ""}
 	if step.text == "":
 		return {"step": {}, "error": "no text"}
 	var seen: Dictionary = {}
@@ -299,6 +300,10 @@ func _parse_step(step_id: String, rest: String) -> Dictionary:
 							return {"step": {}, "error": "'%s' is not a personal-scope effect (allowed: %s)" % [effect_type, ", ".join(PERSONAL_EFFECTS)]}
 						if effect_type not in step.effects:
 							step.effects.append(effect_type)
+			"when":
+				if not TimeWindow.is_valid(value.to_lower()):
+					return {"step": {}, "error": "when must be one of %s or HH-HH (got '%s')" % [", ".join(TimeWindow.WINDOWS.keys()), value]}
+				step.when = value.to_lower()
 			"player":
 				if value.to_lower() not in ["helps", "needed"]:
 					return {"step": {}, "error": "player must be helps or needed (got '%s')" % value}

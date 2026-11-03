@@ -111,7 +111,7 @@ decline to answer, and he always says that he is declining.
 
 ### Arc: `the_boy_and_the_coat` (serves `save_the_nephew`)
 "He has confessed. Good. The law will have what it is owed, and I will not lift a finger against it. But a sentence is not a grave. My sister's boy lost pages for coin; he may spend his years learning what a kept page is worth. Brackenmoor keeps pages. I am declining to call this mercy. It is instruction."
-- `supper_as_his_uncle`: Eat the same supper he eats every night with Tobias across the table, and speak to him as his uncle, not his judge. | after: none | needs: mag_tobias_confessed | at: capitol_magistry | takes: 1 | effects: shift_want
+- `supper_as_his_uncle`: Eat the same supper he eats every night with Tobias across the table, and speak to him as his uncle, not his judge. | after: none | needs: mag_tobias_confessed | at: capitol_magistry | takes: 1 | effects: shift_want | when: evening
 - `a_letter_to_brackenmoor`: Write to Brother Anselm asking whether the abbey has a cold room and a desk for a young man who must learn what a lost page costs. | after: supper_as_his_uncle | needs: none | at: capitol_magistry | takes: 2 | effects: agenda
 - `the_dawn_gate`: Walk Tobias to the Dawn Gate himself, once the law has had its due, coughing the whole way, and put his sister's ring in the boy's hand. | after: a_letter_to_brackenmoor | needs: none | at: capitol_gate | takes: 1 | effects: move_npc, adjust_relationship | player: helps
 - result: `corwin_sent_tobias_to_the_archive`: Corwin Vane sent his nephew Tobias to Brackenmoor Abbey as a copyist once the law had taken its due, and walked him to the Dawn Gate himself.

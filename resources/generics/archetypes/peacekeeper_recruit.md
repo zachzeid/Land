@@ -63,8 +63,8 @@ praise from the player in front of the other recruits will be treasured for week
 ### Arc: `first_watch_alone` (serves `prove_my_courage`)
 "The captain says courage is just doing the job while your knees shake. I want to see if mine hold."
 - `ask_for_the_night_watch`: Ask the sergeant for the night watch at the gate, alone. | after: none | needs: none | at: village_gate | takes: 1 | effects: agenda
-- `stand_the_watch`: Stand the long watch through the dark without calling the others. | after: ask_for_the_night_watch | needs: none | at: village_gate | takes: 2 | effects: shift_want
-- `tell_the_captain`: Report the night plainly to the captain and see what he says. | after: stand_the_watch | needs: none | at: thornhaven_town_square | takes: 1 | effects: adjust_relationship | player: helps
+- `stand_the_watch`: Stand the long watch through the dark without calling the others. | after: ask_for_the_night_watch | needs: none | at: village_gate | takes: 2 | effects: shift_want | when: night
+- `tell_the_captain`: Report the night plainly to the captain and see what he says. | after: stand_the_watch | needs: none | at: thornhaven_town_square | takes: 1 | effects: adjust_relationship | when: morning | player: helps
 - result: `{id}_stood_the_night_watch`: They stood the night watch at the gate alone and reported it to the captain without boasting.
 - fails_if: `cou_rising_broken`
 

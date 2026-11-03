@@ -66,12 +66,12 @@ want it to be honest and in the light; {name} under vows will turn it gently int
 "There's one empty bed on the ward that the priests keep for paying patients. One bed. For one poor soul."
 - `ask_the_sister`: Ask Sister Ysolde whether a poor patient might have the empty bed. | after: none | needs: none | at: capitol_cathedral | takes: 1 | effects: agenda, adjust_relationship
 - `find_someone_in_need`: Find someone dying at the Warrens edge who has no coin. | after: ask_the_sister | needs: none | at: capitol_warrens | takes: 2 | effects: agenda, move_npc | player: helps
-- `bring_them_in`: Bring them onto the ward and sit with them through the night. | after: find_someone_in_need | needs: none | at: capitol_cathedral | takes: 2 | effects: shift_want
+- `bring_them_in`: Bring them onto the ward and sit with them through the night. | after: find_someone_in_need | needs: none | at: capitol_cathedral | takes: 2 | effects: shift_want | when: night
 - result: `{id}_gave_a_bed_to_the_poor`: They brought a dying poor stranger onto the Cathedral ward and sat with them through the night.
 - fails_if: `grey_cathedral_hushed`
 
 ### Arc: `the_bread_basket` (serves `send_bread_home`)
 "The kitchen throws out good loaves every morning. My little brothers would cry to see it."
 - `save_the_crusts`: Save the day-old loaves from the Church kitchen for a week. | after: none | needs: none | at: any | takes: 2 | effects: agenda
-- `carry_them_home`: Carry the basket home and stay for supper. | after: save_the_crusts | needs: none | at: any | takes: 1 | effects: move_npc, adjust_relationship
+- `carry_them_home`: Carry the basket home and stay for supper. | after: save_the_crusts | needs: none | at: any | takes: 1 | effects: move_npc, adjust_relationship | when: evening
 - result: `{id}_carried_bread_home`: They saved the Church's day-old loaves and carried a full basket home to their family.

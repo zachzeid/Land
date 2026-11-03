@@ -113,7 +113,7 @@ If they search me they'll find a girl with a cough and nothing else. They won't 
 name, every bend of the trail, every face I see up there goes into the stitching, small as I can make
 it. Somebody outside has to know how to read it, or it's only thread.
 - `the_chapel_roll`: Ask Elder Mathias to let her copy the chapel's roll of the Tithe's taken, every name and year. | after: none | needs: none | at: thornhaven_chapel | takes: 1 | effects: agenda, adjust_relationship
-- `stitch_by_candle`: Stitch the names and a tiny map into the hem of her travelling dress by candle, night after night. | after: the_chapel_roll | needs: none | at: thornhaven_gregor_shop | takes: 3 | effects: shift_want | player: helps
+- `stitch_by_candle`: Stitch the names and a tiny map into the hem of her travelling dress by candle, night after night. | after: the_chapel_roll | needs: none | at: thornhaven_gregor_shop | takes: 3 | effects: shift_want | when: night | player: helps
 - `teach_the_stitch`: Show one trusted person outside how to read the stitching, and where to look for the next of it. | after: stitch_by_candle | needs: none | at: any | takes: 1 | effects: agenda, adjust_relationship | player: needed
 - result: `elena_hem_sewn`: Elena stitched the names of the taken and a map of the ridge into her hem, and taught one person outside how to read it.
 - fails_if: `tn_collection_night`
@@ -122,7 +122,7 @@ it. Somebody outside has to know how to read it, or it's only thread.
 The carts go out the gate and up into the Darkwood and nobody has ever followed one home. I am going
 to know that trail before I set foot on it: which way it bends, where the water is, how long the
 dark lasts. When I'm on it I'll know where I am, and so will whoever comes after me.
-- `count_the_forest_path`: Walk the forest path after dark and count her steps to where the cart ruts turn uphill. | after: none | needs: none | at: forest_path | takes: 2 | effects: move_npc, shift_want
+- `count_the_forest_path`: Walk the forest path after dark and count her steps to where the cart ruts turn uphill. | after: none | needs: none | at: forest_path | takes: 2 | effects: move_npc, shift_want | when: dark
 - `the_carters_memory`: Ask the Kingsroad carters at the gate what they have heard of the smugglers' ridge trail. | after: count_the_forest_path | needs: none | at: village_gate | takes: 1 | effects: agenda | player: helps
 - `boots_from_bjorn`: Ask Bjorn to shod her boots for stone, and not to tell her father what they are for. | after: the_carters_memory | needs: none | at: thornhaven_blacksmith | takes: 1 | effects: agenda, adjust_relationship
 - result: `elena_knows_the_ridge`: Elena learned the ridge trail by heart from the forest path, the carters' talk and her own counted steps, and wore boots shod for stone.
@@ -134,6 +134,6 @@ go without telling him I know, and that I don't hate him, and that he must not f
 better than I could at our table. Paper doesn't cry.
 - `write_it_true`: Write her father a letter telling him she knows the five years, that the swap was hers, and that he must not follow. | after: none | needs: none | at: thornhaven_gregor_shop | takes: 2 | effects: shift_want
 - `ask_mathias_to_keep_it`: Give the sealed letter to Elder Mathias, to put in her father's hand the morning after the cart. | after: write_it_true | needs: none | at: council_hall | takes: 1 | effects: agenda, adjust_relationship
-- `mothers_broth`: Cook her mother's barley broth for her father on the last evening and let him talk about anything but the Tithe. | after: ask_mathias_to_keep_it | needs: tn_day_6 | at: thornhaven_gregor_shop | takes: 1 | effects: agenda, adjust_relationship
+- `mothers_broth`: Cook her mother's barley broth for her father on the last evening and let him talk about anything but the Tithe. | after: ask_mathias_to_keep_it | needs: tn_day_6 | at: thornhaven_gregor_shop | takes: 1 | effects: agenda, adjust_relationship | when: evening
 - result: `elena_left_her_father_a_letter`: Elena left her father a sealed letter with the Elder, telling him she knew, that the choice was hers, and that he must not follow.
 - fails_if: `ih_gregor_fled`

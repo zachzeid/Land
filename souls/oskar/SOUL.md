@@ -85,7 +85,7 @@ Hollow only once, and only when he is sure his family is out of reach.
 ### Arc: `a_stone_for_piet` (serves `avenge_piet`)
 "Wood rots. River's up every spring and the marker leans a bit more. Piet gets stone. Hill-stone, from Greystone, cut by me. Same words. Every Hollow bargeman ties up right beside it. Hm. Let them read it. Let them read it every month, when they pay."
 - `send_for_stone`: Send word up the Kingsroad with the Greystone carters for a slab of hill-stone, paid from the pot under the hearth. | after: none | needs: none | at: ferrisford | takes: 2 | effects: agenda
-- `cut_the_words`: Cut the words himself, slow, a letter a night by the toll-house lamp: He would not carry theirs. | after: send_for_stone | needs: none | at: ferrisford | takes: 4 | effects: shift_want | player: helps
+- `cut_the_words`: Cut the words himself, slow, a letter a night by the toll-house lamp: He would not carry theirs. | after: send_for_stone | needs: none | at: ferrisford | takes: 4 | effects: shift_want | when: dark | player: helps
 - `raise_it`: Raise the stone on the landing with Piet's widow and his own girls watching, where every Hollow bargeman ties up. | after: cut_the_words | needs: none | at: ferrisford | takes: 1 | effects: agenda, adjust_relationship
 - result: `oskar_raised_piets_stone`: Oskar raised a hill-stone for his brother Piet on the Ferrisford landing, cut in his own hand with the words 'He would not carry theirs', where every Hollow bargeman ties up.
 - fails_if: `ford_ferry_burned`

@@ -119,6 +119,7 @@ func _init():
 	await _test_inner_voice()
 	_test_epilogue()
 	_test_debug_command()
+	_test_time_of_day()
 
 	opening.reset()
 	opening.player_events = null
@@ -508,3 +509,33 @@ func _check(label: String, passed: bool):
 func _pending(label: String):
 	print("  ⏳ PENDING: %s" % label)
 	pending += 1
+
+## People keep hours (SOUL.md `when`): the first live run had Aldric leave at 20:00 to "drill the six
+## at the gate at first light"
+func _test_time_of_day():
+	print("Time of day")
+	var TimeWindow = load("res://scripts/storyline/time_window.gd")
+	_check("No when = waking hours", TimeWindow.contains("", 10) and not TimeWindow.contains("", 2) and not TimeWindow.contains("", 22))
+	_check("Night wraps past midnight", TimeWindow.contains("night", 23) and TimeWindow.contains("night", 3) and not TimeWindow.contains("night", 12))
+	_check("HH-HH ranges, wrapping too", TimeWindow.contains("03-06", 4) and not TimeWindow.contains("03-06", 6) and TimeWindow.contains("22-02", 1))
+	_check("Bad windows are rejected", not TimeWindow.is_valid("noonish") and not TimeWindow.is_valid("5-5") and TimeWindow.is_valid("11-14"))
+	var aldric = director.get_soul("aldric")
+	_check("Aldric's drill is a dawn step", aldric != null and aldric.get_step("six_farmers", "drill_at_first_light").get("when", "") == "dawn")
+	_fresh()
+	var plan: Dictionary = director._plan_personal_turn("aldric", true)
+	_check("At 20:00 Aldric does not leave to drill at first light", plan.get("step", "") != "drill_at_first_light")
+	world_state.reset_calendar(world_state.start_minute + 9 * 60 + 15)  # day 2, 05:15
+	plan = director._plan_personal_turn("aldric", true)
+	_check("At 05:15 he does", plan.get("step", "") == "drill_at_first_light")
+	world_state.reset_calendar(world_state.start_minute + 6 * 60)  # 02:00
+	var awake: Array = []
+	for key in registry.get_npc_keys():
+		var p: Dictionary = director._plan_personal_turn(key, true)
+		if not p.is_empty():
+			var step: Dictionary = director.get_soul(key).get_step(p.arc, p.step)
+			var arrive_hour = floori((2 * 60 + int(p.get("minutes", 0))) / 60.0)
+			if not TimeWindow.contains(str(step.get("when", "")), arrive_hour):
+				awake.append("%s/%s" % [key, p.step])
+	_check("At 02:00 a step is taken only in its window, at the hour they arrive (%s)" % [awake], awake.is_empty())
+	_fresh()
+

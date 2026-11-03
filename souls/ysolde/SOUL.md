@@ -107,23 +107,23 @@ so when she betrays the Cathedral she does it in plain sight and lets them do th
 ### Arc: `night_ward` (serves `heal_the_sick`)
 "Chapter says it's an ague. Fine. Then nobody will miss a basket of willow bark and clean linen. I'll sit on the Warrens steps at dusk and see who comes. That girl Rook's runners know every door down there. Children always know who's coughing. Nobody ever thinks to ask them."
 - `the_basket`: Fill a basket with willow bark, honey and clean linen from the infirmary stores, and sign none of it out. | after: none | needs: none | at: capitol_cathedral | takes: 1 | effects: agenda
-- `the_warrens_steps`: Sit on the Warrens steps at dusk with the basket and see whoever comes, every night for a season. | after: the_basket | needs: none | at: capitol_warrens | takes: 4 | effects: move_npc, agenda | player: helps
+- `the_warrens_steps`: Sit on the Warrens steps at dusk with the basket and see whoever comes, every night for a season. | after: the_basket | needs: none | at: capitol_warrens | takes: 4 | effects: move_npc, agenda | when: evening | player: helps
 - `rooks_runners`: Ask Rook's runners to bring her the name of every house with the grey cough, and pay them in bread. | after: the_warrens_steps | needs: none | at: capitol_warrens | takes: 2 | effects: agenda, adjust_relationship, spread_rumor
 - result: `ysolde_kept_a_night_ward`: Sister Ysolde kept a night ward on the Warrens steps through a season, and Rook's runners brought her the name of every house that coughed.
 
 ### Arc: `the_road_west` (serves `reach_the_valley`)
 "There's a girl in the west coughing her mother's cough. I can't bring her the cure. I can bring my hands. I can show a frightened man how to nurse it: when to steam, when to cool, when to sit up and when to send for someone. That's half of any cure, and it's the half the Cathedral never thought worth selling."
 - `word_to_the_novices`: Tell the two novices she trusts which beds to watch, and walk out of the Cathedral with her satchel. | after: none | needs: fev_fever_seen | at: capitol_cathedral | takes: 1 | effects: agenda
-- `the_kingsroad`: Walk the Kingsroad west and sleep a night at the Halfway House on the way. | after: word_to_the_novices | needs: none | at: kingsroad_waystation | takes: 3 | effects: move_npc | player: helps
+- `the_kingsroad`: Walk the Kingsroad west and sleep a night at the Halfway House on the way. | after: word_to_the_novices | needs: none | at: kingsroad_waystation | takes: 3 | effects: move_npc | when: day | player: helps
 - `the_merchants_door`: Knock at the merchant's shop in Thornhaven and tell Gregor she is a nurse, not a priest, and she is not leaving. | after: the_kingsroad | needs: none | at: thornhaven_gregor_shop | takes: 1 | effects: move_npc, agenda
-- `breathe_for_me`: Sit up a night with Elena through the grey cough, and teach her father how to nurse it after she has gone. | after: the_merchants_door | needs: none | at: thornhaven_gregor_shop | takes: 3 | effects: agenda, adjust_relationship
+- `breathe_for_me`: Sit up a night with Elena through the grey cough, and teach her father how to nurse it after she has gone. | after: the_merchants_door | needs: none | at: thornhaven_gregor_shop | takes: 3 | effects: agenda, adjust_relationship | when: night
 - result: `ysolde_sat_with_elena`: Sister Ysolde walked the Kingsroad west to Thornhaven, sat up a night with Elena through the grey cough, and taught her father how to nurse it.
 - fails_if: `fev_door_stayed_barred`
 
 ### Arc: `the_dawn_vigil` (serves `keep_her_vows`)
 "I struck a chaplain once. I'd do it again, Dawn forgive me, and that's the whole trouble. If I'm staying a Sister I'll stay one with my eyes open. Ask his pardon for the blow; not for the reason. Then kneel the night through like a novice and say the vows again, in words I actually mean."
 - `the_old_blow`: Find the bishop's chaplain she struck years ago and ask his pardon for the blow, though not for the reason. | after: none | needs: none | at: capitol_cathedral | takes: 1 | effects: agenda
-- `the_vigil`: Keep the night vigil at the Dawn altar, alone, the way novices do before their vows. | after: the_old_blow | needs: none | at: capitol_cathedral | takes: 2 | effects: shift_want
-- `vows_in_her_own_words`: Kneel at the dawn office and speak her vows again aloud, in her own words, in front of the whole chapter. | after: the_vigil | needs: none | at: capitol_cathedral | takes: 1 | effects: shift_want, agenda
+- `the_vigil`: Keep the night vigil at the Dawn altar, alone, the way novices do before their vows. | after: the_old_blow | needs: none | at: capitol_cathedral | takes: 2 | effects: shift_want | when: night
+- `vows_in_her_own_words`: Kneel at the dawn office and speak her vows again aloud, in her own words, in front of the whole chapter. | after: the_vigil | needs: none | at: capitol_cathedral | takes: 1 | effects: shift_want, agenda | when: dawn
 - result: `ysolde_renewed_her_vows`: Sister Ysolde asked pardon of the chaplain she once struck, kept a novice's vigil at the Dawn altar, and spoke her vows again before the chapter in her own words.
 - fails_if: `grey_cathedral_hushed`, `tn_taken_freed`

@@ -65,6 +65,6 @@ will expect the player to come and stand at the quay in the cold one morning to 
 ### Arc: `words_with_the_gang_master` (serves `stand_up_to_the_gang_master`)
 "He shorts us a penny a load and calls it the Guild's cut. Someone ought to say it."
 - `gather_the_gang`: Talk the rest of the gang round, one at a time. | after: none | needs: none | at: capitol_docks | takes: 2 | effects: agenda, spread_rumor
-- `say_it_to_his_face`: Say it to the gang-master's face, in front of everyone, at dawn. | after: gather_the_gang | needs: none | at: capitol_docks | takes: 1 | effects: adjust_relationship, shift_want | player: helps
+- `say_it_to_his_face`: Say it to the gang-master's face, in front of everyone, at dawn. | after: gather_the_gang | needs: none | at: capitol_docks | takes: 1 | effects: adjust_relationship, shift_want | when: dawn | player: helps
 - result: `{id}_faced_the_gang_master`: They stood up to the Guild's gang-master on the quay at dawn with the whole gang behind them.
 - fails_if: `fence_warehouse_fired`

@@ -112,7 +112,7 @@ they are of institutions that failed them.
 Two farmers, a cooper, a miller's boy, a widower and a shepherd who faints at blood. I cannot make
 them soldiers in seven days. I can make them men who know when to fall back, and how to carry each
 other when they do. Three men I drilled are not coming home. That much I owe the other six's wives.
-- `drill_at_first_light`: Drill the six at the gate at first light: hold a line, step back together, never break and run. | after: none | needs: none | at: village_gate | takes: 3 | effects: shift_want, adjust_relationship | player: helps
+- `drill_at_first_light`: Drill the six at the gate at first light: hold a line, step back together, never break and run. | after: none | needs: none | at: village_gate | takes: 3 | effects: shift_want, adjust_relationship | when: dawn | player: helps
 - `bandages_from_maud`: Walk out to Old Maud's hut for linen, a needle and whatever she knows of closing wounds, and find her door barred to him for the first time in five years. | after: drill_at_first_light | needs: none | at: healer_hut | takes: 1 | effects: move_npc, agenda
 - `the_fallback_line`: Pace the road from the gate to the chapel door, and drill the six to fall back along it carrying the shepherd's stretcher between them. | after: bandages_from_maud | needs: tn_day_3 | at: village_gate | takes: 2 | effects: agenda, shift_want
 - result: `aldric_six_trained`: Aldric drilled his six farmers until each could hold the gate, carry a wounded man and fall back to the chapel alive.

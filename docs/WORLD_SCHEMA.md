@@ -319,7 +319,12 @@ Machine lines (exact shape):
 - `### Arc: \`<arc_id>\` (serves \`<want_id>\`)`. The want must be one of this soul's Wants. Its
   current weight sets how hard the NPC pursues the arc.
 - Step: `- \`<step_id>\`: <text> | after: <step_id|none> | needs: <flags, comma-separated, ! allowed | none> | at: <location id|any> | takes: <rounds 1-6> | effects: <types>`, optionally followed by
-  `| player: helps|needed`.
+  `| when: <window>` and then `| player: helps|needed`.
+  - **`when`** is the hour the step can be taken, checked at the hour the NPC would arrive:
+    `dawn` (05-08), `morning` (06-12), `day` (08-18), `afternoon` (12-17), `evening` (17-22),
+    `dark` (19-05), `night` (21-05), `any`, or `HH-HH` (wraps past midnight when the end is
+    earlier). Without it a step happens in waking hours (06-22): people sleep, so a step done
+    by night, by candle or after dark must say so. Scripts: `scripts/storyline/time_window.gd`.
   - **`effects`** may only use the personal-scope types `agenda`, `move_npc`, `adjust_relationship`,
     `shift_want` and `spread_rumor` (true flags only). Never `set_flag`, `block_beat` or `unlock_beat`.
   - **`player: needed`** means the step completes only after the player commits to helping, through

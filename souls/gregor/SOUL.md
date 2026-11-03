@@ -117,9 +117,9 @@ Between you and me, a father plans for the worst night. I have planned for this 
 A sound wagon, a mule that doesn't balk, a Kingsroad carter who owes me, a physician in the Capitol
 who already has my coin. She'll be past the Halfway House before Varn's men hear the axle creak, and
 she'll hate me for it, and she'll be alive to hate me. A father does what he must.
-- `count_the_strongbox`: Count the strongbox by candle after closing and set the road money apart from the rest. | after: none | needs: none | at: thornhaven_gregor_shop | takes: 1 | effects: shift_want
-- `rims_from_bjorn`: Have Bjorn re-rim the old wagon's wheels tonight, paid double, with no questions either way. | after: count_the_strongbox | needs: !bjorn_truth_revealed | at: thornhaven_blacksmith | takes: 1 | effects: agenda, adjust_relationship
-- `a_carter_at_the_gate`: Buy a Kingsroad carter's silence and a place under his canvas for one passenger, before dawn. | after: rims_from_bjorn | needs: none | at: village_gate | takes: 1 | effects: agenda | player: helps
+- `count_the_strongbox`: Count the strongbox by candle after closing and set the road money apart from the rest. | after: none | needs: none | at: thornhaven_gregor_shop | takes: 1 | effects: shift_want | when: dark
+- `rims_from_bjorn`: Have Bjorn re-rim the old wagon's wheels tonight, paid double, with no questions either way. | after: count_the_strongbox | needs: !bjorn_truth_revealed | at: thornhaven_blacksmith | takes: 1 | effects: agenda, adjust_relationship | when: dark
+- `a_carter_at_the_gate`: Buy a Kingsroad carter's silence and a place under his canvas for one passenger, before dawn. | after: rims_from_bjorn | needs: none | at: village_gate | takes: 1 | effects: agenda | when: 03-06 | player: helps
 - `tell_her_at_our_table`: Lay the road before Elena at their own table and beg her to take it. | after: a_carter_at_the_gate | needs: !tn_day_7 | at: thornhaven_gregor_shop | takes: 1 | effects: agenda, shift_want
 - result: `gregor_wagon_readied`: Gregor readied a wagon, a carter and a road east to take Elena out of the valley before Collection Night, and begged her at their own table to go.
 - fails_if: `tn_collection_night`, `fev_elena_left_home`
@@ -130,7 +130,7 @@ to be this year's, and still might be if I am the man I'm afraid I am. I can't g
 can stand on a doorstep and let them look at me. It's a small thing. It is the only thing I have that
 wasn't bought with somebody else's son.
 - `the_ledger_page`: Open the ledger in the back room and read the five names aloud, once, alone. | after: none | needs: none | at: thornhaven_gregor_shop | takes: 1 | effects: shift_want
-- `the_fenn_door`: Leave a purse and a sack of flour on the Fenns' step after dark, for the girl whose tile he palmed. | after: the_ledger_page | needs: none | at: thornhaven_town_square | takes: 1 | effects: agenda | player: helps
+- `the_fenn_door`: Leave a purse and a sack of flour on the Fenns' step after dark, for the girl whose tile he palmed. | after: the_ledger_page | needs: none | at: thornhaven_town_square | takes: 1 | effects: agenda | when: dark | player: helps
 - `hesks_widow`: Sit with Hesk Marlow's widow before Elder Mathias and tell them both that Hesk was his choosing. | after: the_fenn_door | needs: gregor_confession_heard | at: council_hall | takes: 1 | effects: agenda, adjust_relationship
 - result: `gregor_knocked_on_five_doors`: Gregor stood on the doorsteps of the families his rigged draws had robbed, and told Hesk Marlow's widow before the Elder that Hesk was his choosing.
 - fails_if: `ih_gregor_fled`

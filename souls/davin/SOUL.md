@@ -107,7 +107,7 @@ there, so he'd always know his own. If I sent him one, he'd know. I can't walk i
 like this. But I could send him a nail, and then I could stand at the back door, and he could decide.
 - `the_nail`: Shape a horseshoe nail from scrap by Maud's fire, with three fingers and a hearthstone, and put the smith's twist in the head. | after: none | needs: none | at: healer_hut | takes: 2 | effects: shift_want
 - `maud_carries_it`: Ask Old Maud to put the nail into Bjorn's hand at the forge without a word, and to say nothing if he asks where it came from. | after: the_nail | needs: none | at: healer_hut | takes: 1 | effects: agenda
-- `the_back_door`: Walk to the forge after dark, the long way round by the gate, and stand at Bjorn's back door with his hand in his sleeve until it opens. | after: maud_carries_it | needs: tn_day_3 | at: thornhaven_blacksmith | takes: 1 | effects: move_npc, agenda, adjust_relationship | player: helps
+- `the_back_door`: Walk to the forge after dark, the long way round by the gate, and stand at Bjorn's back door with his hand in his sleeve until it opens. | after: maud_carries_it | needs: tn_day_3 | at: thornhaven_blacksmith | takes: 1 | effects: move_npc, agenda, adjust_relationship | when: dark | player: helps
 - result: `davin_home_to_the_forge`: Davin sent Bjorn a nail with the smith's own twist in the head, and came to the forge's back door after dark to be seen.
 
 ### Arc: `the_way_back_down` (serves `save_corin_and_willa`)
@@ -124,7 +124,7 @@ somebody else can.
 Bjorn says a smith is his hands. I've got three on the one that matters. Maud says the body learns
 what you make it do. So I'll make it. Kindling first, because nobody's watching. Then a real hammer,
 if he'll lend me one.
-- `kindling`: Split Maud's kindling each morning with the hatchet in his maimed hand, a little more each day, until the grip holds. | after: none | needs: none | at: healer_hut | takes: 3 | effects: shift_want
+- `kindling`: Split Maud's kindling each morning with the hatchet in his maimed hand, a little more each day, until the grip holds. | after: none | needs: none | at: healer_hut | takes: 3 | effects: shift_want | when: morning
 - `the_small_hammer`: Ask Bjorn for the small hammer he learned on, and work a cold bar with it at the back of the forge where nobody passes. | after: kindling | needs: davin_a_nail_for_the_smith_the_back_door | at: thornhaven_blacksmith | takes: 2 | effects: agenda, shift_want | player: helps
 - `a_pin_struck_true`: Strike a hinge pin true from hot iron, start to finish, and hang Maud's door on it. | after: the_small_hammer | needs: none | at: thornhaven_blacksmith | takes: 2 | effects: shift_want, adjust_relationship
 - result: `davin_holds_the_hammer`: Davin learned to grip a hammer with three fingers and struck a hinge pin true at Bjorn's forge for Old Maud's door.

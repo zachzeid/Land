@@ -63,7 +63,7 @@ touching, and will insist on being walked to the chapel and back before anything
 ### Arc: `the_old_stories` (serves `be_remembered`)
 "Somebody ought to know how the Thornhaven well got its name, and what the first council swore. It's all in my head and nowhere else."
 - `find_a_listener`: Choose a young person with a good memory and sit them down. | after: none | needs: none | at: thornhaven_town_square | takes: 2 | effects: agenda, adjust_relationship | player: helps
-- `tell_them_all`: Tell the old stories over a week of mornings on the chapel bench. | after: find_a_listener | needs: none | at: thornhaven_chapel | takes: 4 | effects: agenda, shift_want
+- `tell_them_all`: Tell the old stories over a week of mornings on the chapel bench. | after: find_a_listener | needs: none | at: thornhaven_chapel | takes: 4 | effects: agenda, shift_want | when: morning
 - result: `{id}_passed_on_the_stories`: They told the valley's old stories to someone young enough to carry them another fifty years.
 
 ### Arc: `a_letter_of_my_own` (serves `write_to_the_magistry`)

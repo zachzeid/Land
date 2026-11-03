@@ -163,7 +163,10 @@ EMERGENT_EFFECTS = PERSONAL_EFFECTS | {"spread_event", "shift_fixed_point"}
 EVENT_KINDS = {"claim", "promise", "threat", "lie", "insult", "gift", "help", "harm", "theft", "kill",
                "spared", "confession", "accusation", "refusal", "seen_at", "kept_company"}
 ARC_RE = re.compile(r"^### Arc: `([a-z][a-z0-9_]*)` \(serves `([a-z][a-z0-9_]*)`\)\s*$")
-STEP_RE = re.compile(r"^- `([a-z][a-z0-9_]*)`: (.+?) \| after: ([a-z0-9_]+) \| needs: ([!a-z0-9_, ]+) \| at: ([a-z0-9_]+) \| takes: (\d+) \| effects: ([a-z_, ]+?)(?: \| player: (helps|needed))?\s*$")
+STEP_RE = re.compile(r"^- `([a-z][a-z0-9_]*)`: (.+?) \| after: ([a-z0-9_]+) \| needs: ([!a-z0-9_, ]+) \| at: ([a-z0-9_]+) \| takes: (\d+) \| effects: ([a-z_, ]+?)(?: \| when: ([a-z0-9-]+))?(?: \| player: (helps|needed))?\s*$")
+# SOUL.md `when` windows (scripts/storyline/time_window.gd)
+WHEN_WINDOWS = {"waking", "dawn", "morning", "day", "afternoon", "evening", "dark", "night", "any"}
+WHEN_RANGE_RE = re.compile(r"^(\d{1,2})-(\d{1,2})$")
 RESULT_RE = re.compile(r"^- result: `([a-z0-9_{}]+)`: \S.{15,}$")
 FAILS_RE = re.compile(r"^- fails_if: (`[!a-z0-9_]+`(?:, `[!a-z0-9_]+`)*)\s*$")
 RANGE_WANT_RE = re.compile(r"^- `([a-z][a-z0-9_]*)` \((\d+)-(\d+)\):\s*\S")
@@ -208,7 +211,11 @@ def validate_life(where, soul, key_prefix, min_arcs, max_arcs):
                 if not m:
                     err(where, f"step not machine-shaped: {line[:90]}")
                     continue
-                sid, _text, after, _needs, at, takes, effs, _player = m.groups()
+                sid, _text, after, _needs, at, takes, effs, when, _player = m.groups()
+                if when and when not in WHEN_WINDOWS:
+                    r = WHEN_RANGE_RE.match(when)
+                    if not r or not (0 <= int(r.group(1)) <= 23 and 1 <= int(r.group(2)) <= 24 and r.group(1) != r.group(2)):
+                        err(where, f"step '{sid}' when '{when}' is not a window or HH-HH")
                 if after != "none" and after not in cur["steps"]:
                     err(where, f"step '{sid}' after '{after}' is not an earlier step of arc '{cur['id']}'")
                 if at != "any" and at not in LOCATIONS:

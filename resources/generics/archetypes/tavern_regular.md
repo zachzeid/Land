@@ -56,7 +56,7 @@ An adult {name} can be courted if the player starts it, with a lot of bluster to
 ## Life
 ### Arc: `one_sober_supper` (serves `make_amends_at_home`)
 "Haven't sat down to supper with my own kin in a year. One night. One sober night. That's all."
-- `skip_the_nail`: Stay away from the tavern for three evenings running. | after: none | needs: none | at: thornhaven_town_square | takes: 3 | effects: shift_want | player: helps
+- `skip_the_nail`: Stay away from the tavern for three evenings running. | after: none | needs: none | at: thornhaven_town_square | takes: 3 | effects: shift_want | when: evening | player: helps
 - `bring_something_home`: Spend the ale money on a good loaf and a ham hock instead. | after: skip_the_nail | needs: none | at: thornhaven_gregor_shop | takes: 1 | effects: agenda
 - `sit_at_the_table`: Sit at the family table and listen instead of talk. | after: bring_something_home | needs: none | at: any | takes: 1 | effects: adjust_relationship
 - result: `{id}_supped_sober_at_home`: They went home sober for the first time in a year and ate supper with their family.
@@ -64,5 +64,5 @@ An adult {name} can be courted if the player starts it, with a lot of bluster to
 ### Arc: `the_big_story` (serves `be_somebody_worth_listening_to`)
 "I've got one. A real one. The kind of story that gets told after I'm gone."
 - `piece_it_together`: Put three overheard scraps together into something that might be true. | after: none | needs: none | at: thornhaven_tavern | takes: 3 | effects: agenda
-- `tell_it_on_market_night`: Stand up on market night and tell the whole room. | after: piece_it_together | needs: none | at: thornhaven_tavern | takes: 1 | effects: spread_rumor, adjust_relationship
+- `tell_it_on_market_night`: Stand up on market night and tell the whole room. | after: piece_it_together | needs: none | at: thornhaven_tavern | takes: 1 | effects: spread_rumor, adjust_relationship | when: evening
 - result: `{id}_told_the_big_story`: They stood up on market night at the Rusty Nail and held the whole room with a story.

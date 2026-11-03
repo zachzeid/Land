@@ -129,7 +129,7 @@ Every autumn the same small arithmetic. So much salt from so many hands, so many
 damp, so many to replace. I do not enjoy it. I do it carefully, because carelessness is how a widow
 gets seen. By the time the cart has rolled, next year's name should already be chosen.
 - `the_new_moon_count`: Copy the Pit's last count into the cellar tally by candle and reckon what the seam needs this year. | after: none | needs: none | at: thornhaven_tavern | takes: 1 | effects: shift_want
-- `the_back_pew`: Sit in the back pew at evening prayer and watch which families have strong children and no friends on the council. | after: the_new_moon_count | needs: none | at: thornhaven_chapel | takes: 2 | effects: agenda
+- `the_back_pew`: Sit in the back pew at evening prayer and watch which families have strong children and no friends on the council. | after: the_new_moon_count | needs: none | at: thornhaven_chapel | takes: 2 | effects: agenda | when: evening
 - `the_messengers_terms`: Bring Gregor "the men's terms" for Collection Night, weeping, so he spends his week exactly where she wants it. | after: the_back_pew | needs: !gregor_exposed | at: thornhaven_gregor_shop | takes: 1 | effects: agenda, adjust_relationship
 - result: `mira_next_lot_chosen`: Mira reckoned the Pit's count, chose next autumn's name from the back pew, and set Gregor's week to her terms.
 - fails_if: `mira_boss_revealed`
@@ -139,7 +139,7 @@ The girl calls me the nearest thing she has to an aunt. A widow with a girl at h
 nobody looks at twice. And she is going up the ridge on my say-so without knowing it. Some nights I
 am not sure whether I keep the honey warm for the mask or for her.
 - `honey_for_the_cough`: Send Elena a jar of honey and ginger for the chapel cold, and say nothing more about it. | after: none | needs: none | at: thornhaven_gregor_shop | takes: 1 | effects: agenda
-- `the_fireside_seat`: Keep the seat by the fire for Elena each night of the week and listen to everything she lets slip about the ridge. | after: honey_for_the_cough | needs: none | at: thornhaven_tavern | takes: 3 | effects: agenda, adjust_relationship
+- `the_fireside_seat`: Keep the seat by the fire for Elena each night of the week and listen to everything she lets slip about the ridge. | after: honey_for_the_cough | needs: none | at: thornhaven_tavern | takes: 3 | effects: agenda, adjust_relationship | when: evening
 - `marcus_shawl`: Wrap Elena in the good wool shawl Marcus bought her, against the ridge cold, and call it nothing. | after: the_fireside_seat | needs: tn_day_6 | at: thornhaven_tavern | takes: 1 | effects: agenda, shift_want
 - result: `mira_kept_elenas_trust`: Mira kept Elena close through her last week with honey, firelight and small kind lies, and wrapped her in Marcus's shawl for the ridge.
 - fails_if: `mira_boss_revealed`
@@ -149,7 +149,7 @@ Varn counts which men are his. So do I. Two of them eat at my back door when the
 and I know their mothers' names. When he comes down for the cart and reaches for the girl, they will
 be the two standing beside her. I don't need them to love me. I need them to remember.
 - `bread_at_the_back_door`: Feed the two men at the tavern's back door when they come down from the camp, and learn their mothers' names. | after: none | needs: none | at: thornhaven_tavern | takes: 2 | effects: agenda, shift_want
-- `a_word_at_the_mill`: Meet them at the old mill after dark, mask off, and tell them plainly what she will need of them on Collection Night. | after: bread_at_the_back_door | needs: none | at: old_mill | takes: 1 | effects: move_npc, agenda
+- `a_word_at_the_mill`: Meet them at the old mill after dark, mask off, and tell them plainly what she will need of them on Collection Night. | after: bread_at_the_back_door | needs: none | at: old_mill | takes: 1 | effects: move_npc, agenda | when: dark
 - `let_varn_see_it`: Let Varn find one of them standing behind her chair when he comes down for the cart. | after: a_word_at_the_mill | needs: tn_day_6 | at: thornhaven_tavern | takes: 1 | effects: agenda
 - result: `mira_two_knives_sworn`: Two of Varn's own men swore themselves to Mira at the old mill, fed by her hand and owing nothing to him.
 - fails_if: `hc_varn_dead`, `hc_varn_ascendant`

@@ -103,14 +103,14 @@ other side. She never fights if she can run, and she always knows where the seco
 
 ### Arc: `paid_in_full` (serves `never_owe_anyone`)
 "The Sister sat up all night with one of mine when he had the cough, and wouldn't take a penny. That's the worst kind of debt, the kind nobody writes down. Guild's bought up all the fever-root in the market, so fever-root's what I'll find her. Bargemen owe me. I'll owe the Sister nothing. That's how it works."
-- `counted_as_owed`: Count it as a debt, the night the Sister sits up with one of her coughing runners and won't take a penny. | after: none | needs: ysolde_night_ward_rooks_runners | at: capitol_warrens | takes: 1 | effects: shift_want
+- `counted_as_owed`: Count it as a debt, the night the Sister sits up with one of her coughing runners and won't take a penny. | after: none | needs: ysolde_night_ward_rooks_runners | at: capitol_warrens | takes: 1 | effects: shift_want | when: night
 - `root_the_guild_missed`: Find fever-root the Guild's buyers missed, through the bargemen who bring her the hot parcels. | after: counted_as_owed | needs: grey_root_cornered | at: capitol_docks | takes: 3 | effects: move_npc, agenda | player: helps
 - `left_on_the_step`: Leave the bundle on the Cathedral infirmary step with a chalk mark that means paid in full. | after: root_the_guild_missed | needs: none | at: capitol_cathedral | takes: 1 | effects: move_npc, agenda
 - result: `rook_paid_the_sister_back`: Rook found fever-root the Guild's buyers had missed and left it on the Cathedral infirmary step, squaring a debt to Sister Ysolde that nobody else knew she owed.
 
 ### Arc: `the_dawn_gate` (serves `get_out_alive`)
 "Forty-one crowns and change, three holes, none of them in the Warrens. That's not rich. It's out, though. I'll watch the gate till I know which guard looks at faces. Then we walk, all of us. And the day I'm through it I say my name. Out loud. To a grown-up who kept their word to me. Not before."
-- `count_it_twice`: Visit all three hiding places by night and count the forty-one crowns and change, twice. | after: none | needs: none | at: any | takes: 1 | effects: shift_want
-- `watch_the_guards`: Watch the Dawn Gate three dawns running, learning which guard looks at faces and which looks at purses. | after: count_it_twice | needs: none | at: capitol_gate | takes: 2 | effects: move_npc, agenda
+- `count_it_twice`: Visit all three hiding places by night and count the forty-one crowns and change, twice. | after: none | needs: none | at: any | takes: 1 | effects: shift_want | when: night
+- `watch_the_guards`: Watch the Dawn Gate three dawns running, learning which guard looks at faces and which looks at purses. | after: count_it_twice | needs: none | at: capitol_gate | takes: 2 | effects: move_npc, agenda | when: dawn
 - `say_it_outside`: Walk out through the Dawn Gate with her crew behind her, and say her real name aloud to the one grown-up who kept their word. | after: watch_the_guards | needs: none | at: capitol_gate | takes: 1 | effects: agenda, adjust_relationship | player: needed
 - result: `rook_said_her_name`: Rook walked out through the Dawn Gate with her crew behind her and said her real name aloud for the first time since her mother died.

@@ -128,8 +128,8 @@ never counted. You've got to admire the arithmetic.
 The widow gets the pity. I get the dark. I'm tired of the dark. This week, of all weeks, I want to
 walk across that square at noon and hear every shutter close before I reach the well. Then I'll sit
 by her fire and let her pour for me, and we'll both smile.
-- `knife_in_the_chapel_door`: Leave his knife standing in the chapel door the morning after the drawing, and nothing else. | after: none | needs: tn_day_2 | at: thornhaven_chapel | takes: 1 | effects: spread_rumor, agenda
-- `an_ale_at_the_nail`: Drink an ale at the Rusty Nail at midday, in the chair by the widow's fire, and watch who leaves. | after: knife_in_the_chapel_door | needs: !tithe_rangers_arrive | at: thornhaven_tavern | takes: 1 | effects: agenda, move_npc
+- `knife_in_the_chapel_door`: Leave his knife standing in the chapel door the morning after the drawing, and nothing else. | after: none | needs: tn_day_2 | at: thornhaven_chapel | takes: 1 | effects: spread_rumor, agenda | when: dawn
+- `an_ale_at_the_nail`: Drink an ale at the Rusty Nail at midday, in the chair by the widow's fire, and watch who leaves. | after: knife_in_the_chapel_door | needs: !tithe_rangers_arrive | at: thornhaven_tavern | takes: 1 | effects: agenda, move_npc | when: 11-14
 - `count_the_captains_men`: Stand across the road from the old captain's drill at the gate and count his six aloud, slowly, twice. | after: an_ale_at_the_nail | needs: none | at: village_gate | takes: 1 | effects: agenda, adjust_relationship
 - result: `varn_named_in_daylight`: Varn walked Thornhaven at noon in Tithe week, drank by the widow's fire and counted the captain's men aloud, and every shutter on the square closed at his name.
 - fails_if: `hc_varn_dead`, `des_varn_warrant_served`
