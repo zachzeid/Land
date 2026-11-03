@@ -19,9 +19,10 @@ parallel, each in its own git worktree; the lead merges them in order. Rules tha
    returns a decision (choice, option, effects) under the soul's Agency and Lines; apply effects with
    `apply_situation_effects(npc_key, decision)`. Options can carry `harms: [key]`, `aids: key` and
    `crowd: true`, and Lines refuse them.
-5. **Children are never targets**: `WorldRegistry.is_minor(key)`, `Combat.can_target(key)`.
+5. **Children**: the player can harm them, at the heaviest reputation cost; NPCs, creatures and
+   crowds never target them (`WorldRegistry.is_minor(key)`).
 6. **Canon**: late-medieval, low magic, no spells; no forbidden concepts (world.json
-   `forbidden_concepts`) in any name or text. Coin is crowns, marks, pennies.
+   `forbidden_concepts`) in any name or text. Coin is copper, silver, gold, crowns (100 each).
 7. **Content is JSON** under `resources/`. Validate it in your own `tools/validators/<system>.py`
    (see `tools/validators/README.md`); `python3 tools/validate_world.py` must report 0 errors.
 8. **Save**: your autoload's `save()` / `load_from_dict()` (WorldState already calls them).

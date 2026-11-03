@@ -35,9 +35,12 @@ point of the five systems and the test of every design choice below.
 3. **Canon** (world.json `world_rules`, WORLD_BIBLE): late-medieval, low magic. No spells. The
    "magic" is herbcraft, faith and fraud. Power is muscle, water and wind; light is fire. Forbidden
    concepts stay forbidden in item names, recipe text and puzzle text (the validator checks).
-4. **Children are never targets.** Combat cannot target anyone the world marks as a minor (Rook,
-   Ada Fenn, Pip, the Warrens' little ones, any generic archetype marked `minor`). Attacks pass
-   through or are refused; the UI does not offer them. This is a hard engine rule, not a soul Line.
+4. **Harming a child is the worst thing the player can do.** (Changed 2026-11-03.) The player can
+   strike or kill anyone, children included (Rook, Ada Fenn, Pip, the Warrens' little ones, any
+   generic archetype marked `minor`). It is recorded as `harm` / `murder` with `victim_minor: true`
+   and carries the heaviest reputation cost in the game wherever it is known: seen in line of sight,
+   told by the child who survived it, or found out later (a body found, a wound seen, a witness's
+   gossip). NPCs and creatures still never target children, and no crowd forms against one.
 5. **Opening hours apply to NPCs, not the player.** The player may fight, craft or climb at 03:00;
    NPCs answer at 06:00 (crowds, story rounds and scheduled effects already wait).
 6. **Everything saves.** Each system adds a block to `WorldState.save()` the way StorylineDirector,
@@ -272,7 +275,10 @@ floating chest.
   off hand, armour, tool), items with quality, durability, maker and provenance (where it came from,
   stolen or not). NPCs who see a stolen item they know (Gregor's file, a ranger's sword) recognise it:
   a `theft` deed found out later, through the existing truth machinery.
-- **Coin** is crowns, marks and pennies (canon), held as pennies internally.
+- **Coin** (changed 2026-11-03) is copper, silver, gold and crowns: 100 copper a silver, 100 silver a
+  gold, 100 gold a crown, held as copper internally. A copper buys what the old penny bought (ale 2
+  copper, a labourer's day about 9, a season about 7 silver), so gold is a fortune and a crown is a
+  treasury sum almost no one holds.
 - **Camp:** a bedroll and campfire anywhere outdoors give a respawn point and a cooking station.
 
 ---
@@ -373,5 +379,9 @@ run everything, then a windowed playthrough recorded with --write-movie.
 2. **Death**: growing skill loss (normal 1% +1 per death to 25%; hard doubling to 50%), the whole
    inventory dropped as a pack every death, line-of-sight witnesses only (§2). The +1 step on normal
    and doubling on hard are this spec's reading of "increasing" and "exponential".
-3. **Killing**: any adult NPC can be killed, with full consequences. Children never (§1.4).
+3. **Killing**: anyone can be killed, with full consequences. Harming a child carries the heaviest
+   reputation cost wherever anyone sees it or comes to know it (§1.4, changed 2026-11-03).
+5. **Coin** (2026-11-03): copper, silver, gold, crowns at 100 each (§6).
+6. **Story flags** (confirmed 2026-11-03): making the Grey Fever cure sets `grey_cure_recipe_known`,
+   and solving the abbey receipt sets the same flag.
 4. **Durability**: weapons and tools wear out and break, and can be repaired or re-forged.
