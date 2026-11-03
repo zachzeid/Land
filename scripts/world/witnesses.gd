@@ -14,7 +14,7 @@ const STEALTH_FACTOR = 0.5       # stealth 100 halves the range
 static func in_sight(scene_root: Node, at: Vector2, opts: Dictionary = {}) -> Array:
 	if scene_root == null or not scene_root.is_inside_tree():
 		return []
-	var reach = sight_range(opts)
+	var reach = sight_range(opts, at, scene_root)
 	var exclude: Array = opts.get("exclude", [])
 	var space = scene_root.get_viewport().get_world_2d().direct_space_state if scene_root.get_viewport() else null
 	var seen: Array = []
@@ -32,11 +32,18 @@ static func in_sight(scene_root: Node, at: Vector2, opts: Dictionary = {}) -> Ar
 			seen.append(id)
 	return seen
 
-static func sight_range(opts: Dictionary = {}) -> float:
+## Darkness: WorldPhysics.sight_factor at the spot (the hour, weather, lamps, shadows, indoors) when
+## the world has physics; a flat night factor otherwise, or when opts.hour pins the hour (tests)
+static func sight_range(opts: Dictionary = {}, at = null, scene_root: Node = null) -> float:
 	var reach = float(opts.get("range", DAY_RANGE))
-	var hour = int(opts.get("hour", _hour()))
-	if hour >= 21 or hour < 5:
-		reach *= NIGHT_FACTOR
+	var physics = _physics()
+	if physics and physics.has_method("sight_factor") and at is Vector2 and not opts.has("hour"):
+		var indoors = scene_root != null and scene_root.get_node_or_null("Floor") != null
+		reach *= float(physics.sight_factor(at, {"scene_root": scene_root, "outdoors": not indoors}))
+	else:
+		var hour = int(opts.get("hour", _hour()))
+		if hour >= 21 or hour < 5:
+			reach *= NIGHT_FACTOR
 	reach *= 1.0 - STEALTH_FACTOR * clampf(float(opts.get("stealth", 0)), 0.0, 100.0) / 100.0
 	return reach
 
@@ -44,6 +51,10 @@ static func _blocked(space: PhysicsDirectSpaceState2D, from: Vector2, to: Vector
 	var query = PhysicsRayQueryParameters2D.create(from, to, SIGHT_MASK)
 	query.collide_with_areas = false
 	return not space.intersect_ray(query).is_empty()
+
+static func _physics() -> Node:
+	var tree = Engine.get_main_loop() as SceneTree
+	return tree.root.get_node_or_null("WorldPhysics") if tree else null
 
 static func _hour() -> int:
 	var tree = Engine.get_main_loop() as SceneTree

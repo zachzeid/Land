@@ -103,10 +103,10 @@ func _init():
 	print("============================================================\n")
 
 	print("Content")
-	_check("weapons.json and armour.json load (fists, iron sword, mail)", not combat.get_weapon_def("fists").is_empty() and not combat.get_weapon_def("iron_sword").is_empty() and not combat.get_armour_def("mail_shirt").is_empty())
+	_check("weapons.json and armour.json load (fists, iron sword, mail)", not combat.get_weapon_def("fists").is_empty() and not combat.get_weapon_def("short_sword").is_empty() and not combat.get_armour_def("mail_shirt").is_empty())
 
 	print("\nStamina")
-	var player = await _fresh({"main_hand": _rec("iron_sword", 50)})
+	var player = await _fresh({"main_hand": _rec("short_sword", 50)})
 	var dummy = _body("practice_post", Vector2(40, 0), ["fighters"])
 	await _settle()
 	var r = combat.attack(player, dummy, "light")
@@ -130,7 +130,7 @@ func _init():
 	print("\nBlock and parry")
 	player = await _fresh({})
 	var foe = _body("test_foe_001", Vector2(40, 0), ["fighters"])
-	foe.profile = {"weapon": "iron_sword"}
+	foe.profile = {"weapon": "short_sword"}
 	await _settle()
 	combat.begin_block(player)
 	_tick(0.1)
@@ -168,14 +168,14 @@ func _init():
 	_check("A guard with no stamina behind it breaks and staggers", r.get("guard_broken", false) and combat.is_staggered(player))
 
 	print("\nPoise and stagger")
-	player = await _fresh({"main_hand": _rec("iron_sword", 50)})
+	player = await _fresh({"main_hand": _rec("short_sword", 50)})
 	var brute = _body("test_brute_001", Vector2(40, 0), ["fighters"])
 	await _settle()
 	var full = combat.get_poise(brute)
 	r = combat.resolve_hit(player, brute, {}, "light")
 	var light_poise = full - combat.get_poise(brute)
 	_check("A light blow drains a little poise and does not stagger", light_poise > 0.0 and not r.staggered)
-	var hammer = combat.make_weapon(_rec("smith_hammer", 50))
+	var hammer = combat.make_weapon(_rec("smiths_hammer", 50))
 	r = combat.resolve_hit(player, brute, hammer, "heavy")
 	_check("A heavy hammer blow drains the rest: staggered", r.staggered and r.poise_damage > light_poise * 2.0 and combat.is_staggered(brute))
 	_check("...poise is restored after the stagger", is_equal_approx(combat.get_poise(brute), full))
@@ -191,7 +191,7 @@ func _init():
 	var leather = _body("test_leather_001", Vector2(40, 0), ["fighters"])
 	leather.profile = {"armour": ["leather_jerkin"]}
 	await _settle()
-	var sword = combat.make_weapon(_rec("iron_sword", 50))
+	var sword = combat.make_weapon(_rec("short_sword", 50))
 	var club = combat.make_weapon(_rec("cudgel", 50))
 	var torch = combat.make_weapon(_rec("torch", 50))
 	var on_bare = combat.resolve_hit(player, bare, sword, "light")
@@ -211,7 +211,7 @@ func _init():
 	_check("A body's own resistances come from data (fire weakness)", combat.resolve_hit(player, weak, torch, "light").damage > torch_bare.damage)
 
 	print("\nDurability")
-	player = await _fresh({"main_hand": _rec("iron_sword", 2)})
+	player = await _fresh({"main_hand": _rec("short_sword", 2)})
 	var post = _body("test_post_001", Vector2(40, 0), ["fighters"])
 	await _settle()
 	var broke_signal: Array = []
@@ -220,14 +220,14 @@ func _init():
 	_check("A landed hit wears the weapon through Inventory.wear", inv.wear_calls == 1 and is_equal_approx(float(inv.equipped.main_hand.durability), 1.0))
 	_tick(2.0)
 	r = combat.attack(player, post, "light")
-	_check("...until it breaks (weapon_broke)", r.get("broke", false) and broke_signal.size() == 1 and broke_signal[0].weapon == "iron_sword")
+	_check("...until it breaks (weapon_broke)", r.get("broke", false) and broke_signal.size() == 1 and broke_signal[0].weapon == "short_sword")
 	_tick(2.0)
 	r = combat.attack(player, post, "light")
 	_check("A broken weapon hits like fists (blunt 4) and wears no further", r.get("weapon", "") == "fists" and r.type == "blunt" and is_equal_approx(r.damage, 4.0) and inv.wear_calls == 2)
 	_check("Bare hands never wear anything", combat.make_weapon({}).id == "fists")
 
 	print("\nSkill use")
-	player = await _fresh({"main_hand": _rec("iron_sword", 50)})
+	player = await _fresh({"main_hand": _rec("short_sword", 50)})
 	var soldier = _body("test_soldier_001", Vector2(40, 0), ["fighters"])
 	var practice = _body("test_practice_001", Vector2(40, 0), ["fighters", "practice"])
 	await _settle()
@@ -250,7 +250,7 @@ func _init():
 	print("\nDodge")
 	player = await _fresh({})
 	foe = _body("test_foe_002", Vector2(40, 0), ["fighters"])
-	foe.profile = {"weapon": "iron_sword"}
+	foe.profile = {"weapon": "short_sword"}
 	await _settle()
 	combat.dodge(player)
 	_tick(0.1)
@@ -261,7 +261,7 @@ func _init():
 	_check("After it the blow lands on PlayerStats.damage", not r.get("dodged", true) and stats.health < 100.0)
 
 	print("\nChildren are never targets")
-	player = await _fresh({"main_hand": _rec("iron_sword", 50)})
+	player = await _fresh({"main_hand": _rec("short_sword", 50)})
 	var rook = _body(registry.get_npc_id("rook"), Vector2(30, 0), ["npcs"])
 	rook.npc_name = "Rook"
 	await _settle()
@@ -279,7 +279,7 @@ func _init():
 	_check("hit_landed carries attacker, target and keys", hits.size() == 1 and hits[0].attacker_key == "player" and hits[0].target_key == "test_adult_001")
 
 	print("\nThe harm deed and its witnesses")
-	player = await _fresh({"main_hand": _rec("iron_sword", 50)})
+	player = await _fresh({"main_hand": _rec("short_sword", 50)})
 	var pe = root.get_node("PlayerEvents")
 	var varn = _body(registry.get_npc_id("varn"), Vector2(40, 0), ["npcs"])
 	varn.npc_name = "Varn"
@@ -309,7 +309,7 @@ func _init():
 	_check("Striking a creature is no deed", pe.get_events().size() == events_before)
 
 	print("\nBodies with their own health")
-	player = await _fresh({"main_hand": _rec("iron_sword", 50)})
+	player = await _fresh({"main_hand": _rec("short_sword", 50)})
 	var own = OwnHealthBody.new()
 	own.npc_id = "test_own_001"
 	own.position = Vector2(40, 0)
@@ -328,7 +328,7 @@ func _init():
 	var deer = _body("test_target_001", Vector2(200, 0), ["fighters"])
 	await _settle()
 	r = combat.attack(player, null, "light")
-	_check("With a bow the attack key shoots (12 stamina, one arrow)", r.get("action", "") == "shoot" and r.get("projectile") != null and is_equal_approx(stats.stamina, 88.0) and inv.items.arrow == 4)
+	_check("With a bow the attack key shoots (12 stamina, one arrow)", r.get("action", "") == "shoot" and r.get("projectile") != null and is_equal_approx(stats.stamina, 88.0) and inv.items.arrows == 4)
 	var out = await _fly(r.get("projectile"))
 	_check("The arrow flies and lands on the target (pierce)", out.get("fighter") == deer and out.result.type == "pierce" and out.result.damage > 0.0)
 	var rook2 = _body(registry.get_npc_id("rook"), Vector2(100, 0), ["npcs"])
@@ -343,7 +343,7 @@ func _init():
 	out = await _fly(combat.attack(player, null, "light").get("projectile"))
 	_check("A wall stops an arrow", out.get("wall", false))
 	_tick(3.0)
-	inv.items.arrow = 0
+	inv.items.arrows = 0
 	_check("No arrows, no shot", combat.attack(player, null, "light").get("refused", "") == "no_ammo")
 
 	print("\nThe player")
@@ -377,7 +377,7 @@ func _fresh(equipped: Dictionary) -> FakePlayer:
 	stats = FakeStats.new()
 	inv = FakeInventory.new()
 	inv.equipped = equipped
-	inv.items = {"arrow": 5}
+	inv.items = {"arrows": 5}
 	combat.stats_provider = stats
 	combat.inventory_provider = inv
 	combat.reset()

@@ -104,7 +104,7 @@ func _test_templates_load():
 func _test_rival_smith():
 	print("\nrival_smith: Bjorn sees true work at a forge")
 	_reset({"bjorn": {"respect": 60}})
-	var id = _record("feat", "forged a blade that rang true at the first quench", [], ["bjorn", "gen_woodcutter_2"], "thornhaven_blacksmith")
+	var id = _record("feat", "forged a blade that rang true at the first quench", [], ["bjorn", "gen_woodcutter_2"], "thornhaven_blacksmith", "smithing")
 	var inst = _instance("rival_smith", id)
 	_check("It grows, Bjorn the smith, a generic witness to carry the tale", inst.get("roles", {}).get("smith", "") == "bjorn" and inst.roles.get("talker", "") == "gen_woodcutter_2")
 	_check("...at the smithy", inst.get("location", "") == "thornhaven_blacksmith")
@@ -114,22 +114,22 @@ func _test_rival_smith():
 	_clean(made)
 
 	_reset({"bjorn": {"respect": -60, "affection": -60, "fear": -40}})
-	id = _record("feat", "hammered out a sword in an afternoon", [], ["bjorn"], "thornhaven_blacksmith")
+	id = _record("feat", "hammered out a sword in an afternoon", [], ["bjorn"], "thornhaven_blacksmith", "smithing")
 	inst = _instance("rival_smith", id)
 	made = await _decide(inst)
 	_check("A Bjorn who thinks little of them makes it a rivalry (his own want, honest_steel)", made.get("bjorn", {}).get("choice", "") == "show_whose_forge" and made.bjorn.applied.size() == 3)
 	_clean(made)
 
 	_reset({"bjorn": {"respect": 60}})
-	id = _record("feat", "forged a blade at the smithy", [], ["gen_woodcutter_2"], "thornhaven_blacksmith")
+	id = _record("feat", "forged a blade at the smithy", [], ["gen_woodcutter_2"], "thornhaven_blacksmith", "smithing")
 	_check("No rival_smith when Bjorn did not see it", _instance("rival_smith", id).is_empty())
-	id = _record("feat", "held the square against two men", [], ["bjorn"], "thornhaven_town_square")
+	id = _record("feat", "held the square against two men", [], ["bjorn"], "thornhaven_town_square", "blades")
 	_check("...nor for a feat away from any forge", _instance("rival_smith", id).is_empty())
 
 func _test_would_be_apprentice():
 	print("\nwould_be_apprentice: a young recruit saw it")
 	_reset({"gen_peacekeeper_recruit_3": {"respect": 50}})
-	var id = _record("feat", "disarmed a Hollow rider at the gate with a staff", [], ["gen_peacekeeper_recruit_3", "aldric"], "village_gate")
+	var id = _record("feat", "disarmed a Hollow rider at the gate with a staff", [], ["gen_peacekeeper_recruit_3", "aldric"], "village_gate", "blunt")
 	var inst = _instance("would_be_apprentice", id)
 	_check("It grows: the recruit who saw it, not Captain Aldric (generics only)", inst.get("roles", {}).get("recruit", "") == "gen_peacekeeper_recruit_3" and not "aldric" in inst.roles.values())
 	_check("...and no courier, since none of them knows of it", not inst.get("roles", {}).has("courier"))
@@ -139,25 +139,25 @@ func _test_would_be_apprentice():
 	_clean(made)
 
 	_reset({"gen_peacekeeper_recruit_3": {"fear": 70}})
-	id = _record("feat", "broke a man's arm with one blow", [], ["gen_peacekeeper_recruit_3"], "village_gate")
+	id = _record("feat", "broke a man's arm with one blow", [], ["gen_peacekeeper_recruit_3"], "village_gate", "blunt")
 	made = await _decide(_instance("would_be_apprentice", id))
 	_check("A frightened one never dares ask", made.get("gen_peacekeeper_recruit_3", {}).get("choice", "") == "never_dare")
 	_clean(made)
 	_reset({})
-	id = _record("feat", "climbed the mill wheel", [], [], "old_mill")
+	id = _record("feat", "climbed the mill wheel", [], [], "old_mill", "athletics")
 	_check("A feat nobody young knows of grows no apprentice", _instance("would_be_apprentice", id).is_empty())
 
 func _test_challenger():
 	print("\nchallenger: a Hollow man wants to try the stranger")
 	_reset({"gen_hollow_grunt_1": {"respect": -50, "fear": -50}})
-	var id = _record("feat", "held off three Hollow men with a blacksmith's hammer", [], ["gen_hollow_grunt_1"], "forest_path")
+	var id = _record("feat", "held off three Hollow men with a blacksmith's hammer", [], ["gen_hollow_grunt_1"], "forest_path", "blunt")
 	var inst = _instance("challenger", id)
 	_check("It grows with the Hollow man who saw it", inst.get("roles", {}).get("hollow", "") == "gen_hollow_grunt_1" and not inst.roles.has("soldier"))
 	var made = await _decide(inst)
 	_check("Unafraid and unimpressed, he calls them out", made.get("gen_hollow_grunt_1", {}).get("choice", "") == "call_them_out")
 	_clean(made)
 	_reset({"gen_hollow_grunt_1": {"fear": 80}})
-	id = _record("feat", "cut down a Hollow rider in one stroke", [], ["gen_hollow_grunt_1"], "forest_path")
+	id = _record("feat", "cut down a Hollow rider in one stroke", [], ["gen_hollow_grunt_1"], "forest_path", "blades")
 	made = await _decide(_instance("challenger", id))
 	_check("A frightened one lets it lie", made.get("gen_hollow_grunt_1", {}).get("choice", "") == "let_it_lie")
 	_clean(made)
@@ -247,14 +247,14 @@ func _test_known_by_the_mark():
 func _test_a_wolf_at_the_fold():
 	print("\na_wolf_at_the_fold: the valley asks for help")
 	_reset({"gen_valley_farmer_2": {"trust": 50}})
-	var id = _record("feat", "drove a boar off the road with a spear", [], ["gen_valley_farmer_2"], "thornhaven_town_square")
+	var id = _record("feat", "drove a boar off the road with a spear", [], ["gen_valley_farmer_2"], "thornhaven_town_square", "blades")
 	var inst = _instance("a_wolf_at_the_fold", id)
 	_check("It grows with the valley farmer who saw it", inst.get("roles", {}).get("keeper", "") == "gen_valley_farmer_2")
 	var made = await _decide(inst)
 	_check("A farmer who trusts the stranger asks them to sit up at the fold", made.get("gen_valley_farmer_2", {}).get("choice", "") == "ask_the_stranger")
 	_clean(made)
 	_reset({})
-	id = _record("feat", "won a wrestling bout", [], ["gen_garrison_soldier_1"], "fort_ashguard")
+	id = _record("feat", "won a wrestling bout", [], ["gen_garrison_soldier_1"], "fort_ashguard", "athletics")
 	_check("Not for a feat outside the valley", _instance("a_wolf_at_the_fold", id).is_empty())
 
 func _test_buyer_for_the_blades():
@@ -320,10 +320,14 @@ func _reset(dims: Dictionary) -> void:
 	director.relationship_dims_override = all
 
 ## A physical deed as the systems record it: line-of-sight witnesses, no regional gossip (tested separately)
-func _record(kind: String, summary: String, about: Array, witnesses: Array, location: String) -> String:
+## skill: the skill a feat showed (PlayerStats and Crafting record it; templates can match it)
+func _record(kind: String, summary: String, about: Array, witnesses: Array, location: String, skill: String = "") -> String:
 	director.player_location_override = location
 	var ids: Array = witnesses.map(func(w): return director._npc_id(w))
-	var id = pe.record(kind, summary, about.map(func(a): return director._npc_id(a)), {"witnesses": ids, "location": location, "spread": false})
+	var opts = {"witnesses": ids, "location": location, "spread": false}
+	if skill != "":
+		opts["skill"] = skill
+	var id = pe.record(kind, summary, about.map(func(a): return director._npc_id(a)), opts)
 	_check("(%s recorded with %d witness(es))" % [kind, witnesses.size()], id != "" and pe.get_event(id).witnesses.size() == witnesses.size())
 	return id
 

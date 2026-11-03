@@ -435,6 +435,8 @@ func _cook() -> void:
 		_check("No herbcraft.gd yet: {ok: false}", not none.ok and "not built" in none.reason)
 	else:
 		_check("herbcraft.gd exists: cook delegates to it", crafting.cook(["fever_root"], "healer_herb_table").has("ok"))
+		inv.clear()
+		inv.add("fever_root", 1)  # the real cook used the root up
 	var fake = GDScript.new()
 	fake.source_code = "\n".join(["extends RefCounted",
 		"static func cook(ids: Array, skill: float) -> Dictionary:",

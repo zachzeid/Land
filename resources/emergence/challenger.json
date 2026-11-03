@@ -4,7 +4,13 @@
   "summary": "A fighter who heard of the player's skill wants to test it: a Hollow man for his standing in the camp, an Ashguard soldier for the yard. A duel, refused or fought; losing is fled, winning a feat.",
   "trigger": {
     "event": {
-      "kind": "feat"
+      "kind": "feat",
+      "skill": [
+        "blades",
+        "blunt",
+        "bows",
+        "defence"
+      ]
     }
   },
   "roles": {

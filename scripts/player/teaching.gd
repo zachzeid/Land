@@ -75,9 +75,22 @@ func request_training(teacher_key: String, skill: String) -> Dictionary:
 	s.add_training(skill, float(_data.get("boost_multiplier", 2.0)), now + minutes + int(_data.get("boost_minutes", 1440)))
 	if ws and ws.has_method("advance_time"):
 		ws.advance_time(minutes, "training")
+	out["recipes_learned"] = _learn_taught_recipes(skill)
 	out.ok = true
 	out.reason = "taught"
 	return out
+
+## A lesson also passes on the recipes of that craft that can only be taught (recipes.json "learn": "taught")
+func _learn_taught_recipes(skill: String) -> Array:
+	var crafting = _node("Crafting")
+	if crafting == null or not "recipes" in crafting or not crafting.has_method("learn_recipe"):
+		return []
+	var learned: Array = []
+	for id in crafting.recipes:
+		var r: Dictionary = crafting.recipes[id]
+		if str(r.get("learn", "")) == "taught" and str(r.get("skill", "")) == skill and crafting.learn_recipe(str(id), "taught"):
+			learned.append(str(id))
+	return learned
 
 ## Pennies for a lesson: dearer the further along the player already is
 static func lesson_cost(row: Dictionary, current_level: float) -> int:

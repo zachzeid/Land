@@ -275,7 +275,7 @@ func _player_hostility(key: String) -> float:
 ## Does a player event match a trigger's "event" part? kind / status / truth (a value or a list),
 ## about (any overlap; npc keys, npc_ids or faction:<id>), min_fidelity
 func event_matches(spec: Dictionary, ev: Dictionary) -> bool:
-	for field in ["kind", "status", "truth"]:
+	for field in ["kind", "status", "truth", "skill"]:
 		if spec.has(field):
 			var wanted = spec[field]
 			var values: Array = wanted if wanted is Array else [wanted]

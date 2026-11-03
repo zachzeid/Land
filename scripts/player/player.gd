@@ -31,6 +31,9 @@ var is_sprinting: bool = false
 
 func _ready():
 	add_to_group("player")
+	var stats = get_node_or_null("/root/PlayerStats")
+	if stats and stats.has_method("set_body"):
+		stats.set_body(self)  # deaths, line-of-sight witnesses and respawns work from this body
 
 	# Start with idle animation
 	if animated_sprite and animated_sprite.sprite_frames:

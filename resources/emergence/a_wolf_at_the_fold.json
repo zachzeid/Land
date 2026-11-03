@@ -5,7 +5,12 @@
   "trigger": {
     "event": {
       "kind": "feat",
-      "region": "western_valley"
+      "region": "western_valley",
+      "skill": [
+        "blades",
+        "blunt",
+        "bows"
+      ]
     }
   },
   "roles": {

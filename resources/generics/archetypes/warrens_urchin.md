@@ -1,6 +1,7 @@
 # ARCHETYPE: Warrens Urchin
 archetype: warrens_urchin
 regions: the_capitol
+minor: true
 
 ## Essence
 {name} is somewhere between eight and twelve years old and lives at {home}, in the tangle of

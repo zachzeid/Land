@@ -8,6 +8,8 @@ class_name StoryItem
 
 ## Text shown when player first discovers this item
 @export_multiline var discovery_text: String = "You found something interesting."
+## A puzzle this clue opens (resources/puzzles/<id>.json): after the text, the answer card, until solved
+@export var puzzle_id: String = ""
 
 ## Text shown if player examines item again after discovery
 @export_multiline var reexamine_text: String = "You've already examined this."
@@ -85,6 +87,17 @@ func _on_interact():
 			})
 	else:
 		_show_message(reexamine_text)
+	_offer_puzzle()
+
+func _offer_puzzle() -> void:
+	if puzzle_id == "":
+		return
+	var puzzles = get_node_or_null("/root/Puzzles")
+	if puzzles and puzzles.has_method("is_solved") and puzzles.is_solved(puzzle_id):
+		return
+	var ui = get_tree().get_first_node_in_group("player_ui")
+	if ui and ui.has_method("open_puzzle"):
+		ui.call_deferred("open_puzzle", puzzle_id)
 
 func _show_message(text: String):
 	# Find or create a message display

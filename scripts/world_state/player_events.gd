@@ -165,6 +165,8 @@ func record(kind: String, summary: String, about: Array = [], opts: Dictionary =
 	}
 	if opts.has("commitment"):
 		ev["commitment"] = str(opts.commitment)
+	if opts.has("skill"):
+		ev["skill"] = str(opts.skill)  # the skill a feat, a crafted piece or a fight showed (emergence triggers match it)
 	# A claim the world already contradicts is a lie from the start
 	if kind == "claim" and flag != null:
 		var current = _flag_value(str(flag))

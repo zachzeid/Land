@@ -204,6 +204,24 @@
         "dubious"
       ],
       "description": "Something went into the pot that should not have."
+    },
+    {
+      "id": "raw_meat",
+      "name": "Raw meat",
+      "kind": "food",
+      "weight": 0.5,
+      "stack": 10,
+      "value": 2,
+      "tags": [
+        "food",
+        "meat",
+        "raw"
+      ],
+      "description": "Fresh meat. Better cooked.",
+      "effects": {
+        "health": 2,
+        "stamina": 2
+      }
     }
   ]
 }

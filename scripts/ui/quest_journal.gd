@@ -65,13 +65,18 @@ func _ready():
 func _input(event: InputEvent):
 	if event.is_action_pressed("open_journal"):
 		# Don't open during dialogue, or while a thought is being typed (J is a letter too)
-		if _is_in_dialogue() or _is_typing_thought():
+		if _is_in_dialogue() or _is_typing_thought() or _player_panel_open():
 			return
 		_toggle_journal()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("ui_cancel") and is_open:
 		_close_journal()
 		get_viewport().set_input_as_handled()
+
+## An inventory, crafting or puzzle panel is up (PlayerUI): J may be a letter typed into it
+func _player_panel_open() -> bool:
+	var ui = get_tree().get_first_node_in_group("player_ui")
+	return ui != null and ui.has_method("is_panel_open") and ui.is_panel_open()
 
 func _toggle_journal():
 	if is_open:

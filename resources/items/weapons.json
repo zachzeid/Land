@@ -213,6 +213,19 @@
       "known_by_faction": [
         "the_crown"
       ]
+    },
+    {
+      "id": "cudgel",
+      "name": "Cudgel",
+      "kind": "weapon",
+      "weight": 1.2,
+      "stack": 1,
+      "value": 2,
+      "tags": [
+        "blunt",
+        "one_handed"
+      ],
+      "description": "A knotted length of ash. Every carter keeps one under the seat."
     }
   ]
 }

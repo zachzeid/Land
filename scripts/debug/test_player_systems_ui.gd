@@ -364,10 +364,12 @@ func _test_stubs():
 	player_ui.crafting_panel.show_mode("cook")
 	player_ui.crafting_panel.close()
 	player_ui.crafting_panel.mode = "make"
-	_check("A puzzle card for an unknown puzzle opens and answers with the stub's reason", player_ui.open_puzzle("weigh_the_tiles") and player_ui.puzzle_card.is_open)
-	player_ui.puzzle_card.set_text("Davin")
+	_check("A name-shaped puzzle card opens", player_ui.open_puzzle("makers_marks") and player_ui.puzzle_card.is_open)
+	player_ui.puzzle_card.set_text("Nobody at all")
 	var result: Dictionary = player_ui.puzzle_card.submit()
-	_check("...the reason shown", not result.ok and player_ui.puzzle_card.get_message() == str(result.reason))
+	var expected = str(result.reason) if str(result.get("reason", "")) != "" else "It does not fit."
+	_check("...a wrong answer keeps it open with the reason (or the card's own word)", not result.ok and player_ui.puzzle_card.is_open and player_ui.puzzle_card.get_message() == expected)
+	player_ui.puzzle_card.close()
 	player_ui.puzzle_card.close()
 	_check("All closed, the world unpaused", not player_ui.is_panel_open() and not paused)
 

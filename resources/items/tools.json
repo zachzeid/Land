@@ -121,6 +121,20 @@
       "known_by": [
         "gregor"
       ]
+    },
+    {
+      "id": "torch",
+      "name": "Torch",
+      "kind": "tool",
+      "weight": 0.5,
+      "stack": 5,
+      "value": 1,
+      "tags": [
+        "fire",
+        "light",
+        "flammable"
+      ],
+      "description": "Pitch-soaked rag on a stick. Light, warmth, and a way to set things alight."
     }
   ]
 }

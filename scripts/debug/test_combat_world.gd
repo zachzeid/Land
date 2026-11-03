@@ -291,7 +291,8 @@ func _test_minors():
 
 	var dyn = root.get_node("DynamicNPCRegistry")
 	var real = dyn.generics
-	_check("No shipped archetype is a minor", real.minor_archetypes.is_empty())
+	# The Warrens' urchins are children (spec §1.4); every other shipped archetype is grown
+	_check("Only the Warrens' urchins are minors among the shipped archetypes", real.minor_archetypes.keys() == ["warrens_urchin"] if real.minor_archetypes is Dictionary else real.minor_archetypes == ["warrens_urchin"])
 	var gm = GenericManagerScript.new()
 	gm.auto_boot = false
 	gm.director_override = Node.new()

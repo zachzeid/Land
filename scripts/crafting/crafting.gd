@@ -388,7 +388,7 @@ func cook(ingredients: Array, station_id: String) -> Dictionary:
 		if ws:
 			ws.set_world_flag(flag, true)
 		var deed = str(hc.deed_for(item_id)) if _hc_has(hc, "deed_for") else ""
-		var ev = _record("feat", deed if deed != "" else "made %s" % _with_article("", _item_name(item_id)), [], {"witnesses": witnesses})
+		var ev = _record("feat", deed if deed != "" else "made %s" % _with_article("", _item_name(item_id)), [], {"witnesses": witnesses, "skill": "herbcraft"})
 		if ev != "":
 			events.append(ev)
 		item["story_flag"] = flag
@@ -655,7 +655,7 @@ func _work_deeds(s: Dictionary, witnesses: Array, trespass: bool, what: String, 
 	var about: Array = [owner] if owner != "" and owner != PLAYER else []
 	events.append(_record("crafted", "%s at %s" % [what, at], about, {"witnesses": witnesses}))
 	if quality >= FEAT_QUALITY and not witnesses.is_empty():
-		events.append(_record("feat", "%s at %s, finer work than most (%s)" % [what, at, skill_name if skill_name != "" else "handcraft"], [], {"witnesses": witnesses}))
+		events.append(_record("feat", "%s at %s, finer work than most (%s)" % [what, at, skill_name if skill_name != "" else "handcraft"], [], {"witnesses": witnesses, "skill": skill_name}))
 	if trespass and not about.is_empty():
 		events.append(_record("trespass", "worked %s without leave" % at, about, {"witnesses": witnesses}))
 		var fuel = str(s.get("fuel", ""))

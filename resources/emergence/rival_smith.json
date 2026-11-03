@@ -10,7 +10,8 @@
         "thornhaven_blacksmith",
         "greystone_mines",
         "fort_ashguard"
-      ]
+      ],
+      "skill": "smithing"
     }
   },
   "roles": {

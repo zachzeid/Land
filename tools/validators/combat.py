@@ -2,7 +2,7 @@
 
 Weapons: damage by known types, positive stamina per action, reach/arc/speed, poise, wear, a skill that
 exists (resources/player/skills.json when present, else the spec's twelve), ranged weapons with a
-projectile speed, fists present. Armour: slot armour|off_hand, resistances by known type within 0..0.8,
+projectile speed, fists present. Armour: slot body|head|off_hand, resistances by known type within 0..0.8,
 shields with a block share. No forbidden concepts in any id or text. Stdlib only.
 """
 import json
@@ -14,7 +14,7 @@ SPEC_SKILLS = {"blades", "blunt", "bows", "defence", "athletics", "stealth", "sm
 COMBAT_SKILLS = {"blades", "blunt", "bows"}
 WEAPON_KINDS = {"melee", "ranged"}
 MELEE_ACTIONS = {"light", "heavy"}
-ARMOUR_SLOTS = {"armour", "off_hand"}
+ARMOUR_SLOTS = {"body", "head", "off_hand"}  # Inventory equipment slots
 ID_RE = re.compile(r"^[a-z][a-z0-9_]*$")
 RESIST_CAP = 0.8
 
@@ -152,7 +152,7 @@ def validate_armour(ctx, data):
         if not isinstance(a.get("name"), str) or not a.get("name"):
             ctx["err"](where, "needs a name")
         if a.get("slot") not in ARMOUR_SLOTS:
-            ctx["err"](where, f"slot must be armour|off_hand, not '{a.get('slot')}'")
+            ctx["err"](where, f"slot must be body|head|off_hand, not '{a.get('slot')}'")
         resist = a.get("resist", {})
         if not isinstance(resist, dict):
             ctx["err"](where, "resist must be {type: share}")

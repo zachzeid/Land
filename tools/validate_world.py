@@ -373,8 +373,15 @@ def validate_emergence(path, souls, flags_known):
             err(where, f"missing '{f}'")
     trig = t.get("trigger", {})
     ev = trig.get("event")
-    if ev and ev.get("kind") and ev["kind"] not in EVENT_KINDS:
-        err(where, f"trigger event kind '{ev['kind']}' unknown")
+    kinds = ev.get("kind") if ev else None
+    for kind in (kinds if isinstance(kinds, list) else [kinds] if kinds else []):
+        if kind not in EVENT_KINDS:
+            err(where, f"trigger event kind '{kind}' unknown")
+    skills = (ev or {}).get("skill")
+    known_skills = {s.get("id") for s in json.loads((ROOT / "resources/player/skills.json").read_text()).get("skills", [])} if (ROOT / "resources/player/skills.json").exists() else set()
+    for skill in (skills if isinstance(skills, list) else [skills] if skills else []):
+        if known_skills and skill not in known_skills:
+            err(where, f"trigger event skill '{skill}' is not a skill in resources/player/skills.json")
     if "flag" in trig and trig["flag"].lstrip("!") not in flags_known:
         err(where, f"trigger flag '{trig['flag']}' unknown")
     if "crowd" in trig:
@@ -394,7 +401,7 @@ def validate_emergence(path, souls, flags_known):
             err(where, f"trigger reputation faction '{fac}' unknown")
     roles = t.get("roles", {})
     for rname, r in roles.items():
-        src = r.get("from", "")
+      for src in (r.get("from") if isinstance(r.get("from"), list) else [r.get("from", "")]):
         if not (src in ROLE_SOURCES or src.startswith("faction:") or src.startswith("npc:")):
             err(where, f"role '{rname}' from '{src}' unknown")
         if src.startswith("npc:") and src[4:] not in NPC_KEYS:

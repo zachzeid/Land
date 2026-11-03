@@ -1,12 +1,79 @@
 {
-	"_doc": "Armour and shields by item id (docs/PLAYER_SYSTEMS.md §3). slot: armour | off_hand. resist: the fraction of each damage type taken off (summed over pieces, capped at 0.8). poise: added to the wearer's poise. block: a shield's share of a blocked hit it stops (replaces the weapon's).",
-	"armour": {
-		"padded_jack": {"name": "padded jack", "slot": "armour", "resist": {"blunt": 0.35, "cut": 0.15, "pierce": 0.1}, "poise": 10},
-		"leather_jerkin": {"name": "leather jerkin", "slot": "armour", "resist": {"cut": 0.3, "pierce": 0.1, "blunt": 0.1, "fire": 0.15}, "poise": 5},
-		"mail_shirt": {"name": "mail shirt", "slot": "armour", "resist": {"cut": 0.5, "pierce": 0.35, "blunt": 0.1}, "poise": 15},
-		"mail_over_padding": {"name": "mail over a padded jack", "slot": "armour", "resist": {"cut": 0.55, "pierce": 0.4, "blunt": 0.35}, "poise": 25},
-		"wool_cloak": {"name": "wool cloak", "slot": "armour", "resist": {"cut": 0.05, "fire": 0.1}, "poise": 0},
-		"wooden_shield": {"name": "wooden shield", "slot": "off_hand", "resist": {}, "poise": 10, "block": 0.85},
-		"iron_buckler": {"name": "iron buckler", "slot": "off_hand", "resist": {}, "poise": 5, "block": 0.75}
-	}
+  "_doc": "Armour and shields by item id (docs/PLAYER_SYSTEMS.md §3). slot: armour | off_hand. resist: the fraction of each damage type taken off (summed over pieces, capped at 0.8). poise: added to the wearer's poise. block: a shield's share of a blocked hit it stops (replaces the weapon's).",
+  "armour": {
+    "padded_jack": {
+      "name": "padded jack",
+      "slot": "body",
+      "resist": {
+        "blunt": 0.35,
+        "cut": 0.15,
+        "pierce": 0.1
+      },
+      "poise": 10
+    },
+    "leather_jerkin": {
+      "name": "leather jerkin",
+      "slot": "body",
+      "resist": {
+        "cut": 0.3,
+        "pierce": 0.1,
+        "blunt": 0.1,
+        "fire": 0.15
+      },
+      "poise": 5
+    },
+    "mail_shirt": {
+      "name": "mail shirt",
+      "slot": "body",
+      "resist": {
+        "cut": 0.5,
+        "pierce": 0.35,
+        "blunt": 0.1
+      },
+      "poise": 15
+    },
+    "mail_over_padding": {
+      "name": "mail over a padded jack",
+      "slot": "body",
+      "resist": {
+        "cut": 0.55,
+        "pierce": 0.4,
+        "blunt": 0.35
+      },
+      "poise": 25
+    },
+    "wool_cloak": {
+      "name": "wool cloak",
+      "slot": "body",
+      "resist": {
+        "cut": 0.05,
+        "fire": 0.1
+      },
+      "poise": 0
+    },
+    "iron_buckler": {
+      "name": "iron buckler",
+      "slot": "off_hand",
+      "resist": {},
+      "poise": 5,
+      "block": 0.75
+    },
+    "shield": {
+      "name": "shield",
+      "slot": "off_hand",
+      "resist": {},
+      "poise": 10,
+      "block": 0.85
+    },
+    "helm": {
+      "name": "helm",
+      "slot": "head",
+      "resist": {
+        "cut": 0.3,
+        "pierce": 0.2,
+        "blunt": 0.25
+      },
+      "poise": 5
+    }
+  }
 }

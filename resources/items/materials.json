@@ -120,6 +120,45 @@
         "greystone"
       ],
       "description": "Salt as white as frost, from Greystone's deep vein. Rare, and not what the miners are paid to dig."
+    },
+    {
+      "id": "boar_tusk",
+      "name": "Boar tusk",
+      "kind": "material",
+      "weight": 0.2,
+      "stack": 10,
+      "value": 4,
+      "tags": [
+        "bone",
+        "trophy"
+      ],
+      "description": "A curved yellow tusk. Carvers buy them; hunters wear them."
+    },
+    {
+      "id": "adder_venom",
+      "name": "Adder venom",
+      "kind": "material",
+      "weight": 0.05,
+      "stack": 10,
+      "value": 6,
+      "tags": [
+        "poison",
+        "herbcraft"
+      ],
+      "description": "A few drops milked into a stoppered horn. Healers and worse want it."
+    },
+    {
+      "id": "bear_hide",
+      "name": "Bear hide",
+      "kind": "material",
+      "weight": 6.0,
+      "stack": 2,
+      "value": 60,
+      "tags": [
+        "hide",
+        "leather"
+      ],
+      "description": "A heavy black pelt off the ridge. Few in the valley have seen one up close."
     }
   ]
 }

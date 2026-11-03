@@ -233,7 +233,7 @@ func _maybe_feat(skill: String, context: Dictionary) -> void:
 	var events = _node("PlayerEvents")
 	var event_id = ""
 	if events:
-		event_id = events.record("feat", summary, context.get("about", []), {"witnesses": witnesses})
+		event_id = events.record("feat", summary, context.get("about", []), {"witnesses": witnesses, "skill": skill})
 	_respect_from_trade(skill, tier, witnesses, event_id)
 
 func get_feats() -> Dictionary:

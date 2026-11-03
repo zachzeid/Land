@@ -29,7 +29,8 @@ const FIGHTER_GROUPS = ["player", "npcs", "creatures", "fighters"]
 const SOLID_MASK = 4                 # world_solid: walls stop swings and sight
 const SLOT_WEAPON = "main_hand"
 const SLOT_SHIELD = "off_hand"
-const SLOT_ARMOUR = "armour"
+const SLOT_ARMOUR = "body"   # Inventory's equipment slots: main_hand, off_hand, body, head, tool
+const SLOT_HEAD = "head"
 
 const COST_DODGE = 15.0
 const COST_PARRY = 10.0
@@ -148,6 +149,8 @@ func attack(attacker: Node, target: Node, action: String) -> Dictionary:
 func resolve_hit(attacker: Node, target: Node, weapon: Dictionary, action: String) -> Dictionary:
 	if weapon.is_empty():
 		weapon = weapon_of(attacker)
+	elif not weapon.has("damage"):
+		weapon = make_weapon(weapon)  # an item record ({id, durability, ...}): look its stats up
 	var by_type = raw_damage(attacker, weapon, action)
 	var raw = _sum(by_type)
 	var result = {"damage": 0.0, "type": _main_type(by_type), "staggered": false, "killed": false,
@@ -237,6 +240,8 @@ func apply_hit_to(target: Node, result: Dictionary, attacker: Node = null) -> Di
 		return stats.damage(amount, type, fighter_key(attacker) if attacker else "") if stats else {"health": 0.0, "staggered": false, "dead": false}
 	if target.has_method("take_combat_hit"):
 		return target.take_combat_hit(result, attacker)
+	if target.has_method("take_hit"):
+		return target.take_hit(result, attacker)  # NPC bodies and creatures (combat world)
 	var st = _state_of(target)
 	st.health = maxf(float(st.health) - amount, 0.0)
 	return {"health": st.health, "staggered": false, "dead": float(st.health) <= 0.0}
@@ -328,9 +333,26 @@ func weapon_of(node: Node) -> Dictionary:
 		var inv = _inventory()
 		return make_weapon(inv.get_equipped(SLOT_WEAPON) if inv else {})
 	var w = profile_of(node).get("weapon", node.get("combat_weapon"))
+	if w is Dictionary and w.get("natural", false):
+		return _natural_weapon(w)
 	if w is Dictionary:
 		return make_weapon(w)
 	return make_weapon({"id": str(w)} if w != null else {})
+
+## A creature's teeth, tusks or fangs ({id, name, damage, type, poise_damage, natural}) as a weapon
+func _natural_weapon(w: Dictionary) -> Dictionary:
+	var fists: Dictionary = _weapons.get("fists", {})
+	var weapon = fists.duplicate(true)
+	weapon["id"] = str(w.get("id", "natural"))
+	weapon["name"] = str(w.get("name", "teeth"))
+	var damage = w.get("damage", 0.0)
+	weapon["damage"] = damage.duplicate() if damage is Dictionary else {str(w.get("type", "cut")): float(damage)}
+	weapon["poise"] = float(w.get("poise_damage", weapon.get("poise", 0.0)))
+	weapon["durability_per_hit"] = 0.0
+	weapon["skill"] = ""
+	weapon["item"] = {}
+	weapon["broken"] = false
+	return weapon
 
 func make_weapon(record: Dictionary) -> Dictionary:
 	var id = str(record.get("id", ""))
@@ -627,10 +649,22 @@ func _state_of(node: Node) -> Dictionary:
 	return _state[id]
 
 func profile_of(node: Node) -> Dictionary:
-	if node and is_instance_valid(node) and node.has_method("get_combat_profile"):
+	if node == null or not is_instance_valid(node):
+		return {}
+	if node.has_method("get_combat_profile"):
 		var p = node.get_combat_profile()
 		return p if p is Dictionary else {}
-	return {}
+	# NPC bodies and creatures (combat world) describe themselves piecemeal
+	var out: Dictionary = {}
+	if node.has_method("get_resistances"):
+		out["resist"] = node.get_resistances()
+	if node.has_method("get_weapon"):
+		out["weapon"] = node.get_weapon()
+	if node.get("health") != null:
+		out["health"] = float(node.get("health"))
+	if node.get("minor") != null:
+		out["minor"] = bool(node.get("minor"))
+	return out
 
 func fighter_key(node: Node) -> String:
 	if node == null or not is_instance_valid(node):
@@ -651,7 +685,7 @@ func _armour_defs(node: Node) -> Array:
 	if _is_player(node):
 		var inv = _inventory()
 		if inv:
-			for slot in [SLOT_ARMOUR, SLOT_SHIELD]:
+			for slot in [SLOT_ARMOUR, SLOT_HEAD, SLOT_SHIELD]:
 				var rec: Dictionary = inv.get_equipped(slot)
 				# Broken armour still sits on the body but no longer turns a blade
 				if not rec.is_empty() and not (rec.has("durability") and float(rec.durability) <= 0.0):
