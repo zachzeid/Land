@@ -31,14 +31,11 @@ const COMPANY_MINUTES = 60
 const COMPANY_REFUSE_BELOW = -20.0
 const PILLOW_TALK_VIA = "talk in the back rooms"
 const PILLOW_TALK_MAX = 3      # events a night's talk carries on
-## Who disapproves of the back rooms, by their own nature: a soul whose values hold one of these
-## (npc_personalities core_values), whose calling is the church (world.json role), or a devout
-## archetype (generics). Everyone else does not care
-const PIOUS_VALUES = ["faith", "piety", "prayer", "devotion", "chastity", "virtue", "the dawn"]
-const PIOUS_CALLINGS = ["cathedral", "abbey", "chapel", "priest", "monk", "nun", "acolyte"]
-const PIOUS_ARCHETYPES = ["cathedral_acolyte", "novice_monk", "pilgrim"]
+## How each person judges a visit to the back rooms is in data: resources/characters/judgement.json
+## (judge()). The faith rules there weigh DISAPPROVAL
+const JUDGEMENT_PATH = "res://resources/characters/judgement.json"
 const PERSONALITY_DIR = "res://resources/npc_personalities"
-const DISAPPROVAL = -6.0       # what a disapproving soul weighs a visit at (Reputation points)
+const DISAPPROVAL = -6.0       # what a devout soul weighs a visit at (Reputation points)
 
 ## Seams (null = autoloads); tests pin the clock and the rooms
 var now_override: int = -1
@@ -48,7 +45,8 @@ var present_override: Dictionary = {}   # location -> [who]
 var _rentals: Dictionary = {}           # location -> {room, until, paid, minute, how}
 var _talk_days: Dictionary = {}         # location -> the day the back rooms last passed talk on
 var _room_cache: Dictionary = {}        # location -> [{room, rent, back_room}] read from its scene
-var _values_cache: Dictionary = {}      # npc_id -> core_values
+var _souls: Dictionary = {}             # npc_id -> NPCPersonality (read once)
+var _judgement_rules: Dictionary = {}   # judgement.json "morals" (read once)
 
 func _ready():
 	var bus = get_node_or_null("/root/EventBus")
@@ -280,30 +278,182 @@ func company(who: String, location: String, price: int = -1) -> Dictionary:
 	company_kept.emit(out.merged({"who": who, "location": location}))
 	return out
 
-## What a party makes of a visit to the back rooms, by their own nature: DISAPPROVAL for the pious,
-## 0 for everyone else (a faction or region: the mean of its people). For Reputation's `morals`
+## What a party makes of a deed people weigh by their own nature (Reputation's `morals`): the mean of
+## judge() over its people (a faction or region: its members; children are not asked)
 func judgement(parties: Array, morals: String = "company") -> float:
-	if morals != "company" or parties.is_empty():
-		return 0.0
 	var total = 0.0
+	var counted = 0
 	for p in parties:
-		total += DISAPPROVAL if is_pious(str(p)) else 0.0
-	return total / parties.size()
+		var j = judge(str(p), morals)
+		if j.stance == "child":
+			continue
+		total += float(j.weight)
+		counted += 1
+	return total / counted if counted > 0 else 0.0
 
+## How one person judges a deed of this kind, read from their own data by the rules in
+## resources/characters/judgement.json. Returns {weight (Reputation points, in the rules' range),
+## stance: "disapproves" | "indifferent" | "approves" | "hurt" | "child", reason, feels, rules: [ids]}.
+## feels is their view in their own words ("" for a child or an unknown deed)
+func judge(who: String, morals: String = "company") -> Dictionary:
+	var out = {"weight": 0.0, "stance": "indifferent", "reason": "", "feels": "", "rules": []}
+	var rules: Dictionary = _judgement().get(morals, {})
+	if rules.is_empty() or who == "":
+		return out
+	who = _who(who)
+	if _is_minor(who):
+		out.stance = "child"
+		return out
+	var n = _nature(who)
+	var best: Dictionary = {}       # group -> strongest rule that holds
+	var tone: Dictionary = {}
+	for rule in rules.get("rules", []):
+		if not _rule_holds(rule, n, who):
+			continue
+		if rule.get("tone", false):
+			tone = rule
+			continue
+		var g = str(rule.get("group", rule.get("id", "")))
+		if not best.has(g) or absf(float(rule.weight)) > absf(float(best[g].weight)):
+			best[g] = rule
+	var held: Array = best.values()
+	held.sort_custom(func(a, b): return absf(float(a.weight)) > absf(float(b.weight)))
+	var w = 0.0
+	for rule in held:
+		w += float(rule.weight)
+		out.rules.append(str(rule.id))
+	var reasons: Array = held.map(func(r): return str(r.get("reason", r.id)))
+	var feels = str(held[0].get("feels", "")) if not held.is_empty() else ""
+	var hurt = _courting_weight(n, rules.get("courting", {}))
+	if hurt < 0.0:
+		# Courting the player outweighs everything else they think of it
+		w = minf(w, hurt)
+		reasons.push_front(str(rules.courting.get("reason", "courting")))
+		feels = str(rules.courting.get("feels", feels))
+		out.rules.push_front("courting")
+		out.stance = "hurt"
+	elif not tone.is_empty() and w < 0.0:
+		feels = str(tone.get("feels", feels))
+		reasons.append(str(tone.get("reason", tone.id)))
+		out.rules.append(str(tone.id))
+	var span: Array = rules.get("range", [-12, 3])
+	out.weight = clampf(w, float(span[0]), float(span[1]))
+	if out.stance != "hurt":
+		out.stance = "disapproves" if out.weight < 0.0 else ("approves" if out.weight > 0.0 else "indifferent")
+	var dflt: Dictionary = rules.get("default", {})
+	out.reason = "; ".join(reasons) if not reasons.is_empty() else str(dflt.get("reason", ""))
+	out.feels = feels if feels != "" else str(dflt.get("feels", ""))
+	return out
+
+## Their view of the deed in their own words, for what they know of it ("" when it is no such deed)
+func reaction(who: String, morals: String = "company") -> String:
+	return str(judge(who, morals).feels)
+
+## True when a faith rule holds for them (judgement.json group "faith")
 func is_pious(who: String) -> bool:
+	var rules: Dictionary = _judgement().get("company", {})
+	var n = _nature(_who(who))
+	for rule in rules.get("rules", []):
+		if str(rule.get("group", "")) == "faith" and _rule_holds(rule, n, _who(who)):
+			return true
+	return false
+
+## judgement.json's "morals" block (read once)
+func _judgement() -> Dictionary:
+	if _judgement_rules.is_empty():
+		var f = FileAccess.open(JUDGEMENT_PATH, FileAccess.READ)
+		var data = JSON.parse_string(f.get_as_text()) if f else null
+		_judgement_rules = data.get("morals", {}) if data is Dictionary else {}
+		if _judgement_rules.is_empty():
+			push_warning("[Taverns] No judgement rules at %s" % JUDGEMENT_PATH)
+	return _judgement_rules
+
+## What the rules read of someone: {scope: main|generic|"", key, soul, values, dislikes, interests,
+## roles, archetype, voice, traits (Big Five)}
+func _nature(who: String) -> Dictionary:
+	var n = {"scope": "", "key": "", "soul": null, "values": [], "dislikes": [], "interests": [], "roles": [],
+		"archetype": "", "voice": "", "traits": {}}
 	var gm = _generics()
 	var inst = gm.get_instance(who) if gm and gm.has_method("get_instance") else null
 	if inst != null:
-		return str(inst.archetype_id) in PIOUS_ARCHETYPES
+		n.scope = "generic"
+		n.archetype = str(inst.archetype_id)
+		var arch = gm.get_archetype(n.archetype) if gm.has_method("get_archetype") else null
+		if arch and int(inst.voice_variant) >= 0 and int(inst.voice_variant) < arch.voice_variants.size():
+			n.voice = str(arch.voice_variants[int(inst.voice_variant)])
+		for t in ["openness", "conscientiousness", "extraversion", "agreeableness", "neuroticism"]:
+			n.traits[t] = inst.get_trait(t)
+		return n
 	var registry = _node("WorldRegistry")
 	var key = registry.get_npc_key(who) if registry else ""
 	if key == "":
+		return n
+	n.scope = "main"
+	n.key = key
+	n.roles = [str(registry.get_npc(key).get("role", ""))]
+	var soul = _soul(str(registry.get_npc_id(key)))
+	if soul:
+		n.soul = soul
+		n.values = Array(soul.core_values)
+		n.dislikes = Array(soul.dislikes)
+		n.interests = Array(soul.interests)
+		for t in ["openness", "conscientiousness", "extraversion", "agreeableness", "neuroticism"]:
+			n.traits[t] = int(soul.get("trait_" + t))
+	return n
+
+## Every condition of a rule holds for them (word lists: any word inside any entry, lower case)
+func _rule_holds(rule: Dictionary, n: Dictionary, who: String) -> bool:
+	if n.scope == "":
 		return false
-	var role = str(registry.get_npc(key).get("role", "")).to_lower()
-	if PIOUS_CALLINGS.any(func(w): return role.contains(w)):
-		return true
-	var values = " ".join(_core_values(str(registry.get_npc_id(key)))).to_lower()
-	return PIOUS_VALUES.any(func(w): return values.contains(w))
+	if rule.has("scope") and str(rule.scope) != n.scope:
+		return false
+	for field in ["values", "dislikes", "interests", "roles"]:
+		if rule.has(field) and not _words_in(rule[field], n[field]):
+			return false
+	if rule.has("archetypes") and not n.archetype in rule.archetypes:
+		return false
+	if rule.has("voices") and not _words_in(rule.voices, [n.voice]):
+		return false
+	for f in rule.get("flags", {}):
+		if n.soul == null or bool(n.soul.get(f)) != bool(rule.flags[f]):
+			return false
+	for t in rule.get("traits", {}):
+		var span: Array = rule.traits[t]
+		if not n.traits.has(t) or int(n.traits[t]) < int(span[0]) or int(n.traits[t]) > int(span[1]):
+			return false
+	if rule.get("keeps_back_rooms", false) and not tavern_ids().any(func(loc): return is_brothel(loc) and is_keeper(who, loc)):
+		return false
+	return true
+
+func _words_in(words: Array, entries: Array) -> bool:
+	var text = " | ".join(entries.map(func(e): return str(e))).to_lower()
+	return words.any(func(w): return text.contains(str(w).to_lower()))
+
+## How much it hurts someone courting the player (0 when they are not): a main NPC who could love the
+## player and has the romance (a flag, or their soul's thresholds met) weighs their style's weight;
+## one growing fond (affection near their own threshold), budding_scale of it
+func _courting_weight(n: Dictionary, c: Dictionary) -> float:
+	var soul = n.soul
+	if c.is_empty() or n.scope != "main" or soul == null or not soul.is_romantic_available:
+		return 0.0
+	if str(soul.orientation) in c.get("never", []):
+		return 0.0
+	var style = float(c.get("styles", {}).get(str(soul.relationship_style), 0.0))
+	if style >= 0.0:
+		return 0.0
+	var ws = _node("WorldState")
+	for f in c.get("flags", []):
+		if ws and ws.has_method("get_world_flag") and ws.get_world_flag(str(f).format({"key": n.key})):
+			return style
+	var director = _node("StorylineDirector")
+	var dims: Dictionary = director.get_relationship_dims(n.key) if director and director.has_method("get_relationship_dims") else {}
+	var trust = float(dims.get("trust", 0.0))
+	var affection = float(dims.get("affection", 0.0))
+	if soul.is_romance_unlocked(trust, affection, float(dims.get("familiarity", 0.0))):
+		return style
+	if affection > 0.0 and affection >= float(c.get("affection_share", 0.75)) * float(soul.romance_affection_threshold):
+		return style * float(c.get("budding_scale", 0.67))
+	return 0.0
 
 ## Of a night, the companions hear what the lodgers know of the stranger, and it travels on from them
 ## (PlayerEvents.spread). Once a night per house. Returns the event ids passed on
@@ -447,18 +597,18 @@ func _place(location: String) -> String:
 	var registry = _node("WorldRegistry")
 	return str(registry.get_location_name(location)) if registry and registry.has_location(location) else location
 
-## core_values of the personality resource with this npc_id (read once)
-func _core_values(npc_id: String) -> Array:
-	if _values_cache.is_empty():
+## The personality resource with this npc_id (every soul read once)
+func _soul(npc_id: String):
+	if _souls.is_empty():
 		var dir = DirAccess.open(PERSONALITY_DIR)
 		if dir:
 			for f in dir.get_files():
 				if f.ends_with(".tres"):
 					var res = load("%s/%s" % [PERSONALITY_DIR, f])
 					if res and "npc_id" in res and "core_values" in res:
-						_values_cache[str(res.npc_id)] = Array(res.core_values)
-		_values_cache["_read"] = []
-	return _values_cache.get(npc_id, [])
+						_souls[str(res.npc_id)] = res
+		_souls["_read"] = null
+	return _souls.get(npc_id)
 
 ## A line of narration in the scene's dialogue UI (as StoryItem does), else the log
 func _narrate(text: String) -> void:
