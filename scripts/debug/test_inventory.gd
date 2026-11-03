@@ -1,7 +1,7 @@
 extends SceneTree
 
 # Tests the Inventory (docs/PLAYER_SYSTEMS.md §2 the pack, §6 the player's tools):
-# - item definitions (resources/items) load; coin is pennies, 12 a mark, 20 marks a crown
+# - item definitions (resources/items) load; coin is copper, 100 a silver, 100 silver a gold, 100 gold a crown
 # - stacking by id/quality/maker/provenance, slots and the carry-weight limit, refused adds change nothing
 # - equipment slots, two-handed weapons and the off hand, wear and break, repair
 # - provenance: a stolen item worn where its owner (or anyone who knows it) has line of sight is a
@@ -86,12 +86,17 @@ func _test_definitions_and_coin():
 	_check("Every kind of the brief is present", ["weapon", "armour", "tool", "material", "food", "remedy", "misc"].all(func(k): return kinds.has(k)))
 	for id in ["iron_ore", "steel_bar", "fever_root", "white_salt", "smiths_hammer", "arming_sword", "hunting_bow", "arrows", "mail_shirt", "fever_root_tea", "grey_fever_cure", "spare_lot_tile"]:
 		_check("%s is defined" % id, inv.get_definition(id).get("id", "") == id)
-	_check("get_item_def (UI) returns the definition", inv.get_item_def("bread").get("name", "") == "Bread" and inv.PENNIES_PER_MARK == 12 and inv.MARKS_PER_CROWN == 20)
-	_check("A labourer's season (3 crowns) is 720 pennies", inv.to_pennies(3) == 720 and inv.PENNIES_PER_CROWN == 240)
-	_check("A mail shirt costs about a season's wage", inv.get_definition("mail_shirt").value == inv.to_pennies(3))
-	_check("Coin reads as crowns, marks and pennies", inv.format_coin(inv.to_pennies(2, 1, 3)) == "2 crowns, 1 mark, 3 pennies" and inv.format_coin(1) == "1 penny")
-	inv.add_coin(inv.to_pennies(0, 2, 5))
-	_check("add_coin and get_coin are pennies", inv.get_coin() == 29)
+	_check("get_item_def (UI) returns the definition", inv.get_item_def("bread").get("name", "") == "Bread" and inv.COPPER_PER_SILVER == 100 and inv.SILVER_PER_GOLD == 100 and inv.GOLD_PER_CROWN == 100)
+	_check("A crown is a million copper, a gold ten thousand", inv.COPPER_PER_CROWN == 1000000 and inv.COPPER_PER_GOLD == 10000)
+	_check("A labourer's season (7 silver 20) is 720 copper", inv.to_copper(0, 0, 7, 20) == 720)
+	_check("A mail shirt costs about a season's wage", inv.get_definition("mail_shirt").value == inv.to_copper(0, 0, 7, 20))
+	_check("format_coin: nothing", inv.format_coin(0) == "nothing")
+	_check("format_coin: 1 copper", inv.format_coin(1) == "1 copper")
+	_check("format_coin: 100 is 1 silver", inv.format_coin(100) == "1 silver")
+	_check("format_coin: 1,010,203 is 1 crown, 1 gold, 2 silver, 3 copper", inv.format_coin(1010203) == "1 crown, 1 gold, 2 silver, 3 copper" and inv.to_copper(1, 1, 2, 3) == 1010203)
+	_check("format_coin: crowns take a plural, the metals do not", inv.format_coin(inv.to_copper(3, 2, 0, 5)) == "3 crowns, 2 gold, 5 copper")
+	inv.add_coin(inv.to_copper(0, 0, 0, 29))
+	_check("add_coin and get_coin are copper", inv.get_coin() == 29)
 	_check("Spending more than the purse holds is refused", not inv.spend_coin(30) and inv.get_coin() == 29)
 	_check("...spending what it holds is not", inv.spend_coin(9) and inv.get_coin() == 20)
 	inv.add_coin(-100)

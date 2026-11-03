@@ -475,12 +475,12 @@ discovery_text = "[b]The council's minute book[/b]
 
 Three winters of entries in Elder Mathias's careful hand.
 
-'First winter of the Hollow. Twenty crowns paid at the mill stone, that the north farms not burn. Carried.'
-'Second winter. Thirty crowns. Carried.'
-'Third winter. Forty crowns. Carried, two against.'
+'First winter of the Hollow. Forty-eight silver paid at the mill stone, that the north farms not burn. Carried.'
+'Second winter. Seventy-two silver. Carried.'
+'Third winter. Ninety-six silver. Carried, two against.'
 
 Every entry ends the same way: 'Drawn from the reserve, as kept.' Nowhere does it say where the reserve is kept. Beside the last entry, someone has written 'Motion to report the losses to the crown's reeve' and then struck it through."
-reexamine_text = "Twenty, thirty, forty crowns. 'Drawn from the reserve, as kept.' The motion to tell the crown is still struck through."
+reexamine_text = "Forty-eight, seventy-two, ninety-six silver. 'Drawn from the reserve, as kept.' The motion to tell the crown is still struck through."
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/MinuteBook"]
 shape = SubResource("RectangleShape2D_88x76")

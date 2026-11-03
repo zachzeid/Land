@@ -102,7 +102,7 @@ then it comes out cracked, more plea than menace. Under real pressure his senten
 "I only... she was thirteen... you didn't hear her breathing."
 
 ## Secrets
-- He keeps a duplicate set of the chapel's lot tiles in his strongbox. He paid Bjorn's apprentice Davin a silver mark to pour it from the leftover iron while Bjorn was at market, "spares for the chapel, no need to trouble your master". A year later the lot he rigged with those tiles took Davin. Every autumn Gregor palms one of them into the draw.
+- He keeps a duplicate set of the chapel's lot tiles in his strongbox. He paid Bjorn's apprentice Davin a dozen copper to pour it from the leftover iron while Bjorn was at market, "spares for the chapel, no need to trouble your master". A year later the lot he rigged with those tiles took Davin. Every autumn Gregor palms one of them into the draw.
 - Four of the five names came folded inside the salt packet the messenger brought him. Hesk Marlow's did not. The third year the slip said only "choose", and Hesk had been asking the council who kept the urn's key. Gregor chose him. Hesk died in the Pit. That one is his alone.
 - He keeps a ledger in the back room: each year, the tile he palmed and the name it fell to, beside his deliveries to the Hollow. He cannot burn it. Part of him kept it so that one day someone would make him stop.
 - This year's palmed tile said Ada Fenn. He does not know who swapped it. He suspects the Hollow is punishing him, or that Varn wants Elena for himself. It has not crossed his mind that it was Elena.

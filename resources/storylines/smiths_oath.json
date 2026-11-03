@@ -24,7 +24,7 @@
     "oath_smith_walked_away": "Bjorn banked his forge fire, hung up his hammer and walked out of Thornhaven carrying nothing but his father's last bar of steel.",
     "oath_cart_axle_broken": "Bjorn broke the Hollow's cart axle at the village gate with his father's hammer, and the Tithe cart could not roll.",
     "oath_showed_bjorn_the_tiles": "The player laid the second set of lot tiles from Gregor's strongbox on Bjorn's anvil.",
-    "oath_told_bjorn_of_davin": "The player told Bjorn that Gregor paid Davin a silver mark to pour the second set of tiles, and that the lot rigged with them took Davin.",
+    "oath_told_bjorn_of_davin": "The player told Bjorn that Gregor paid Davin a dozen copper to pour the second set of tiles, and that the lot rigged with them took Davin.",
     "oath_vouched_for_bjorn": "The player sat by Old Maud's fire and promised Davin that Bjorn would not look away from his hand.",
     "oath_asked_for_glass": "The player asked Bjorn to temper the Hollow's Collection Night blades to snap on the first hard blow.",
     "oath_asked_bjorn_to_arm": "The player asked Bjorn, to his face, to forge for the gate on Collection Night and to take no coin for it.",
@@ -449,7 +449,7 @@
           "eligible": [
             "mira"
           ],
-          "situation": "The smith is about to learn whose silver poured a second set of tiles at his forge. Better he blames Gregor than wonders who sent the names.",
+          "situation": "The smith is about to learn whose coin poured a second set of tiles at his forge. Better he blames Gregor than wonders who sent the names.",
           "options": [
             {
               "id": "point_him_at_gregor",
@@ -461,7 +461,7 @@
                 {
                   "type": "agenda",
                   "npc": "bjorn",
-                  "text": "Ask the stranger what Gregor's silver bought at your forge while you were at market."
+                  "text": "Ask the stranger what Gregor's coin bought at your forge while you were at market."
                 }
               ],
               "harms": [
@@ -524,7 +524,7 @@
                 {
                   "type": "agenda",
                   "npc": "bjorn",
-                  "text": "Ask the stranger whether Davin ever spoke of silver he should not have had."
+                  "text": "Ask the stranger whether Davin ever spoke of coin he should not have had."
                 }
               ]
             },
@@ -550,8 +550,8 @@
     {
       "id": "davins_silver_mark",
       "act": 2,
-      "title": "Davin's Silver Mark",
-      "summary": "Gregor paid Bjorn's apprentice a silver mark to pour the spare tiles. A year later the lot Gregor rigged with them took Davin himself. Bjorn will learn it from Gregor, from the boy, or from the stranger.",
+      "title": "Twelve Copper for the Tiles",
+      "summary": "Gregor paid Bjorn's apprentice a dozen copper to pour the spare tiles. A year later the lot Gregor rigged with them took Davin himself. Bjorn will learn it from Gregor, from the boy, or from the stranger.",
       "location": "thornhaven_gregor_shop",
       "requires": [
         "oath_tiles_from_my_forge"
@@ -602,7 +602,7 @@
                 {
                   "type": "agenda",
                   "npc": "bjorn",
-                  "text": "Ask the stranger what they know of Gregor's silver and your forge."
+                  "text": "Ask the stranger what they know of Gregor's coin and your forge."
                 }
               ]
             }
@@ -619,7 +619,7 @@
           "options": [
             {
               "id": "whole_truth",
-              "label": "Tell him all of it: the silver mark, the palmed draws, and the lot that took Davin",
+              "label": "Tell him all of it: the dozen copper, the palmed draws, and the lot that took Davin",
               "serves": [
                 "make_amends",
                 "escape_the_deal"
@@ -673,7 +673,7 @@
           "eligible": [
             "davin"
           ],
-          "situation": "The smith is asking who poured the second set of tiles. You did, for a silver mark from Gregor, while Bjorn was at market. A year later the cart came for you.",
+          "situation": "The smith is asking who poured the second set of tiles. You did, for a dozen copper from Gregor, while Bjorn was at market. A year later the cart came for you.",
           "options": [
             {
               "id": "tell_the_stranger",
@@ -686,7 +686,7 @@
                 {
                   "type": "agenda",
                   "npc": "davin",
-                  "text": "Tell the stranger Gregor paid you a silver mark to pour the tiles, and the lot took you a year later."
+                  "text": "Tell the stranger Gregor paid you a dozen copper to pour the tiles, and the lot took you a year later."
                 }
               ],
               "harms": [
@@ -799,7 +799,7 @@
           "eligible": [
             "bjorn"
           ],
-          "situation": "Gregor rigged your tiles for five years. Your boy poured the spares for a silver mark, and the lot rigged with them sent him up the ridge.",
+          "situation": "Gregor rigged your tiles for five years. Your boy poured the spares for a dozen copper, and the lot rigged with them sent him up the ridge.",
           "options": [
             {
               "id": "to_gregor",
@@ -812,7 +812,7 @@
                 {
                   "type": "agenda",
                   "npc": "bjorn",
-                  "text": "Tell the stranger you will say to Gregor's face what his silver bought."
+                  "text": "Tell the stranger you will say to Gregor's face what his coin bought."
                 }
               ],
               "harms": [
@@ -1275,7 +1275,7 @@
           "eligible": [
             "gregor"
           ],
-          "situation": "Davin is home at the forge. Two fingers gone. Your silver mark. Your lot.",
+          "situation": "Davin is home at the forge. Two fingers gone. Your dozen copper. Your lot.",
           "options": [
             {
               "id": "kneel",

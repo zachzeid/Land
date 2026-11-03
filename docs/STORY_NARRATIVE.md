@@ -210,7 +210,7 @@ fixed point: the cart comes.
 - **Who chose the names.** Mira, as the "messenger", sent each year's name to Gregor folded inside the
   salt packet. In Year 3 the slip said only *choose*. That was her test, and Gregor chose Hesk Marlow,
   because Hesk kept asking who held the urn's key. Hesk is Gregor's own private guilt.
-- **The duplicate tiles.** Gregor paid Bjorn's apprentice **Davin** a silver mark to pour a spare set
+- **The duplicate tiles.** Gregor paid Bjorn's apprentice **Davin** a dozen copper to pour a spare set
   from the leftover iron while Bjorn was at market. Bjorn never knew. A year later the lot Gregor
   rigged with those tiles took Davin himself.
 - **The swap.** The evening before the drawing, in the chapel vestry, Elena took Ada Fenn's tile from

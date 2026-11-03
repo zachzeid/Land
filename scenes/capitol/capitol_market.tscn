@@ -4642,7 +4642,7 @@ Proclamations pasted one over the other until the board is thick as a book.
 
 On top, the regent's seal: \"[i]Let it be known that the tithe of the Western Valley is three years in arrears. Any reeve, elder or freeholder with knowledge of the losses shall give it to the High Magistry.[/i]\"
 
-Beside it, a smaller bill in a careful hand: \"[i]Dawn-tonic for the grey sweats. Given at the Cathedral infirmary, by donation. Two crowns the vial.[/i]\" Two crowns is most of a labourer's season."
+Beside it, a smaller bill in a careful hand: \"[i]Dawn-tonic for the grey sweats. Given at the Cathedral infirmary, by donation. Five silver the vial.[/i]\" Five silver is most of a labourer's season."
 reexamine_text = "The tithe proclamation, and the Cathedral's two-crown tonic."
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Details/ProclamationBoard"]

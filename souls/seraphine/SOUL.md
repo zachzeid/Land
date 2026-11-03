@@ -35,7 +35,7 @@ father rich. She would rather be feared than sorry for herself.
 - `restore_house_ashdown` (9): Restore House Ashdown's fortune and its seat among the great houses.
 - `clear_fathers_debts` (8): Pay off her father's debts to the Guild and get Hollis Marrow's hand off her throat.
 - `keep_her_hands_clean` (8): Never let her name be tied to the Hollow, the fence or anything that bleeds.
-- `keep_the_valley_afraid` (7): Keep Thornhaven frightened enough that its freeholders keep selling to her agent for pennies.
+- `keep_the_valley_afraid` (7): Keep Thornhaven frightened enough that its freeholders keep selling to her agent for a few copper.
 - `a_seat_beside_the_throne` (5): Make House Ashdown the regent's indispensable ally, or the next regent's.
 - `meet_the_boss` (3): Learn who really runs Iron Hollow, because a partner she has never seen is a partner she cannot control.
 

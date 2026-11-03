@@ -46,7 +46,7 @@
             {
               "type": "agenda",
               "npc": "{keeper}",
-              "text": "Ask {player} to sit up one night at your fold: the wolves come after moonrise. Offer a hot meal and what pennies you have."
+              "text": "Ask {player} to sit up one night at your fold: the wolves come after moonrise. Offer a hot meal and what copper you have."
             },
             {
               "type": "adjust_relationship",

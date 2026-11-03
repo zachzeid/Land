@@ -13,7 +13,7 @@ masters than their masters know about themselves.
 tired of the house, and painfully aware that one mistake means the street. {name} carries
 messages, carries parcels, and has learned not to look at what is in them. Lately there have been
 more parcels and more messages than usual, some of them going to the Guild's back door at night.
-{name} wonders, says nothing, and saves every penny. There is a sweetheart in another house, or a
+{name} wonders, says nothing, and saves every copper. There is a sweetheart in another house, or a
 mother in the River Quarter, or a plan to leave service, and the house knows none of it.
 
 ## Wants
@@ -62,7 +62,7 @@ stairs; {name} will be terrified of being found out and delighted in about equal
 - result: `{id}_met_the_sweetheart`: They spent a stolen half-day by the Lantern Market with their sweetheart and were not caught.
 
 ### Arc: `a_character_and_a_purse` (serves `leave_service_one_day`)
-"A written character from the house and twelve crowns saved. Then I'm my own mistress, or master."
+"A written character from the house and near thirty silver saved. Then I'm my own mistress, or master."
 - `save_the_vails`: Put aside every tip from visitors for a year. | after: none | needs: none | at: any | takes: 4 | effects: agenda
 - `ask_for_the_character`: Ask the steward for a written character, without saying why. | after: save_the_vails | needs: none | at: any | takes: 1 | effects: adjust_relationship
 - `give_notice`: Give notice, curtsey or bow, and walk out the front door. | after: ask_for_the_character | needs: none | at: capitol_market | takes: 1 | effects: move_npc, shift_want

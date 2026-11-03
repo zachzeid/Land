@@ -409,15 +409,15 @@ interaction_name = "Read the Slate"
 flag_to_set = ""
 discovery_text = "[b]A slate by the door[/b]
 
-'Setting a bone - 2 crowns.
-A birthing - 3 crowns, or a pig.
-A knife wound, no questions - 5 crowns.
-A fever of the grey kind - FORTY CROWNS. Paid before. I do not work for promises.'
+'Setting a bone - 5 silver.
+A birthing - 7 silver, or a pig.
+A knife wound, no questions - 12 silver.
+A fever of the grey kind - ONE GOLD. Paid before. I do not work for promises.'
 
 Below, a list of debts long rubbed out, and one fresh: 'G., the merchant. Asked the price. Did not pay.'
 
 And a tally with no name and no price, a stroke for every day since midsummer: 'Dressings. Two fingers gone, left hand. Wash the white dust out of the cuts, every morning, it will not stop coming.'"
-reexamine_text = "Forty crowns for the grey fever. And a nameless tally: two fingers gone, white dust in the cuts."
+reexamine_text = "A gold for the grey fever. And a nameless tally: two fingers gone, white dust in the cuts."
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/PriceSlate"]
 shape = SubResource("RectangleShape2D_84x58")

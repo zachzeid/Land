@@ -24,7 +24,7 @@ ashamed of how much relief there was in that.
 
 ## Wants
 - `keep_the_land` (6-10): Hold the freehold, whatever the agent offers, whatever the Hollow takes.
-- `save_for_a_cow` (3-7): Put enough marks aside for a milk cow, so the children stop going thin in winter.
+- `save_for_a_cow` (3-7): Put enough silver aside for a milk cow, so the children stop going thin in winter.
 - `be_left_alone_by_the_hollow` (5-9): Pay what must be paid and never see a Hollow face at the gate again.
 - `see_the_children_settled` (3-8): See the young ones grown, married and on land of their own.
 - `stand_with_the_neighbours` (2-7): Do what the rest of the village does, together, when the time comes.
@@ -73,7 +73,7 @@ before admitting anything.
 ## Life
 ### Arc: `the_milk_cow` (serves `save_for_a_cow`)
 "A cow's not a luxury. A cow's the difference between thin children and fat ones come February."
-- `put_by_the_pennies`: Sell eggs and beans at the square and put every penny in the jar. | after: none | needs: none | at: thornhaven_town_square | takes: 3 | effects: agenda
+- `put_by_the_pennies`: Sell eggs and beans at the square and put every copper in the jar. | after: none | needs: none | at: thornhaven_town_square | takes: 3 | effects: agenda
 - `hide_the_jar`: Move the jar somewhere the Hollow's collectors won't think to look. | after: put_by_the_pennies | needs: none | at: any | takes: 1 | effects: agenda
 - `buy_at_the_mill_market`: Walk to the mill on market day and bargain for a cow. | after: hide_the_jar | needs: !cou_barn_burned | at: old_mill | takes: 2 | effects: move_npc, adjust_relationship | player: helps
 - result: `{id}_bought_a_cow`: They bought a brindle milk cow at the mill market and walked her home on a rope.

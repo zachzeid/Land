@@ -74,6 +74,6 @@ small practical gifts, a mended strap, a share of the garrison's good bread.
 
 ### Arc: `a_plot_of_land` (serves `a_pension_and_a_cottage`)
 "Five more years. Then a plot near the river, some hens, and nobody shouting at me before dawn."
-- `put_by_the_mustering_coin`: Put aside every mark from the ridge patrols. | after: none | needs: none | at: fort_ashguard | takes: 4 | effects: agenda
+- `put_by_the_mustering_coin`: Put aside every copper from the ridge patrols. | after: none | needs: none | at: fort_ashguard | takes: 4 | effects: agenda
 - `look_at_land`: Walk out on leave to look at freeholds near Ferrisford. | after: put_by_the_mustering_coin | needs: none | at: ferrisford | takes: 2 | effects: move_npc, adjust_relationship
 - result: `{id}_chose_a_plot_of_land`: They saved their patrol coin and chose a small freehold by the river for their mustering out.

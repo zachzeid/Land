@@ -29,6 +29,6 @@ Plain words, weather and soil in every sentence.
 ## Life
 ### Arc: `milk_cow` (serves `a_cow_of_her_own`)
 A cow means milk, cheese, a little coin of {name}'s own.
-- `save_pennies`: Put aside a penny from every market day. | after: none | needs: none | at: any | takes: 3 | effects: shift_want
+- `save_pennies`: Put aside a copper from every market day. | after: none | needs: none | at: any | takes: 3 | effects: shift_want
 - `buy_the_cow`: Buy a cow at the square. | after: save_pennies | needs: none | at: thornhaven_town_square | takes: 1 | effects: agenda | player: helps
 - result: `{id}_bought_a_cow`: {name} bought a milk cow at last.

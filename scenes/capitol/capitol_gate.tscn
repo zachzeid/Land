@@ -1866,7 +1866,7 @@ interaction_name = "Read the Toll Board"
 flag_to_set = ""
 discovery_text = "[b]Tolls of the Dawn Gate[/b]
 
-Painted on oak, the old rates in white: a penny a foot, two for a horse, a silver mark for every laden cart. Below them, a newer board in fresher paint:
+Painted on oak, the old rates in white: a copper a foot, two for a horse, a dozen copper for every laden cart. Below them, a newer board in fresher paint:
 
 \"By order of the Merchants' Guild and with the Lord Protector's leave: carts bearing the Guild's seal pass free and uncounted.\"
 
@@ -1965,7 +1965,7 @@ flag_to_set = ""
 discovery_text = "[b]The Rangers' board[/b]
 
 A crown warrant, sun-faded at the edges:
-\"[i]VARN, late sergeant of Fort Ashguard, deserter, who did carry off a wagon of the King's arms. Twenty crowns to whoever delivers him to the Commander. Signed, L. Ferrow.[/i]\" The sum has been raised twice in different ink.
+\"[i]VARN, late sergeant of Fort Ashguard, deserter, who did carry off a wagon of the King's arms. Fifty silver to whoever delivers him to the Commander. Signed, L. Ferrow.[/i]\" The sum has been raised twice in different ink.
 
 Nailed over its corner, newer: \"[i]The King's Rangers will muster for the Western Valley. The tithe is three years short. By order of the Lord Protector.[/i]\""
 reexamine_text = "Varn's warrant, and the muster order for the Western Valley."

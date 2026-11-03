@@ -41,7 +41,7 @@
       "options": [
         {
           "id": "come_back_for_more",
-          "label": "Go back for more, and name a price in marks",
+          "label": "Go back for more, and name a price in silver",
           "appeal": {
             "trust": 0.5,
             "respect": 0.3
@@ -50,7 +50,7 @@
             {
               "type": "agenda",
               "npc": "{buyer}",
-              "text": "Ask {player} for more of the same: a dozen blades by week's end, paid in marks, no questions either way."
+              "text": "Ask {player} for more of the same: a dozen blades by week's end, paid in silver, no questions either way."
             },
             {
               "type": "adjust_relationship",

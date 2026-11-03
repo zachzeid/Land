@@ -1,5 +1,5 @@
 {
-  "_note": "Raw materials: gathered (resources/crafting/nodes.json) and worked at stations. value is in pennies (Inventory: 12 pennies a mark, 20 marks a crown).",
+  "_note": "Raw materials: gathered (resources/crafting/nodes.json) and worked at stations. value is in copper (Inventory: 100 copper a silver, 100 silver a gold, 100 gold a crown).",
   "items": [
     {
       "id": "iron_ore",

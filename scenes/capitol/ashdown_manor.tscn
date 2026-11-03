@@ -817,7 +817,7 @@ flag_to_set = "ashdown_debt_letters_read"
 discovery_text = "[b]Letters on the writing desk[/b]
 
 A neat pile, each folded the same way, each with the Merchants' Guild seal broken.
-\"[i]My lady, the Guild is mindful of your late father's friendship, and patient. But four thousand crowns do not grow smaller with patience...[/i]\"
+\"[i]My lady, the Guild is mindful of your late father's friendship, and patient. But a hundred gold does not grow smaller with patience...[/i]\"
 \"[i]...the valley venture continues to answer our hopes. Each season of trouble lowers the price of an acre further...[/i]\"
 
 All signed with the same looped initials: [i]H.M.[/i]"
@@ -852,7 +852,7 @@ discovery_text = "[b]The Western Valley deed[/b]
 
 Under glass, the ancient grant of House Ashdown, its royal seal cracked with age.
 
-Beside it, not under glass, a newer map of Thornhaven, every freehold drawn in. Some are shaded. Beside each shaded parcel a price is pencilled, and the prices fall season by season: [i]Brannoc's farm, 40 crowns. 22. 9. Bought, 6.[/i]"
+Beside it, not under glass, a newer map of Thornhaven, every freehold drawn in. Some are shaded. Beside each shaded parcel a price is pencilled, and the prices fall season by season: [i]Brannoc's farm, 96 silver. 53. 22. Bought, 14.[/i]"
 reexamine_text = "Thornhaven, acre by acre, bought cheap."
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Details/DeedCaseGlass"]

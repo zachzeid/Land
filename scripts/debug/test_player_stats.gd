@@ -21,8 +21,8 @@ class FakeInventory extends RefCounted:
 	var drops: Array = []
 	func get_coin() -> int:
 		return coin
-	func add_coin(pennies: int) -> void:
-		coin += pennies
+	func add_coin(copper: int) -> void:
+		coin += copper
 	func drop_all_at(scene_root: Node, position: Vector2) -> Node:
 		drops.append({"scene": scene_root, "position": position})
 		return null
@@ -274,7 +274,7 @@ func _test_teaching():
 	var clock = world_state.get_game_minutes()
 	r = await teaching.request_training("bjorn", "smithing")
 	_check("Trusted and respected, Bjorn teaches", r.ok and r.choice == "teach" and r.paid == "coin")
-	_check("...for coin", r.cost_pennies > 0 and inv.coin == 500 - r.cost_pennies)
+	_check("...for coin", r.cost_copper > 0 and inv.coin == 500 - r.cost_copper)
 	_check("...and the lesson takes game time", r.minutes > 0 and world_state.get_game_minutes() == clock + r.minutes)
 	var base_xp = float(stats.get_skill_def("smithing").base_xp)
 	_check("Gain doubles for a while", is_equal_approx(stats.use_skill("smithing", 1.0).gained, 2.0 * base_xp))
@@ -283,7 +283,7 @@ func _test_teaching():
 	inv.coin = 0
 	director.relationship_dims_override["bjorn"] = {"trust": 40, "affection": 30}
 	r = await teaching.request_training("bjorn", "smithing")
-	_check("With no coin, a friend teaches for a favour owed", r.ok and r.choice == "teach_for_favour" and r.cost_pennies == 0 and _last_of_kind("promise").summary.contains("favour"))
+	_check("With no coin, a friend teaches for a favour owed", r.ok and r.choice == "teach_for_favour" and r.cost_copper == 0 and _last_of_kind("promise").summary.contains("favour"))
 	r = await teaching.request_training("gregor", "smithing")
 	_check("Gregor has no smithing to teach", not r.ok and r.reason == "does not know that trade")
 	r = await teaching.request_training("rook", "blades")

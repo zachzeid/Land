@@ -26,7 +26,7 @@
     "tn_hollow_at_mauds_door": "A Hollow man came to Old Maud's door by night asking after a boy with two fingers missing",
     "tn_maud_guarded": "Captain Aldric posted two of his six at Old Maud's hut and asked no questions about who was inside",
     "tn_taken_alive_known": "The stranger learned that the people the Tithe took are alive, digging white salt in chains in a seam beyond the smugglers' ridge",
-    "tn_bjorn_knows_his_boy": "Bjorn learned that Davin had poured the spare lot tiles in his forge for Gregor's silver, and that a lot rigged with them took Davin a year later",
+    "tn_bjorn_knows_his_boy": "Bjorn learned that Davin had poured the spare lot tiles in his forge for Gregor's coin, and that a lot rigged with them took Davin a year later",
     "tn_gate_plan_drawn": "Captain Aldric laid out his plan for the gate on Collection Night: his six on the Kingsroad side, Bjorn's steel, and whoever else would stand",
     "tn_fund_offered": "Elder Mathias laid the undercroft key before the council and offered the tribute fund as a ransom for Elena",
     "tn_elena_in_the_wagon": "Gregor hid Elena under a Kingsroad carter's canvas before dawn on the last day, bound east",
@@ -2211,7 +2211,7 @@
       "id": "bjorns_boy",
       "act": 2,
       "title": "The Smith's Boy",
-      "summary": "Bjorn learns that the spare tiles in Gregor's strongbox were poured in his own forge, by Davin, for a silver mark, and that a lot rigged with them took Davin a year later.",
+      "summary": "Bjorn learns that the spare tiles in Gregor's strongbox were poured in his own forge, by Davin, for a dozen copper, and that a lot rigged with them took Davin a year later.",
       "location": "thornhaven_blacksmith",
       "requires": [
         "davin_found",
@@ -2236,11 +2236,11 @@
           "eligible": [
             "davin"
           ],
-          "situation": "The stranger found spare lot tiles in the merchant's strongbox. You poured a few spares once, for Gregor, a silver mark, 'no need to trouble your master'. A year later the cart took you.",
+          "situation": "The stranger found spare lot tiles in the merchant's strongbox. You poured a few spares once, for Gregor, a dozen copper, 'no need to trouble your master'. A year later the cart took you.",
           "options": [
             {
               "id": "tell_bjorn",
-              "label": "Tell Bjorn about the silver mark and the spare tiles",
+              "label": "Tell Bjorn about the dozen copper and the spare tiles",
               "serves": [
                 "see_bjorn",
                 "atone_for_running"
@@ -2313,7 +2313,7 @@
           "eligible": [
             "bjorn"
           ],
-          "situation": "Your own iron, poured by your own boy, for Gregor's silver, and then it chose him. You have stood at the back of that chapel four times doing nothing.",
+          "situation": "Your own iron, poured by your own boy, for Gregor's coin, and then it chose him. You have stood at the back of that chapel four times doing nothing.",
           "options": [
             {
               "id": "pledge_the_forge",
@@ -2373,7 +2373,7 @@
           "eligible": [
             "gregor"
           ],
-          "situation": "Bjorn knows. The tiles, the silver mark, the boy. You lied to him about the tiles and the steel both.",
+          "situation": "Bjorn knows. The tiles, the dozen copper, the boy. You lied to him about the tiles and the steel both.",
           "options": [
             {
               "id": "say_it_to_his_face",
@@ -4970,7 +4970,7 @@
           "eligible": [
             "varn"
           ],
-          "situation": "Chests of coin at the gate, and the merchant's girl behind them. The widow will count every penny of it in her little book.",
+          "situation": "Chests of coin at the gate, and the merchant's girl behind them. The widow will count every copper of it in her little book.",
           "options": [
             {
               "id": "by_the_book",

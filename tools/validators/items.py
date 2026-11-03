@@ -1,6 +1,6 @@
 """Item definitions (resources/items/*.json) for the Inventory (docs/PLAYER_SYSTEMS.md §6).
 
-Each file is {"items": [...]}; each item {id, name, kind, weight, stack, value (pennies), tags, ...}.
+Each file is {"items": [...]}; each item {id, name, kind, weight, stack, value (copper), tags, ...}.
 Checks: unique snake_case ids, known kinds, sane weight/stack/value, equipment slots and the kinds that
 may use them, durability only on unstackable things, ammunition that exists, known_by keys and
 factions that exist, no forbidden concepts in any text. Stdlib only.
@@ -65,7 +65,7 @@ def validate(ctx):
             if not isinstance(item["stack"], int) or isinstance(item["stack"], bool) or not 1 <= item["stack"] <= 100:
                 err(iw, "stack must be an int 1-100")
             if not isinstance(item["value"], int) or isinstance(item["value"], bool) or not 0 <= item["value"] <= 24000:
-                err(iw, "value must be whole pennies 0-24000 (100 crowns)")
+                err(iw, "value must be whole copper 0-24000 (2 gold 40 silver)")
             if not isinstance(item["tags"], list) or any(not isinstance(t, str) or not ID_RE.match(t) for t in item["tags"]):
                 err(iw, "tags must be a list of snake_case strings")
             slots = item.get("slots", [])

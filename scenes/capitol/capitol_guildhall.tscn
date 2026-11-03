@@ -1209,10 +1209,10 @@ discovery_text = "[b]Debts of the great houses[/b]
 
 An open book on a lectern, kept so the clerks can see it and remember who owes the Guild.
 
-\"[i]House Ashdown: the late Lord's account. Four thousand crowns, at interest. Extended by the Guildmaster's grace, Midwinter last. Extended again.[/i]\"
+\"[i]House Ashdown: the late Lord's account. A hundred gold, at interest. Extended by the Guildmaster's grace, Midwinter last. Extended again.[/i]\"
 
 The column for payments has a single entry, and it is not money. It reads: [i]See private ledger.[/i]"
-reexamine_text = "House Ashdown owes four thousand crowns. 'See private ledger.'"
+reexamine_text = "House Ashdown owes a hundred gold. 'See private ledger.'"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Details/HouseDebts"]
 shape = SubResource("Rect_140x44")

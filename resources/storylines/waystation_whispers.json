@@ -1236,7 +1236,7 @@
                 {
                   "type": "agenda",
                   "npc": "rook",
-                  "text": "Tell the stranger the price of the lady on the hill is ten crowns, paid first. Count it twice."
+                  "text": "Tell the stranger the price of the lady on the hill is two dozen silver, paid first. Count it twice."
                 }
               ],
               "harms": [
@@ -1375,7 +1375,7 @@
           "eligible": [
             "rook"
           ],
-          "situation": "A footman out of livery paid you five crowns to forget the Guild's back door. Ladies pay to forget only what is worth remembering.",
+          "situation": "A footman out of livery paid you twelve silver to forget the Guild's back door. Ladies pay to forget only what is worth remembering.",
           "options": [
             {
               "id": "take_it_and_go",

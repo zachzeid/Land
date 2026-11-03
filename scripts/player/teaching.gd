@@ -8,7 +8,8 @@ extends RefCounted
 
 const TEACHERS_PATH = "res://resources/player/teachers.json"
 const COMBAT_SKILLS = ["blades", "blunt", "bows", "defence"]
-const DEFAULT_BASE_PENNIES = 12
+const DEFAULT_BASE_COPPER = 12
+const InventoryScript = preload("res://scripts/player/inventory.gd")
 const DEFAULT_UP_TO = 50
 
 ## Seams (null = autoloads)
@@ -25,11 +26,11 @@ func _init(owner_stats = null):
 	var parsed = JSON.parse_string(FileAccess.get_file_as_string(TEACHERS_PATH)) if FileAccess.file_exists(TEACHERS_PATH) else null
 	_data = parsed if parsed is Dictionary else {}
 
-## Ask teacher_key to train skill. Async (the soul decides). Returns {ok, reason, cost_pennies, minutes}
+## Ask teacher_key to train skill. Async (the soul decides). Returns {ok, reason, cost_copper, minutes}
 ## (plus choice and paid: "coin" | "favour" when ok)
 func request_training(teacher_key: String, skill: String) -> Dictionary:
 	var key = npc_key(teacher_key)
-	var out = {"ok": false, "reason": "", "cost_pennies": 0, "minutes": 0}
+	var out = {"ok": false, "reason": "", "cost_copper": 0, "minutes": 0}
 	var s = _stats()
 	if s == null or not skill in s.get_skill_ids():
 		out.reason = "no such skill"
@@ -47,7 +48,7 @@ func request_training(teacher_key: String, skill: String) -> Dictionary:
 		return out
 	var cost = lesson_cost(row, current)
 	var minutes = int(_data.get("lesson_minutes", 120))
-	out.cost_pennies = cost
+	out.cost_copper = cost
 	out.minutes = minutes
 	var dir = _director()
 	if dir == null:
@@ -66,7 +67,7 @@ func request_training(teacher_key: String, skill: String) -> Dictionary:
 		out["paid"] = "coin"
 	else:
 		out["paid"] = "favour"
-		out.cost_pennies = 0
+		out.cost_copper = 0
 		var events = _node("PlayerEvents")
 		if events:
 			events.record("promise", "promised a favour in return for lessons in %s" % skill, [key], {"witnesses": [key], "spread": false})
@@ -92,9 +93,9 @@ func _learn_taught_recipes(skill: String) -> Array:
 			learned.append(str(id))
 	return learned
 
-## Pennies for a lesson: dearer the further along the player already is
+## Copper for a lesson: dearer the further along the player already is
 static func lesson_cost(row: Dictionary, current_level: float) -> int:
-	return int(round(float(row.get("base_pennies", DEFAULT_BASE_PENNIES)) * (1.0 + current_level / 25.0)))
+	return int(round(float(row.get("base_copper", DEFAULT_BASE_COPPER)) * (1.0 + current_level / 25.0)))
 
 ## The teachers.json row for a main key or a generic id (by its archetype); {} when none
 func teacher_row(key: String) -> Dictionary:
@@ -123,7 +124,7 @@ func npc_key(who: String) -> String:
 func _hook(key: String, skill: String, cost: int, can_pay: bool) -> Dictionary:
 	var options: Array = [{"id": "refuse", "label": "Refuse to teach the stranger", "appeal": {"fear": 0.5, "trust": -0.5}, "effects": []}]
 	if can_pay:
-		options.append({"id": "teach", "label": "Teach them %s for %d pennies" % [skill, cost],
+		options.append({"id": "teach", "label": "Teach them %s for %s" % [skill, InventoryScript.format_coin(cost)],
 			"appeal": {"trust": 1.0, "respect": 1.0, "familiarity": 0.5}, "effects": []})
 	else:
 		options.append({"id": "teach_for_favour", "label": "Teach them %s for a favour owed" % skill,
@@ -152,10 +153,10 @@ func _coin() -> int:
 	var inv = _inventory()
 	return int(inv.get_coin()) if inv and inv.has_method("get_coin") else 0
 
-func _pay(pennies: int) -> void:
+func _pay(copper: int) -> void:
 	var inv = _inventory()
-	if inv and inv.has_method("add_coin") and pennies > 0:
-		inv.add_coin(-pennies)
+	if inv and inv.has_method("add_coin") and copper > 0:
+		inv.add_coin(-copper)
 
 func _stats():
 	return stats if stats != null else _node("PlayerStats")

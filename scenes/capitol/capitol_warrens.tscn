@@ -1360,7 +1360,7 @@ discovery_text = "[b]A door marked in grey chalk[/b]
 
 A cross in grey chalk, the old sign from the fever year: [i]sickness in this house, keep away[/i]. The chalk is new. Inside, somebody coughs and does not stop.
 
-Somebody else has written beneath the cross, smaller: \"[i]The Cathedral says it's marsh chill. The Cathedral says two crowns.[/i]\""
+Somebody else has written beneath the cross, smaller: \"[i]The Cathedral says it's marsh chill. The Cathedral says five silver.[/i]\""
 reexamine_text = "A fresh grey cross. The fever is back in the Warrens."
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Details/ChalkedDoor"]

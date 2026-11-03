@@ -1,13 +1,14 @@
 extends Node
-## Inventory - items, equipment, coin (pennies), weight, provenance, the pack dropped on death
+## Inventory - items, equipment, coin (copper), weight, provenance, the pack dropped on death
 ## docs/PLAYER_SYSTEMS.md §2 (the pack), §6 (the player's tools in the world)
 ## - item definitions: resources/items/*.json ({"items": [{id, name, kind, weight, stack, value, tags, ...}]})
 ## - records: {uid, id, qty, quality 0-100, durability, max_durability, maker, provenance {from, stolen,
 ##   owner}, broken, recognised}; stackable items stack per (id, quality, maker, provenance)
 ## - MAX_SLOTS slots, a carry-weight limit (PlayerStats.get_max_carry when it has one, else 60), five
 ##   equipment slots; a two-handed weapon frees the off hand
-## - coin is held as pennies: 12 pennies a mark, 20 marks a crown (240 pennies). A labourer's season
-##   (about 80 working days) is about 3 crowns = 720 pennies, roughly 9 pennies a day
+## - coin is held as copper: 100 copper a silver, 100 silver a gold, 100 gold a crown. A copper buys
+##   what a penny once did: ale is 2 copper, a labourer's day about 9, a season (about 80 working
+##   days) about 720 copper, a little over 7 silver. Gold is a fortune; a crown is a treasury sum
 ## - stolen items the owner (or anyone who knows the item) sees equipped are recognised: a `theft` deed
 ##   about the owner, witnessed by line of sight, once per item (check_recognition)
 ## - every death drops everything as a pack (drop_all_at). Packs persist in the save by location and
@@ -28,9 +29,11 @@ const SLOTS = ["main_hand", "off_hand", "body", "head", "tool"]
 const MAX_SLOTS = 24
 const DEFAULT_CARRY = 60.0
 const DEFAULT_QUALITY = 50
-const PENNIES_PER_MARK = 12
-const MARKS_PER_CROWN = 20
-const PENNIES_PER_CROWN = PENNIES_PER_MARK * MARKS_PER_CROWN
+const COPPER_PER_SILVER = 100
+const SILVER_PER_GOLD = 100
+const GOLD_PER_CROWN = 100
+const COPPER_PER_GOLD = COPPER_PER_SILVER * SILVER_PER_GOLD
+const COPPER_PER_CROWN = COPPER_PER_GOLD * GOLD_PER_CROWN
 const FELL_LINK_MINUTES = 60      # a fall and a pack at the same place this close together are one death
 
 var defs: Dictionary = {}         # item id -> definition
@@ -279,42 +282,46 @@ func repair(item_id: String, amount: float = -1.0) -> bool:
 	return true
 
 # =============================================================================
-# COIN (pennies)
+# COIN (copper)
 # =============================================================================
 
 func get_coin() -> int:
 	return coin
 
-## Add pennies (negative takes, never below nothing)
-func add_coin(pennies: int) -> void:
-	coin = maxi(coin + pennies, 0)
+## Add copper (negative takes, never below nothing)
+func add_coin(copper: int) -> void:
+	coin = maxi(coin + copper, 0)
 	changed.emit()
 
-## Pay pennies. false (and nothing paid) when the purse is short
-func spend_coin(pennies: int) -> bool:
-	if pennies < 0 or pennies > coin:
+## Pay copper. false (and nothing paid) when the purse is short
+func spend_coin(copper: int) -> bool:
+	if copper < 0 or copper > coin:
 		return false
-	coin -= pennies
+	coin -= copper
 	changed.emit()
 	return true
 
-static func to_pennies(crowns: int = 0, marks: int = 0, pennies: int = 0) -> int:
-	return crowns * PENNIES_PER_CROWN + marks * PENNIES_PER_MARK + pennies
+## Copper for an amount in crowns, gold, silver and copper
+static func to_copper(crowns: int = 0, gold: int = 0, silver: int = 0, copper: int = 0) -> int:
+	return crowns * COPPER_PER_CROWN + gold * COPPER_PER_GOLD + silver * COPPER_PER_SILVER + copper
 
-## "2 crowns, 3 marks, 4 pennies" ("nothing" for 0)
-static func format_coin(pennies: int) -> String:
-	if pennies <= 0:
+## "1 crown, 1 gold, 2 silver, 3 copper" ("nothing" for 0)
+static func format_coin(copper: int) -> String:
+	if copper <= 0:
 		return "nothing"
 	var parts: Array = []
-	var crowns = pennies / PENNIES_PER_CROWN
-	var marks = (pennies % PENNIES_PER_CROWN) / PENNIES_PER_MARK
-	var rest = pennies % PENNIES_PER_MARK
+	var crowns = copper / COPPER_PER_CROWN
+	var gold = (copper % COPPER_PER_CROWN) / COPPER_PER_GOLD
+	var silver = (copper % COPPER_PER_GOLD) / COPPER_PER_SILVER
+	var rest = copper % COPPER_PER_SILVER
 	if crowns > 0:
 		parts.append("%d crown%s" % [crowns, "" if crowns == 1 else "s"])
-	if marks > 0:
-		parts.append("%d mark%s" % [marks, "" if marks == 1 else "s"])
+	if gold > 0:
+		parts.append("%d gold" % gold)
+	if silver > 0:
+		parts.append("%d silver" % silver)
 	if rest > 0:
-		parts.append("%d %s" % [rest, "penny" if rest == 1 else "pennies"])
+		parts.append("%d copper" % rest)
 	return ", ".join(parts)
 
 # =============================================================================
