@@ -9,6 +9,8 @@ signal analysis_failed(error: String)
 const CLAUDE_API_URL = "https://api.anthropic.com/v1/messages"
 const REQUEST_TIMEOUT_MS = 120000  # thinking is always on: allow for it
 const ClaudeClientScript = preload("res://scripts/dialogue/claude_client.gd")
+const LlmTelemetry = preload("res://scripts/core/llm_telemetry.gd")
+var _request_started_ms: int = 0
 
 var api_key: String = ""
 var pending_request: HTTPRequest = null
@@ -119,6 +121,7 @@ func analyze_scene(image_path: String, scene_description: String = "") -> void:
 	var json_body = JSON.stringify(body)
 	print("[SceneAnalyzer] Sending to Claude Vision API...")
 
+	_request_started_ms = Time.get_ticks_msec()
 	err = pending_request.request(CLAUDE_API_URL, headers, HTTPClient.METHOD_POST, json_body)
 	if err != OK:
 		analysis_failed.emit("HTTP request failed: %d" % err)
@@ -182,6 +185,7 @@ func _on_request_completed(result: int, response_code: int, headers: PackedStrin
 	if pending_request:
 		pending_request.queue_free()
 		pending_request = null
+	_record_telemetry(result, response_code, body)
 
 	if result != HTTPRequest.RESULT_SUCCESS:
 		analysis_failed.emit("Request failed: %d" % result)
@@ -481,3 +485,19 @@ func _polygon_area(points: PackedVector2Array) -> float:
 		area += points[i].x * points[j].y
 		area -= points[j].x * points[i].y
 	return abs(area) / 2.0
+
+## One telemetry line per analysis (LlmTelemetry): latency, the API's usage counts, cost
+func _record_telemetry(result: int, response_code: int, body: PackedByteArray) -> void:
+	var data = JSON.parse_string(body.get_string_from_utf8()) if result == HTTPRequest.RESULT_SUCCESS else null
+	var usage: Dictionary = data.get("usage", {}) if data is Dictionary and data.get("usage") is Dictionary else {}
+	var model = str(data.get("model", "claude-opus-5-5")) if data is Dictionary else "claude-opus-5-5"
+	LlmTelemetry.record({
+		"provider": "anthropic", "purpose": "scene_analysis", "requested_model": "claude-opus-5-5", "model": model,
+		"latency_ms": Time.get_ticks_msec() - _request_started_ms, "ok": result == HTTPRequest.RESULT_SUCCESS and response_code == 200,
+		"status_code": response_code, "stop_reason": str(data.get("stop_reason", "")) if data is Dictionary else "",
+		"input_tokens": int(usage.get("input_tokens", 0)),
+		"cache_creation_input_tokens": int(usage.get("cache_creation_input_tokens", 0)),
+		"cache_read_input_tokens": int(usage.get("cache_read_input_tokens", 0)),
+		"prompt_tokens": LlmTelemetry.prompt_tokens(usage), "output_tokens": int(usage.get("output_tokens", 0)),
+		"cost_usd": LlmTelemetry.cost_usd(model, usage),
+	})

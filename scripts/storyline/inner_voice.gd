@@ -1,4 +1,5 @@
 extends Node
+const LlmTelemetry = preload("res://scripts/core/llm_telemetry.gd")
 # InnerVoice - The player's private thoughts (docs/WORLD_SCHEMA.md §13)
 # think(text) parses a thought into an intention {goal, about[], stance, strength}. Offline: keyword
 # matching against NPC names, flags, storyline titles, beat and hook text, Life arcs and emergent
@@ -325,7 +326,7 @@ func known_ids() -> Array:
 func _send(client: Object, messages: Array, system_prompt: String) -> Dictionary:
 	var done = {"value": null}
 	var runner = func():
-		done.value = await client.send_message(messages, system_prompt)
+		done.value = await LlmTelemetry.send(client, messages, system_prompt, {"purpose": "inner_voice"})
 	runner.call()
 	var waited = 0.0
 	while done.value == null and waited < claude_timeout and is_inside_tree():

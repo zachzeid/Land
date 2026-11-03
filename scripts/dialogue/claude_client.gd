@@ -13,10 +13,15 @@ const DEFAULT_EFFORT = "low"
 ## server-side on the model Anthropic recommends for that refusal category
 const FALLBACK_BETA = "server-side-fallback-2026-07-01"
 const API_VERSION = "2023-06-01"
+const MODELS_URL = "https://api.anthropic.com/v1/models/"
+const LlmTelemetry = preload("res://scripts/core/llm_telemetry.gd")
 
-# Token usage tracking
+# Token usage tracking (input is the whole prompt: uncached + cache writes + cache reads)
 var total_input_tokens := 0
 var total_output_tokens := 0
+var total_cache_read_tokens := 0
+var total_cache_write_tokens := 0
+var total_cost_usd := 0.0
 var conversation_costs := {}
 
 # Allow manual API key override for testing
@@ -34,9 +39,11 @@ func _ready():
 
 ## Send a message to Claude and get response
 ## messages: Array of {role: "user"|"assistant", content: String}
-## system_prompt: Optional system prompt for personality
+## system_prompt: a String (sent uncached), or ContextBuilder's system_blocks: an Array of
+##   {"text", "cache": bool}; a cache breakpoint ends each block marked cache (prompt caching)
+## meta: telemetry labels, e.g. {"purpose": "dialogue", "npc": "gregor_merchant_001"}
 ## Returns: Dictionary with response or error
-func send_message(messages: Array, system_prompt: String = "") -> Dictionary:
+func send_message(messages: Array, system_prompt = "", meta: Dictionary = {}) -> Dictionary:
 	# Rate limiting
 	var current_time = Time.get_ticks_msec() / 1000.0
 	var time_since_last = current_time - last_request_time
@@ -60,18 +67,119 @@ func send_message(messages: Array, system_prompt: String = "") -> Dictionary:
 		"messages": sanitized_messages
 	}
 	
-	if not system_prompt.is_empty():
-		request_body["system"] = _sanitize_system_prompt(system_prompt)
+	var system = _build_system(system_prompt)
+	if not (system is String and system.is_empty()):
+		request_body["system"] = system
 	
 	# Make HTTP request
+	var started = Time.get_ticks_msec()
 	var result = await _make_request(request_body)
+	var latency_ms = Time.get_ticks_msec() - started
 	
 	# Track token usage
 	if result.has("usage"):
-		total_input_tokens += result.usage.get("input_tokens", 0)
-		total_output_tokens += result.usage.get("output_tokens", 0)
+		var usage: Dictionary = result.usage
+		total_input_tokens += LlmTelemetry.prompt_tokens(usage)
+		total_output_tokens += int(usage.get("output_tokens", 0))
+		total_cache_read_tokens += int(usage.get("cache_read_input_tokens", 0))
+		total_cache_write_tokens += int(usage.get("cache_creation_input_tokens", 0))
+		var cost = LlmTelemetry.cost_usd(str(result.get("model", MODEL)), usage)
+		if cost != null:
+			total_cost_usd += cost
+	_record_telemetry(request_body, result, latency_ms, meta)
 	
 	return result
+
+## The API's system field: a plain string, or text blocks with cache_control on each cached block
+func _build_system(system_prompt):
+	if system_prompt is String:
+		return _sanitize_system_prompt(system_prompt) if not system_prompt.is_empty() else ""
+	var blocks: Array = []
+	var total = 0
+	for block in system_prompt:
+		var text = str(block.get("text", "")) if block is Dictionary else str(block)
+		if text.strip_edges().is_empty():
+			continue  # the API rejects empty text blocks
+		total += text.length()
+		var entry = {"type": "text", "text": text}
+		if block is Dictionary and block.get("cache", false):
+			entry["cache_control"] = {"type": "ephemeral"}  # 5-minute TTL
+		blocks.append(entry)
+	if total > _system_char_limit():
+		# Over the backstop: one string, cut like any other (caching is moot for a broken prompt)
+		return _sanitize_system_prompt("".join(blocks.map(func(b): return b.text)))
+	print("[ClaudeClient] System prompt: %d chars in %d blocks (%d cached)" % [total, blocks.size(), blocks.filter(func(b): return b.has("cache_control")).size()])
+	return blocks
+
+## One telemetry line: what was asked, what came back, how long it took, what it cost
+func _record_telemetry(body: Dictionary, result: Dictionary, latency_ms: int, meta: Dictionary) -> void:
+	var system = body.get("system", "")
+	var system_chars = 0
+	var cached_chars = 0
+	var block_count = 0
+	if system is Array:
+		block_count = system.size()
+		var upto = 0
+		for b in system:
+			system_chars += b.text.length()
+			upto += b.text.length()
+			if b.has("cache_control"):
+				cached_chars = upto  # a breakpoint caches every byte before it
+	else:
+		system_chars = str(system).length()
+		block_count = 1 if system_chars > 0 else 0
+	var message_chars = 0
+	for m in body.messages:
+		message_chars += str(m.content).length()
+	var usage: Dictionary = result.get("usage", {}) if result.get("usage") is Dictionary else {}
+	var model = str(result.get("model", body.model))
+	var entry = {
+		"provider": "anthropic", "purpose": str(meta.get("purpose", "unlabelled")), "npc": str(meta.get("npc", "")),
+		"requested_model": body.model, "model": model, "effort": body.get("output_config", {}).get("effort", ""),
+		"max_tokens": body.max_tokens, "latency_ms": latency_ms,
+		"ok": not result.has("error"), "error": str(result.get("error", "")), "status_code": int(result.get("status_code", 200 if not result.has("error") else 0)),
+		"refusal": bool(result.get("refusal", false)), "stop_reason": str(result.get("stop_reason", "")),
+		"system_chars": system_chars, "system_blocks": block_count, "cached_prefix_chars": cached_chars,
+		"messages": body.messages.size(), "message_chars": message_chars,
+		"input_tokens": int(usage.get("input_tokens", 0)),
+		"cache_creation_input_tokens": int(usage.get("cache_creation_input_tokens", 0)),
+		"cache_read_input_tokens": int(usage.get("cache_read_input_tokens", 0)),
+		"prompt_tokens": LlmTelemetry.prompt_tokens(usage),
+		"output_tokens": int(usage.get("output_tokens", 0)),
+		"thinking_tokens": int(usage.get("output_tokens_details", {}).get("thinking_tokens", 0)) if usage.get("output_tokens_details") is Dictionary else 0,
+		"fallback_served": _fallback_served(usage),
+		"cost_usd": LlmTelemetry.cost_usd(model, usage),
+	}
+	var window = LlmTelemetry.context_window(model)
+	entry["context_window"] = window.get("max_input_tokens", null)
+	entry["context_used"] = (float(entry.prompt_tokens) / float(window.max_input_tokens)) if window.get("max_input_tokens", 0) else null
+	LlmTelemetry.record(entry)
+	if not result.has("error") and not LlmTelemetry.has_context_window(model):
+		_lookup_model(model)  # not awaited: later records carry the window
+
+## The model's context window and output cap, from the Models API, once per model per session
+func _lookup_model(model: String) -> void:
+	LlmTelemetry.set_context_window(model, {})  # one lookup at a time
+	var api_key = _api_key()
+	if api_key.is_empty() or not is_inside_tree():
+		return
+	var http = HTTPRequest.new()
+	add_child(http)
+	if http.request(MODELS_URL + model, ["x-api-key: " + api_key, "anthropic-version: " + API_VERSION], HTTPClient.METHOD_GET) != OK:
+		http.queue_free()
+		return
+	var response = await http.request_completed
+	http.queue_free()
+	var json = JSON.new()
+	if response[1] == 200 and json.parse(response[3].get_string_from_utf8()) == OK and json.data is Dictionary:
+		LlmTelemetry.set_context_window(model, {"max_input_tokens": int(json.data.get("max_input_tokens", 0)), "max_tokens": int(json.data.get("max_tokens", 0))})
+
+## Whether a fallback model served any part of this response (usage.iterations of type fallback_message)
+static func _fallback_served(usage: Dictionary) -> bool:
+	var iterations = usage.get("iterations", [])
+	if not iterations is Array:
+		return false
+	return iterations.any(func(i): return i is Dictionary and i.get("type", "") == "fallback_message")
 
 ## Sanitize messages to mitigate prompt injection
 func _sanitize_messages(messages: Array) -> Array:
@@ -155,14 +263,24 @@ func _sanitize_system_prompt(prompt: String) -> String:
 
 	# ContextBuilder sizes the prompt to Config.system_prompt_token_budget; this is only a backstop
 	# (budget + 25%), so it never cuts a prompt the builder already fitted
-	var config = get_node_or_null("/root/Config")
-	var budget = int(config.system_prompt_token_budget) if config and "system_prompt_token_budget" in config else 6000
-	var limit = int(budget * 4 * 1.25)
+	var limit = _system_char_limit()
 	if char_count > limit:
 		push_warning("System prompt too long (%d chars), truncating to %d" % [char_count, limit])
 		cleaned = cleaned.substr(0, limit)
 
 	return cleaned
+
+func _system_char_limit() -> int:
+	var config = get_node_or_null("/root/Config")
+	var budget = int(config.system_prompt_token_budget) if config and "system_prompt_token_budget" in config else 6000
+	return int(budget * 4 * 1.25)
+
+func _api_key() -> String:
+	if not api_key_override.is_empty():
+		return api_key_override
+	if has_node("/root/Config"):
+		return get_node("/root/Config").get_claude_api_key()
+	return ""
 
 ## Make HTTP request to Claude API
 func _make_request(body: Dictionary) -> Dictionary:
@@ -247,7 +365,8 @@ func _make_request(body: Dictionary) -> Dictionary:
 		var details = data.get("stop_details", {})
 		var category = str(details.get("category", "")) if details is Dictionary else ""
 		print("[ClaudeClient] Request declined (refusal%s)" % (": " + category if category != "" else ""))
-		return {"error": "Claude declined this request", "refusal": true, "category": category}
+		return {"error": "Claude declined this request", "refusal": true, "category": category,
+			"usage": data.get("usage", {}), "model": data.get("model", MODEL), "stop_reason": "refusal"}
 
 	# Validate response structure
 	if not data.has("content") or data.content.is_empty():
@@ -274,6 +393,8 @@ func get_usage_stats() -> Dictionary:
 		"total_input_tokens": total_input_tokens,
 		"total_output_tokens": total_output_tokens,
 		"total_tokens": total_input_tokens + total_output_tokens,
+		"cache_read_tokens": total_cache_read_tokens,
+		"cache_write_tokens": total_cache_write_tokens,
 		"estimated_cost_usd": _calculate_cost()
 	}
 
@@ -290,12 +411,9 @@ func _effort() -> String:
 	var effort = str(config.claude_effort) if config and "claude_effort" in config else ""
 	return effort if effort in ["low", "medium", "high", "xhigh", "max"] else DEFAULT_EFFORT
 
-## Estimated cost at Claude Opus 5.5 pricing: input $4, output $20 per million tokens
-## (output includes thinking tokens)
+## Cost so far, priced per call from each response's usage (cache reads and writes included)
 func _calculate_cost() -> float:
-	var input_cost = (total_input_tokens / 1_000_000.0) * 4.0
-	var output_cost = (total_output_tokens / 1_000_000.0) * 20.0
-	return input_cost + output_cost
+	return total_cost_usd
 
 ## Reset usage statistics
 func reset_stats():

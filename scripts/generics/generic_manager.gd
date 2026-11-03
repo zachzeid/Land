@@ -1,4 +1,5 @@
 extends Node
+const LlmTelemetry = preload("res://scripts/core/llm_telemetry.gd")
 # GenericManager - The generic NPC system (docs/WORLD_SCHEMA.md §9), owned by DynamicNPCRegistry
 # - archetypes + names + population -> seeded instances (gen_<archetype>_<n>), each a rolled soul
 #   registered with the StorylineDirector as tier `generic`
@@ -893,7 +894,7 @@ func _claude_rewrite(original: String, inst) -> String:
 	var client = client_script.new()
 	add_child(client)
 	var system = "You rewrite SOUL.md files for a late-medieval low-fantasy game. Rewrite ONLY the prose (Essence, Voice, Secrets and the one prose paragraph under each ### Arc) in the voice of the person described. Copy every other line exactly, character for character: the header lines, every line starting with '- ', every '### Arc' line and every '## ' heading. No modern concepts. Reply with the file only."
-	var response = await client.send_message([{"role": "user", "content": original}], system)
+	var response = await LlmTelemetry.send(client, [{"role": "user", "content": original}], system, {"purpose": "soul_rewrite"})
 	client.queue_free()
 	return str(response.get("text", "")) if response is Dictionary else ""
 

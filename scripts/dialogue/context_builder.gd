@@ -60,8 +60,29 @@ func build_context(params: Dictionary) -> Dictionary:
 
 	return {
 		"system_prompt": enhanced_system,
+		"system_blocks": _system_blocks(enhanced_system),
 		"messages": messages
 	}
+
+## CACHE TIERS (prompt caching): the system prompt goes to Claude as three blocks, most stable first,
+## so a cache breakpoint ends each stable stretch (docs: a breakpoint caches every byte before it,
+## and any change before it misses):
+## 1. format, identity, world facts, personality, speech: fixed for an NPC (cached)
+## 2. the storyline layer: changes with flags, rounds and the hour, not with a turn (cached)
+## 3. relationship, what it heard, secrets, memories, world state, guidance: every turn (not cached)
+## Measured with real content: only tier 3 changed on a turn; flags, rounds and hours changed tier 2
+var _cache_split: Array = []
+
+func _system_blocks(system_prompt: String) -> Array:
+	var split = _cache_split
+	_cache_split = []
+	if split.size() != 2 or int(split[1]) > system_prompt.length():
+		return [{"text": system_prompt, "cache": false}]
+	return [
+		{"text": system_prompt.substr(0, split[0]), "cache": true},
+		{"text": system_prompt.substr(split[0], split[1] - split[0]), "cache": true},
+		{"text": system_prompt.substr(split[1]), "cache": false},
+	].filter(func(b): return b.text != "")
 
 ## Build system prompt from structured NPCPersonality resource
 ## PRIORITY ORDER: Critical sections at top survive truncation
@@ -79,7 +100,6 @@ func _build_system_prompt_from_personality(personality: Resource, tiered_memorie
 	# SECTION 2: CORE IDENTITY (Essential for character consistency)
 	# =========================================================================
 	prompt += personality.get_core_identity_block()
-	prompt += storyline_block
 
 	# =========================================================================
 	# SECTION 3: CANONICAL WORLD FACTS (Prevents hallucination)
@@ -92,6 +112,12 @@ func _build_system_prompt_from_personality(personality: Resource, tiered_memorie
 	# =========================================================================
 	prompt += personality.get_personality_summary()
 	prompt += personality.get_speech_pattern_block()
+
+	# Sections 1-4 never change for this NPC: the cached prefix (see CACHE TIERS)
+	# The storyline layer (SOUL, agendas, agency) changes as the story moves: cached second
+	var stable_len = prompt.length()
+	prompt += storyline_block
+	_cache_split = [stable_len, prompt.length()]
 
 	# =========================================================================
 	# SECTION 5: RELATIONSHIP STATE
@@ -434,13 +460,17 @@ func _build_system_prompt(base_prompt: String, npc_id: String, tiered_memories: 
 	# SECTION 2: BASE PROMPT (NPC identity)
 	# =========================================================================
 	prompt += base_prompt + "\n\n"
-	prompt += storyline_block
 
 	# =========================================================================
 	# SECTION 3: CANONICAL WORLD FACTS (prevents hallucination)
 	# =========================================================================
 	if WorldKnowledge and not npc_id.is_empty():
 		prompt += WorldKnowledge.get_world_facts_for_npc(npc_id)
+
+	# Cached prefix, then the storyline layer (see CACHE TIERS)
+	var stable_len = prompt.length()
+	prompt += storyline_block
+	_cache_split = [stable_len, prompt.length()]
 
 	# =========================================================================
 	# SECTION 4: RELATIONSHIP STATE

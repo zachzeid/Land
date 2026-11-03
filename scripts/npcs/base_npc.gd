@@ -1,4 +1,5 @@
 extends CharacterBody2D
+const LlmTelemetry = preload("res://scripts/core/llm_telemetry.gd")
 # BaseNPC - Foundation class for AI-driven NPCs
 # Combines personality, memory (RAG), and Claude dialogue into character AI agent
 # Now supports structured NPCPersonality resources for consistent character behavior
@@ -394,7 +395,8 @@ func start_conversation():
 	# Get greeting from Claude
 	var response = await request_checked_reply(
 		greeting_context.messages,
-		greeting_context.system_prompt
+		greeting_context.get("system_blocks", greeting_context.system_prompt),
+		"greeting"
 	)
 	
 	print("[%s] Received response: %s" % [npc_name, "text" if response.ok else "error"])
@@ -511,7 +513,8 @@ func respond_to_player(player_message: String):
 	# Get response from Claude
 	var response = await request_checked_reply(
 		context.messages,
-		context.system_prompt
+		context.get("system_blocks", context.system_prompt),
+		"dialogue"
 	)
 	
 	print("[%s] Received response: %s" % [npc_name, "text" if response.ok else "error"])
@@ -1153,10 +1156,8 @@ func witness_event(event_description: String, _event_type: String, importance: i
 			memories
 		)
 		
-		var response = await claude_client.send_message(
-			reaction_context.messages,
-			reaction_context.system_prompt
-		)
+		var response = await LlmTelemetry.send(claude_client, reaction_context.messages,
+			reaction_context.get("system_blocks", reaction_context.system_prompt), {"purpose": "reaction", "npc": npc_id})
 		
 		if response.has("text"):
 			dialogue_response_ready.emit(npc_id, response.text)
@@ -1442,8 +1443,9 @@ var last_conversation_actions: Dictionary = {}
 ## speech or action text naming a forbidden concept is regenerated once with a correction note,
 ## then sanitised if it still fails. Returns the parsed reply plus
 ## {"ok": bool, "error": String, "regenerated": bool, "sanitised": Array of words replaced}
-func request_checked_reply(messages: Array, system_prompt: String) -> Dictionary:
-	var response = await claude_client.send_message(messages, system_prompt)
+## system_prompt: a String, or ContextBuilder's system_blocks (cached prefix); purpose labels telemetry
+func request_checked_reply(messages: Array, system_prompt, purpose: String = "dialogue") -> Dictionary:
+	var response = await LlmTelemetry.send(claude_client, messages, system_prompt, {"purpose": purpose, "npc": npc_id})
 	if not response is Dictionary or not response.has("text"):
 		return {"ok": false, "error": str(response.get("error", "Unknown error")) if response is Dictionary else "bad response",
 			"response": "", "analysis": null, "actions": [], "commitments": [], "utterances": [], "regenerated": false, "sanitised": []}
@@ -1456,7 +1458,9 @@ func request_checked_reply(messages: Array, system_prompt: String) -> Dictionary
 		var note = "\n\n## CORRECTION (your previous reply was rejected)\n"
 		note += "It used words that cannot exist in this world: %s. This realm has no such things. " % ", ".join(found)
 		note += "Write the whole reply again in-world, in the same JSON format, without them or anything like them.\n"
-		var retry = await claude_client.send_message(messages, system_prompt + note)
+		# The note goes after the prompt (after the cached blocks, which stay intact)
+		var retry_prompt = system_prompt + note if system_prompt is String else system_prompt + [{"text": note, "cache": false}]
+		var retry = await LlmTelemetry.send(claude_client, messages, retry_prompt, {"purpose": purpose + "_retry", "npc": npc_id})
 		if retry is Dictionary and retry.has("text"):
 			parsed = _parse_npc_response(str(retry.text))
 			found = _forbidden_in_reply(parsed)

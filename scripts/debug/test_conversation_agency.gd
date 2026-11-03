@@ -36,9 +36,10 @@ class FakeClaude extends Node:
 	var replies: Array = []
 	var calls: int = 0
 	var systems: Array = []
-	func send_message(_messages: Array, system_prompt: String = "") -> Dictionary:
+	## system_prompt: a String or ContextBuilder's system_blocks (kept as the text they make up)
+	func send_message(_messages: Array, system_prompt = "") -> Dictionary:
 		calls += 1
-		systems.append(system_prompt)
+		systems.append(system_prompt if system_prompt is String else "".join(system_prompt.map(func(b): return str(b.text))))
 		var reply = replies[mini(calls - 1, replies.size() - 1)] if not replies.is_empty() else ""
 		return {"text": reply}
 

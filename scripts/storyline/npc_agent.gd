@@ -1,4 +1,5 @@
 extends RefCounted
+const LlmTelemetry = preload("res://scripts/core/llm_telemetry.gd")
 # NpcAgent - Decides what one NPC does when a storyline hook is offered to it
 # offline: deterministic, picks the permitted option whose `serves` wants weigh most right now
 # claude: asks Claude for strict JSON, validates it, and falls back to offline on any problem
@@ -39,7 +40,7 @@ func decide(soul, hook: Dictionary, context: Dictionary = {}) -> Dictionary:
 		return _fallback(soul, hook, "no API key")
 
 	var prompt = build_prompt(soul, hook, context)
-	var response = await _send_with_timeout([{"role": "user", "content": prompt.user}], prompt.system)
+	var response = await _send_with_timeout([{"role": "user", "content": prompt.user}], prompt.system, {"purpose": "agent_decision", "npc": str(soul.npc_key)})
 	if response.has("error"):
 		return _fallback(soul, hook, "Claude error: %s" % response.error)
 	var parsed = parse_response(str(response.get("text", "")), hook)
@@ -157,7 +158,7 @@ func decide_personal(soul, arc: Dictionary, step: Dictionary, offline_effects: A
 	if not _has_api_key():
 		return offline.merged({"mode": "claude_fallback", "fallback_reason": "no API key"}, true)
 	var prompt = build_personal_prompt(soul, arc, step, context)
-	var response = await _send_with_timeout([{"role": "user", "content": prompt.user}], prompt.system)
+	var response = await _send_with_timeout([{"role": "user", "content": prompt.user}], prompt.system, {"purpose": "agent_personal", "npc": str(soul.npc_key)})
 	if response.has("error"):
 		return offline.merged({"mode": "claude_fallback", "fallback_reason": "Claude error: %s" % response.error}, true)
 	var text = str(response.get("text", ""))
@@ -198,8 +199,10 @@ class _Race extends RefCounted:
 	var done: bool = false
 	var result: Dictionary = {}
 
+	var meta: Dictionary = {}
+
 	func run(target: Object, messages: Array, system_prompt: String) -> void:
-		var response = await target.send_message(messages, system_prompt)
+		var response = await LlmTelemetry.send(target, messages, system_prompt, meta)
 		request_returned.emit()
 		_finish(response if response is Dictionary else {"error": "bad response"})
 
@@ -215,8 +218,9 @@ class _Race extends RefCounted:
 
 var _inflight: Array = []  # races kept alive until their request returns, even after a timeout
 
-func _send_with_timeout(messages: Array, system_prompt: String) -> Dictionary:
+func _send_with_timeout(messages: Array, system_prompt: String, meta: Dictionary = {}) -> Dictionary:
 	var race = _Race.new()
+	race.meta = meta
 	_inflight.append(race)
 	race.request_returned.connect(func(): _inflight.erase(race), CONNECT_ONE_SHOT)
 	race.run(client, messages, system_prompt)

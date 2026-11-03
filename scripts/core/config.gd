@@ -21,6 +21,7 @@ var npc_agency_mode: String = "offline"  # How storyline NPCs decide: offline (d
 var story_round_seconds: float = 300.0   # Idle fallback between story rounds (unpaused seconds)
 var conversation_agency: bool = true     # NPCs may act on what is said in conversation (CONVERSATION_AGENCY=off)
 var game_minutes_per_real_minute: float = 1.0  # Idle game clock speed (0 = only travel moves time)
+var llm_telemetry: bool = true                 # LLM_TELEMETRY=off stops the per-call log (user://telemetry)
 var claude_effort: String = ""                  # CLAUDE_EFFORT: low | medium | high | xhigh | max ("" = ClaudeClient default)
 var system_prompt_token_budget: int = 6000      # NPC system prompt size (SYSTEM_PROMPT_TOKENS); smaller models want less
 
@@ -98,6 +99,8 @@ func _apply(key: String, value: String) -> void:
 				story_round_seconds = float(value)
 		"CONVERSATION_AGENCY":
 			conversation_agency = value.to_lower() not in ["0", "off", "false", "no"]
+		"LLM_TELEMETRY":
+			llm_telemetry = value.to_lower() not in ["0", "off", "false", "no"]
 		"CLAUDE_EFFORT":
 			claude_effort = value.to_lower()
 		"SYSTEM_PROMPT_TOKENS":
