@@ -275,6 +275,62 @@
         "archetype": "hollow_grunt",
         "count": 2
       }
+    ],
+    "ferrisford_tavern": [
+      {
+        "archetype": "tavern_keeper",
+        "count": 1
+      },
+      {
+        "archetype": "carter",
+        "count": 2
+      },
+      {
+        "archetype": "dockhand",
+        "count": 1
+      }
+    ],
+    "greystone_tavern": [
+      {
+        "archetype": "tavern_keeper",
+        "count": 1
+      },
+      {
+        "archetype": "miner",
+        "count": 2
+      },
+      {
+        "archetype": "carter",
+        "count": 1
+      }
+    ],
+    "capitol_docks_tavern": [
+      {
+        "archetype": "tavern_keeper",
+        "count": 1
+      },
+      {
+        "archetype": "dockhand",
+        "count": 3
+      }
+    ],
+    "capitol_market_inn": [
+      {
+        "archetype": "tavern_keeper",
+        "count": 1
+      },
+      {
+        "archetype": "courier",
+        "count": 1
+      },
+      {
+        "archetype": "clerk",
+        "count": 1
+      },
+      {
+        "archetype": "pilgrim",
+        "count": 1
+      }
     ]
   }
 }

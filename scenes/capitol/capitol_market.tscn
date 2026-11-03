@@ -99,6 +99,12 @@ size = Vector2(1536, 32)
 [sub_resource type="RectangleShape2D" id="Rect_32x1536"]
 size = Vector2(32, 1536)
 
+[sub_resource type="RectangleShape2D" id="Tavern_120x180"]
+size = Vector2(120, 180)
+
+[sub_resource type="RectangleShape2D" id="TavernDoor_40x100"]
+size = Vector2(40, 100)
+
 [node name="CapitolMarket" type="Node2D"]
 
 [node name="SceneBackground" type="Node2D" parent="."]
@@ -5003,7 +5009,78 @@ script = ExtResource("1_world_solid")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/East"]
 shape = SubResource("Rect_32x1536")
 
+[node name="TheBrassScales" type="StaticBody2D" parent="Structures"]
+z_index = 20
+position = Vector2(-675, 300)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structures/TheBrassScales"]
+shape = SubResource("Tavern_120x180")
+
+[node name="Visual" type="ColorRect" parent="Structures/TheBrassScales"]
+offset_left = -60.0
+offset_top = -90.0
+offset_right = 60.0
+offset_bottom = 90.0
+color = Color(0.5, 0.38, 0.26, 1)
+
+[node name="Roof" type="ColorRect" parent="Structures/TheBrassScales"]
+offset_left = -66.0
+offset_top = -92.0
+offset_right = 66.0
+offset_bottom = -68.0
+color = Color(0.32, 0.22, 0.14, 1)
+
+[node name="Sign" type="Label" parent="Structures/TheBrassScales"]
+z_index = 5
+offset_left = -100.0
+offset_top = -10.0
+offset_right = 100.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "The Brass Scales"
+horizontal_alignment = 1
+
+[node name="TheBrassScalesDoor" type="Area2D" parent="Transitions"]
+z_index = 6
+position = Vector2(-590, 300)
+script = ExtResource("16_scene_trigger")
+target_location = "capitol_market_inn"
+target_spawn_point = "default"
+prompt_text = "Go into the Brass Scales"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/TheBrassScalesDoor"]
+shape = SubResource("TavernDoor_40x100")
+
+[node name="Visual" type="ColorRect" parent="Transitions/TheBrassScalesDoor"]
+offset_left = -20.0
+offset_top = -30.0
+offset_right = 20.0
+offset_bottom = 30.0
+color = Color(0.3, 0.2, 0.12, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Transitions/TheBrassScalesDoor"]
+z_index = 10
+visible = false
+offset_left = -150.0
+offset_top = -54.0
+offset_right = 150.0
+offset_bottom = -30.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Go into the Brass Scales"
+horizontal_alignment = 1
+
 [node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="from_capitol_market_inn" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-550, 300)
 
 [node name="default" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(0, 300)

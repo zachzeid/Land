@@ -612,3 +612,37 @@ When the player ends the game (any time, or at a season's end, `season_end`, a f
 Authored storyline endings that were reached are **named highlights** inside the epilogue, not the
 destination. The prose is assembled offline from templates; in Claude or local-LLM mode it is
 written in the world's voice and validated against the facts.
+
+## 16. Settlements and their taverns
+
+A world.json location may carry `"settlement": "village" | "town" | "city"`: it is part of a
+settlement of that size. A **settlement** is a group of locations with the same `settlement` value
+joined by routes of at most 60 minutes (a village's square, shops and gate; a city's districts), so
+two villages in one region stay two settlements. A **tavern** is a location with a `tavern` block
+(`{"keeper", "rooms", "rent_copper", "brothel"}`, checked by `tools/validators/taverns.py`). It counts
+for a settlement when it is a member, or when a route of at most 60 minutes joins it to a member, so
+a tavern entry without its own `settlement` field still belongs to the square it opens onto. A
+tavern that joins no settlement is a roadside inn (the Halfway House), which is fine.
+
+**Rule** (`tools/validators/settlements.py`): every village and town has at least one tavern, every
+city at least two. A keeper may be an NPC key or a generic id, `gen_<archetype>_<n>`, numbering
+each archetype's instances 1, 2, ... in population.json order; a generic keeper must be one
+population.json creates.
+
+| settlement | size | why | taverns |
+|------------|------|-----|---------|
+| Thornhaven | village | "Thornhaven has one tavern, kept by a widow" (waystation_whispers) | the Rusty Nail (`thornhaven_tavern`) |
+| Ferrisford Crossing | village | a raft, a toll-house, a tavern that waters its ale and a dozen families (Oskar's soul) | the Tarred Rope (`ferrisford_tavern`) |
+| Greystone | town | two hundred miners under one foreman (Dagna's soul), a miners' row: more than a village, short of a city | the Spoil Heap (`greystone_tavern`) |
+| The Capitol (Highmarch) | city | the realm's seat (WORLD_BIBLE: "the city of Highmarch"), with Palace Hill, the Lantern Market, the River Quarter and the Warrens | the Wet Load (`capitol_docks_tavern`, River Quarter), the Brass Scales (`capitol_market_inn`, Lantern Market) |
+
+Not settlements: Fort Ashguard (a garrison), Iron Hollow (a bandit camp), Brackenmoor Abbey (a
+monastery that lodges pilgrims), the Pit, the Old Mill and Old Maud's hut (Thornhaven's outskirts,
+reached through the gate), and the Halfway House (a lone waystation). Their locations carry no
+`settlement` field.
+
+Room prices follow the coin canon (ale 2 copper, a labourer's day about 9): outside the Capitol a room
+costs under a day's wage (Ferrisford 3, Greystone 4); in the Capitol the River Quarter's is 6 and
+the Lantern Market's 12. Each room is a walled room with a doorway and one `Bed` (`scripts/world/bed.gd`) whose
+`rent` equals the block's `rent_copper` and whose `spawn_point` is its own marker under
+`SpawnPoints` (`room_1`, `room_2`, ...).

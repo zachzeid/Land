@@ -1,0 +1,673 @@
+[gd_scene load_steps=25 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
+[ext_resource type="Script" path="res://scripts/world/world_obstacle.gd" id="2_world_obstacle"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/tavern_fireplace.png" id="3_tavern_fireplace"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/tavern_bar.png" id="4_tavern_bar"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/tavern_table.png" id="5_tavern_table"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/crates_barrels.png" id="6_crates_barrels"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="7_story_item"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="8_scene_trigger"]
+[ext_resource type="Script" path="res://scripts/world/bed.gd" id="9_bed"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="10_dialogue_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="11_debug_interaction_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="12_debug_console"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1024x40"]
+size = Vector2(1024, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40x944"]
+size = Vector2(40, 944)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_191x20"]
+size = Vector2(191, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_20x262"]
+size = Vector2(20, 262)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_70x120"]
+size = Vector2(70, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_60x36"]
+size = Vector2(60, 36)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80x160"]
+size = Vector2(80, 160)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_260x70"]
+size = Vector2(260, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_70x180"]
+size = Vector2(70, 180)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_90x70"]
+size = Vector2(90, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80x70"]
+size = Vector2(80, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_140x40"]
+size = Vector2(140, 40)
+
+[node name="GreystoneTavern" type="Node2D"]
+
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+color = Color(0.22, 0.21, 0.2, 1)
+
+[node name="FloorBoards" type="ColorRect" parent="Floor"]
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 992.0
+offset_bottom = 992.0
+color = Color(0.3, 0.28, 0.25, 1)
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, -492)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/North"]
+shape = SubResource("RectangleShape2D_1024x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/North"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+color = Color(0.34, 0.32, 0.3, 1)
+
+[node name="South" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, 492)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/South"]
+shape = SubResource("RectangleShape2D_1024x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/South"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+color = Color(0.34, 0.32, 0.3, 1)
+
+[node name="West" type="StaticBody2D" parent="Walls"]
+position = Vector2(-492, 0)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/West"]
+shape = SubResource("RectangleShape2D_40x944")
+
+[node name="Visual" type="ColorRect" parent="Walls/West"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+color = Color(0.34, 0.32, 0.3, 1)
+
+[node name="East" type="StaticBody2D" parent="Walls"]
+position = Vector2(492, 0)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/East"]
+shape = SubResource("RectangleShape2D_40x944")
+
+[node name="Visual" type="ColorRect" parent="Walls/East"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+color = Color(0.34, 0.32, 0.3, 1)
+
+[node name="Rooms" type="Node2D" parent="."]
+
+[node name="Room1" type="Node2D" parent="Rooms"]
+
+[node name="RoomFloor" type="ColorRect" parent="Rooms/Room1"]
+z_index = -9
+offset_left = -472.0
+offset_top = -472.0
+offset_right = 0.0
+offset_bottom = -210.0
+color = Color(0.27, 0.252, 0.225, 1)
+
+[node name="FrontWallWest" type="StaticBody2D" parent="Rooms/Room1"]
+position = Vector2(-376.5, -200.0)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rooms/Room1/FrontWallWest"]
+shape = SubResource("RectangleShape2D_191x20")
+
+[node name="Visual" type="ColorRect" parent="Rooms/Room1/FrontWallWest"]
+offset_left = -95.5
+offset_top = -10.0
+offset_right = 95.5
+offset_bottom = 10.0
+color = Color(0.34, 0.32, 0.3, 1)
+
+[node name="FrontWallEast" type="StaticBody2D" parent="Rooms/Room1"]
+position = Vector2(-95.5, -200.0)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rooms/Room1/FrontWallEast"]
+shape = SubResource("RectangleShape2D_191x20")
+
+[node name="Visual" type="ColorRect" parent="Rooms/Room1/FrontWallEast"]
+offset_left = -95.5
+offset_top = -10.0
+offset_right = 95.5
+offset_bottom = 10.0
+color = Color(0.34, 0.32, 0.3, 1)
+
+[node name="Partition" type="StaticBody2D" parent="Rooms/Room1"]
+position = Vector2(0, -341)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rooms/Room1/Partition"]
+shape = SubResource("RectangleShape2D_20x262")
+
+[node name="Visual" type="ColorRect" parent="Rooms/Room1/Partition"]
+offset_left = -10.0
+offset_top = -131.0
+offset_right = 10.0
+offset_bottom = 131.0
+color = Color(0.34, 0.32, 0.3, 1)
+
+[node name="Door" type="ColorRect" parent="Rooms/Room1"]
+offset_left = -281.0
+offset_top = -212.0
+offset_right = -191.0
+offset_bottom = -206.0
+color = Color(0.3, 0.2, 0.12, 1)
+
+[node name="Sign" type="Label" parent="Rooms/Room1"]
+z_index = 5
+offset_left = -346.0
+offset_top = -186.0
+offset_right = -126.0
+offset_bottom = -166.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "The front room (4 copper the night)"
+horizontal_alignment = 1
+
+[node name="BedFrame" type="StaticBody2D" parent="Rooms/Room1"]
+position = Vector2(-412, -400)
+collision_layer = 8
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rooms/Room1/BedFrame"]
+shape = SubResource("RectangleShape2D_70x120")
+
+[node name="Visual" type="ColorRect" parent="Rooms/Room1/BedFrame"]
+offset_left = -35.0
+offset_top = -60.0
+offset_right = 35.0
+offset_bottom = 60.0
+color = Color(0.5, 0.42, 0.3, 1)
+
+[node name="Chest" type="StaticBody2D" parent="Rooms/Room1"]
+position = Vector2(-60, -440)
+collision_layer = 8
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rooms/Room1/Chest"]
+shape = SubResource("RectangleShape2D_60x36")
+
+[node name="Visual" type="ColorRect" parent="Rooms/Room1/Chest"]
+offset_left = -30.0
+offset_top = -18.0
+offset_right = 30.0
+offset_bottom = 18.0
+color = Color(0.34, 0.24, 0.14, 1)
+
+[node name="Bed" type="Area2D" parent="Rooms/Room1"]
+position = Vector2(-337, -400)
+script = ExtResource("9_bed")
+location_id = "greystone_tavern"
+spawn_point = "room_1"
+rent = 4
+keeper = "gen_tavern_keeper_2"
+interaction_name = "Take this room for the night"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rooms/Room1/Bed"]
+shape = SubResource("RectangleShape2D_80x160")
+
+[node name="InteractionPrompt" type="Label" parent="Rooms/Room1/Bed"]
+visible = false
+offset_left = -110.0
+offset_top = -100.0
+offset_right = 110.0
+offset_bottom = -80.0
+horizontal_alignment = 1
+text = "[E] Take this room for the night"
+
+[node name="Room2" type="Node2D" parent="Rooms"]
+
+[node name="RoomFloor" type="ColorRect" parent="Rooms/Room2"]
+z_index = -9
+offset_left = 0.0
+offset_top = -472.0
+offset_right = 472.0
+offset_bottom = -210.0
+color = Color(0.27, 0.252, 0.225, 1)
+
+[node name="FrontWallWest" type="StaticBody2D" parent="Rooms/Room2"]
+position = Vector2(95.5, -200.0)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rooms/Room2/FrontWallWest"]
+shape = SubResource("RectangleShape2D_191x20")
+
+[node name="Visual" type="ColorRect" parent="Rooms/Room2/FrontWallWest"]
+offset_left = -95.5
+offset_top = -10.0
+offset_right = 95.5
+offset_bottom = 10.0
+color = Color(0.34, 0.32, 0.3, 1)
+
+[node name="FrontWallEast" type="StaticBody2D" parent="Rooms/Room2"]
+position = Vector2(376.5, -200.0)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rooms/Room2/FrontWallEast"]
+shape = SubResource("RectangleShape2D_191x20")
+
+[node name="Visual" type="ColorRect" parent="Rooms/Room2/FrontWallEast"]
+offset_left = -95.5
+offset_top = -10.0
+offset_right = 95.5
+offset_bottom = 10.0
+color = Color(0.34, 0.32, 0.3, 1)
+
+[node name="Door" type="ColorRect" parent="Rooms/Room2"]
+offset_left = 191.0
+offset_top = -212.0
+offset_right = 281.0
+offset_bottom = -206.0
+color = Color(0.3, 0.2, 0.12, 1)
+
+[node name="Sign" type="Label" parent="Rooms/Room2"]
+z_index = 5
+offset_left = 126.0
+offset_top = -186.0
+offset_right = 346.0
+offset_bottom = -166.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "The back room (4 copper the night)"
+horizontal_alignment = 1
+
+[node name="BedFrame" type="StaticBody2D" parent="Rooms/Room2"]
+position = Vector2(60, -400)
+collision_layer = 8
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rooms/Room2/BedFrame"]
+shape = SubResource("RectangleShape2D_70x120")
+
+[node name="Visual" type="ColorRect" parent="Rooms/Room2/BedFrame"]
+offset_left = -35.0
+offset_top = -60.0
+offset_right = 35.0
+offset_bottom = 60.0
+color = Color(0.5, 0.42, 0.3, 1)
+
+[node name="Chest" type="StaticBody2D" parent="Rooms/Room2"]
+position = Vector2(412, -440)
+collision_layer = 8
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rooms/Room2/Chest"]
+shape = SubResource("RectangleShape2D_60x36")
+
+[node name="Visual" type="ColorRect" parent="Rooms/Room2/Chest"]
+offset_left = -30.0
+offset_top = -18.0
+offset_right = 30.0
+offset_bottom = 18.0
+color = Color(0.34, 0.24, 0.14, 1)
+
+[node name="Bed" type="Area2D" parent="Rooms/Room2"]
+position = Vector2(135, -400)
+script = ExtResource("9_bed")
+location_id = "greystone_tavern"
+spawn_point = "room_2"
+rent = 4
+keeper = "gen_tavern_keeper_2"
+interaction_name = "Take this room for the night"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rooms/Room2/Bed"]
+shape = SubResource("RectangleShape2D_80x160")
+
+[node name="InteractionPrompt" type="Label" parent="Rooms/Room2/Bed"]
+visible = false
+offset_left = -110.0
+offset_top = -100.0
+offset_right = 110.0
+offset_bottom = -80.0
+horizontal_alignment = 1
+text = "[E] Take this room for the night"
+
+[node name="Furniture" type="Node2D" parent="."]
+z_index = 5
+
+[node name="Counter" type="StaticBody2D" parent="Furniture"]
+position = Vector2(300, -60)
+collision_layer = 8
+script = ExtResource("2_world_obstacle")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Counter"]
+scale = Vector2(2, 2)
+texture = ExtResource("4_tavern_bar")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Counter"]
+shape = SubResource("RectangleShape2D_260x70")
+
+[node name="Hearth" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-430, 100)
+collision_layer = 8
+script = ExtResource("2_world_obstacle")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Hearth"]
+rotation = 1.5708
+scale = Vector2(1.6, 1.6)
+texture = ExtResource("3_tavern_fireplace")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Hearth"]
+shape = SubResource("RectangleShape2D_70x180")
+
+[node name="Table1" type="Sprite2D" parent="Furniture"]
+position = Vector2(-170, 60)
+scale = Vector2(2, 2)
+texture = ExtResource("5_tavern_table")
+
+[node name="Table2" type="Sprite2D" parent="Furniture"]
+position = Vector2(60, 60)
+scale = Vector2(2, 2)
+texture = ExtResource("5_tavern_table")
+
+[node name="Table3" type="Sprite2D" parent="Furniture"]
+position = Vector2(-170, 260)
+scale = Vector2(2, 2)
+texture = ExtResource("5_tavern_table")
+
+[node name="Table4" type="Sprite2D" parent="Furniture"]
+position = Vector2(60, 260)
+scale = Vector2(2, 2)
+texture = ExtResource("5_tavern_table")
+
+[node name="Barrels" type="StaticBody2D" parent="Furniture"]
+position = Vector2(420, 220)
+collision_layer = 8
+script = ExtResource("2_world_obstacle")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Barrels"]
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("6_crates_barrels")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Barrels"]
+shape = SubResource("RectangleShape2D_90x70")
+
+[node name="TaproomSign" type="Label" parent="Furniture"]
+z_index = 5
+offset_left = -320.0
+offset_top = -120.0
+offset_right = 80.0
+offset_bottom = -100.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 14
+text = "The Spoil Heap - taproom"
+horizontal_alignment = 1
+
+[node name="StoryItems" type="Node2D" parent="."]
+
+[node name="LampPegs" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(-300, -150)
+script = ExtResource("7_story_item")
+interaction_name = "Look at the lamp pegs"
+flag_to_set = ""
+discovery_text = "[b]The lamp pegs[/b]
+
+A row of wooden pegs by the hearth, where the miners hang their lamps when they come up off shift. Every peg has a name burned into it.
+
+Four pegs at the end are painted black and nothing hangs on them. Nobody at the counter will sit beneath them, and nobody will take them down."
+reexamine_text = "Four black pegs. Nothing hangs on them."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/LampPegs"]
+shape = SubResource("RectangleShape2D_80x70")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/LampPegs"]
+offset_left = -18.0
+offset_top = -12.0
+offset_right = 18.0
+offset_bottom = 12.0
+color = Color(0.6, 0.5, 0.32, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/LampPegs"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Look at the lamp pegs"
+horizontal_alignment = 1
+
+[node name="ShiftBoard" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(430, -150)
+script = ExtResource("7_story_item")
+interaction_name = "Read the shift board"
+flag_to_set = ""
+discovery_text = "[b]The shift board[/b]
+
+A plank chalked with the week's shifts, first, second and night, and the levels they work: FOURTH, FIFTH, SIXTH. The column for the seventh has been ruled off and left empty.
+
+Underneath, someone has chalked: ALE ON CREDIT TILL THE GUILD PAYS. Someone else has added: IF."
+reexamine_text = "The seventh level column is still empty."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/ShiftBoard"]
+shape = SubResource("RectangleShape2D_80x70")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/ShiftBoard"]
+offset_left = -18.0
+offset_top = -12.0
+offset_right = 18.0
+offset_bottom = 12.0
+color = Color(0.6, 0.5, 0.32, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/ShiftBoard"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Read the shift board"
+horizontal_alignment = 1
+
+[node name="DustyCups" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(190, -20)
+script = ExtResource("7_story_item")
+interaction_name = "Look at the cups"
+flag_to_set = ""
+discovery_text = "[b]Grey cups[/b]
+
+Every cup on the counter is the colour of the hill. The dust comes in on the miners' boots and sleeves and settles on everything, and the keeper has long since stopped wiping it off.
+
+The ale is dark, strong and two copper. Miners drink it like water."
+reexamine_text = "The cups are as grey as ever."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/DustyCups"]
+shape = SubResource("RectangleShape2D_80x70")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/DustyCups"]
+offset_left = -18.0
+offset_top = -12.0
+offset_right = 18.0
+offset_bottom = 12.0
+color = Color(0.6, 0.5, 0.32, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/DustyCups"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Look at the cups"
+horizontal_alignment = 1
+
+[node name="ExitDoor" type="Area2D" parent="."]
+z_index = 6
+position = Vector2(0, 460)
+script = ExtResource("8_scene_trigger")
+target_location = "greystone_mines"
+target_spawn_point = "from_greystone_tavern"
+prompt_text = "Out to the row"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitDoor"]
+shape = SubResource("RectangleShape2D_140x40")
+
+[node name="Visual" type="ColorRect" parent="ExitDoor"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+color = Color(0.55, 0.42, 0.22, 1)
+
+[node name="InteractionPrompt" type="Label" parent="ExitDoor"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Out to the row"
+horizontal_alignment = 1
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 390)
+
+[node name="room_1" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-337, -360)
+
+[node name="room_2" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(135, -360)
+
+[node name="NPCMarkers" type="Node2D" parent="."]
+
+[node name="npc_gen_tavern_keeper_2" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(300, -130)
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("10_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[node name="DebugInteractionPanel" parent="DialogueUI" instance=ExtResource("11_debug_interaction_panel")]
+visible = false
+
+[node name="DebugConsole" parent="." instance=ExtResource("12_debug_console")]
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

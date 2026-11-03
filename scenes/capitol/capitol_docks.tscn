@@ -85,6 +85,12 @@ size = Vector2(1024, 32)
 [sub_resource type="RectangleShape2D" id="Rect_32x1024"]
 size = Vector2(32, 1024)
 
+[sub_resource type="RectangleShape2D" id="Tavern_200x140"]
+size = Vector2(200, 140)
+
+[sub_resource type="RectangleShape2D" id="TavernDoor_100x40"]
+size = Vector2(100, 40)
+
 [node name="CapitolDocks" type="Node2D"]
 
 [node name="SceneBackground" type="Node2D" parent="."]
@@ -1764,7 +1770,78 @@ script = ExtResource("1_world_solid")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/East"]
 shape = SubResource("Rect_32x1024")
 
+[node name="TheWetLoad" type="StaticBody2D" parent="Structures"]
+z_index = 20
+position = Vector2(-120, 390)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structures/TheWetLoad"]
+shape = SubResource("Tavern_200x140")
+
+[node name="Visual" type="ColorRect" parent="Structures/TheWetLoad"]
+offset_left = -100.0
+offset_top = -70.0
+offset_right = 100.0
+offset_bottom = 70.0
+color = Color(0.36, 0.33, 0.32, 1)
+
+[node name="Roof" type="ColorRect" parent="Structures/TheWetLoad"]
+offset_left = -106.0
+offset_top = -72.0
+offset_right = 106.0
+offset_bottom = -48.0
+color = Color(0.24, 0.22, 0.24, 1)
+
+[node name="Sign" type="Label" parent="Structures/TheWetLoad"]
+z_index = 5
+offset_left = -140.0
+offset_top = -10.0
+offset_right = 140.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "The Wet Load"
+horizontal_alignment = 1
+
+[node name="TheWetLoadDoor" type="Area2D" parent="Transitions"]
+z_index = 6
+position = Vector2(-120, 295)
+script = ExtResource("10_scene_trigger")
+target_location = "capitol_docks_tavern"
+target_spawn_point = "default"
+prompt_text = "Go into the Wet Load"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/TheWetLoadDoor"]
+shape = SubResource("TavernDoor_100x40")
+
+[node name="Visual" type="ColorRect" parent="Transitions/TheWetLoadDoor"]
+offset_left = -30.0
+offset_top = -20.0
+offset_right = 30.0
+offset_bottom = 20.0
+color = Color(0.3, 0.2, 0.12, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Transitions/TheWetLoadDoor"]
+z_index = 10
+visible = false
+offset_left = -150.0
+offset_top = -54.0
+offset_right = 150.0
+offset_bottom = -30.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Go into the Wet Load"
+horizontal_alignment = 1
+
 [node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="from_capitol_docks_tavern" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-120, 250)
 
 [node name="default" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(0, 120)
