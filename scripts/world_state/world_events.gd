@@ -184,15 +184,15 @@ func validate_memory(memory_text: String, npc_id: String) -> Dictionary:
 				result.issues.append("Unknown establishment: '%s'" % name)
 
 	# Validate NPC names mentioned
-	var npc_names_mentioned = _extract_npc_names(memory_text)
-	for name in npc_names_mentioned:
+	var maybe_names = _extract_npc_names(memory_text)
+	for name in _extract_npc_names(memory_text, true):
 		# Check if it's a known hallucination pattern
 		if is_registered_npc_name(name):
 			continue  # a real (registered) NPC, even if the name is on the hallucination list
 		if name.to_lower() in forbidden_npc_names:
 			result.valid = false
 			result.issues.append("Contains hallucinated NPC: '%s'" % name)
-		elif not _is_valid_npc_name(name):
+		elif name in maybe_names and not _is_valid_npc_name(name):
 			result.issues.append("Unknown NPC name: '%s' (may be hallucinated)" % name)
 			# Don't invalidate for unknown names - could be player's name or legitimate new character
 
@@ -325,21 +325,35 @@ const COMMON_NON_NAME_WORDS = [
 ]
 
 ## Extract potential NPC names from text
-func _extract_npc_names(text: String) -> Array:
+## Not a person's name, whatever its capital:
+## - the first word of a sentence (capitalised by grammar: "Quest given by...")
+## - a word after an article or possessive ("the Frostblade", "his Hammer"): a thing or place
+## - a word the world's own text already uses (canon)
+const THING_MARKERS = ["the", "a", "an", "my", "your", "his", "her", "its", "our", "their", "this", "that"]
+
+## sentence_starts: also return sentence-initial words (the hallucination list must see "Margaret sold...")
+func _extract_npc_names(text: String, sentence_starts: bool = false) -> Array:
 	var names = []
 	# Look for capitalized words that might be names
-	var words = text.split(" ")
+	var words = text.split(" ", false)
 	for i in range(words.size()):
 		var word = words[i].strip_edges()
 		# Remove punctuation and emote markers
-		word = word.trim_prefix("*").trim_suffix(",").trim_suffix(".").trim_suffix("!").trim_suffix("?").trim_suffix("*")
+		word = word.trim_prefix("*").trim_prefix("\"").trim_suffix(",").trim_suffix(".").trim_suffix("!").trim_suffix("?").trim_suffix(":").trim_suffix(";").trim_suffix("\"").trim_suffix("*")
 		# Skip words inside asterisks (roleplay actions)
 		if "*" in words[i]:
 			continue
-		if word.length() > 2 and word[0] == word[0].to_upper() and word[0] != word[0].to_lower():
-			# Skip common words that are NOT names
-			if word.to_lower() not in COMMON_NON_NAME_WORDS:
-				names.append(word)
+		if word.length() <= 2 or word[0] != word[0].to_upper() or word[0] == word[0].to_lower():
+			continue
+		var previous = words[i - 1].strip_edges() if i > 0 else ""
+		var starts_sentence = i == 0 or previous.ends_with(".") or previous.ends_with("!") or previous.ends_with("?") or previous.ends_with(":") or previous.ends_with("\"")
+		if starts_sentence and not sentence_starts:
+			continue
+		if previous.to_lower() in THING_MARKERS:
+			continue
+		# Skip common words that are NOT names, and names the world already knows
+		if word.to_lower() not in COMMON_NON_NAME_WORDS and not _is_canon_name(word):
+			names.append(word)
 	return names
 
 ## A proper name the world knows (world.json names, roles, places, regions; storyline text)

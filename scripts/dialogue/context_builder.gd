@@ -652,7 +652,7 @@ func build_reaction_context(system_prompt: String, npc_id: String, event_descrip
 	return build_context({
 		"system_prompt": system_prompt,
 		"npc_id": npc_id,
-		"rag_memories": memories,
+		"tiered_memories": {"pinned": [], "important": [], "relevant": memories.map(func(m): return str(m.get("document", m)) if m is Dictionary else str(m))},
 		"player_input": "You witness: %s. How do you react?" % event_description
 	})
 

@@ -375,23 +375,22 @@ func retrieve_relevant_raw(context: String, options: Dictionary = {}) -> Array:
 	# ChromaDB path
 	if use_chromadb:
 		print("[RAGMemory] Querying ChromaDB for raw memories...")
-		var result = chroma_client.query_memories({
+		var memories: Array = chroma_client.query_memories({  # an Array of {id, document, metadata, distance}
 			"collection": collection_name,
 			"query": context,
 			"limit": limit,
 			"min_importance": min_importance
 		})
 		
-		if result.has("memories"):
-			for mem in result.memories:
-				raw_memories.append({
-					"document": mem.get("document", ""),
-					"event_type": mem.get("metadata", {}).get("event_type", "unknown"),
-					"importance": mem.get("metadata", {}).get("importance", 5),
-					"emotion": mem.get("metadata", {}).get("emotion", ""),
-					"timestamp": mem.get("metadata", {}).get("timestamp", 0),
-					"distance": mem.get("distance", 0.0)
-				})
+		for mem in memories:
+			raw_memories.append({
+				"document": mem.get("document", ""),
+				"event_type": mem.get("metadata", {}).get("event_type", "unknown"),
+				"importance": mem.get("metadata", {}).get("importance", 5),
+				"emotion": mem.get("metadata", {}).get("emotion", ""),
+				"timestamp": mem.get("metadata", {}).get("timestamp", 0),
+				"distance": mem.get("distance", 0.0)
+			})
 	else:
 		# In-memory fallback with scoring
 		var scored_memories = []

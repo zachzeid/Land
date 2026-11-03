@@ -1138,20 +1138,17 @@ func _infer_emotion() -> String:
 		return "hostile"
 
 ## React to witnessed event (called by world event system)
-func witness_event(event_description: String, event_type: String, importance: int):
+## event_type is kept for callers; witnessed memories are stored as "witnessed_event"
+func witness_event(event_description: String, _event_type: String, importance: int):
 	# Store in RAG memory
-	rag_memory.store_witnessed_event(
-		event_description,
-		event_type,
-		importance,
-		_infer_emotion()
-	)
+	await rag_memory.store_witnessed_event(event_description, importance, _infer_emotion())
 	
 	# If in conversation, generate immediate reaction
 	if is_in_conversation:
 		var memories = await _get_relevant_memories(event_description)
 		var reaction_context = context_builder.build_reaction_context(
 			system_prompt,
+			npc_id,
 			event_description,
 			memories
 		)

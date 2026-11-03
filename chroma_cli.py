@@ -91,6 +91,26 @@ def query_memories(collection_name, query_text, n_results=5, min_importance=None
     
     print(json.dumps({"success": True, "memories": memories}))
 
+def delete_memory(collection_name, memory_id):
+    """Delete one document by ID"""
+    collection = client.get_collection(name=collection_name)
+    collection.delete(ids=[memory_id])
+    print(json.dumps({"success": True}))
+
+def update_metadata(collection_name, memory_id, metadata_b64):
+    """Replace one document's metadata (document and embedding unchanged)"""
+    collection = client.get_collection(name=collection_name)
+    try:
+        metadata = json.loads(base64.b64decode(metadata_b64).decode('utf-8'))
+    except (json.JSONDecodeError, base64.binascii.Error) as e:
+        print(json.dumps({"error": f"Invalid base64 data: {str(e)}"}))
+        return
+    if not collection.get(ids=[memory_id])['ids']:
+        print(json.dumps({"error": f"No memory with id {memory_id}"}))
+        return
+    collection.update(ids=[memory_id], metadatas=[metadata])
+    print(json.dumps({"success": True}))
+
 def get_by_id(collection_name, memory_id):
     """Get specific document by ID"""
     collection = client.get_collection(name=collection_name)
@@ -188,6 +208,12 @@ if __name__ == "__main__":
             collection_name = sys.argv[2]
             memory_id = sys.argv[3]
             get_by_id(collection_name, memory_id)
+
+        elif command == "delete_memory":
+            delete_memory(sys.argv[2], sys.argv[3])
+
+        elif command == "update_metadata":
+            update_metadata(sys.argv[2], sys.argv[3], sys.argv[4])
 
         elif command == "get_where":
             get_where(sys.argv[2], sys.argv[3], int(sys.argv[4]) if len(sys.argv) > 4 else 10)

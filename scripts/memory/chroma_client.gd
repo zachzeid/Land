@@ -130,6 +130,27 @@ func query_memories(query_params: Dictionary) -> Array:
 	
 	return memories
 
+## Delete one memory. memory: {collection, id}. Returns {"success": true} or {"error"}
+func delete_memory(memory: Dictionary) -> Dictionary:
+	if not memory.has("collection") or not memory.has("id"):
+		return {"error": "Missing required fields: collection, id"}
+	var output = []
+	var exit_code = SafeExec.execute(PYTHON_CMD, [ProjectSettings.globalize_path(CHROMA_CLI_PATH), "delete_memory", memory.collection, memory.id], output, true)
+	if exit_code != 0:
+		return {"error": "Failed to delete memory: " + str(output)}
+	return _parse_json_output(output)
+
+## Replace one memory's metadata (its text and embedding stay). memory: {collection, id, metadata}
+func update_memory(memory: Dictionary) -> Dictionary:
+	if not memory.has("collection") or not memory.has("id") or not memory.has("metadata"):
+		return {"error": "Missing required fields: collection, id, metadata"}
+	var metadata_b64 = Marshalls.utf8_to_base64(JSON.stringify(memory.metadata))
+	var output = []
+	var exit_code = SafeExec.execute(PYTHON_CMD, [ProjectSettings.globalize_path(CHROMA_CLI_PATH), "update_metadata", memory.collection, memory.id, metadata_b64], output, true)
+	if exit_code != 0:
+		return {"error": "Failed to update memory: " + str(output)}
+	return _parse_json_output(output)
+
 ## Exact metadata lookup, no embedding: memories whose metadata matches every key/value in where
 ## Returns: Array of {id, document, metadata} (empty on error or no match)
 func get_where(collection_name: String, where: Dictionary, limit: int = 10) -> Array:
@@ -238,9 +259,6 @@ func get_memory_by_id(collection_name: String, memory_id: String) -> Dictionary:
 		return result
 	
 	# Safely extract memory, ensuring we always return a dictionary
-	if result.has("memory") and result.memory is Dictionary:
+	if result.get("memory") is Dictionary:
 		return result.memory
-	elif result.has("memory"):
-		return {"document": str(result.memory)}
-	else:
-		return {}
+	return {}  # no such memory (the CLI answers null, which must not become a "<null>" document)

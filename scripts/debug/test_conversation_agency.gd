@@ -134,6 +134,9 @@ func _test_hallucination_checks():
 	_check("Capitol names and places are valid memories", corwin.valid)
 	_check("...and Corwin, Hollis, Seraphine are known people", world_events._is_valid_npc_name("Corwin") and world_events._is_valid_npc_name("Seraphine") and world_events._is_valid_npc_name("Anselm"))
 	_check("Every registry location name passes", registry.get_location_ids().all(func(id): return world_events.validate_memory("We spoke of %s today." % registry.get_location_name(id), MIRA).valid))
+	_check("A sentence-initial word is not taken for a name", world_events._extract_npc_names("Quest given by the elder. Rain fell.").is_empty())
+	_check("A capitalised thing after an article is not a name", world_events._extract_npc_names("He sold me the Frostblade and his Hammer.").is_empty())
+	_check("A stranger's name mid-sentence is still caught", world_events._extract_npc_names("I met Margarethe by the well.") == ["Margarethe"])
 	_check("Storyline titles are canon too", world_events.validate_memory("Everyone talks of The Talking Fixture now.", MIRA).valid)
 	_check("Invented establishments still fail", not world_events.validate_memory("I drank at The Golden Goose.", MIRA).valid
 		and not world_events.validate_memory("We met at The Crooked Lantern Inn.", MIRA).valid)
