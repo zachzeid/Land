@@ -1,0 +1,31 @@
+{
+  "_doc": "Crafting stations (docs/PLAYER_SYSTEMS.md §4). kind gates recipes; grade (0-100) feeds item quality; owner (an npc key, or \"\" for anyone's) decides leave through their soul; fuel is what a craft burns from the owner's store. The player's own campfires and workbenches are built in the world and saved by Crafting, not listed here.",
+  "kinds": {
+    "campfire": {"name": "Campfire", "unlocks": "cooking, simple remedies, charcoal", "buildable": true, "build": {"wood": 3}, "grade": 30},
+    "workbench": {"name": "Workbench", "unlocks": "wood tools, bows, arrows, shields, leather, repairs", "buildable": true, "build": {"wood": 6}, "grade": 40},
+    "forge": {"name": "Forge and anvil", "unlocks": "smelting, steel, blades, armour, tools, re-forging", "buildable": false},
+    "herb_table": {"name": "Herb table and still", "unlocks": "remedies, the cure", "buildable": false},
+    "loom": {"name": "Loom", "unlocks": "cloth, padding", "buildable": false}
+  },
+  "stations": [
+    {"id": "bjorn_forge", "kind": "forge", "name": "Bjorn's forge", "location": "thornhaven_blacksmith", "owner": "bjorn", "grade": 75, "fuel": "charcoal",
+      "ask": "The stranger asks to work Bjorn's forge and anvil, burning his charcoal."},
+    {"id": "bjorn_workbench", "kind": "workbench", "name": "Bjorn's bench", "location": "thornhaven_blacksmith", "owner": "bjorn", "grade": 55, "fuel": "",
+      "ask": "The stranger asks to use the bench at the back of Bjorn's forge."},
+    {"id": "greystone_forge", "kind": "forge", "name": "The Greystone smelter", "location": "greystone_mines", "owner": "dagna", "grade": 55, "fuel": "charcoal",
+      "ask": "The stranger asks to use the mine's smelter and anvil."},
+    {"id": "ashguard_forge", "kind": "forge", "name": "Fort Ashguard's armoury forge", "location": "fort_ashguard", "owner": "lucan", "grade": 65, "fuel": "charcoal",
+      "ask": "The stranger asks to work the garrison's armoury forge."},
+    {"id": "mill_workbench", "kind": "workbench", "name": "The old mill's bench", "location": "old_mill", "owner": "", "grade": 35, "fuel": ""},
+    {"id": "healer_herb_table", "kind": "herb_table", "name": "Old Maud's herb table", "location": "healer_hut", "owner": "", "grade": 50, "fuel": "wood",
+      "note": "Maud keeps an open door for anyone who comes to heal; she has no soul file, so her table needs no leave."},
+    {"id": "abbey_still", "kind": "herb_table", "name": "The abbey still", "location": "brackenmoor_abbey", "owner": "anselm", "grade": 70, "fuel": "wood",
+      "ask": "The stranger asks to use the abbey's herb table and still."},
+    {"id": "cathedral_infirmary", "kind": "herb_table", "name": "The Cathedral infirmary", "location": "capitol_cathedral", "owner": "ysolde", "grade": 65, "fuel": "wood",
+      "ask": "The stranger asks to use the infirmary's herb table."},
+    {"id": "thornhaven_loom", "kind": "loom", "name": "The widows' loom", "location": "thornhaven_town_square", "owner": "", "grade": 40, "fuel": ""},
+    {"id": "capitol_market_loom", "kind": "loom", "name": "The market looms", "location": "capitol_market", "owner": "", "grade": 55, "fuel": ""},
+    {"id": "waystation_hearth", "kind": "campfire", "name": "The waystation yard fire", "location": "kingsroad_waystation", "owner": "wren", "grade": 35, "fuel": "wood",
+      "ask": "The stranger asks to cook at the yard fire behind the waystation."}
+  ]
+}
