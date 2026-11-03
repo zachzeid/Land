@@ -15,6 +15,10 @@ const GENERIC_META = "generic_id"
 const SPAWN_OFFSET = Vector2(56, 0)
 const GENERIC_SCENE = "res://scenes/npcs/generic_npc.tscn"
 const GENERIC_RING = 150.0  # generics stand around the default spawn point, past the roster NPCs
+const MIN_SPACING = 48.0    # nobody is placed closer than this to another NPC or the player's spawn
+const RING_STEP = 56.0      # further rings, when the near ones are full
+const RING_SLOTS = 16       # places per ring
+const FLOOR_MARGIN = 40.0   # keep clear of an interior's walls
 
 ## Initialize spawned NPCs the way GameWorld does: initialize(use_chromadb, false)
 @export var use_chromadb: bool = true
@@ -56,6 +60,7 @@ func reconcile(location_id: String, scene_root: Node) -> Dictionary:
 			_hide(npc)
 			report.hidden.append(key)
 
+	var taken: Array = _taken_spots(scene_root)
 	var index = 0
 	for key in wanted:
 		if present.has(key):
@@ -68,7 +73,7 @@ func reconcile(location_id: String, scene_root: Node) -> Dictionary:
 		if "home_location" in npc:
 			npc.home_location = registry.get_npc_home(key)
 		if npc is Node2D:
-			npc.position = _spawn_position(scene_root, key, index)
+			npc.position = _spawn_position(scene_root, key, index, taken)
 		index += 1
 		scene_root.add_child(npc)
 		if not npc.is_in_group("npcs"):
@@ -80,11 +85,11 @@ func reconcile(location_id: String, scene_root: Node) -> Dictionary:
 	if not (report.spawned.is_empty() and report.hidden.is_empty() and report.freed.is_empty() and report.skipped.is_empty()):
 		print("[NpcSpawner] %s: shown %s, spawned %s, hidden %s, freed %s, skipped %s" % [location_id, report.shown, report.spawned, report.hidden, report.freed, report.skipped])
 	if spawn_generics:
-		_reconcile_generics(location_id, scene_root, report)
+		_reconcile_generics(location_id, scene_root, report, taken)
 	return report
 
 ## Generic instances present here get a body; bodies of instances that left (or went home) are freed
-func _reconcile_generics(location_id: String, scene_root: Node, report: Dictionary) -> void:
+func _reconcile_generics(location_id: String, scene_root: Node, report: Dictionary, taken: Array = []) -> void:
 	var registry = get_node_or_null("/root/DynamicNPCRegistry")
 	var manager = registry.generics if registry and "generics" in registry else null
 	if manager == null:
@@ -105,8 +110,12 @@ func _reconcile_generics(location_id: String, scene_root: Node, report: Dictiona
 			npc.remove_from_group("npcs")
 			npc.queue_free()
 			report.generics_freed.append(id)
+	if taken.is_empty():
+		taken = _taken_spots(scene_root)
+	var ids: Array = wanted.keys()
+	ids.sort()  # the same order every visit, so the same people get the same spots
 	var index = 0
-	for id in wanted:
+	for id in ids:
 		if present.has(id):
 			continue
 		var npc = _instance(id, GENERIC_SCENE)
@@ -120,7 +129,7 @@ func _reconcile_generics(location_id: String, scene_root: Node, report: Dictiona
 		elif "npc_id" in npc:
 			npc.npc_id = id
 		if npc is Node2D:
-			npc.position = _generic_position(scene_root, id, manager, index)
+			npc.position = _generic_position(scene_root, id, manager, index, taken)
 		index += 1
 		scene_root.add_child(npc)
 		if not npc.is_in_group("npcs"):
@@ -133,19 +142,59 @@ func _reconcile_generics(location_id: String, scene_root: Node, report: Dictiona
 		print("[NpcSpawner] %s: generics spawned %s, freed %s" % [location_id, report.generics_spawned, report.generics_freed])
 
 ## A Marker2D named npc_<id> if the scene has one, else on a ring around the default spawn point
-## (the angle comes from the instance seed, so a generic stands in the same place every visit)
-func _generic_position(scene_root: Node, id: String, manager: Node, index: int) -> Vector2:
+## The angle comes from the instance seed, so a generic stands in the same place every visit when
+## that place is free; otherwise the next free slot outward (never on top of anyone)
+func _generic_position(scene_root: Node, id: String, manager: Node, index: int, taken: Array = []) -> Vector2:
 	var marker = scene_root.find_child("npc_" + id, true, false)
 	if marker is Node2D:
-		return marker.position if marker.get_parent() == scene_root else marker.global_position
-	var base = Vector2.ZERO
+		var at = marker.position if marker.get_parent() == scene_root else marker.global_position
+		taken.append(at)
+		return at
+	var inst = manager.get_instance(id)
+	var start = posmod(inst.seed_value if inst else index * 37, 360)
+	return _free_spot(scene_root, _default_spawn(scene_root), GENERIC_RING, start, taken)
+
+## The default spawn point (where the player arrives), or the origin
+func _default_spawn(scene_root: Node) -> Vector2:
 	var spawn_points = scene_root.find_child("SpawnPoints", true, false)
 	var fallback = spawn_points.find_child("default", false, false) if spawn_points else null
-	if fallback is Node2D:
-		base = fallback.global_position
-	var inst = manager.get_instance(id)
-	var angle = float(posmod(inst.seed_value if inst else index * 37, 360)) * PI / 180.0
-	return base + Vector2(cos(angle), sin(angle) * 0.6) * (GENERIC_RING + 24.0 * (index % 3))
+	return fallback.global_position if fallback is Node2D else Vector2.ZERO
+
+## Where people already stand: every NPC body in the scene, and the player's spawn point
+func _taken_spots(scene_root: Node) -> Array:
+	var taken: Array = [_default_spawn(scene_root)]
+	for npc in _scene_npcs(scene_root):
+		if npc is Node2D and npc.visible:
+			taken.append(npc.position if npc.get_parent() == scene_root else npc.global_position)
+	return taken
+
+## The first slot on rings around center (radius, then RING_STEP further out), starting at
+## start_degrees, at least MIN_SPACING from every taken spot and inside the floor; it joins taken
+func _free_spot(scene_root: Node, center: Vector2, radius: float, start_degrees: int, taken: Array) -> Vector2:
+	var bounds = _floor_bounds(scene_root)
+	var first_inside = Vector2.INF
+	for ring in 6:
+		for slot in RING_SLOTS:
+			var angle = deg_to_rad(float(start_degrees) + slot * 360.0 / RING_SLOTS)
+			var spot = center + Vector2(cos(angle), sin(angle) * 0.6) * (radius + RING_STEP * ring)
+			if bounds.size != Vector2.ZERO and not bounds.has_point(spot):
+				continue
+			if first_inside == Vector2.INF:
+				first_inside = spot
+			if taken.all(func(t): return t.distance_to(spot) >= MIN_SPACING):
+				taken.append(spot)
+				return spot
+	var fallback = first_inside if first_inside != Vector2.INF else center
+	taken.append(fallback)
+	return fallback  # a full room: crowded, but inside it
+
+## An interior's walkable floor (its Floor ColorRect, less FLOOR_MARGIN); zero size = no limit
+func _floor_bounds(scene_root: Node) -> Rect2:
+	var floor_node = scene_root.get_node_or_null("Floor")
+	if not (floor_node is Control):
+		return Rect2()
+	var rect = Rect2(floor_node.global_position, floor_node.size)
+	return rect.grow(-FLOOR_MARGIN) if rect.size.x > FLOOR_MARGIN * 2 and rect.size.y > FLOOR_MARGIN * 2 else rect
 
 ## Whether a roster NPC belongs in this location right now
 func should_be_at(key: String, location_id: String) -> bool:
@@ -194,13 +243,16 @@ func _instance(key: String, scene_path: String) -> Node:
 	return packed.instantiate()
 
 ## A Marker2D named npc_<key> if the scene has one, else beside the default spawn point
-func _spawn_position(scene_root: Node, key: String, index: int) -> Vector2:
+func _spawn_position(scene_root: Node, key: String, index: int, taken: Array = []) -> Vector2:
 	var marker = scene_root.find_child("npc_" + key, true, false)
 	if marker is Node2D:
-		return marker.position if marker.get_parent() == scene_root else marker.global_position
-	var base = Vector2.ZERO
-	var spawn_points = scene_root.find_child("SpawnPoints", true, false)
-	var fallback = spawn_points.find_child("default", false, false) if spawn_points else null
-	if fallback is Node2D:
-		base = fallback.global_position + Vector2(0, -64)
-	return base + SPAWN_OFFSET * (index + 1)
+		var at = marker.position if marker.get_parent() == scene_root else marker.global_position
+		taken.append(at)
+		return at
+	# A line just above the default spawn, as before, when that spot is free; else the nearest free slot
+	var spot = _default_spawn(scene_root) + Vector2(0, -64) + SPAWN_OFFSET * (index + 1)
+	var bounds = _floor_bounds(scene_root)
+	if taken.all(func(t): return t.distance_to(spot) >= MIN_SPACING) and (bounds.size == Vector2.ZERO or bounds.has_point(spot)):
+		taken.append(spot)
+		return spot
+	return _free_spot(scene_root, _default_spawn(scene_root), SPAWN_OFFSET.x * 1.5, index * 45, taken)

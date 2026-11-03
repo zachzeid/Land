@@ -544,6 +544,7 @@ func _test_spawner():
 	var body = scene.find_child("Generic_gen_farmer_1", true, false)
 	_check("the body is a GenericNPC bound to its instance", body != null and body.npc_name == m.get_instance("gen_farmer_1").name and body.personality_resource is NPCPersonality)
 	_check("it reuses a sprite by archetype", body != null and body.get_node("GeneratableCharacter").character_id == "villager_male" and body.get_node("NameLabel").text == body.npc_name)
+	_check("nobody is spawned on top of anyone, or on the player's spawn", _spaced(scene, spawner.MIN_SPACING))
 	report = spawner.reconcile("thornhaven_town_square", scene)
 	_check("reconciling again keeps them (no duplicates)", report.generics_spawned.is_empty() and report.generics_kept.size() == 3)
 	var world_state = root.get_node("WorldState")
@@ -558,9 +559,39 @@ func _test_spawner():
 	m.test_now = 10 * 60
 	report = spawner.reconcile("village_gate", scene)
 	_check("inside its hours it is there", "gen_gate_guard_2" in report.generics_spawned)
+	# A small room, crowded: every spot is clear of the others and inside the floor
+	var room = Node2D.new()
+	var room_floor = ColorRect.new()
+	room_floor.name = "Floor"
+	room_floor.position = Vector2(-200, -200)
+	room_floor.size = Vector2(400, 400)
+	room.add_child(room_floor)
+	var taken: Array = [Vector2.ZERO]
+	for i in 12:
+		spawner._free_spot(room, Vector2.ZERO, spawner.GENERIC_RING, i * 7, taken)
+	var inside = Rect2(room_floor.position, room_floor.size)
+	_check("twelve in a small room: all inside the floor", taken.all(func(t): return inside.has_point(t)))
+	var clear = true
+	for i in taken.size():
+		for j in range(i + 1, taken.size()):
+			clear = clear and taken[i].distance_to(taken[j]) >= spawner.MIN_SPACING
+	_check("...and none closer than MIN_SPACING", clear)
+	room.free()
 	registry.generics = saved
 	spawner.queue_free()
 	scene.queue_free()
+
+## Every NPC body (and the default spawn) at least spacing apart
+func _spaced(scene: Node, spacing: float) -> bool:
+	var spots: Array = [Vector2.ZERO]
+	for npc in scene.get_children():
+		if npc.is_in_group("npcs") and npc is Node2D:
+			spots.append(npc.position)
+	for i in spots.size():
+		for j in range(i + 1, spots.size()):
+			if spots[i].distance_to(spots[j]) < spacing:
+				return false
+	return spots.size() > 1
 
 func _test_generic_npc_body():
 	print("-- GenericNPC: conversation layering, tier switch (in-memory RAG) --")
