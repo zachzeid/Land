@@ -47,9 +47,9 @@ longer.
 
 ## Agency
 - intercept: agenda, set_flag, block_beat, spread_rumor
-- react: agenda, adjust_relationship, shift_want
+- react: agenda, adjust_relationship, shift_want, spread_event
 - scheme: agenda, set_flag, spread_rumor, block_beat, unlock_beat, shift_want
-- reveal: set_flag, agenda, spread_rumor, adjust_relationship
+- reveal: set_flag, agenda, spread_rumor, adjust_relationship, spread_event
 - aid: agenda, adjust_relationship, unlock_beat, set_flag
 - betray: set_flag, spread_rumor, agenda, block_beat
 - converse: agenda, adjust_relationship, set_flag, spread_rumor, shift_want

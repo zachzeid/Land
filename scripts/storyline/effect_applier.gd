@@ -3,7 +3,12 @@ extends RefCounted
 # validate() normalizes and clamps an effect or explains why it is unusable
 # apply() performs it through the owning systems (WorldState, EventPropagator, NPCs, Director)
 
-const EFFECT_TYPES = ["set_flag", "adjust_relationship", "spread_rumor", "agenda", "move_npc", "block_beat", "unlock_beat", "shift_want"]
+const EFFECT_TYPES = ["set_flag", "adjust_relationship", "spread_rumor", "agenda", "move_npc", "block_beat", "unlock_beat", "shift_want",
+	"shift_fixed_point", "spread_event"]
+## docs/WORLD_SCHEMA.md §11-12: shift_fixed_point {point, days (-3..3) | cancel: true, reason} moves a
+## movable calendar point; spread_event {event, to, via} spreads a player event (PlayerEvents.spread)
+const MAX_SHIFT_DAYS = 3
+const MAX_REASON_CHARS = 200
 const DIMENSIONS = ["trust", "respect", "affection", "fear", "familiarity"]
 # NPC keys and locations come from WorldRegistry (resources/world/world.json), never a list here
 const MAX_AGENDA_CHARS = 160
@@ -53,6 +58,10 @@ func validate(effect) -> Dictionary:
 			# Calendar flags (world.json calendar) are world fixed points: only the game clock sets them
 			if StoryFlags.is_calendar_flag(str(e.flag)):
 				return _invalid("'%s' is a calendar fixed point: only the game clock sets it" % e.flag)
+			# <point>_cancelled / <point>_eve: the calendar sets them, even when a storyline declares them
+			var ws = _world_state()
+			if ws and ws.has_method("is_derived_calendar_flag") and ws.is_derived_calendar_flag(str(e.flag)):
+				return _invalid("'%s' is a calendar flag: only the calendar sets it" % e.flag)
 			# Personal flags (docs/WORLD_SCHEMA.md §8) are read by storylines, set only by that NPC's own life
 			if director != null and director.has_method("is_personal_flag") and director.is_personal_flag(str(e.flag)):
 				return _invalid("'%s' is a personal flag: only that NPC's own life can set it" % e.flag)
@@ -105,6 +114,44 @@ func validate(effect) -> Dictionary:
 			if not (e.get("delta") is int or e.get("delta") is float):
 				return _invalid("delta is not a number")
 			e["delta"] = clampi(int(e.delta), -3, 3)
+		"shift_fixed_point":
+			var point = str(e.get("point", ""))
+			var world_state = _world_state()
+			if world_state == null or not world_state.has_method("is_movable_point"):
+				return _invalid("no calendar to shift")
+			if not world_state.is_calendar_flag(point):
+				return _invalid("'%s' is not a calendar fixed point" % point)
+			if not world_state.is_movable_point(point):
+				return _invalid("'%s' is a fixed point that cannot move" % point)
+			e["point"] = point
+			e["reason"] = str(e.get("reason", "")).strip_edges().substr(0, MAX_REASON_CHARS)
+			if e.get("cancel", false) == true:
+				e["cancel"] = true
+				e.erase("days")
+			else:
+				if not (e.get("days") is int or e.get("days") is float):
+					return _invalid("shift_fixed_point needs days (-%d..%d) or cancel: true" % [MAX_SHIFT_DAYS, MAX_SHIFT_DAYS])
+				e["days"] = clampi(int(e.days), -MAX_SHIFT_DAYS, MAX_SHIFT_DAYS)
+				if e.days == 0:
+					return _invalid("a shift of 0 days moves nothing")
+				e["cancel"] = false
+		"spread_event":
+			var event_id = str(e.get("event", "")).strip_edges()
+			if event_id == "":
+				return _invalid("spread_event needs an event id")
+			e["event"] = event_id
+			var to = e.get("to", ["*"])
+			if to is String:
+				to = [to]
+			if not to is Array or to.is_empty():
+				return _invalid("spread_event needs 'to'")
+			var keys: Array = []
+			for key in to:
+				if str(key) != "*" and not _is_actor(str(key)):
+					return _invalid("unknown npc '%s' in 'to'" % key)
+				keys.append(str(key))
+			e["to"] = keys
+			e["via"] = str(e.get("via", "talk among neighbours"))
 	return {"ok": true, "effect": e, "reason": ""}
 
 ## Apply an already-validated effect. actor_key is the NPC who caused it ("" = the storyline itself)
@@ -139,6 +186,18 @@ func apply(e: Dictionary, actor_key: String = "", source: Dictionary = {}) -> Di
 			director.set_beat_blocked(e.storyline, e.beat, false)
 		"shift_want":
 			director.shift_want(e.npc, e.want, e.delta)
+		"shift_fixed_point":
+			if director == null or not director.has_method("shift_fixed_point"):
+				return _failed("no Director to shift the calendar")
+			var shifted: Dictionary = director.shift_fixed_point(e.point, "cancel" if e.cancel else int(e.days), e.reason, actor_key, source.merged({"effect": true}))
+			if not shifted.ok:
+				return _failed(shifted.reason)
+		"spread_event":
+			if director == null or not director.has_method("spread_player_event"):
+				return _failed("no Director to spread the event")
+			var spread: Dictionary = director.spread_player_event(e.event, e.to, e.via, actor_key, source)
+			if not spread.ok:
+				return _failed(spread.reason)
 	return {"ok": true, "reason": ""}
 
 ## Where "*" listeners for a rumor live: the actor's region, else the beat's, else "" (EventPropagator decides)
@@ -159,6 +218,13 @@ func _is_known_flag(flag: String) -> bool:
 	if StoryFlags.is_base_flag(flag):  # built-in flags and world.json discovery flags
 		return true
 	return director != null and director.is_known_flag(flag)
+
+func _world_state() -> Node:
+	var world_state = _node("WorldState")
+	if world_state == null:
+		var tree = Engine.get_main_loop() as SceneTree
+		world_state = tree.root.get_node_or_null("WorldState") if tree and tree.root else null
+	return world_state
 
 func _node(autoload: String) -> Node:
 	if director and director.is_inside_tree():

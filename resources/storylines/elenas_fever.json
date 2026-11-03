@@ -53,7 +53,8 @@
     "hc_varn_ascendant",
     "grey_salt_in_hand",
     "grey_cure_recipe_known",
-    "vein_ridge_trail_closed"
+    "vein_ridge_trail_closed",
+    "tn_cart_advanced"
   ],
   "beats": [
     {
@@ -1089,7 +1090,7 @@
           "eligible": [
             "gregor"
           ],
-          "situation": "Two days left. The men have not answered. Elena coughs in the night and stitches in the day, and she looks at you as if she already knows something.",
+          "situation": "The days run short. The men have not answered. Elena coughs in the night and stitches in the day, and she looks at you as if she already knows something.",
           "options": [
             {
               "id": "bar_her_in",
@@ -1520,11 +1521,11 @@
         {
           "id": "fev_gregor_last_night_bar",
           "type": "intercept",
-          "trigger": "on_flag:tn_day_6",
+          "trigger": "on_flag:tn_collection_night_eve",
           "eligible": [
             "gregor"
           ],
-          "situation": "The cart comes tomorrow night. The bar is still across the door. Elena has stopped speaking to you.",
+          "situation": "The cart is close. The bar is still across the door. Elena has stopped speaking to you.",
           "options": [
             {
               "id": "hold_to_the_end",
@@ -1707,7 +1708,7 @@
           "eligible": [
             "mira"
           ],
-          "situation": "Gregor has barred the girl in. If she is not at the gate on the seventh night the men will come for her, and the Tithe you built will look like it can be dodged.",
+          "situation": "Gregor has barred the girl in. If she is not at the gate on Collection Night the men will come for her, and the Tithe you built will look like it can be dodged.",
           "options": [
             {
               "id": "a_burned_shop",
@@ -1794,7 +1795,7 @@
           "eligible": [
             "varn"
           ],
-          "situation": "The merchant has barred his girl in, as if oak could keep the Tithe out. Whoever holds her on the seventh night holds him.",
+          "situation": "The merchant has barred his girl in, as if oak could keep the Tithe out. Whoever holds her on Collection Night holds him.",
           "options": [
             {
               "id": "post_a_man",
@@ -2445,10 +2446,10 @@
       "id": "the_last_night",
       "title": "The Last Night",
       "act": 3,
-      "summary": "From the sixth morning Elena must choose how she meets Collection Night: ride the cart as she chose, run, or let someone else go. What the player promises her decides which door she opens.",
+      "summary": "In the last day before the cart, Elena must choose how she meets Collection Night: ride the cart as she chose, run, or let someone else go. What the player promises her decides which door she opens.",
       "location": "village_gate",
       "requires": [
-        "tn_day_6",
+        "tn_collection_night_eve",
         "fev_elena_confessed"
       ],
       "resolves_on": [
@@ -2645,7 +2646,7 @@
           "eligible": [
             "gregor"
           ],
-          "situation": "The sixth morning. The cart comes tomorrow night. There is one door you have not tried, and it is the only one that does not cost a neighbour.",
+          "situation": "The cart is close now. There is one door you have not tried, and it is the only one that does not cost a neighbour.",
           "options": [
             {
               "id": "lace_the_boots",
@@ -2798,7 +2799,7 @@
           "eligible": [
             "varn"
           ],
-          "situation": "The sixth day. A clean collection means the girl at the gate tomorrow night, and a girl who runs into the Darkwood runs to you.",
+          "situation": "The cart is close. A clean collection means the girl at the gate on Collection Night, and a girl who runs into the Darkwood runs to you.",
           "options": [
             {
               "id": "riders_on_the_path",

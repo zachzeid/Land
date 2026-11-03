@@ -58,7 +58,10 @@
     "des_varn_warrant_served",
     "des_varn_suspects_the_boss",
     "vein_ridge_trail_closed",
-    "way_boss_named_in_capitol"
+    "way_boss_named_in_capitol",
+    "tn_cart_delayed",
+    "tn_cart_advanced",
+    "tn_collection_night_cancelled"
   ],
   "beats": [
     {
@@ -289,7 +292,7 @@
           "eligible": [
             "varn"
           ],
-          "situation": "Three days to the cart. The merchant has tried every door in Thornhaven. He has not tried yours.",
+          "situation": "Days to the cart, and few of them. The merchant has tried every door in Thornhaven. He has not tried yours.",
           "options": [
             {
               "id": "across_the_counter",
@@ -669,6 +672,32 @@
                   "delta": -1
                 }
               ]
+            },
+            {
+              "id": "bring_the_night_on",
+              "label": "Bring the cart a night early, before the stranger tells anyone",
+              "serves": [
+                "take_the_hollow",
+                "hold_elena_as_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "shift_fixed_point",
+                  "point": "tn_collection_night",
+                  "days": -1,
+                  "reason": "Varn brought the cart a night early, before the stranger who refused his silver could tell anyone what they had seen."
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "tn_cart_advanced",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the cart is coming sooner than they think, and that it is a pity they would not be partners."
+                }
+              ]
             }
           ]
         },
@@ -754,6 +783,32 @@
                   "type": "agenda",
                   "npc": "mira",
                   "text": "Beg the stranger to stay away from Varn, because he killed her husband and he would kill them."
+                }
+              ]
+            },
+            {
+              "id": "hold_the_cart",
+              "label": "Hold the cart two nights, and watch whether Varn waits on her word",
+              "serves": [
+                "keep_varn_leashed",
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "shift_fixed_point",
+                  "point": "tn_collection_night",
+                  "days": 2,
+                  "reason": "The Boss was warned her lieutenant meant to turn the cart, and held it two nights to see whether he would wait for her word."
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "tn_cart_delayed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Thank the stranger, shaking, and tell them she has heard the cart may come late. Ask them to watch Varn."
                 }
               ]
             }
@@ -2050,6 +2105,59 @@
                   "location": "thornhaven_tavern"
                 }
               ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_no_harvest",
+          "type": "scheme",
+          "trigger": "on_flag:tn_collection_night_cancelled",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "No cart will roll. The Pit is empty, and the Boss's harvest with it. A Boss with no harvest is a widow with a tavern.",
+          "options": [
+            {
+              "id": "go_for_the_chair",
+              "label": "Go down the forest path for her chair tonight",
+              "serves": [
+                "take_the_hollow",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "forest_path"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the Hollow has no use now for whoever ran it, and ask, smiling, if they know who that was."
+                }
+              ]
+            },
+            {
+              "id": "ride_east",
+              "label": "Take the silver under the wheel and ride east",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "kingsroad_waystation"
+                }
+              ]
+            },
+            {
+              "id": "wait",
+              "label": "Wait, and see who she blames",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
             }
           ]
         }

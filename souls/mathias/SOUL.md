@@ -55,10 +55,10 @@ to do one brave thing before the end.
 
 ## Agency
 - intercept: block_beat, agenda, set_flag
-- react: agenda, adjust_relationship, shift_want
+- react: agenda, adjust_relationship, shift_want, spread_event
 - scheme: agenda, set_flag, spread_rumor
-- reveal: set_flag, agenda, spread_rumor
-- aid: agenda, adjust_relationship, unlock_beat, set_flag
+- reveal: set_flag, agenda, spread_rumor, spread_event
+- aid: agenda, adjust_relationship, unlock_beat, set_flag, shift_fixed_point
 - betray: set_flag, agenda, spread_rumor
 - converse: agenda, adjust_relationship, set_flag, spread_rumor
 

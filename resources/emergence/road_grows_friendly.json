@@ -1,0 +1,94 @@
+{
+  "id": "road_grows_friendly",
+  "title": "Friends on the Road",
+  "summary": "Road and river folk think well enough of the player that the Kingsroad gets friendlier.",
+  "trigger": {
+    "reputation": {
+      "faction": "the_road",
+      "above": 30
+    }
+  },
+  "roles": {
+    "roadfolk": {
+      "from": "faction:the_road",
+      "prefer": "affection_desc"
+    }
+  },
+  "cooldown_days": 3,
+  "max_active": 1,
+  "expires_days": 4,
+  "location": "{roadfolk.home}",
+  "hooks": [
+    {
+      "id": "a_good_word_on_the_road",
+      "type": "react",
+      "eligible_role": "roadfolk",
+      "trigger": "on_open",
+      "situation": "Carters and boatmen trade news at every stop, and lately the news about {player} has been good.",
+      "options": [
+        {
+          "id": "offer_a_ride",
+          "label": "Offer them a seat on the next wagon east",
+          "appeal": {
+            "affection": 0.5,
+            "familiarity": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{roadfolk}",
+              "text": "Offer {player} a seat on the next wagon heading their way, and the cheap price for friends."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{roadfolk}",
+              "dimension": "affection",
+              "delta": 5
+            }
+          ]
+        },
+        {
+          "id": "road_news",
+          "label": "Tell them which stretches to avoid this week",
+          "appeal": {
+            "trust": 0.5
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{roadfolk}",
+              "text": "Tell {player} which stretches of the Kingsroad to avoid this week, and who is watching the crossings."
+            }
+          ]
+        },
+        {
+          "id": "ask_for_news",
+          "label": "Ask them for news in return; that's how the road works",
+          "appeal": {
+            "respect": 0.4,
+            "trust": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{roadfolk}",
+              "text": "Ask {player} for their news from the valley in trade for yours. That's how the road works."
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; wave as they pass",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:roadfolk",
+    "expired"
+  ]
+}

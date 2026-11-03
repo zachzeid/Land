@@ -41,7 +41,9 @@
     "ih_let_him_run": "The stranger learned which road Gregor had fled by, let him go, and raised no hue and cry behind him",
     "ih_at_the_tailboard": "Gregor stood at the cart's tailboard on Collection Night in boots shod for stone, waiting for one word to climb in",
     "ih_ledger_given": "Gregor put his ledger and his strongbox key into the stranger's hand at the gate on Collection Night",
-    "ih_heard_his_last_word": "The stranger heard the last of Gregor's confession at the cart's tailboard on Collection Night"
+    "ih_heard_his_last_word": "The stranger heard the last of Gregor's confession at the cart's tailboard on Collection Night",
+    "ih_paid_for_nights": "Gregor emptied half his strongbox into the messenger's hands to buy Thornhaven more nights before the cart",
+    "ih_paid_varn_for_nights": "Gregor sent coin up the forest path to Varn himself, behind the messenger's back, to buy more nights before the cart"
   },
   "player_flags": [
     "ih_bargain_accepted",
@@ -58,7 +60,10 @@
     "oath_blades_sabotaged",
     "cou_martial_law",
     "fev_elena_left_home",
-    "mag_summons_issued"
+    "mag_summons_issued",
+    "tn_plan_fight",
+    "tn_cart_delayed",
+    "tn_collection_night_cancelled"
   ],
   "beats": [
     {
@@ -68,7 +73,7 @@
       "summary": "In Gregor's back room sit a strongbox and a ledger. The strongbox holds a second set of the chapel's lot tiles and a packet of white salt; the ledger holds five years of rigged draws.",
       "location": "thornhaven_gregor_shop",
       "requires": [
-        "tithe_drawing_witnessed",
+        "tithe_drawing_known",
         "!gregor_exposed"
       ],
       "resolves_on": [
@@ -255,13 +260,14 @@
       "summary": "Gregor's frantic week. He tries every door at once: a bribe, a road east, a substitute, the messenger, and at last himself. Every door opens onto someone who wants something else.",
       "location": "thornhaven_gregor_shop",
       "requires": [
-        "tithe_drawing_witnessed",
+        "tithe_drawing_known",
         "tn_day_2"
       ],
       "resolves_on": [
         "ih_gregor_fled",
         "gregor_exposed",
-        "tn_collection_night"
+        "tn_collection_night",
+        "tn_collection_night_cancelled"
       ],
       "hooks": [
         {
@@ -718,7 +724,7 @@
         {
           "id": "door_himself",
           "type": "react",
-          "trigger": "on_flag:tn_day_6",
+          "trigger": "on_flag:tn_collection_night_eve",
           "eligible": [
             "gregor"
           ],
@@ -837,6 +843,164 @@
                   "type": "agenda",
                   "npc": "gregor",
                   "text": "Beg the stranger to find out where Elena went. If the men hear she's gone, they'll want another name."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "door_buys_time",
+          "type": "scheme",
+          "trigger": "on_flag:tn_plan_fight",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The stranger has sworn to stand at the gate with Aldric's six. Six farmers need more nights than the Hollow has given them. Nights can be bought. Everything can be bought.",
+          "options": [
+            {
+              "id": "through_the_messenger",
+              "label": "Empty half the strongbox into the messenger's hands, for nights",
+              "serves": [
+                "buy_her_back",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_paid_for_nights",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Gregor begged her to carry half his strongbox to the men, for more nights before the cart. Anything for Elena."
+                }
+              ]
+            },
+            {
+              "id": "straight_to_varn",
+              "label": "Send the coin to Varn himself, behind the messenger's back",
+              "serves": [
+                "back_the_winning_master",
+                "buy_her_back"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_paid_varn_for_nights",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger, trembling, that he has paid the Hollow's lieutenant for more nights, and the messenger must not know."
+                }
+              ]
+            },
+            {
+              "id": "keep_it_for_the_wagon",
+              "label": "Keep the coin for the wagon east",
+              "serves": [
+                "get_elena_away"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mira_sells_the_nights",
+          "type": "scheme",
+          "trigger": "on_flag:ih_paid_for_nights",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Gregor has put half his strongbox in your hands to buy the village nights before the cart. You are the men, and the nights are yours to sell.",
+          "options": [
+            {
+              "id": "sell_them",
+              "label": "Take the coin and hold the cart a night, so he knows coin still works",
+              "serves": [
+                "control_the_cure",
+                "keep_varn_leashed"
+              ],
+              "effects": [
+                {
+                  "type": "shift_fixed_point",
+                  "point": "tn_collection_night",
+                  "days": 1,
+                  "reason": "The Boss took Gregor's coin and held the cart a night, so he would know coin still worked."
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "tn_cart_delayed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Mira says the men took the coin, and the cart will wait one night. She cried carrying it."
+                }
+              ]
+            },
+            {
+              "id": "take_it_and_keep_the_night",
+              "label": "Take the coin and let the night stand",
+              "serves": [
+                "harvest_the_tithe",
+                "burn_gregor_first"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Mira says the men took the coin and said nothing. She is so sorry. She only carries it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "varn_sells_the_nights",
+          "type": "scheme",
+          "trigger": "on_flag:ih_paid_varn_for_nights",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The merchant sent coin to you, not to the Boss, to buy nights before the cart. He has chosen a master. The question is whether you let her see it.",
+          "options": [
+            {
+              "id": "take_it_quietly",
+              "label": "Take it and hold the cart a night, behind the Boss's back",
+              "serves": [
+                "take_the_hollow",
+                "keep_gregor_on_the_hook"
+              ],
+              "effects": [
+                {
+                  "type": "shift_fixed_point",
+                  "point": "tn_collection_night",
+                  "days": 1,
+                  "reason": "Varn took Gregor's coin behind the Boss's back and walked the cart down a night late."
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "tn_cart_delayed",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "tell_the_widow",
+              "label": "Take it and tell the widow the merchant went round her",
+              "serves": [
+                "keep_the_boss_secret",
+                "keep_gregor_on_the_hook"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Varn's word: the merchant sent coin up the path to him, not to you. Varn kept it."
                 }
               ]
             }
@@ -1111,7 +1275,7 @@
           "eligible": [
             "gregor"
           ],
-          "situation": "The stranger knows. The tiles, the names, the salt. Elena's cart comes on the seventh night. Everything you have is in your hands, and your hands are shaking.",
+          "situation": "The stranger knows. The tiles, the names, the salt. Elena's cart comes on Collection Night. Everything you have is in your hands, and your hands are shaking.",
           "options": [
             {
               "id": "confess",

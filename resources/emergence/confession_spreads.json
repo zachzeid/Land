@@ -1,0 +1,111 @@
+{
+  "id": "confession_spreads",
+  "title": "Too Heavy to Carry",
+  "summary": "Someone who heard the player confess decides whether to keep it.",
+  "trigger": {
+    "event": {
+      "kind": "confession"
+    }
+  },
+  "roles": {
+    "keeper": {
+      "from": "event_witness",
+      "prefer": "trust_desc"
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 1,
+  "expires_days": 3,
+  "location": "{keeper.home}",
+  "hooks": [
+    {
+      "id": "the_weight_of_it",
+      "type": "reveal",
+      "eligible_role": "keeper",
+      "trigger": "on_open",
+      "situation": "You heard {player} confess it: {event.summary}. Nobody asked you to keep it. Nobody said you could tell.",
+      "options": [
+        {
+          "id": "keep_it",
+          "label": "Keep it; it was given in trust",
+          "appeal": {
+            "trust": 0.5,
+            "affection": 0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{keeper}",
+              "text": "Let {player} know, quietly and once, that what they told you stays with you."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{keeper}",
+              "dimension": "trust",
+              "delta": 10
+            }
+          ]
+        },
+        {
+          "id": "let_it_out",
+          "label": "It's too heavy to carry alone; tell it",
+          "appeal": {
+            "trust": -0.4,
+            "affection": -0.3,
+            "fear": -0.2
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{keeper}",
+              "dimension": "respect",
+              "delta": -5
+            }
+          ]
+        },
+        {
+          "id": "hold_it_over_them",
+          "label": "Keep it, and let them know you're keeping it",
+          "appeal": {
+            "fear": -0.4,
+            "respect": -0.3,
+            "trust": -0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{keeper}",
+              "text": "Remind {player}, lightly, that you remember what they confessed, then ask a small favour."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{keeper}",
+              "dimension": "fear",
+              "delta": -5
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing, and remember it",
+          "appeal": {
+            "familiarity": 0.1,
+            "fear": 0.3
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:keeper",
+    "expired"
+  ]
+}

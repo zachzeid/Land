@@ -1,0 +1,103 @@
+{
+  "id": "urchin_company_draws_rook",
+  "title": "Rook Takes an Interest",
+  "summary": "Time with the Warrens children makes Rook curious about the player.",
+  "trigger": {
+    "event": {
+      "kind": "kept_company",
+      "about": [
+        "archetype:warrens_urchin"
+      ],
+      "min_count": 2
+    }
+  },
+  "roles": {
+    "broker": {
+      "from": "npc:rook"
+    }
+  },
+  "cooldown_days": 3,
+  "max_active": 1,
+  "expires_days": 4,
+  "location": "capitol_warrens",
+  "hooks": [
+    {
+      "id": "whats_their_game",
+      "type": "react",
+      "eligible_role": "broker",
+      "trigger": "on_open",
+      "situation": "The little ones keep coming back with the same story: {player} {event.summary}. Grown folk don't waste time on Warrens children unless they want something.",
+      "options": [
+        {
+          "id": "send_for_them",
+          "label": "Send a runner to bring them to the back room",
+          "appeal": {
+            "trust": 0.3,
+            "respect": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "rook",
+              "text": "Have a runner bring {player} to the back room under the cooper's, and find out what they want with your crew."
+            }
+          ]
+        },
+        {
+          "id": "warn_them_off",
+          "label": "Tell them to keep away from your crew",
+          "appeal": {
+            "trust": -0.5,
+            "fear": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "rook",
+              "text": "Tell {player} straight: the crew is yours, and anyone who uses them answers to you."
+            },
+            {
+              "type": "shift_want",
+              "npc": "rook",
+              "want": "look_after_the_little_ones",
+              "delta": 1
+            }
+          ]
+        },
+        {
+          "id": "price_them",
+          "label": "Work out what they're worth knowing",
+          "appeal": {
+            "respect": 0.4,
+            "affection": -0.1
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "rook",
+              "text": "Feel {player} out for what they're worth: who they work for, what they carry, who'd pay to know."
+            },
+            {
+              "type": "shift_want",
+              "npc": "rook",
+              "want": "sell_what_i_know",
+              "delta": 1
+            }
+          ]
+        },
+        {
+          "id": "watch",
+          "label": "Say nothing; let the little ones keep watching",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:broker",
+    "expired"
+  ]
+}

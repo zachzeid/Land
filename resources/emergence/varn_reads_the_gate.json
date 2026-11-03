@@ -1,0 +1,117 @@
+{
+  "id": "varn_reads_the_gate",
+  "title": "One Man Down",
+  "summary": "The player killed one of Varn's men; Varn decides whether the cart comes early, late or on the night.",
+  "trigger": {
+    "event": {
+      "kind": "kill",
+      "about": [
+        "archetype:hollow_grunt"
+      ]
+    },
+    "flag": "!tn_collection_night"
+  },
+  "roles": {
+    "lieutenant": {
+      "from": "npc:varn"
+    }
+  },
+  "cooldown_days": 30,
+  "max_active": 1,
+  "expires_days": 2,
+  "location": "iron_hollow_camp",
+  "hooks": [
+    {
+      "id": "a_valley_that_starts_thinking",
+      "type": "scheme",
+      "eligible_role": "lieutenant",
+      "trigger": "on_open",
+      "situation": "One of yours is dead, and the word is {player} {event.summary}. The valley will have heard by now, and a valley that learns a Hollow man can die starts thinking.",
+      "options": [
+        {
+          "id": "come_early",
+          "label": "Bring the cart early; show them one dead man changed nothing",
+          "appeal": {
+            "respect": -0.5,
+            "fear": -0.5
+          },
+          "effects": [
+            {
+              "type": "shift_fixed_point",
+              "point": "tn_collection_night",
+              "reason": "Varn brought the cart a night early, to show the valley one dead man changed nothing.",
+              "days": -1
+            },
+            {
+              "type": "shift_want",
+              "npc": "varn",
+              "want": "be_feared",
+              "delta": 1
+            }
+          ]
+        },
+        {
+          "id": "wait_and_watch",
+          "label": "Hold the cart a night; see who stands at the gate first",
+          "appeal": {
+            "respect": 0.5,
+            "fear": 0.3
+          },
+          "effects": [
+            {
+              "type": "shift_fixed_point",
+              "point": "tn_collection_night",
+              "reason": "The cart came a night late. Varn wanted to see who was standing at the gate before he came to it.",
+              "days": 1
+            },
+            {
+              "type": "agenda",
+              "npc": "varn",
+              "text": "Find {player} on the road and ask, pleasantly, how many friends they have in Thornhaven."
+            }
+          ]
+        },
+        {
+          "id": "make_it_personal",
+          "label": "Keep the night, and let the stranger know you know",
+          "appeal": {
+            "fear": -0.3,
+            "affection": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "varn",
+              "text": "Tell {player}, pleasantly, the dead man's name, and that you will remember theirs."
+            },
+            {
+              "type": "shift_want",
+              "npc": "varn",
+              "want": "crush_the_resistance",
+              "delta": 1
+            }
+          ]
+        },
+        {
+          "id": "perfect_collection",
+          "label": "Keep the night as it is; a perfect collection answers everything",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": [
+            {
+              "type": "shift_want",
+              "npc": "varn",
+              "want": "a_perfect_collection",
+              "delta": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "days:2",
+    "expired"
+  ]
+}

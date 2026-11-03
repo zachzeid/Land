@@ -58,9 +58,9 @@ that is not an entry any ledger survives.
 
 ## Agency
 - intercept: agenda, set_flag, block_beat, move_npc
-- react: agenda, adjust_relationship, shift_want
+- react: agenda, adjust_relationship, shift_want, spread_event
 - scheme: agenda, set_flag, spread_rumor, move_npc, block_beat, shift_want
-- reveal: agenda, set_flag, adjust_relationship
+- reveal: agenda, set_flag, adjust_relationship, spread_event
 - aid: agenda, unlock_beat, adjust_relationship
 - betray: set_flag, spread_rumor, agenda, block_beat
 - converse: agenda, adjust_relationship, set_flag, spread_rumor

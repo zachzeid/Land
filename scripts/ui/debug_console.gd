@@ -356,6 +356,34 @@ func _on_command_submitted(command_text: String):
 		"calendar":
 			_cmd_calendar()
 		# --- END calendar commands ---
+		# --- BEGIN opening commands (opening & UI; WORLD_SCHEMA §13-15) ---
+		"opening":
+			_cmd_opening()
+		"epilogue":
+			_cmd_epilogue()
+		# --- END opening commands ---
+		# --- BEGIN player events commands (events engine; WORLD_SCHEMA §10) ---
+		"events":
+			_cmd_events(args)
+		"event":
+			_cmd_event(args)
+		"rep":
+			_cmd_rep(args)
+		"say":
+			_cmd_say(args)
+		# --- END player events commands ---
+		# --- BEGIN director engine commands (WORLD_SCHEMA §11-15: fixed points, emergence, inner voice, epilogue) ---
+		"think":
+			_cmd_think(args)
+		"intentions":
+			_cmd_intentions()
+		"emergence":
+			_cmd_emergence(args)
+		"shift":
+			_cmd_shift(args)
+		"epilogue_text":
+			_cmd_epilogue_text()
+		# --- END director engine commands ---
 		_:
 			log_message("Unknown command: " + cmd, Color.RED)
 			log_message("Type 'help' for available commands", Color.GRAY)
@@ -423,6 +451,23 @@ func _cmd_help():
 	h.call("  day <n>                     Advance the clock to day n, 06:00 (fixed points fire on the way)")
 	h.call("  calendar                    The Tithe Night's fixed points and which have passed")
 	# --- END calendar help ---
+	# --- BEGIN player events help (events engine) ---
+	h.call("  events [n]                  Last n player events (kind, status, witnesses, who heard)")
+	h.call("  event <id>                  One player event: witnesses, who heard it, at what fidelity")
+	h.call("  rep <npc|faction|region> <id>  Reputation (-100..100) from what that party knows")
+	h.call("  say <kind> <about,..|-> <summary>  Record a test player event here (witnesses: who is present)")
+	# --- END player events help ---
+	# --- BEGIN opening help (opening & UI) ---
+	h.call("  opening                     Replay the opening (the drawing) on a fresh world state; no save")
+	h.call("  epilogue                    End the story now and show the epilogue")
+	# --- END opening help ---
+	# --- BEGIN director engine help ---
+	h.call("  think <text>                A private thought: parsed into an intention (NPCs never see it)")
+	h.call("  intentions                  The player's intentions, their steering weight and who opposes them")
+	h.call("  emergence [all]             Emergent beats: active instances (all: closed too) and templates")
+	h.call("  shift <point> <days|cancel> Move a movable fixed point as the player would (-3..3 days)")
+	h.call("  epilogue_text               Print the epilogue Epilogue.generate() would write now")
+	# --- END director engine help ---
 	h.call("")
 	h.call("Debug Commands:", Color.YELLOW)
 	h.call("  dump_prompt <id>            Show full Claude prompt for NPC")
@@ -1922,8 +1967,234 @@ func _cmd_calendar():
 	log_message("=== Calendar (now %s) ===" % world_state.get_time_string(), Color.CYAN)
 	for entry in world_state.get_calendar():
 		var at = "Day %d, %02d:%02d" % [floori(entry.minute / 1440.0) + 1, floori((entry.minute % 1440) / 60.0), entry.minute % 60]
-		log_message("  [%s] %s  %s" % ["x" if entry.fired else " ", at, entry.flag], Color.DIM_GRAY if entry.fired else Color.WHITE, false, true)
+		# Movable points (WORLD_SCHEMA §11): shifted times, the world.json time they moved from, cancellations
+		var note = ""
+		if entry.get("cancelled", false):
+			at = "called off     "
+			note = "  (was Day %d, %02d:%02d)" % [floori(entry.base_minute / 1440.0) + 1, floori((entry.base_minute % 1440) / 60.0), entry.base_minute % 60]
+		elif int(entry.get("shift_days", 0)) != 0:
+			note = "  (%+d day%s; was Day %d, %02d:%02d)" % [int(entry.shift_days), "" if absi(int(entry.shift_days)) == 1 else "s", floori(entry.base_minute / 1440.0) + 1, floori((entry.base_minute % 1440) / 60.0), entry.base_minute % 60]
+		if entry.get("movable", false):
+			note += "  movable"
+		var mark = "x" if entry.fired else ("-" if entry.get("cancelled", false) else " ")
+		log_message("  [%s] %s  %s%s" % [mark, at, entry.flag, note], Color.DIM_GRAY if entry.fired or entry.get("cancelled", false) else Color.WHITE, false, true)
+		for item in entry.get("shifts", []):
+			log_message("        %s%s: %s" % [item.get("action", ""), (" %+d" % int(item.get("days", 0))) if item.get("action", "") == "delay" else "", item.get("reason", "")], Color.GRAY, false, true)
 
 # =============================================================================
 # --- END calendar commands ---
+# =============================================================================
+
+# =============================================================================
+# --- BEGIN opening commands (opening & UI; scripts/world/opening_sequence.gd) ---
+# =============================================================================
+
+## opening: a fresh world (as a new game: Day 1, 20:00, no flags, nobody moved), then the drawing
+## Nothing is saved; WorldState.load_from_dict({}) resets the director, gossip and generics with it
+func _cmd_opening():
+	var world_state = get_node_or_null("/root/WorldState")
+	var scene_manager = get_node_or_null("/root/SceneManager")
+	var opening = scene_manager.opening if scene_manager and "opening" in scene_manager else null
+	if world_state == null or opening == null or not opening.has_method("play"):
+		log_message("Opening not available", Color.RED)
+		return
+	opening.reset()
+	if world_state.has_method("load_calendar"):
+		world_state.load_calendar()  # a moved fixed point goes back to its world.json minute
+	world_state.load_from_dict({})
+	var events = get_node_or_null("/root/PlayerEvents")
+	if events and events.has_method("reset"):
+		events.reset()
+	log_message("Fresh world at %s: replaying the opening" % world_state.get_time_string(), Color.CYAN)
+	if is_visible_console:
+		_on_toggle_pressed()
+	opening.play()
+
+## epilogue: end the story here (no confirmation) and show the epilogue screen
+func _cmd_epilogue():
+	var player_ui = get_tree().get_first_node_in_group("player_ui")
+	if player_ui == null or not player_ui.has_method("end_story"):
+		log_message("PlayerUI not available", Color.RED)
+		return
+	player_ui.end_story("debug")
+	log_message("Epilogue shown (%d sections)" % player_ui.epilogue_screen.sections_built.size(), Color.CYAN)
+
+# =============================================================================
+# --- END opening commands ---
+# =============================================================================
+
+# =============================================================================
+# --- BEGIN player events commands (events engine; docs/WORLD_SCHEMA.md §10) ---
+# =============================================================================
+
+const _PlayerEventsRep = preload("res://scripts/world_state/reputation.gd")
+const _PlayerEventsScript = preload("res://scripts/world_state/player_events.gd")
+
+func _player_events() -> Node:
+	var player_events = get_node_or_null("/root/PlayerEvents")
+	if player_events == null or not player_events.has_method("get_events"):
+		log_message("PlayerEvents not available", Color.RED)
+		return null
+	return player_events
+
+## events [n]: the last n player events
+func _cmd_events(args: Array):
+	var pe = _player_events()
+	if pe == null:
+		return
+	var n = int(args[0]) if not args.is_empty() and str(args[0]).is_valid_int() else 10
+	var all: Array = pe.get_events()
+	log_message("=== Player events (%d recorded, %d word in flight) ===" % [all.size(), pe.in_flight.size()], Color.CYAN)
+	for ev in all.slice(maxi(all.size() - n, 0)):
+		var status = "" if str(ev.status) == "none" else " [%s]" % ev.status
+		log_message("  %s %s%s: %s  (saw: %d, heard: %d)" % [ev.id, ev.kind, status, ev.summary, ev.witnesses.size(), ev.heard_by.size()],
+			Color.ORANGE if ev.status in ["broken", "exposed"] else Color.WHITE, false, true)
+
+## event <id>: one event in full
+func _cmd_event(args: Array):
+	var pe = _player_events()
+	if pe == null:
+		return
+	if args.is_empty():
+		log_message("Usage: event <id>   (see 'events')", Color.RED)
+		return
+	var id = str(args[0]) if str(args[0]).begins_with("pe_") else "pe_%06d" % int(args[0])
+	var ev: Dictionary = pe.get_event(id)
+	if ev.is_empty():
+		log_message("No player event '%s'" % id, Color.RED)
+		return
+	log_message("=== %s: %s ===" % [ev.id, ev.kind], Color.CYAN)
+	log_message("  %s" % ev.summary, Color.WHITE, false, true)
+	log_message("  status %s, truth %s, at %s, minute %d%s" % [ev.status, ev.truth, ev.location, ev.minute,
+		"" if ev.flag == null else ", flag %s" % ev.flag], Color.GRAY, false, true)
+	if not ev.due.is_empty():
+		log_message("  due: %s" % JSON.stringify(ev.due), Color.GRAY, false, true)
+	log_message("  about: %s" % ", ".join(ev.about), Color.GRAY, false, true)
+	log_message("  witnesses: %s" % ", ".join(ev.witnesses), Color.WHITE, false, true)
+	for who in ev.heard_by:
+		var h = ev.heard_by[who]
+		log_message("  heard: %s from %s at %.2f (%s, minute %d)" % [who, h.from, float(h.fidelity), h.tone, int(h.minute)], Color.SKY_BLUE, false, true)
+	for item in pe.in_flight.filter(func(i): return str(i.event) == id):
+		log_message("  on the road: to %s from %s, arrives minute %d at %.2f" % [item.to, item.from, int(item.at), float(item.fidelity)], Color.DIM_GRAY, false, true)
+
+## rep <scope> <id>
+func _cmd_rep(args: Array):
+	var pe = _player_events()
+	if pe == null:
+		return
+	if args.size() < 2 or str(args[0]) not in ["npc", "faction", "region"]:
+		log_message("Usage: rep <npc|faction|region> <id>   factions: %s" % ", ".join(_PlayerEventsRep.get_factions().keys()), Color.RED)
+		return
+	var b: Dictionary = _PlayerEventsRep.breakdown(str(args[0]), str(args[1]))
+	log_message("Reputation %s %s: %.1f (%s), from %d known event(s), %d people" % [args[0], args[1], b.score, _PlayerEventsRep.label(b.score), b.events.size(), b.parties.size()], Color.CYAN)
+	for row in b.events:
+		log_message("  %s %s %s: w %.1f x f %.2f x r %.2f x about %.1f = %.2f" % [row.id, row.kind, row.status, row.weight, row.fidelity, row.recency, row.about, row.points], Color.GRAY, false, true)
+
+## say <kind> <about,..|-> <summary...>: a test event at the player's location
+func _cmd_say(args: Array):
+	var pe = _player_events()
+	if pe == null:
+		return
+	if args.size() < 3:
+		log_message("Usage: say <kind> <about,..|-> <summary>   kinds: %s" % ", ".join(_PlayerEventsScript.KINDS), Color.RED)
+		return
+	var about: Array = [] if str(args[1]) == "-" else Array(str(args[1]).split(",", false))
+	var id = pe.record(str(args[0]), " ".join(args.slice(2)), about)
+	if id == "":
+		log_message("Refused (unknown kind or empty summary)", Color.RED)
+		return
+	var ev: Dictionary = pe.get_event(id)
+	log_message("Recorded %s (%s) at %s, witnesses: %s" % [id, ev.kind, ev.location if ev.location != "" else "nowhere", ", ".join(ev.witnesses) if not ev.witnesses.is_empty() else "nobody"], Color.GREEN)
+
+# =============================================================================
+# --- END player events commands ---
+# =============================================================================
+
+# =============================================================================
+# --- BEGIN director engine commands (docs/WORLD_SCHEMA.md §11-15) ---
+# =============================================================================
+
+## think <text>: InnerVoice.think (the director reads it; no NPC ever does)
+func _cmd_think(args: Array):
+	var voice = get_node_or_null("/root/InnerVoice")
+	if voice == null or not voice.has_method("think"):
+		log_message("InnerVoice not available", Color.RED)
+		return
+	if args.is_empty():
+		log_message("Usage: think <text>", Color.GRAY)
+		return
+	var intention: Dictionary = voice.think(" ".join(args))
+	if intention.is_empty():
+		log_message("(an empty thought)", Color.GRAY)
+		return
+	log_message("Intention %s: %s [%s, strength %.2f]" % [intention.id, intention.goal, intention.stance, float(intention.strength)], Color.CYAN)
+	log_message("  about: %s" % (", ".join(intention.about) if not intention.about.is_empty() else "(nothing the world knows by name)"), Color.WHITE, false, true)
+	var director = get_node_or_null("/root/StorylineDirector")
+	if director and director.has_method("get_decision_queue"):
+		var queue: Array = director.get_decision_queue()
+		var boosted = queue.filter(func(item): return director.get_queue_priority(item) > 0.0)
+		log_message("  queued hooks it pulls forward: %d of %d" % [boosted.size(), queue.size()], Color.GRAY, false, true)
+
+## intentions: the active intentions, their weights and their opposition
+func _cmd_intentions():
+	var voice = get_node_or_null("/root/InnerVoice")
+	if voice == null or not voice.has_method("get_history"):
+		log_message("InnerVoice not available", Color.RED)
+		return
+	var active: Array = voice.get_active_intentions()
+	log_message("=== Intentions (%d kept, %d steering) ===" % [voice.get_history().size(), active.size()], Color.CYAN)
+	for intention in active:
+		var opp: Dictionary = voice.get_opposition(intention)
+		var keys = opp.keys()
+		keys.sort_custom(func(a, b): return float(opp[a]) > float(opp[b]))
+		log_message("  %s  w=%.2f  %s [%s]" % [intention.id, float(intention.weight), intention.goal, intention.stance], Color.WHITE, false, true)
+		if not keys.is_empty():
+			log_message("      opposed by: %s" % ", ".join(keys.slice(0, 6).map(func(k): return "%s %.0f" % [k, float(opp[k])])), Color.GRAY, false, true)
+
+## emergence [all]: emergent instances and the templates waiting for the world to match them
+func _cmd_emergence(args: Array):
+	var director = get_node_or_null("/root/StorylineDirector")
+	if director == null or not director.has_method("get_emergent_instances"):
+		log_message("Emergence not available", Color.RED)
+		return
+	var all = not args.is_empty() and str(args[0]) == "all"
+	var instances: Array = director.get_emergent_instances(all)
+	log_message("=== Emergent beats (%d %s) ===" % [instances.size(), "in all" if all else "active"], Color.CYAN)
+	for inst in instances:
+		var roles = inst.roles.keys().map(func(r): return "%s=%s" % [r, inst.roles[r]])
+		log_message("  %s %s [%s] %s  (%s)%s" % [inst.id, inst.template, inst.status, inst.title, ", ".join(roles),
+			("  -> " + str(inst.outcome)) if str(inst.outcome) != "" else ""], Color.WHITE if inst.status == "active" else Color.DIM_GRAY, false, true)
+	var emergence = director.get_emergence()
+	var waiting: Array = []
+	for tid in emergence.template_order:
+		var why = emergence.get_block_reason(tid)
+		waiting.append(tid + ((" (" + why + ")") if why != "" else ""))
+	log_message("Templates (%d): %s" % [waiting.size(), ", ".join(waiting)], Color.GRAY, false, true)
+	for err in director.get_emergence_errors():
+		log_message("  ! %s" % err, Color.ORANGE, false, true)
+
+## shift <point> <days|cancel> [reason]: StorylineDirector.shift_fixed_point, as the player's doing
+func _cmd_shift(args: Array):
+	var director = get_node_or_null("/root/StorylineDirector")
+	if director == null or not director.has_method("shift_fixed_point") or args.size() < 2:
+		log_message("Usage: shift <point> <days|cancel> [reason]", Color.GRAY)
+		return
+	var how = "cancel" if str(args[1]) == "cancel" else int(str(args[1]))
+	var reason = " ".join(args.slice(2)) if args.size() > 2 else "The hour was moved."
+	var result: Dictionary = director.shift_fixed_point(str(args[0]), how, reason, "player")
+	if result.ok:
+		log_message("%s moved: %s" % [args[0], "called off" if result.action == "cancel" else "%+d day(s)" % int(result.days)], Color.CYAN)
+		_cmd_calendar()
+	else:
+		log_message("Cannot move %s: %s" % [args[0], result.reason], Color.RED)
+
+## epilogue_text: the epilogue as Epilogue.generate() would write it now (nothing ends)
+func _cmd_epilogue_text():
+	var epilogue: Dictionary = Epilogue.generate({"trigger": "debug"})
+	log_message("=== %s (%s) ===" % [epilogue.get("title", "Epilogue"), epilogue.get("time", "")], Color.CYAN)
+	for line in str(epilogue.get("text", "")).split("\n"):
+		log_message(line, Color.WHITE, false, true)
+
+# =============================================================================
+# --- END director engine commands ---
 # =============================================================================

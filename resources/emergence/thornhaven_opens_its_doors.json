@@ -1,0 +1,101 @@
+{
+  "id": "thornhaven_opens_its_doors",
+  "title": "A Place at the Table",
+  "summary": "Thornhaven's opinion of the player has risen far enough that a household reaches out.",
+  "trigger": {
+    "reputation": {
+      "faction": "thornhaven",
+      "above": 40
+    }
+  },
+  "roles": {
+    "host": {
+      "from": "faction:thornhaven",
+      "prefer": "affection_desc"
+    }
+  },
+  "cooldown_days": 3,
+  "max_active": 1,
+  "expires_days": 3,
+  "location": "{host.home}",
+  "hooks": [
+    {
+      "id": "ask_them_in",
+      "type": "react",
+      "eligible_role": "host",
+      "trigger": "on_open",
+      "situation": "The whole village talks about {player} now, and mostly kindly. You've decided what you think of them too.",
+      "options": [
+        {
+          "id": "ask_to_supper",
+          "label": "Ask them to supper, and tell them what's said behind doors",
+          "appeal": {
+            "affection": 0.5,
+            "trust": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{host}",
+              "text": "Ask {player} to supper, and tell them honestly what the village says about them behind closed doors."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{host}",
+              "dimension": "familiarity",
+              "delta": 10
+            }
+          ]
+        },
+        {
+          "id": "ask_a_favour",
+          "label": "Ask them for the kind of help you'd only ask a neighbour",
+          "appeal": {
+            "trust": 0.5,
+            "respect": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{host}",
+              "text": "Ask {player} for the kind of help you'd only ask a neighbour, and offer the same back."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{host}",
+              "dimension": "trust",
+              "delta": 5
+            }
+          ]
+        },
+        {
+          "id": "still_a_stranger",
+          "label": "Remind yourself they're still a stranger",
+          "appeal": {
+            "fear": 0.4,
+            "trust": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{host}",
+              "text": "Be friendly to {player}, but ask where they mean to be when the Tithe is over."
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; nod to them in the square",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:host",
+    "expired"
+  ]
+}

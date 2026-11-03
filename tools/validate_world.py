@@ -31,8 +31,10 @@ EFFECT_PARAMS = {
     "block_beat": {"storyline", "beat"},
     "unlock_beat": {"storyline", "beat"},
     "shift_want": {"npc", "want", "delta"},
+    "shift_fixed_point": {"point", "reason"},
+    "spread_event": {"event", "to"},
 }
-OPTIONAL_PARAMS = {"spread_rumor": {"via"}}
+OPTIONAL_PARAMS = {"spread_rumor": {"via"}, "shift_fixed_point": {"days", "cancel"}}
 # Endings deliberately reachable through the player's absence (neglect has consequences)
 NEGLECT_ENDINGS = {"the_locked_room", "tn_the_cart_rolled"}
 ALL_PLAYER_FLAGS = set()
@@ -52,7 +54,11 @@ def warn(where, msg):
 
 def base_flags():
     text = (ROOT / "scripts/world_state/story_flags.gd").read_text()
-    return set(WORLD.get("discovery_flags", {})) | set(WORLD.get("calendar", {}).get("flags", {})) | set(re.findall(r'^const [A-Z_]+ = "([a-z_]+)"', text, re.M))
+    cal = WORLD.get("calendar", {}).get("flags", {})
+    # Engine-derived: every movable point also has <point>_eve (24 game hours before, moving with it).
+    # <point>_cancelled is engine-set too, but storylines may declare it to give it canon text.
+    eves = {f"{k}_eve" for k, v in cal.items() if v.get("movable")}
+    return eves | set(WORLD.get("discovery_flags", {})) | set(cal) | set(re.findall(r'^const [A-Z_]+ = "([a-z_]+)"', text, re.M))
 
 
 # =============================================================================
@@ -153,6 +159,9 @@ def validate_soul(path, flags_known):
 
 
 PERSONAL_EFFECTS = {"agenda", "move_npc", "adjust_relationship", "shift_want", "spread_rumor"}
+EMERGENT_EFFECTS = PERSONAL_EFFECTS | {"spread_event", "shift_fixed_point"}
+EVENT_KINDS = {"claim", "promise", "threat", "lie", "insult", "gift", "help", "harm", "theft", "kill",
+               "spared", "confession", "accusation", "refusal", "seen_at", "kept_company"}
 ARC_RE = re.compile(r"^### Arc: `([a-z][a-z0-9_]*)` \(serves `([a-z][a-z0-9_]*)`\)\s*$")
 STEP_RE = re.compile(r"^- `([a-z][a-z0-9_]*)`: (.+?) \| after: ([a-z0-9_]+) \| needs: ([!a-z0-9_, ]+) \| at: ([a-z0-9_]+) \| takes: (\d+) \| effects: ([a-z_, ]+?)(?: \| player: (helps|needed))?\s*$")
 RESULT_RE = re.compile(r"^- result: `([a-z0-9_{}]+)`: \S.{15,}$")
@@ -281,6 +290,101 @@ def validate_population():
                 err(str(names.relative_to(ROOT)), f"region '{r['id']}' needs at least 20 names")
 
 
+ROLE_SOURCES = ("event_witness", "event_about", "heard_event", "near_player")
+
+
+def all_declared_flags():
+    out = set()
+    for p in (ROOT / "resources/storylines").glob("*.json"):
+        try:
+            out |= set(json.loads(p.read_text()).get("flags", {}))
+        except json.JSONDecodeError:
+            pass
+    return out
+
+
+def validate_world_rules(flags_known):
+    where = "resources/world/world.json"
+    for name, pt in WORLD.get("calendar", {}).get("flags", {}).items():
+        for rule in pt.get("shift_rules", []):
+            if not pt.get("movable"):
+                err(where, f"calendar '{name}' has shift_rules but is not movable")
+            w = rule.get("when", "")
+            if w.lstrip("!") not in flags_known:
+                err(where, f"calendar '{name}' shift rule when '{w}' is not a known flag")
+            if rule.get("action") not in ("delay", "cancel"):
+                err(where, f"calendar '{name}' shift rule action must be delay|cancel")
+            if rule.get("action") == "delay" and (not isinstance(rule.get("days"), int) or rule["days"] == 0):
+                err(where, f"calendar '{name}' delay needs non-zero integer days")
+    keys = set(NPC_KEYS)
+    for f in WORLD.get("factions", []):
+        for m in f.get("members", []):
+            if m not in keys:
+                err(where, f"faction '{f.get('id')}' member '{m}' unknown")
+
+
+def validate_emergence(path, souls, flags_known):
+    where = str(path.relative_to(ROOT))
+    try:
+        t = json.loads(path.read_text())
+    except json.JSONDecodeError as e:
+        err(where, f"invalid JSON: {e}")
+        return
+    if t.get("id") != path.stem:
+        err(where, f"id must equal filename '{path.stem}'")
+    for f in ("title", "trigger", "roles", "hooks", "resolves_on"):
+        if f not in t:
+            err(where, f"missing '{f}'")
+    trig = t.get("trigger", {})
+    ev = trig.get("event")
+    if ev and ev.get("kind") and ev["kind"] not in EVENT_KINDS:
+        err(where, f"trigger event kind '{ev['kind']}' unknown")
+    if "flag" in trig and trig["flag"].lstrip("!") not in flags_known:
+        err(where, f"trigger flag '{trig['flag']}' unknown")
+    if "reputation" in trig:
+        fac = trig["reputation"].get("faction")
+        if fac not in {f["id"] for f in WORLD.get("factions", [])}:
+            err(where, f"trigger reputation faction '{fac}' unknown")
+    roles = t.get("roles", {})
+    for rname, r in roles.items():
+        src = r.get("from", "")
+        if not (src in ROLE_SOURCES or src.startswith("faction:") or src.startswith("npc:")):
+            err(where, f"role '{rname}' from '{src}' unknown")
+        if src.startswith("npc:") and src[4:] not in NPC_KEYS:
+            err(where, f"role '{rname}' npc '{src[4:]}' unknown")
+        if src.startswith("faction:") and src[8:] not in {f["id"] for f in WORLD.get("factions", [])}:
+            err(where, f"role '{rname}' faction '{src[8:]}' unknown")
+    for h in t.get("hooks", []):
+        hw = f"{where}:{h.get('id')}"
+        if h.get("type") not in HOOK_TYPES:
+            err(hw, f"hook type '{h.get('type')}' unknown")
+        if h.get("eligible_role") not in roles:
+            err(hw, f"eligible_role '{h.get('eligible_role')}' is not a declared role")
+        opts = h.get("options", [])
+        if not 2 <= len(opts) <= 4:
+            err(hw, f"needs 2-4 options, has {len(opts)}")
+        for o in opts:
+            ow = f"{hw}:{o.get('id')}"
+            if not isinstance(o.get("appeal"), dict) or any(k not in DIMENSIONS for k in o["appeal"]):
+                err(ow, "appeal must map relationship dimensions to coefficients")
+            for e in o.get("effects", []):
+                if e.get("type") not in EMERGENT_EFFECTS:
+                    err(ow, f"effect '{e.get('type')}' not allowed in emergent beats")
+                if e.get("type") == "agenda" and len(str(e.get("text", ""))) > 160:
+                    err(ow, "agenda text over 160 chars")
+                if e.get("type") == "adjust_relationship" and (not isinstance(e.get("delta"), int) or not -20 <= e["delta"] <= 20):
+                    err(ow, "adjust_relationship delta must be an int in -20..20")
+                if e.get("type") == "shift_fixed_point":
+                    validate_effect(ow, e, "", flags_known, set(), [], souls)
+    for r in t.get("resolves_on", []):
+        if not (r == "expired" or r.startswith("talked_to:") or r.startswith("days:") or r.lstrip("!") in flags_known):
+            err(where, f"resolves_on '{r}' unknown")
+    text = json.dumps(t).lower()
+    for w in WORLD.get("forbidden_concepts", []):
+        if re.search(r"\b" + re.escape(w) + r"s?\b", text):
+            err(where, f"forbidden concept '{w}'")
+
+
 # =============================================================================
 # STORYLINES
 # =============================================================================
@@ -310,6 +414,14 @@ def validate_effect(where, eff, sl, allowed_flags, crossovers, beat_ids, souls):
         check_flag_ref(where, eff["flag"], allowed_flags, crossovers)
     if "npc" in eff and eff["npc"] not in NPC_KEYS:
         err(where, f"{t} npc '{eff['npc']}' unknown")
+    if t == "shift_fixed_point":
+        point = WORLD.get("calendar", {}).get("flags", {}).get(eff.get("point"))
+        if point is None or not point.get("movable"):
+            err(where, f"shift_fixed_point: '{eff.get('point')}' is not a movable calendar point")
+        if not eff.get("cancel") and (not isinstance(eff.get("days"), int) or not -3 <= eff["days"] <= 3 or eff["days"] == 0):
+            err(where, "shift_fixed_point needs days in -3..3 (not 0) or cancel: true")
+    if t == "spread_event" and "{" not in str(eff.get("event", "")):
+        err(where, "spread_event is only for emergent templates (event must be a template slot)")
     if t == "set_flag" and eff.get("flag") in WORLD.get("calendar", {}).get("flags", {}):
         err(where, f"set_flag cannot set calendar flag '{eff.get('flag')}' (world fixed point)")
     if t == "set_flag" and not isinstance(eff.get("value"), bool):
@@ -587,6 +699,11 @@ def main():
             if s:
                 summaries.append(s)
 
+    if not args.souls_only and not args.storyline:
+        known = flags_base | all_declared_flags()
+        validate_world_rules(known)
+        for p in sorted((ROOT / "resources/emergence").glob("*.json")):
+            validate_emergence(p, souls, known)
     for w in warnings:
         print(w)
     for e in errors:

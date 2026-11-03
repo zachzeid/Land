@@ -1,0 +1,95 @@
+{
+  "id": "hollow_marks_you",
+  "title": "A Name at the Camp Fire",
+  "summary": "Iron Hollow's opinion of the player has fallen far enough that its people mark them.",
+  "trigger": {
+    "reputation": {
+      "faction": "iron_hollow",
+      "below": -40
+    }
+  },
+  "roles": {
+    "hand": {
+      "from": "faction:iron_hollow",
+      "prefer": "nearest"
+    }
+  },
+  "cooldown_days": 3,
+  "max_active": 1,
+  "expires_days": 3,
+  "location": "{hand.home}",
+  "hooks": [
+    {
+      "id": "name_said_at_the_fire",
+      "type": "react",
+      "eligible_role": "hand",
+      "trigger": "on_open",
+      "situation": "{player}'s name has been said at the camp fire, and not kindly. Somebody will be sent. It may as well be you.",
+      "options": [
+        {
+          "id": "quiet_warning",
+          "label": "Warn them, out of the side of your mouth",
+          "appeal": {
+            "affection": 0.4,
+            "trust": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{hand}",
+              "text": "Tell {player}, out of the side of your mouth, that their name was said at the Hollow's fire, and not kindly."
+            }
+          ]
+        },
+        {
+          "id": "lean_on_them",
+          "label": "Make sure they know the Hollow has noticed",
+          "appeal": {
+            "fear": -0.4,
+            "respect": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{hand}",
+              "text": "Make sure {player} knows the Hollow has noticed them. Stand too close. Use their name."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{hand}",
+              "dimension": "respect",
+              "delta": -5
+            }
+          ]
+        },
+        {
+          "id": "offer_a_way_out",
+          "label": "Offer them a way out of the valley",
+          "appeal": {
+            "respect": 0.4,
+            "fear": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{hand}",
+              "text": "Offer {player} a quiet word: the Hollow forgets people who leave the valley before Collection Night."
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; keep out of it",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:hand",
+    "expired"
+  ]
+}

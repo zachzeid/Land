@@ -7,7 +7,7 @@ func _init():
 	for i in 5: await process_frame
 	var ws = root.get_node("WorldState")
 	var d = root.get_node("StorylineDirector")
-	ws.world_flags = {"tithe_drawing_witnessed": true}  # a new game opens at the drawing (OpeningSequence sets this)
+	ws.world_flags = {"tithe_drawing_witnessed": true, "tithe_drawing_known": true}  # a new game opens at the drawing (OpeningSequence sets this)
 	ws.npc_states = {}
 	ws.set_idle_clock_rate(0.0)
 	ws.reset_calendar(ws.start_minute)  # a new game: day 1, 20:00, nothing fired
@@ -41,6 +41,15 @@ func _init():
 		print("SIM %s resolved=%d/%d ending=%s act3_resolved=%s" % [sid, res, d.get_beats(sid).size(), reached.get(sid, "none"), act3])
 	print("SIM decisions=%d queue=%d" % [d.get_chronicle(0).size(), d.get_decision_queue().size()])
 	print("SIM clock=%s calendar fired: %s" % [ws.get_time_string(), fired])
+	# Movable fixed points (WORLD_SCHEMA §11): tn_collection_night may move with the world (shift_rules)
+	var moved = ws.get_calendar().filter(func(e): return not e.shifts.is_empty()).map(func(e): return "%s %s" % [e.flag, "cancelled" if e.cancelled else "%+dd" % e.shift_days])
+	print("SIM fixed points moved: %s" % (moved if not moved.is_empty() else "none"))
+	print("SIM emergent beats: %d (no player, so few or none)" % d.get_emergent_instances().size())
+	# The world alone brings a fixed point at most a day early: Collection Night no earlier than Day 6, 22:00
+	var cn = ws.get_calendar_point("tn_collection_night")
+	var cn_ok = cn.is_empty() or cn.cancelled or int(cn.minute) >= 5 * 1440 + 22 * 60
+	print("SIM tn_collection_night at %s: %s" % ["called off" if cn.get("cancelled", false) else ws._minute_string(int(cn.get("minute", -1))), "ok" if cn_ok else "TOO EARLY (before Day 6, 22:00)"])
+	if not cn_ok: violations += 1
 	# Acceptance: with no player, no Act III beat resolves and no story ends
 	print("SIM %s (%d storylines finished or reached Act III resolution without the player)" % ["PASS" if violations == 0 else "FAIL", violations])
 	quit(0 if violations == 0 else 1)

@@ -411,3 +411,153 @@ The 60/30 gap and the dwell times are hysteresis, so nobody flickers between tie
   wrapping past midnight (a tavern regular is there from 18 to 2).
 
 The 19 authored NPCs are **anchored**: their relationships fade like anyone's, but they never demote.
+
+---
+
+# Part II: A world that answers the player (non-linear rules)
+
+> **Principle:** Nothing about Land is linear. The world changes because of what the player
+> does, says, decides, intends, and who they spend time with. Authored storylines are sources of
+> pressure, not tracks to follow. Fixed points are defaults the player can move. Endings describe the
+> world the player made.
+
+## 10. Player events and reputation
+
+Everything the player does that someone could plausibly notice becomes a **player event**. These
+are the world's memory of the player.
+
+```json
+{"id": "pe_000123", "kind": "promise", "summary": "promised Gregor to get Elena out before the cart",
+ "about": ["gregor", "elena"], "flag": null, "truth": "unknown", "status": "open",
+ "location": "thornhaven_gregor_shop", "minute": 1460,
+ "witnesses": ["gregor_merchant_001"], "heard_by": {}, "fidelity": 1.0}
+```
+
+- **`kind`** (fixed vocabulary): `claim`, `promise`, `threat`, `lie`, `insult`, `gift`, `help`,
+  `harm`, `theft`, `kill`, `spared`, `confession`, `accusation`, `refusal`, `seen_at`, `kept_company`.
+- **Sources:**
+  - **Conversation.** The NPC's analysis gains `"utterances": [{kind, about, summary, believed}]`,
+    meaning what the player claimed, promised, threatened or confessed, from that NPC's point of
+    view.
+  - **Deeds.** StoryItems, theft or gifts once items exist, travel arrivals (`seen_at` by anyone
+    present), and time spent near an NPC (`kept_company`).
+  - **Commitments.** Player-flag commitments also log a `promise` event.
+- **Truth.** A claim that maps to a flag is checked against the world. The first time the world
+  contradicts a `claim` or `promise` (a known false flag, a missed deadline), it turns into a `lie`
+  or a broken promise, and that change is itself an event that can spread.
+- **Promises** carry `due` (`{"day": n}` or `{"flag": f}`). The status runs `open` → `kept` |
+  `broken`. Breaking a promise is one of the strongest reputation events.
+- **Spread.** Witnesses remember an event at fidelity 1.0. Each retelling over the routes graph
+  costs time (route minutes) and fidelity, and the summary drifts toward the teller's attitude.
+  Someone who fears you tells it darker; a friend softens it. Below fidelity 0.3 it is "a rumour
+  about a stranger". NPCs store what they *heard*, not what happened, and only what they could
+  plausibly have heard.
+- **Reputation.** Reputation is computed per NPC, per **faction** (`world.json` `factions`) and per
+  **region**, only from the events each party knows about, weighted by fidelity and recency. Nobody
+  is omniscient. It is injected into NPC prompts as "what you have heard of the stranger" and read by
+  the director.
+
+## 11. Movable fixed points
+
+Each calendar entry may declare `"movable": true` and `"shift_rules"`:
+
+```json
+"tn_collection_night": {"day": 7, "hour": 22, "movable": true,
+  "shift_rules": [
+    {"when": "hc_varn_dead", "action": "delay", "days": 2, "reason": "The Hollow is leaderless; the cart waits."},
+    {"when": "cou_council_refuses", "action": "delay", "days": -1, "reason": "The Hollow answers defiance early."},
+    {"when": "tn_taken_freed", "action": "cancel", "reason": "There is no Pit left to fill."}]}
+```
+
+- Every movable point also has a derived, world-caused **`<point>_eve`** flag, set 24 game hours before the
+  point's *current* time; it moves with the point. Gate "the night before" content on it, not on a day flag.
+- **NPC-only advances are capped:** advances with no player in their causal chain total at most −1 day per
+  point. Player-caused shifts are only clamped per shift (−3..3).
+- Shift rule actions are `delay` (negative `days` brings a point earlier) and `cancel`.
+- New effect type **`shift_fixed_point`** `{point, days (-3..3) | cancel: true, reason}`. It is
+  granted through soul Agency like any other effect. Mira, Varn and Mathias plausibly have it, and
+  the player moves points through choices that trigger it.
+- Shifts are chronicled and canonical, and they become a world event that the people affected hear
+  about. A point that has already fired can't be moved. A cancelled point never fires; the flag
+  `<point>_cancelled` becomes true instead.
+
+## 12. Emergent beats
+
+`resources/emergence/<id>.json` holds **templates** the director instantiates whenever the world
+matches them. They are not authored storylines. They are stories that grow out of what the player
+did.
+
+```json
+{"id": "broken_promise_surfaces", "title": "The Promise You Didn't Keep",
+ "trigger": {"event": {"kind": "promise", "status": "broken"}},
+ "roles": {"wronged": {"from": "event_witness", "prefer": "affection_desc"}},
+ "cooldown_days": 2, "max_active": 2, "expires_days": 3,
+ "location": "{wronged.home}",
+ "hooks": [{"id": "confront", "type": "react", "eligible_role": "wronged", "trigger": "on_open",
+   "situation": "The stranger swore to {event.summary}. They didn't.",
+   "options": [
+     {"id": "demand", "label": "Find them and demand an answer", "appeal": {"trust": -0.5, "fear": -0.3, "respect": 0.2},
+      "effects": [{"type": "agenda", "npc": "{wronged}", "text": "Ask the stranger why their word was worth nothing."},
+                  {"type": "adjust_relationship", "npc": "{wronged}", "dimension": "trust", "delta": -10}]},
+     {"id": "tell_others", "label": "Make sure the village knows", "appeal": {"affection": -0.5},
+      "effects": [{"type": "spread_event", "event": "{event.id}", "to": ["*"]}]},
+     {"id": "let_it_go", "label": "Say nothing; remember it", "appeal": {"affection": 0.6}, "effects": []}]}],
+ "resolves_on": ["talked_to:{wronged}", "expired"]}
+```
+
+- **Triggers** match player events (`kind`, `status`, `about`), reputation thresholds
+  (`{"reputation": {"faction": "iron_hollow", "below": -40}}`), relationship thresholds and flags.
+- **Roles** bind to real NPCs at instantiation:
+  - `from` is one of `event_witness`, `event_about`, `heard_event`, `faction:<id>`,
+    `near_player` or `npc:<key>`;
+  - `prefer` is a dimension with `_asc`/`_desc`, or `nearest`.
+  - Generics are eligible too.
+- **The offline chooser** uses `appeal`: the dot product of the coefficients with the bound NPC's
+  relationship dimensions toward the player (−100…100), plus their soul's Lines and Agency as usual.
+- **Generics in emergent beats** (tier `generic`) may use every emergent effect except
+  `shift_fixed_point`, whatever their `converse:` line says, because gossip is what generics do.
+  Main and promoted souls use their normal Agency for the hook type. Lines rules apply to everyone.
+- **Extra fields.**
+  - Event match: `location` (a list), `region`, `tone`, `min_count`, `first`, and
+    `about: ["archetype:<id>"]`.
+  - Role filters: `faction`, `region`, `knows_of_player`.
+  - Agenda `npc` may be a literal key, and `spread_event` `to` may be role slots, NPC keys or `["*"]`.
+- **Allowed effects** are personal-scope plus `spread_event` (new: it spreads a player event) and
+  `shift_fixed_point`, if the bound soul grants it. Emergent beats never set storyline flags.
+- **`resolves_on`** accepts `talked_to:<role>`, `expired`, `days:<n>` and flags.
+- Every instantiation is chronicled, and it becomes the bound NPCs' memory.
+
+## 13. Inner voice (the player's thoughts)
+
+The player can voice private thoughts at any time. A thought is parsed into an **intention**
+`{goal, about[], stance, strength}`.
+
+- **NPCs never see it.** It never enters an NPC prompt, memory or gossip. A test enforces this.
+- **The director reads it.** Matching storyline hooks, Life steps and emergent templates get a
+  priority boost, so the people and opportunities relevant to what you intend surface sooner. The
+  pressure against your plan also rises: those with opposing wants get turns sooner.
+- **The epilogue remembers it.** Intentions are compared with deeds, so a plan you kept, abandoned
+  or betrayed is part of how the world remembers you.
+
+## 14. A playable opening
+
+The drawing is a scene you are in, not a cutscene.
+- At 20:00 you stand in the chapel with the village around you.
+- The drawing itself is a movable fixed point (`tn_drawing`, Day 1 at 20:10).
+- You can talk to anyone, speak up, try to stop it, slip out, or watch. Whatever you do is the first
+  player event.
+- Disrupting it shifts the drawing to the next morning, with consequences.
+- A short skippable narration sets the scene and nothing more.
+
+## 15. Epilogues, not endings
+
+When the player ends the game (any time, or at a season's end, `season_end`, a fixed point on day
+30), the epilogue is **generated from the world state**:
+- one passage per main NPC (and any promoted generic) the player touched: their state, what they
+  know and believe of you, their Life arcs, how they ended;
+- one per settlement and region: storyline state, reputation, the fixed points that moved;
+- the player's intentions set against their deeds.
+
+Authored storyline endings that were reached are **named highlights** inside the epilogue, not the
+destination. The prose is assembled offline from templates; in Claude or local-LLM mode it is
+written in the world's voice and validated against the facts.

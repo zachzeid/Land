@@ -1,0 +1,96 @@
+{
+  "id": "thornhaven_closes_ranks",
+  "title": "Shut Doors",
+  "summary": "Thornhaven's opinion of the player has fallen far enough that the village closes ranks.",
+  "trigger": {
+    "reputation": {
+      "faction": "thornhaven",
+      "below": -40
+    }
+  },
+  "roles": {
+    "neighbour": {
+      "from": "faction:thornhaven",
+      "prefer": "fear_desc"
+    }
+  },
+  "cooldown_days": 3,
+  "max_active": 2,
+  "expires_days": 3,
+  "location": "{neighbour.home}",
+  "hooks": [
+    {
+      "id": "not_welcome",
+      "type": "react",
+      "eligible_role": "neighbour",
+      "trigger": "on_open",
+      "situation": "Nobody in Thornhaven has a good word for {player} any more. Shutters close when they walk past, and you have to decide whether yours does.",
+      "options": [
+        {
+          "id": "tell_them_to_go",
+          "label": "Tell them the village would sleep easier if they left",
+          "appeal": {
+            "fear": -0.3,
+            "respect": -0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{neighbour}",
+              "text": "Tell {player} the village would sleep easier if they took the Kingsroad east, and soon."
+            }
+          ]
+        },
+        {
+          "id": "give_them_nothing",
+          "label": "Give them nothing: no bread, no bed, no answers",
+          "appeal": {
+            "trust": -0.5,
+            "affection": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{neighbour}",
+              "text": "Give {player} nothing: no bread, no bed, no answers. Be polite if you must."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{neighbour}",
+              "dimension": "trust",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "tell_them_how_to_mend_it",
+          "label": "Tell them what people say, and that it can still be mended",
+          "appeal": {
+            "affection": 0.5,
+            "trust": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{neighbour}",
+              "text": "Tell {player} what people are saying about them, and that in Thornhaven it is not too late to mend it."
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; keep your shutters closed",
+          "appeal": {
+            "familiarity": 0.1,
+            "fear": 0.4
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:neighbour",
+    "expired"
+  ]
+}

@@ -61,8 +61,8 @@ gallows. It is being seen.
 
 ## Agency
 - intercept: set_flag, agenda, spread_rumor, move_npc, block_beat, unlock_beat
-- react: agenda, adjust_relationship, shift_want, spread_rumor
-- scheme: set_flag, agenda, spread_rumor, move_npc, block_beat, unlock_beat, shift_want
+- react: agenda, adjust_relationship, shift_want, spread_rumor, spread_event
+- scheme: set_flag, agenda, spread_rumor, move_npc, block_beat, unlock_beat, shift_want, shift_fixed_point
 - reveal: set_flag, agenda, spread_rumor, adjust_relationship
 - aid: agenda, adjust_relationship, unlock_beat, set_flag
 - betray: set_flag, spread_rumor, agenda, block_beat, move_npc, adjust_relationship

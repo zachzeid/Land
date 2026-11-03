@@ -15,6 +15,8 @@ const EFFECT_SHAPES = {
 	"block_beat": '{"type": "block_beat", "storyline": "<id>", "beat": "<id>"}',
 	"unlock_beat": '{"type": "unlock_beat", "storyline": "<id>", "beat": "<id>"}',
 	"shift_want": '{"type": "shift_want", "npc": "<npc key>", "want": "<want id>", "delta": -3..3}',
+	"shift_fixed_point": '{"type": "shift_fixed_point", "point": "<calendar point>", "days": -3..3, "reason": "<why, in-world>"} or {"type": "shift_fixed_point", "point": "<calendar point>", "cancel": true, "reason": "<why>"}',
+	"spread_event": '{"type": "spread_event", "event": "<event id>", "to": ["<npc key>"] or ["*"], "via": "<how it travels>"}',
 }
 
 var mode: String = "offline"

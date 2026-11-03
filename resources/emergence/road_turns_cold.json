@@ -1,0 +1,95 @@
+{
+  "id": "road_turns_cold",
+  "title": "A Cold Road",
+  "summary": "Road and river folk think poorly of the player; the Kingsroad gets dearer and more dangerous.",
+  "trigger": {
+    "reputation": {
+      "faction": "the_road",
+      "below": -30
+    }
+  },
+  "roles": {
+    "roadfolk": {
+      "from": "faction:the_road",
+      "prefer": "fear_desc"
+    }
+  },
+  "cooldown_days": 3,
+  "max_active": 2,
+  "expires_days": 4,
+  "location": "{roadfolk.home}",
+  "hooks": [
+    {
+      "id": "word_went_ahead",
+      "type": "react",
+      "eligible_role": "roadfolk",
+      "trigger": "on_open",
+      "situation": "Word about {player} came down the road ahead of them, the way it always does, and none of it was good.",
+      "options": [
+        {
+          "id": "double_the_price",
+          "label": "Charge them double and don't explain",
+          "appeal": {
+            "fear": -0.3,
+            "affection": -0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{roadfolk}",
+              "text": "Charge {player} double for anything they want, crossing, bed or bread, and don't explain why."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{roadfolk}",
+              "dimension": "trust",
+              "delta": -8
+            }
+          ]
+        },
+        {
+          "id": "send_word_on",
+          "label": "Make sure the next stop knows who's coming",
+          "appeal": {
+            "trust": -0.5
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{roadfolk}",
+              "text": "Tell {player} you've sent word down the road about them, so they know they're expected."
+            }
+          ]
+        },
+        {
+          "id": "hear_their_side",
+          "label": "Hear their side; the road tells lies too",
+          "appeal": {
+            "respect": 0.4,
+            "familiarity": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{roadfolk}",
+              "text": "Tell {player} what the road is saying about them, and hear their side before you believe it."
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; serve them and watch them go",
+          "appeal": {
+            "familiarity": 0.1,
+            "fear": 0.4
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:roadfolk",
+    "expired"
+  ]
+}

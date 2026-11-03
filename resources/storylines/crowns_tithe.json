@@ -68,7 +68,8 @@
     "ih_gregor_fled",
     "hc_varn_ascendant",
     "tn_taken_alive_known",
-    "tn_taken_freed"
+    "tn_taken_freed",
+    "tn_cart_delayed"
   ],
   "beats": [
     {
@@ -1305,6 +1306,58 @@
                 "obey_the_crown"
               ],
               "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_mira_waits_out_the_riders",
+          "type": "scheme",
+          "trigger": "on_flag:tithe_player_testified",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The stranger has testified before the crown captain. Forty rangers watching the gate on Collection Night would see the cart, the coin and the girl, and write it all down.",
+          "options": [
+            {
+              "id": "hold_the_cart",
+              "label": "Hold the cart until the riders ride on",
+              "serves": [
+                "keep_the_mask",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_fixed_point",
+                  "point": "tn_collection_night",
+                  "days": 2,
+                  "reason": "The Boss held the cart two nights, until the crown's riders had grown bored of a quiet valley."
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "tn_cart_delayed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger, relieved, that she hears the cart may be late this year. Perhaps the crown frightened them."
+                }
+              ]
+            },
+            {
+              "id": "let_them_see_nothing",
+              "label": "Let the night stand; the rangers will see only what she shows them",
+              "serves": [
+                "harvest_the_tithe",
+                "feed_the_captain_wrong"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, worried, whether the crown captain means to stand at the gate on Collection Night."
+                }
+              ]
             }
           ]
         }

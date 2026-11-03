@@ -54,7 +54,8 @@
     "ih_supply_line_cut",
     "hc_varn_dead",
     "vein_iron_to_the_valley",
-    "vein_ore_road_closed"
+    "vein_ore_road_closed",
+    "tn_collection_night_cancelled"
   ],
   "beats": [
     {
@@ -1654,11 +1655,11 @@
         {
           "id": "oath_gregor_carts_them",
           "type": "scheme",
-          "trigger": "on_flag:tn_day_6",
+          "trigger": "on_flag:tn_collection_night_eve",
           "eligible": [
             "gregor"
           ],
-          "situation": "The blades are ready. Tonight they go out by the old mill road, or they do not go at all.",
+          "situation": "The blades are ready. The cart is close. They go out by the old mill road tonight, or they do not go at all.",
           "options": [
             {
               "id": "cart_them",
@@ -2336,6 +2337,52 @@
                   "npc": "mira",
                   "want": "see_who_fights",
                   "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_no_cart_coming",
+          "type": "aid",
+          "trigger": "on_flag:tn_collection_night_cancelled",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "No cart is coming. The Pit is empty. The steel on your racks was forged for a gate nobody needs to hold.",
+          "options": [
+            {
+              "id": "to_the_ridge",
+              "label": "Carry the blades up the ridge, to break whatever chains are left",
+              "serves": [
+                "bring_davin_home",
+                "atone_for_the_steel"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "bjorn",
+                  "location": "forest_path"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger whether anything is left up at the Pit that needs breaking."
+                }
+              ]
+            },
+            {
+              "id": "hang_them_up",
+              "label": "Hang the blades on the racks and bank the forge",
+              "serves": [
+                "keep_out_of_politics",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger the steel goes on the racks. He hopes Thornhaven never needs it."
                 }
               ]
             }
@@ -3149,6 +3196,17 @@
         "!oath_smith_walked_away"
       ],
       "summary": "Bjorn never stood at the gate, but the Hollow's blades broke on Collection Night, and his apprentice was home at the forge, learning to hold a hammer with three fingers."
+    },
+    {
+      "id": "oath_a_homecoming_without_a_fight",
+      "title": "A Homecoming Without a Fight",
+      "requires": [
+        "oath_davin_reunited",
+        "oath_vouched_for_bjorn",
+        "tn_collection_night_cancelled",
+        "!oath_smith_walked_away"
+      ],
+      "summary": "No cart came to test Bjorn's steel, because the Pit was emptied first. Davin stood at the forge's back door with three fingers and was let in, and the smith's racks stayed full of blades nobody had to swing."
     },
     {
       "id": "oath_the_cold_forge",

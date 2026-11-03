@@ -1,0 +1,109 @@
+{
+  "id": "seen_where_you_shouldnt_be",
+  "title": "Seen on the Wrong Road",
+  "summary": "The player was seen somewhere honest folk don't go; the valley wonders why.",
+  "trigger": {
+    "event": {
+      "kind": "seen_at",
+      "location": [
+        "iron_hollow_camp",
+        "old_mill",
+        "the_pit"
+      ]
+    }
+  },
+  "roles": {
+    "watcher": {
+      "from": "heard_event",
+      "faction": "thornhaven",
+      "prefer": "familiarity_desc"
+    }
+  },
+  "cooldown_days": 1,
+  "max_active": 2,
+  "expires_days": 3,
+  "location": "{watcher.home}",
+  "hooks": [
+    {
+      "id": "what_business",
+      "type": "react",
+      "eligible_role": "watcher",
+      "trigger": "on_open",
+      "situation": "You heard {player} {event.summary}. Honest folk don't go there, not this week.",
+      "options": [
+        {
+          "id": "ask_them",
+          "label": "Ask {player} what their business was",
+          "appeal": {
+            "trust": 0.4,
+            "affection": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{watcher}",
+              "text": "Ask {player} quietly what their business was out there, before someone less kind asks."
+            }
+          ]
+        },
+        {
+          "id": "tell_the_captain",
+          "label": "Take it to Captain Aldric",
+          "appeal": {
+            "respect": 0.3,
+            "trust": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "aldric",
+              "text": "Someone told you {player} {event.summary}. Ask them, in front of witnesses, what their business was."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{watcher}",
+              "dimension": "trust",
+              "delta": -8
+            }
+          ]
+        },
+        {
+          "id": "warn_the_neighbours",
+          "label": "Warn the neighbours to watch their tongues",
+          "appeal": {
+            "trust": -0.4,
+            "fear": 0.4
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{watcher}",
+              "dimension": "trust",
+              "delta": -12
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; you didn't see anything",
+          "appeal": {
+            "familiarity": 0.1,
+            "fear": 0.3
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:watcher",
+    "expired"
+  ]
+}

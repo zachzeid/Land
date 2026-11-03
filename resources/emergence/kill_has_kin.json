@@ -1,0 +1,117 @@
+{
+  "id": "kill_has_kin",
+  "title": "The Dead Have Kin",
+  "summary": "Someone the player killed was somebody's; whoever loved them hears.",
+  "trigger": {
+    "event": {
+      "kind": "kill"
+    }
+  },
+  "roles": {
+    "mourner": {
+      "from": "heard_event",
+      "prefer": "affection_asc"
+    }
+  },
+  "cooldown_days": 3,
+  "max_active": 2,
+  "expires_days": 5,
+  "location": "{mourner.home}",
+  "hooks": [
+    {
+      "id": "a_name_to_remember",
+      "type": "react",
+      "eligible_role": "mourner",
+      "trigger": "on_open",
+      "situation": "Word came: {player} {event.summary}. You knew the dead. You knew their laugh.",
+      "options": [
+        {
+          "id": "blood_for_blood",
+          "label": "Let {player} know someone is asking after them",
+          "appeal": {
+            "affection": -0.6,
+            "fear": -0.5
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{mourner}",
+              "text": "Tell {player} the dead one's name, and that you will be the one who remembers it."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{mourner}",
+              "dimension": "trust",
+              "delta": -20
+            }
+          ]
+        },
+        {
+          "id": "tell_their_people",
+          "label": "Carry it to the dead one's people",
+          "appeal": {
+            "affection": -0.3,
+            "fear": 0.2
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{mourner}",
+              "dimension": "affection",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "they_had_it_coming",
+          "label": "Admit, privately, the dead had it coming",
+          "appeal": {
+            "respect": 0.4,
+            "trust": 0.3
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{mourner}",
+              "dimension": "respect",
+              "delta": 5
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{mourner}",
+              "dimension": "fear",
+              "delta": 8
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; be afraid of them",
+          "appeal": {
+            "familiarity": 0.1,
+            "fear": 0.5
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{mourner}",
+              "dimension": "fear",
+              "delta": 12
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:mourner",
+    "expired"
+  ]
+}

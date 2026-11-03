@@ -1,0 +1,111 @@
+{
+  "id": "flattery_remembered",
+  "title": "Sweet Words",
+  "summary": "Someone the player flattered turns it over: warmth, or suspicion.",
+  "trigger": {
+    "event": {
+      "kind": "claim",
+      "tone": "flattery"
+    }
+  },
+  "roles": {
+    "flattered": {
+      "from": "event_about",
+      "prefer": "familiarity_desc"
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 2,
+  "expires_days": 2,
+  "location": "{flattered.home}",
+  "hooks": [
+    {
+      "id": "turning_it_over",
+      "type": "react",
+      "eligible_role": "flattered",
+      "trigger": "on_open",
+      "situation": "{player} laid it on thick: {event.summary}. Hours later you are still turning it over.",
+      "options": [
+        {
+          "id": "warmed",
+          "label": "Let it warm you; it's been a long time",
+          "appeal": {
+            "affection": 0.5,
+            "trust": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{flattered}",
+              "text": "Thank {player}, a little awkwardly, for what they said, and offer them something small."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{flattered}",
+              "dimension": "affection",
+              "delta": 8
+            }
+          ]
+        },
+        {
+          "id": "whats_it_for",
+          "label": "Sweet words from a stranger want something; ask what",
+          "appeal": {
+            "trust": -0.5,
+            "fear": 0.2,
+            "respect": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{flattered}",
+              "text": "Ask {player}, smiling, what all the kind words are meant to get them."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{flattered}",
+              "dimension": "trust",
+              "delta": -5
+            }
+          ]
+        },
+        {
+          "id": "tell_it_round",
+          "label": "Tell it round; let them hear what the stranger thinks of you",
+          "appeal": {
+            "respect": 0.3,
+            "affection": 0.3,
+            "familiarity": -0.2
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{flattered}",
+              "dimension": "affection",
+              "delta": 4
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; you've been flattered before",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:flattered",
+    "expired"
+  ]
+}

@@ -54,7 +54,7 @@ father rich. She would rather be feared than sorry for herself.
 
 ## Agency
 - intercept: agenda, set_flag, move_npc, block_beat
-- react: agenda, adjust_relationship, shift_want
+- react: agenda, adjust_relationship, shift_want, spread_event
 - scheme: agenda, set_flag, spread_rumor, move_npc, shift_want, block_beat
 - reveal: agenda, adjust_relationship
 - aid: agenda, adjust_relationship, unlock_beat

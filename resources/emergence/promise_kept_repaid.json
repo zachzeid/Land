@@ -1,0 +1,110 @@
+{
+  "id": "promise_kept_repaid",
+  "title": "A Word Kept",
+  "summary": "Someone the player kept a promise to finds a way to repay it.",
+  "trigger": {
+    "event": {
+      "kind": "promise",
+      "status": "kept"
+    }
+  },
+  "roles": {
+    "beneficiary": {
+      "from": "event_about",
+      "prefer": "affection_desc"
+    }
+  },
+  "cooldown_days": 1,
+  "max_active": 3,
+  "expires_days": 4,
+  "location": "{beneficiary.home}",
+  "hooks": [
+    {
+      "id": "return_the_favour",
+      "type": "aid",
+      "eligible_role": "beneficiary",
+      "trigger": "on_open",
+      "situation": "{player} {event.summary}, and then they did it. Not many people in your life have kept their word that well.",
+      "options": [
+        {
+          "id": "repay",
+          "label": "Give {player} something back: a meal, a bed, a warning",
+          "appeal": {
+            "affection": 0.5,
+            "trust": 0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{beneficiary}",
+              "text": "Offer {player} what you can spare, a meal, a dry bed or a warning worth having, and tell them why."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{beneficiary}",
+              "dimension": "trust",
+              "delta": 10
+            }
+          ]
+        },
+        {
+          "id": "vouch",
+          "label": "Tell people {player} keeps their word",
+          "appeal": {
+            "trust": 0.5,
+            "respect": 0.4
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{beneficiary}",
+              "dimension": "respect",
+              "delta": 5
+            }
+          ]
+        },
+        {
+          "id": "what_does_it_buy",
+          "label": "Wonder what a kept promise is meant to buy",
+          "appeal": {
+            "fear": 0.4,
+            "trust": -0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{beneficiary}",
+              "text": "Ask {player} what they want in return for keeping their word. Nobody does that for nothing."
+            }
+          ]
+        },
+        {
+          "id": "owe_quietly",
+          "label": "Say nothing; remember who kept faith",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{beneficiary}",
+              "dimension": "trust",
+              "delta": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:beneficiary",
+    "expired"
+  ]
+}

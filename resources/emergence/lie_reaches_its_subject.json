@@ -1,0 +1,112 @@
+{
+  "id": "lie_reaches_its_subject",
+  "title": "The Lie Comes Home",
+  "summary": "A lie the player told about someone reaches the person it was about.",
+  "trigger": {
+    "event": {
+      "kind": "lie"
+    }
+  },
+  "roles": {
+    "subject": {
+      "from": "event_about",
+      "prefer": "familiarity_desc"
+    }
+  },
+  "cooldown_days": 1,
+  "max_active": 2,
+  "expires_days": 3,
+  "location": "{subject.home}",
+  "hooks": [
+    {
+      "id": "the_lie_comes_home",
+      "type": "react",
+      "eligible_role": "subject",
+      "trigger": "on_open",
+      "situation": "Word reached you that {player} {event.summary}. It was about you, and it isn't so. Whoever passed it on believed every word.",
+      "options": [
+        {
+          "id": "confront",
+          "label": "Find {player} and make them say it to your face",
+          "appeal": {
+            "respect": 0.4,
+            "fear": -0.5,
+            "trust": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{subject}",
+              "text": "Ask {player} plainly why they told lies about you, and watch their face while they answer."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{subject}",
+              "dimension": "trust",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "set_it_straight",
+          "label": "Go round and put the truth back where the lie went",
+          "appeal": {
+            "affection": -0.4,
+            "trust": -0.3,
+            "fear": -0.2
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{subject}",
+              "dimension": "trust",
+              "delta": -15
+            }
+          ]
+        },
+        {
+          "id": "hear_them_out",
+          "label": "Assume they had a reason, and ask for it",
+          "appeal": {
+            "affection": 0.6,
+            "trust": 0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{subject}",
+              "text": "Give {player} one chance to explain the story they told about you before you believe the worst of them."
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; trust them a little less",
+          "appeal": {
+            "familiarity": 0.1,
+            "fear": 0.4
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{subject}",
+              "dimension": "trust",
+              "delta": -6
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:subject",
+    "expired"
+  ]
+}

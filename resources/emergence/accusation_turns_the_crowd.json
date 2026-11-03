@@ -1,0 +1,160 @@
+{
+  "id": "accusation_turns_the_crowd",
+  "title": "Who Believes It",
+  "summary": "The player accused someone in public; the onlookers and the accused take sides.",
+  "trigger": {
+    "event": {
+      "kind": "accusation"
+    }
+  },
+  "roles": {
+    "onlooker": {
+      "from": "event_witness",
+      "prefer": "respect_desc"
+    },
+    "accused": {
+      "from": "event_about",
+      "prefer": "nearest"
+    }
+  },
+  "cooldown_days": 1,
+  "max_active": 2,
+  "expires_days": 2,
+  "location": "{accused.home}",
+  "hooks": [
+    {
+      "id": "which_side",
+      "type": "react",
+      "eligible_role": "onlooker",
+      "trigger": "on_open",
+      "situation": "In front of everyone, {player} accused {accused}: {event.summary}. People are looking at each other to see who believes it.",
+      "options": [
+        {
+          "id": "take_it_up",
+          "label": "Say it louder; the stranger may be right",
+          "appeal": {
+            "trust": 0.5,
+            "respect": 0.4
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "agenda",
+              "npc": "{onlooker}",
+              "text": "Tell {player} you stood with them when they spoke up, and ask what proof they really have."
+            }
+          ]
+        },
+        {
+          "id": "defend_the_accused",
+          "label": "Stand by {accused}; you've known them longer",
+          "appeal": {
+            "trust": -0.5,
+            "affection": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{onlooker}",
+              "text": "Tell {player} that {accused} lived here long before they came, and that loose talk gets people hurt."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{onlooker}",
+              "dimension": "trust",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "drift_away",
+          "label": "Say nothing; nobody wants to be next",
+          "appeal": {
+            "familiarity": 0.1,
+            "fear": 0.5
+          },
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "named_in_public",
+      "type": "react",
+      "eligible_role": "accused",
+      "trigger": "on_open",
+      "situation": "{player} accused you in front of half the village: {event.summary}. You saw who nodded.",
+      "options": [
+        {
+          "id": "answer_it",
+          "label": "Answer it, face to face, before it hardens",
+          "appeal": {
+            "respect": 0.4,
+            "fear": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{accused}",
+              "text": "Find {player} and answer what they said about you, in front of someone, so it's heard."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{accused}",
+              "dimension": "respect",
+              "delta": -5
+            }
+          ]
+        },
+        {
+          "id": "go_cold",
+          "label": "Never speak to them again if you can help it",
+          "appeal": {
+            "affection": -0.4,
+            "trust": -0.4
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{accused}",
+              "dimension": "trust",
+              "delta": -15
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{accused}",
+              "dimension": "affection",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "watch_and_wait",
+          "label": "Say nothing; watch who believed it",
+          "appeal": {
+            "familiarity": 0.1,
+            "fear": 0.3
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{accused}",
+              "dimension": "trust",
+              "delta": -5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:accused",
+    "talked_to:onlooker",
+    "expired"
+  ]
+}

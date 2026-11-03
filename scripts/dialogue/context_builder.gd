@@ -98,6 +98,7 @@ func _build_system_prompt_from_personality(personality: Resource, tiered_memorie
 	# =========================================================================
 	if dimensions.size() > 0:
 		prompt += _build_relationship_section(dimensions, personality)
+	prompt += _build_heard_section(personality.npc_id)
 
 	# =========================================================================
 	# SECTION 6: UNLOCKED SECRETS (Based on relationship thresholds)
@@ -145,6 +146,17 @@ func _build_storyline_section(npc_id: String) -> String:
 	if agency_on and director.has_method("get_conversation_agency_block"):
 		block += director.get_conversation_agency_block(npc_id)
 	return block
+
+## What this NPC has seen or heard of the player (PlayerEvents, docs/WORLD_SCHEMA.md §10): its top
+## known events with fidelity-aware wording, plus its faction's standing. "" when it knows nothing
+func _build_heard_section(npc_id: String) -> String:
+	if npc_id == "":
+		return ""
+	var tree = Engine.get_main_loop() as SceneTree
+	var player_events = tree.root.get_node_or_null("PlayerEvents") if tree else null
+	if player_events == null or not player_events.has_method("get_heard_block"):
+		return ""
+	return player_events.get_heard_block(npc_id)
 
 ## A generic NPC's seed and its most important, most recent layers (docs/WORLD_SCHEMA.md §9)
 ## When the Director already has its soul (essence, wants, voice) only the seed + layers are added
@@ -335,62 +347,33 @@ func _build_behavioral_section(dimensions: Dictionary, personality: Resource) ->
 
 	return section
 
-## Build response format section
+## Build response format section (compact: every token here is paid on every turn)
 ## Phase 5: Uses constrained interaction types to prevent prompt drift
 func _build_response_format_section() -> String:
 	var section = "## CRITICAL: Response Format\n"
-	section += "You MUST respond with valid JSON in this exact format:\n"
+	section += "Respond ONLY with valid JSON in this exact shape:\n"
 	section += '{\n'
-	section += '  "response": "Your in-character dialogue here",\n'
+	section += '  "response": "[tone cue] Your in-character dialogue",\n'
 	section += '  "analysis": {\n'
 	section += '    "player_tone": "friendly|hostile|flirtatious|threatening|neutral|empathetic|dismissive",\n'
 	section += '    "emotional_impact": "very_positive|positive|neutral|negative|very_negative",\n'
-	section += '    "interaction_type": "<see allowed types below>",\n'
-	section += '    "trust_change": 0,\n'
-	section += '    "respect_change": 0,\n'
-	section += '    "affection_change": 0,\n'
-	section += '    "fear_change": 0,\n'
-	section += '    "familiarity_change": 1,\n'
-	section += '    "learned_about_player": {\n'
-	section += '      "name": null,\n'
-	section += '      "occupation": null,\n'
-	section += '      "origin": null,\n'
-	section += '      "notable_facts": []\n'
-	section += '    }\n'
+	section += '    "interaction_type": "casual_conversation",\n'
+	section += '    "trust_change": 0, "respect_change": 0, "affection_change": 0, "fear_change": 0, "familiarity_change": 1,\n'
+	section += '    "learned_about_player": {"name": null, "occupation": null, "origin": null, "notable_facts": []},\n'
+	section += '    "utterances": []\n'
 	section += '  },\n'
 	section += '  "actions": [],\n'
 	section += '  "commitments": []\n'
-	section += '}\n\n'
-	section += '"actions" and "commitments" are optional and usually empty; see WHAT YOU CAN DO, NOT JUST SAY.\n\n'
-
-	# Phase 5: Add constrained interaction types from config
-	section += "### ALLOWED interaction_type VALUES (use EXACTLY one of these):\n"
-	section += "- \"casual_conversation\" - General chat, small talk\n"
-	section += "- \"quest_related\" - Discussion about quests or tasks\n"
-	section += "- \"gift_given\" - Player gave you something\n"
-	section += "- \"emotional_support\" - Comforting, encouraging words\n"
-	section += "- \"romantic_gesture\" - Flirtation, romantic interest\n"
-	section += "- \"threat_made\" - Intimidation, threats\n"
-	section += "- \"secret_shared\" - Revealing private information\n"
-	section += "- \"betrayal\" - Breaking trust, deception revealed\n"
-	section += "- \"life_saved\" - Player saved your life or vice versa\n"
-	section += "- \"romance_confession\" - Declaring romantic feelings\n"
-	section += "- \"promise_made\" - Committing to something\n"
-	section += "- \"promise_broken\" - Failed to keep a commitment\n"
-	section += "- \"defended_player\" - Stood up for the player\n"
-	section += "- \"information_shared\" - Providing useful knowledge\n"
-	section += "DO NOT invent new types. Use \"casual_conversation\" if unsure.\n\n"
-
-	section += "The analysis reflects how YOU (the NPC) perceive the player's message.\n"
-	section += "Dimension changes should be SMALL for most interactions (-5 to +5). Only use larger values (-15 to +15) for significant moments.\n"
-	section += "IMPORTANT: If the player reveals their name, occupation, where they're from, or any notable facts about themselves, record it in learned_about_player. Use null if not mentioned.\n\n"
-	section += "## Dialogue Tone Notation\n"
-	section += "Use [brackets] to indicate tone, emotion, or action at the START of your response. Examples:\n"
-	section += "- [warmly] It's good to see you again.\n"
-	section += "- [nervously glancing around] Keep your voice down...\n"
-	section += "- [sarcastically] Oh, you're an expert now?\n"
-	section += "- [with a sad smile] Some things can't be undone.\n"
-	section += "This helps convey HOW you're speaking, not just WHAT you're saying.\n"
+	section += '}\n'
+	# Phase 5: constrained interaction types (rag_memory.validate_interaction_type maps the rest)
+	section += "interaction_type is exactly one of: casual_conversation, quest_related, gift_given, emotional_support, romantic_gesture, threat_made, secret_shared, betrayal, life_saved, romance_confession, promise_made, promise_broken, defended_player, information_shared (casual_conversation if unsure).\n"
+	section += "The analysis is how YOU perceive the player's message. Dimension changes are small (-5..5); only big moments reach -15..15. Put any name, occupation, origin or notable fact the player reveals in learned_about_player (null if not said).\n"
+	# Player events (docs/WORLD_SCHEMA.md §10): what the player said, as this NPC heard it
+	section += "utterances: what the player claimed, promised, threatened, confessed, gave or did to someone THIS turn, as you heard it: "
+	section += '{"kind": "claim|promise|threat|lie|insult|gift|help|harm|theft|kill|spared|confession|accusation|refusal", "about": ["names"], "summary": "past tense, no subject (\'promised to free Elena\')", "believed": true}. '
+	section += "\"lie\" = a lie you saw through. Usually empty.\n"
+	section += '"actions" and "commitments" are optional and usually empty; see WHAT YOU CAN DO, NOT JUST SAY.\n'
+	section += "Begin \"response\" with a [bracketed] tone or action cue: [warmly], [nervously glancing around], [with a sad smile].\n\n"
 	return section
 
 ## Build enhanced system prompt with RAG memories and current state (LEGACY)
@@ -439,6 +422,7 @@ func _build_system_prompt(base_prompt: String, npc_id: String, tiered_memories: 
 		prompt += "## Current Relationship with Player\n"
 		var relationship_desc = _describe_relationship(relationship)
 		prompt += "Your current opinion of the player: %s (%d/100)\n\n" % [relationship_desc, int(relationship)]
+	prompt += _build_heard_section(npc_id)
 
 	# =========================================================================
 	# SECTION 5: MEMORIES (Tiered)

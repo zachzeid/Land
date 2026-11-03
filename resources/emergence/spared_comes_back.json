@@ -1,0 +1,116 @@
+{
+  "id": "spared_comes_back",
+  "title": "The One You Let Live",
+  "summary": "Someone the player spared comes back, with a warning, a debt, or a sneer.",
+  "trigger": {
+    "event": {
+      "kind": "spared"
+    }
+  },
+  "roles": {
+    "spared": {
+      "from": "event_about",
+      "prefer": "fear_desc"
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 2,
+  "expires_days": 5,
+  "location": "{spared.home}",
+  "hooks": [
+    {
+      "id": "still_breathing",
+      "type": "aid",
+      "eligible_role": "spared",
+      "trigger": "on_open",
+      "situation": "{player} {event.summary}. You were sure you were dead. You aren't, and you keep wondering why.",
+      "options": [
+        {
+          "id": "one_true_thing",
+          "label": "Find them alone and tell them one thing worth your life",
+          "appeal": {
+            "affection": 0.4,
+            "trust": 0.4,
+            "respect": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{spared}",
+              "text": "Find {player} alone and tell them one true thing your own people would kill you for saying."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{spared}",
+              "dimension": "trust",
+              "delta": 10
+            }
+          ]
+        },
+        {
+          "id": "done_with_it",
+          "label": "Take the mercy and tell them you're done with this life",
+          "appeal": {
+            "fear": 0.5,
+            "affection": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{spared}",
+              "text": "If you see {player} again, tell them you're putting the blade down, and ask them not to make you a liar."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{spared}",
+              "dimension": "fear",
+              "delta": 5
+            }
+          ]
+        },
+        {
+          "id": "call_them_soft",
+          "label": "Tell your own lot the stranger hasn't the stomach",
+          "appeal": {
+            "respect": -0.6,
+            "fear": -0.4
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{spared}",
+              "dimension": "respect",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; owe it, and hate owing it",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{spared}",
+              "dimension": "affection",
+              "delta": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:spared",
+    "expired"
+  ]
+}

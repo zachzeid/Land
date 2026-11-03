@@ -56,7 +56,7 @@ into the cart himself. He does not know yet which one he is. Neither does anyone
 
 ## Agency
 - intercept: set_flag, agenda, move_npc, block_beat
-- react: agenda, adjust_relationship, shift_want, move_npc
+- react: agenda, adjust_relationship, shift_want, move_npc, spread_event
 - scheme: agenda, move_npc, set_flag
 - reveal: set_flag, agenda, adjust_relationship
 - aid: agenda, adjust_relationship, set_flag

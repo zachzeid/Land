@@ -1,0 +1,94 @@
+{
+  "id": "council_company_draws_the_hollow",
+  "title": "The Hollow Notices",
+  "summary": "Time spent with the council makes Iron Hollow take notice of the player.",
+  "trigger": {
+    "event": {
+      "kind": "kept_company",
+      "about": [
+        "mathias"
+      ],
+      "min_count": 2
+    }
+  },
+  "roles": {
+    "watcher": {
+      "from": "faction:iron_hollow",
+      "prefer": "nearest"
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 1,
+  "expires_days": 3,
+  "location": "{watcher.home}",
+  "hooks": [
+    {
+      "id": "council_business",
+      "type": "react",
+      "eligible_role": "watcher",
+      "trigger": "on_open",
+      "situation": "{player} keeps company with the elder: {event.summary}. The council's business is the Hollow's business, and someone will want to know what the stranger is to it.",
+      "options": [
+        {
+          "id": "warn_them_off",
+          "label": "Let them know, friendly-like, it's an unlucky week to meddle",
+          "appeal": {
+            "fear": -0.4,
+            "respect": -0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{watcher}",
+              "text": "Let {player} know, friendly-like, that people who meddle in the council's business this week have bad luck."
+            }
+          ]
+        },
+        {
+          "id": "report_up",
+          "label": "Make sure Varn hears of it",
+          "appeal": {
+            "trust": -0.3,
+            "affection": -0.2
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "varn"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sound_them_out",
+          "label": "Sound them out, kindly",
+          "appeal": {
+            "affection": 0.3,
+            "trust": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{watcher}",
+              "text": "Ask {player}, kindly, what the council wants of them, and listen more than you talk."
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; watch",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:watcher",
+    "expired"
+  ]
+}

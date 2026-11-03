@@ -1,0 +1,9 @@
+[
+  {"id": "fx_sets_storyline_flag", "title": "Bad", "trigger": {"flag": "fx_story_done"}, "roles": {"who": {"from": "npc:mira"}},
+   "hooks": [{"id": "h", "type": "react", "eligible_role": "who", "options": [
+     {"id": "cheat", "label": "Settle the storyline", "effects": [{"type": "set_flag", "flag": "fx_story_done", "value": true}]}]}]},
+  {"id": "fx_no_roles_decl", "title": "Bad role", "trigger": {"flag": "fx_story_done"}, "roles": {},
+   "hooks": [{"id": "h", "type": "react", "eligible_role": "ghost", "options": [{"id": "x", "label": "x", "effects": []}]}]},
+  {"id": "fx_good_one", "title": "Good", "trigger": {"flag": "fx_story_done"}, "roles": {"who": {"from": "npc:mira"}},
+   "hooks": [{"id": "h", "type": "react", "eligible_role": "who", "options": [{"id": "x", "label": "x", "effects": []}]}]}
+]

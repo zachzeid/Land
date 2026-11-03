@@ -1,0 +1,116 @@
+{
+  "id": "threat_taken_to_heart",
+  "title": "Taken at Their Word",
+  "summary": "Someone the player threatened decides whether to take it seriously or laugh it off.",
+  "trigger": {
+    "event": {
+      "kind": "threat"
+    }
+  },
+  "roles": {
+    "threatened": {
+      "from": "event_about",
+      "prefer": "fear_desc"
+    }
+  },
+  "cooldown_days": 1,
+  "max_active": 2,
+  "expires_days": 3,
+  "location": "{threatened.home}",
+  "hooks": [
+    {
+      "id": "what_they_meant",
+      "type": "react",
+      "eligible_role": "threatened",
+      "trigger": "on_open",
+      "situation": "{player} {event.summary}. It has been in your head since. A stranger with nothing to lose, or one more mouth?",
+      "options": [
+        {
+          "id": "give_way",
+          "label": "Keep out of their road and give them what they asked",
+          "appeal": {
+            "fear": 0.6,
+            "respect": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{threatened}",
+              "text": "Be careful with {player}: agree quickly, give nothing extra away, and end the talk as soon as you can."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{threatened}",
+              "dimension": "fear",
+              "delta": 10
+            }
+          ]
+        },
+        {
+          "id": "find_protection",
+          "label": "Tell someone who can stand between you and them",
+          "appeal": {
+            "fear": 0.3,
+            "trust": -0.4,
+            "affection": -0.3
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{threatened}",
+              "dimension": "trust",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "laugh_it_off",
+          "label": "Laugh; plenty of strangers talk big",
+          "appeal": {
+            "fear": -0.6,
+            "respect": -0.5
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{threatened}",
+              "text": "If {player} brings up their threat again, laugh at it, loud enough for others to hear."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{threatened}",
+              "dimension": "respect",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; bolt the door at night",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{threatened}",
+              "dimension": "fear",
+              "delta": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:threatened",
+    "expired"
+  ]
+}

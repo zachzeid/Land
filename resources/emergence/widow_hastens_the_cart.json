@@ -1,0 +1,95 @@
+{
+  "id": "widow_hastens_the_cart",
+  "title": "A Night Early",
+  "summary": "When the peacekeepers rally around the player, Mira weighs bringing the cart before the gate is ready.",
+  "trigger": {
+    "reputation": {
+      "faction": "peacekeepers",
+      "above": 40
+    },
+    "flag": "!tn_collection_night"
+  },
+  "roles": {
+    "boss": {
+      "from": "npc:mira"
+    }
+  },
+  "cooldown_days": 30,
+  "max_active": 1,
+  "expires_days": 2,
+  "location": "thornhaven_tavern",
+  "hooks": [
+    {
+      "id": "the_gate_is_sharpening",
+      "type": "scheme",
+      "eligible_role": "boss",
+      "trigger": "on_open",
+      "situation": "Aldric talks about {player} the way he used to talk about Marcus. Men are sharpening tools at the gate. A cart that comes when it is expected is a cart they are ready for.",
+      "options": [
+        {
+          "id": "a_night_early",
+          "label": "Send word up the trail: the cart comes a night early",
+          "appeal": {
+            "fear": 0.4,
+            "respect": 0.4,
+            "affection": -0.3
+          },
+          "effects": [
+            {
+              "type": "shift_fixed_point",
+              "point": "tn_collection_night",
+              "reason": "The cart came a night early, before the men at the gate were ready for it.",
+              "days": -1
+            },
+            {
+              "type": "agenda",
+              "npc": "mira",
+              "text": "Weep a little with {player} over how little time is left, and learn what the gate is planning."
+            }
+          ]
+        },
+        {
+          "id": "feed_the_captain",
+          "label": "Keep the night, and give Aldric a wrong hour to plan by",
+          "appeal": {
+            "respect": 0.2,
+            "trust": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "aldric",
+              "text": "The widow says the cart may come late this year. Tell {player} to rest while they can."
+            },
+            {
+              "type": "shift_want",
+              "npc": "mira",
+              "want": "feed_the_captain_wrong",
+              "delta": 1
+            }
+          ]
+        },
+        {
+          "id": "let_them_fight",
+          "label": "Let the night stand; see who fights",
+          "appeal": {
+            "affection": 0.5,
+            "familiarity": 0.1
+          },
+          "effects": [
+            {
+              "type": "shift_want",
+              "npc": "mira",
+              "want": "see_who_fights",
+              "delta": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "days:2",
+    "expired"
+  ]
+}

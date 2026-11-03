@@ -74,6 +74,12 @@ size_flags_horizontal = 3
 text = "Discovered (0)"
 theme_override_font_sizes/font_size = 14
 
+[node name="ThoughtsTab" type="Button" parent="Panel/TabBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Thoughts (0)"
+theme_override_font_sizes/font_size = 14
+
 [node name="Separator" type="HSeparator" parent="Panel"]
 layout_mode = 1
 anchors_preset = 10

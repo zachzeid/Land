@@ -24,10 +24,21 @@ signal personal_round_completed(personal_round: int, entries: Array)
 signal soul_registered(npc_key: String, tier: String)
 signal soul_unregistered(npc_key: String)
 signal soul_tier_changed(npc_key: String, old_tier: String, new_tier: String)
+# The non-linear world (docs/WORLD_SCHEMA.md Part II, §11-15)
+signal fixed_point_shifted(point: String, entry: Dictionary)   # a calendar point moved (chronicle entry)
+signal emergent_opened(instance: Dictionary)                   # an emergent beat grew from what the player did
+signal emergent_closed(instance: Dictionary)                   # resolved or expired
+signal emergent_acted(entry: Dictionary)                       # an NPC acted in an emergent beat
+signal epilogue_ready(epilogue: Dictionary)                    # end_game(): the world the player made
 
 const Soul = preload("res://scripts/storyline/soul.gd")
 const EffectApplier = preload("res://scripts/storyline/effect_applier.gd")
 const NpcAgent = preload("res://scripts/storyline/npc_agent.gd")
+const Emergence = preload("res://scripts/storyline/emergence.gd")
+const EpilogueScript = preload("res://scripts/storyline/epilogue.gd")
+const REPUTATION_PATH = "res://scripts/world_state/reputation.gd"
+const DEFAULT_EMERGENCE_DIR = "res://resources/emergence"
+const SEASON_END_POINT = "season_end"
 
 const DEFAULT_STORYLINE_DIR = "res://resources/storylines"
 const DEFAULT_SOUL_DIR = "res://souls"
@@ -66,6 +77,13 @@ var soul_dir: String = DEFAULT_SOUL_DIR
 var personal_turns_enabled: bool = true    # advance_round() ends with a personal phase
 var personal_decisions_per_round: int = -1 # -1: world.json tiers.personal_decisions_per_round (default 4)
 var player_location_override: String = "" # tests/debug: where the player stands ("" = SceneManager)
+# Part II (non-linear world): collaborators, overridable by tests
+var emergence_dir: String = DEFAULT_EMERGENCE_DIR
+var player_events_override: Node = null    # tests: a fake PlayerEvents (null = /root/PlayerEvents)
+var reputation_override: Callable = Callable()  # tests: (scope, id) -> float (invalid = Reputation.of)
+var relationship_dims_override: Dictionary = {} # tests: npc key -> {dimension: value} toward the player
+var inner_voice_override: Node = null      # tests: another InnerVoice (null = /root/InnerVoice)
+var end_on_season_end: bool = true          # season_end fires -> end_game("season_end")
 
 # Content
 var _storylines: Dictionary = {}       # storyline id -> parsed JSON
@@ -117,10 +135,23 @@ var _round_requested: bool = false
 var _rerun_round: bool = false
 var _round_reasons: Array = []
 var _in_personal: bool = false
+var _emergence                         # Emergence runtime (emergent beats)
+var _current_actor: String = ""        # npc key whose effect is being applied (shift rule attribution)
+var _flag_actors: Dictionary = {}      # flag -> who last turned it true: npc key | "player" | "world" | "director"
+## The player's causal chain (the world-only advance cap, docs/WORLD_SCHEMA.md §11): a flag is
+## player-chained when the player set it, or an effect set it whose cause traces to the player (a hook
+## triggered on_flag by a player-chained flag, a conversation with the player, an emergent beat grown
+## from a player event). Saved
+var _flag_player_chain: Dictionary = {}
+var _causal_player: bool = false       # true while an effect with the player in its causal chain applies
+var _player_events_connected: Node = null
+var _epilogue: Dictionary = {}         # the last epilogue generated (end_game)
+var _game_ended: String = ""           # why the game ended ("" = still playing)
 
 func _init():
 	_effects = EffectApplier.new(self)
 	_agent = NpcAgent.new()
+	_emergence = Emergence.new(self)
 
 func _ready():
 	_agent.tree = get_tree()
@@ -131,6 +162,12 @@ func _ready():
 	if bus:
 		bus.world_flag_changed.connect(_on_world_flag_changed)
 		bus.time_advanced.connect(_on_time_advanced)
+		bus.calendar_flag_fired.connect(_on_calendar_flag_fired)
+	var ws = get_node_or_null("/root/WorldState")
+	if ws and ws.has_signal("calendar_point_shifted"):
+		ws.calendar_point_shifted.connect(_on_calendar_point_shifted)
+	if ws and ws.has_signal("calendar_shift_clamped"):
+		ws.calendar_shift_clamped.connect(_on_calendar_shift_clamped)
 	load_content()
 	var world_state = get_node_or_null("/root/WorldState")
 	if world_state and "storyline_state" in world_state and not world_state.storyline_state.is_empty():
@@ -196,6 +233,9 @@ func load_content(storyline_path: String = "", soul_path: String = "") -> void:
 			_declared_flags[flag] = sid
 		StoryFlags.register_flag_descriptions(flags)
 	_register_canon()
+	var ws_cal = get_node_or_null("/root/WorldState") if is_inside_tree() else null
+	if ws_cal and ws_cal.has_method("refresh_calendar_descriptions"):
+		ws_cal.refresh_calendar_descriptions()  # a storyline may declare <point>_cancelled / _eve: its text wins
 	var file_keys = _souls.keys()
 	file_keys.sort()
 	for key in file_keys:
@@ -208,6 +248,7 @@ func load_content(storyline_path: String = "", soul_path: String = "") -> void:
 		if not _install_registered(key):
 			push_warning("[StorylineDirector] Registered soul '%s' no longer parses; dropped" % key)
 			_registered.erase(key)
+	_emergence.load_templates(emergence_dir)
 	reset_state()
 
 func _load_storyline(path: String) -> Dictionary:
@@ -230,6 +271,7 @@ func _load_storyline(path: String) -> Dictionary:
 # =============================================================================
 
 func _boot() -> void:
+	connect_player_events()
 	evaluate_all()
 	_booted = true
 
@@ -242,6 +284,7 @@ func evaluate_all() -> void:
 				_apply_drift(rule.flag)
 	_flag_queue.append({"flag": "", "value": null})
 	_process_queue()
+	_apply_shift_rules("")
 
 ## Every flag change opens/resolves beats now. A change the Director did not make is the
 ## player's doing (StoryItem, dialogue, quests, debug): that is also a round boundary
@@ -249,8 +292,14 @@ func _on_world_flag_changed(flag_name: String, _old_value, new_value):
 	var player_caused = not is_director_change()
 	var world_state = get_node_or_null("/root/WorldState")
 	var world_caused = world_state != null and world_state.has_method("is_world_change") and world_state.is_world_change()
+	if new_value == true:
+		_flag_actors[flag_name] = "world" if world_caused else ("player" if player_caused else (_current_actor if _current_actor != "" else "director"))
+		_flag_player_chain[flag_name] = (player_caused and not world_caused) or (is_director_change() and _causal_player)
 	_flag_queue.append({"flag": flag_name, "value": new_value})
 	_process_queue()
+	if new_value == true:
+		_apply_shift_rules(flag_name)  # a movable fixed point's shift_rules (docs/WORLD_SCHEMA.md §11)
+		_emergence.on_flag(flag_name)
 	if world_caused:
 		request_round("calendar:" + flag_name)  # a fixed point passed: the village reacts
 	elif player_caused:
@@ -379,6 +428,7 @@ func _run_requested_round() -> void:
 ## The game clock moved: due delayed effects land, and every MINUTES_PER_ROUND minutes owes a round
 func _on_time_advanced(minutes: int, _total_minutes: int, reason: String) -> void:
 	_run_scheduled_effects()
+	_emergence.check_resolutions()
 	var owed = add_game_minutes(minutes)
 	if owed > 0:
 		request_round("game_time:+%dm (%s)" % [minutes, reason])
@@ -407,13 +457,28 @@ func advance_round(reason: String = "manual") -> Array:
 	_in_round = true
 	_round += 1
 	_enqueue_idle_hooks()
+	# Emergent beats: close what resolved, grow what the world now matches, queue idle hooks
+	_emergence.check_resolutions()
+	_emergence.evaluate_conditions()
+	_emergence.enqueue_idle_hooks()
 	var taken: Dictionary = {}
 	var entries: Array = []
-	for item in _decision_queue.duplicate():
+	for item in _ordered_queue():
 		var sid: String = item.storyline
 		if int(taken.get(sid, 0)) >= decisions_per_round_per_storyline:
 			continue
 		_dequeue(sid, item.hook)
+		if _emergence.owns(sid):
+			var was_proc = _processing
+			_processing = true
+			var made_emergent = await _emergence.decide(item)
+			_processing = was_proc
+			if not was_proc:
+				_process_queue()
+			if not made_emergent.is_empty():
+				taken[sid] = int(taken.get(sid, 0)) + 1
+				entries.append_array(made_emergent)
+			continue
 		var found = _find_hook(sid, item.hook)
 		if found.is_empty() or not _may_fire(sid, found.beat, found.hook):
 			continue  # stale: the hook is gone, or its beat was blocked meanwhile
@@ -569,7 +634,8 @@ func _carry_out(sid: String, beat: Dictionary, hook: Dictionary, trigger: String
 		if denial != "":
 			dropped.append({"effect": e, "reason": denial})
 			continue
-		var result = _apply_effect_as_director(e, npc_key, {"storyline": sid, "hook": str(hook.id)})
+		var chained = trigger.begins_with("on_flag:") and _flag_player_chain.get(trigger.substr(8), false) == true
+		var result = _apply_effect_as_director(e, npc_key, {"storyline": sid, "hook": str(hook.id), "player_chain": chained})
 		if result.ok:
 			applied.append(e)
 		else:
@@ -662,7 +728,13 @@ func apply_effect(effect: Dictionary, actor_key: String = "") -> Dictionary:
 ## Effects the Director applies are tagged so their flag changes are not taken for the player's
 func _apply_effect_as_director(effect: Dictionary, actor_key: String, source: Dictionary) -> Dictionary:
 	_effect_depth += 1
+	var previous_actor = _current_actor
+	var previous_causal = _causal_player
+	_current_actor = actor_key
+	_causal_player = previous_causal or source.get("player_chain", false) == true or source.get("conversation", false) == true
 	var result = _effects.apply(effect, actor_key, source)
+	_current_actor = previous_actor
+	_causal_player = previous_causal
 	_effect_depth -= 1
 	return result
 
@@ -905,6 +977,8 @@ const CONVERSE_SHAPES = {
 	"shift_want": '{"type":"shift_want","npc":K,"want":W,"delta":-3..3}',
 	"block_beat": '{"type":"block_beat","storyline":S,"beat":B}',
 	"unlock_beat": '{"type":"unlock_beat","storyline":S,"beat":B}',
+	"shift_fixed_point": '{"type":"shift_fixed_point","point":P,"days":-3..3 or "cancel":true,"reason":"why, in-world"}',
+	"spread_event": '{"type":"spread_event","event":E,"to":[K] or ["*"],"via":"how it travels"}',
 }
 ## Hard budget for the agency block (~4 chars per token). Caps tighten level by level until it fits
 const AGENCY_BLOCK_CHAR_BUDGET = 3400
@@ -1159,6 +1233,7 @@ func apply_conversation_actions(npc: String, actions: Array, commitments: Array 
 ## Returns [{"npc", "location", "ok", "reason", "minutes"}]
 func finish_conversation(npc: String) -> Array:
 	var key = _npc_key(npc)
+	_emergence.check_resolutions(key)  # talked_to:<role> resolves when that conversation ends
 	var moves: Array = _pending_moves.get(key, [])
 	_pending_moves.erase(key)
 	var results: Array = []
@@ -1241,7 +1316,7 @@ func _check_conversation_action(key: String, soul, raw, reach: Dictionary, resol
 		verdict.reason = "soul: no SOUL.md for %s" % key
 		return verdict
 	var denial = soul.get_converse_denial_reason(e)
-	if denial == "" and str(e.type) in STORY_ONLY_EFFECTS and get_soul_tier(key) in ["promoted", "generic"]:
+	if denial == "" and (str(e.type) in STORY_ONLY_EFFECTS or str(e.type) == "shift_fixed_point") and get_soul_tier(key) in ["promoted", "generic"]:
 		denial = "%s souls act at personal scope only (no %s)" % [get_soul_tier(key), e.type]
 	if denial == "":
 		denial = _suggested_option_denial(soul, e, reach)
@@ -1787,6 +1862,7 @@ func run_personal_turns(_reason: String = "") -> Array:
 	return entries
 
 ## Souls that could take a personal turn now, in priority order:
+## 0. intention focus (InnerVoice.score_target of the step + pressure_for the NPC; 0 without thoughts)
 ## 1. at the player's location, then within NEAR_MINUTES of it, then everyone else
 ## 2. higher current weight of the want the active arc serves
 ## 3. longest waiting (oldest last turn; never = first)
@@ -1813,8 +1889,11 @@ func get_personal_candidates() -> Array:
 		plan["near"] = near
 		plan["weight"] = _souls[key].get_weight(str(plan.serves))
 		plan["last_turn"] = _souls[key].get_last_personal_turn()
+		plan["focus"] = _personal_focus(key, plan)
 		candidates.append(plan)
 	candidates.sort_custom(func(a, b):
+		if not is_equal_approx(a.focus, b.focus):
+			return a.focus > b.focus  # the player's intentions (InnerVoice) surface these first
 		if a.near != b.near:
 			return a.near < b.near
 		if a.weight != b.weight:
@@ -2207,6 +2286,440 @@ func _people_near(key: String) -> String:
 	return ", ".join(people.slice(0, 10))
 
 # =============================================================================
+# THE NON-LINEAR WORLD (docs/WORLD_SCHEMA.md Part II: §11 movable fixed points, §12 emergent beats,
+# §13 inner-voice steering, §15 epilogues). PlayerEvents/Reputation (the events engine, §10) are
+# called through has_method guards so either side can run without the other
+# =============================================================================
+
+# --- collaborators -------------------------------------------------------------
+
+## PlayerEvents (player_events_override in tests). null when there is none
+func get_player_events() -> Node:
+	if player_events_override != null:
+		return player_events_override
+	return get_node_or_null("/root/PlayerEvents") if is_inside_tree() else null
+
+## Swap PlayerEvents (tests hand in a fake) and listen to its signals
+func set_player_events(node: Node) -> void:
+	player_events_override = node
+	connect_player_events()
+
+## Listen to PlayerEvents: every recorded or changed event may grow an emergent beat
+func connect_player_events() -> void:
+	var pe = get_player_events()
+	if pe == _player_events_connected:
+		return
+	if _player_events_connected and is_instance_valid(_player_events_connected):
+		for sig in ["player_event_recorded", "player_event_changed"]:
+			if _player_events_connected.has_signal(sig) and _player_events_connected.is_connected(sig, _on_player_event):
+				_player_events_connected.disconnect(sig, _on_player_event)
+		if _player_events_connected.has_signal("player_event_heard") and _player_events_connected.is_connected("player_event_heard", _on_player_event_heard):
+			_player_events_connected.disconnect("player_event_heard", _on_player_event_heard)
+	_player_events_connected = pe
+	if pe == null:
+		return
+	for sig in ["player_event_recorded", "player_event_changed"]:
+		if pe.has_signal(sig) and not pe.is_connected(sig, _on_player_event):
+			pe.connect(sig, _on_player_event)
+	if pe.has_signal("player_event_heard") and not pe.is_connected("player_event_heard", _on_player_event_heard):
+		pe.connect("player_event_heard", _on_player_event_heard)
+
+func _on_player_event(ev: Dictionary) -> void:
+	if ev is Dictionary:
+		_emergence.on_player_event(ev)
+
+## Word of an event reached someone: templates binding heard_event roles may now find their people
+func _on_player_event_heard(event_id: String, _who: String, _fidelity: float) -> void:
+	var pe = get_player_events()
+	if pe and pe.has_method("get_event"):
+		var ev: Dictionary = pe.get_event(event_id)
+		if not ev.is_empty():
+			_emergence.on_player_event(ev)
+
+## The Reputation class (static; null when the events engine has not shipped it)
+func get_reputation_script():
+	return load(REPUTATION_PATH) if ResourceLoader.exists(REPUTATION_PATH) else null
+
+## Reputation.of(scope, id) (-100..100); 0 when unavailable
+func get_reputation(scope: String, id: String) -> float:
+	if reputation_override.is_valid():
+		return float(reputation_override.call(scope, id))
+	var rep = get_reputation_script()
+	if rep == null:
+		return 0.0
+	return float(rep.of(scope, id))
+
+## The InnerVoice the director reads (inner_voice_override in tests)
+func get_inner_voice() -> Node:
+	if inner_voice_override != null:
+		return inner_voice_override
+	var voice = get_node_or_null("/root/InnerVoice") if is_inside_tree() else null
+	return voice if voice and voice.has_method("score_target") else null
+
+## The generic NPC manager (DynamicNPCRegistry.generics), null when absent
+func get_generics() -> Node:
+	var registry = get_node_or_null("/root/DynamicNPCRegistry") if is_inside_tree() else null
+	return registry.generics if registry and "generics" in registry and registry.generics else null
+
+## This NPC's feelings toward the player, -100..100 per dimension: test override, else the live node,
+## else the relationship ledger (every NPC, mains and generics), plus deltas still waiting for delivery
+func get_relationship_dims(npc: String) -> Dictionary:
+	var key = _npc_key(npc)
+	var dims: Dictionary = {"trust": 0.0, "respect": 0.0, "affection": 0.0, "fear": 0.0, "familiarity": 0.0}
+	if relationship_dims_override.has(key):
+		for dim in relationship_dims_override[key]:
+			dims[str(dim)] = float(relationship_dims_override[key][dim])
+		return dims
+	var found = false
+	for live in get_loaded_npcs(key):
+		if live.get("_is_initialized"):
+			for dim in dims:
+				var v = live.get("relationship_" + dim)
+				if v != null:
+					dims[dim] = float(v)
+			found = true
+			break
+	if not found:
+		var generics = get_generics()
+		if generics and "ledger" in generics and generics.ledger and generics.ledger.has_entry(_npc_id(key)):
+			dims = generics.ledger.get_dims(_npc_id(key))
+	for dim in _pending_relationships.get(key, {}):
+		dims[dim] = clampf(float(dims.get(dim, 0.0)) + float(_pending_relationships[key][dim]), -100.0, 100.0)
+	return dims
+
+func get_display_name(npc: String) -> String:
+	var key = _npc_key(npc)
+	var registry = _registry()
+	if registry and registry.has_npc(key):
+		return registry.get_npc_name(key)
+	var generics = get_generics()
+	var inst = generics.get_instance(key) if generics and generics.has_method("get_instance") else null
+	if inst and str(inst.name) != "":
+		return str(inst.name)
+	return _display_name(key)
+
+func get_npc_home(npc: String) -> String:
+	var key = _npc_key(npc)
+	var registry = _registry()
+	var home = registry.get_npc_home(key) if registry and registry.has_npc(key) else ""
+	if home == "" and _registered.has(key):
+		home = str(_registered[key].get("home", ""))
+	return home if home != "" else get_npc_location(key)
+
+## How NPCs refer to the player: the name they gave, else "the stranger"
+func get_player_name() -> String:
+	var world_events = get_node_or_null("/root/WorldEvents") if is_inside_tree() else null
+	var name = str(world_events.get_player_name()) if world_events and world_events.has_method("get_player_name") else ""
+	return "the stranger" if name == "" or name == "stranger" else name
+
+func get_agent():
+	return _agent
+
+func get_claude_client_for_agents() -> Object:
+	return _get_claude_client()
+
+# --- movable fixed points (§11) -----------------------------------------------------
+
+var _shift_context: Dictionary = {}  # set while shift_fixed_point is asking WorldState to move a point
+
+## Move a movable calendar point. days_or_cancel: int days (-3..3; negative brings it earlier) or
+## "cancel" / true. actor: npc key, "player", or "" (the world). A point that fired, a cancelled point
+## and a point that is not movable never move. Shifts are chronicled (mode "fixed_point") and canon
+## (WorldEvents); a shift the player caused is also a PlayerEvents event, so the people it touches hear of it
+## Returns {"ok", "reason", "point", "action", "days", "from", "to"}
+func shift_fixed_point(point: String, days_or_cancel, reason: String = "", actor: String = "", source: Dictionary = {}) -> Dictionary:
+	var world_state = get_node_or_null("/root/WorldState")
+	if world_state == null or not world_state.has_method("shift_calendar_point"):
+		return {"ok": false, "reason": "no calendar", "point": point}
+	var cancel = days_or_cancel is bool and days_or_cancel == true or (days_or_cancel is String and str(days_or_cancel).to_lower() == "cancel")
+	var days = 0
+	if not cancel:
+		if not (days_or_cancel is int or days_or_cancel is float):
+			return {"ok": false, "reason": "days must be a number (-3..3) or \"cancel\"", "point": point}
+		days = clampi(int(days_or_cancel), -EffectApplier.MAX_SHIFT_DAYS, EffectApplier.MAX_SHIFT_DAYS)
+	_shift_context = {"actor": actor, "source": source.duplicate(true), "trigger": "effect" if not source.is_empty() else "api"}
+	var player_caused = actor == "player" or _causal_player or source.get("player_chain", false) == true or source.get("conversation", false) == true
+	var result: Dictionary = world_state.shift_calendar_point(point, days, cancel, reason.strip_edges().substr(0, EffectApplier.MAX_REASON_CHARS), actor, -1, player_caused)
+	_shift_context = {}
+	return result
+
+## Shift rules (world.json) whose `when` flag is true: WorldState applies them, the signal chronicles them
+func _apply_shift_rules(turned_true: String) -> void:
+	var world_state = get_node_or_null("/root/WorldState")
+	if world_state and world_state.has_method("apply_shift_rules"):
+		world_state.apply_shift_rules(turned_true, _flag_player_chain)
+
+## Every shift, whoever asked for it: chronicle, canon, and the player's deed when it was theirs
+func _on_calendar_point_shifted(point: String, info: Dictionary) -> void:
+	var actor = str(info.get("actor", ""))
+	var trigger = str(_shift_context.get("trigger", "api"))
+	var source: Dictionary = _shift_context.get("source", {})
+	if actor.begins_with("rule:"):
+		trigger = "shift_rule:" + actor.substr(5)
+		actor = str(_flag_actors.get(actor.substr(5), "world"))
+	if actor == "":
+		actor = "world"
+	var world_state = get_node_or_null("/root/WorldState")
+	var entry_point: Dictionary = world_state.get_calendar_point(point) if world_state else {}
+	var cancelled = str(info.get("action", "")) == "cancel"
+	var why = str(info.get("reason", ""))
+	var effect = {"type": "shift_fixed_point", "point": point, "reason": why}
+	if cancelled:
+		effect["cancel"] = true
+	else:
+		effect["days"] = int(info.get("days", 0))
+	_seq += 1
+	var entry = {
+		"seq": _seq, "round": _round, "time": Time.get_unix_time_from_system(), "game_minutes": _now(),
+		"storyline": str(source.get("storyline", "")), "beat": str(source.get("beat", "")), "hook": point,
+		"hook_type": "fixed_point", "trigger": trigger, "npc": actor, "location": "", "mode": "fixed_point",
+		"fallback_reason": "", "choice": "cancel" if cancelled else "delay",
+		"label": why if why != "" else "%s moved" % point,
+		"reason": "%s -> %s" % [_minute_text(int(info.get("from", -1))), "called off" if cancelled else _minute_text(int(info.get("to", -1)))],
+		"applied": [effect], "dropped": [], "emergent": str(source.get("emergent", "")),
+		"player_caused": info.get("player_caused", false) == true,
+	}
+	if int(info.get("clamped_from", 0)) != 0:
+		entry["clamped_from"] = int(info.clamped_from)
+		entry["reason"] += " (clamped from %+d: without the player, a fixed point comes at most %d day early in all)" % [int(info.clamped_from), 1]
+	_chronicle.append(entry)
+	if _chronicle.size() > MAX_CHRONICLE:
+		_chronicle = _chronicle.slice(_chronicle.size() - MAX_CHRONICLE)
+	print("[StorylineDirector] fixed point %s %s by %s (%s)" % [point, entry.choice, actor, entry.reason])
+	var canon = why if why != "" else ("%s was called off." % str(entry_point.get("description", point)) if cancelled else "%s came at a different hour." % str(entry_point.get("description", point)))
+	var affected: Array = _named_npcs_in(canon + " " + str(entry_point.get("description", "")))
+	if actor != "player" and actor != "world" and actor != "director" and _npc_id(actor) not in affected:
+		affected.append(_npc_id(actor))
+	_register_world_event(canon, ["all"] + affected)
+	if actor == "player":
+		var pe = get_player_events()
+		if pe and pe.has_method("record"):
+			var summary = "brought it about that " + _decapitalize(canon)
+			pe.record("refusal", _clip(summary, 140), affected.map(func(id): return _npc_key(id)), {"location": get_player_location() if get_player_location() != "" else str(""), "spread": true})
+	decision_recorded.emit(entry)
+	fixed_point_shifted.emit(point, entry)
+
+## An advance with no player in its chain, refused whole by the cap: chronicled with its reason
+func _on_calendar_shift_clamped(point: String, info: Dictionary) -> void:
+	var actor = str(info.get("actor", ""))
+	var trigger = str(_shift_context.get("trigger", "api"))
+	if actor.begins_with("rule:"):
+		trigger = "shift_rule:" + actor.substr(5)
+		actor = str(_flag_actors.get(actor.substr(5), "world"))
+	_seq += 1
+	var effect = {"type": "shift_fixed_point", "point": point, "days": int(info.get("days", 0)), "reason": str(info.get("reason", ""))}
+	var entry = {
+		"seq": _seq, "round": _round, "time": Time.get_unix_time_from_system(), "game_minutes": _now(),
+		"storyline": str(_shift_context.get("source", {}).get("storyline", "")), "beat": "", "hook": point,
+		"hook_type": "fixed_point", "trigger": trigger, "npc": actor if actor != "" else "world", "location": "", "mode": "fixed_point",
+		"fallback_reason": "", "choice": "clamped", "label": str(info.get("reason", "")), "reason": str(info.get("clamp", "")),
+		"applied": [], "dropped": [{"effect": effect, "reason": str(info.get("clamp", ""))}], "player_caused": false,
+	}
+	_chronicle.append(entry)
+	if _chronicle.size() > MAX_CHRONICLE:
+		_chronicle = _chronicle.slice(_chronicle.size() - MAX_CHRONICLE)
+	decision_recorded.emit(entry)
+
+func _minute_text(minute: int) -> String:
+	if minute < 0:
+		return "?"
+	return "Day %d, %02d:%02d" % [floori(minute / 1440.0) + 1, floori((minute % 1440) / 60.0), minute % 60]
+
+func _decapitalize(text: String) -> String:
+	var t = text.strip_edges()
+	return t.substr(0, 1).to_lower() + t.substr(1) if t.length() > 1 and t.substr(1, 1) == t.substr(1, 1).to_lower() else t
+
+## npc ids of every roster NPC this text names (key or first name, whole word)
+func _named_npcs_in(text: String) -> Array:
+	var ids: Array = []
+	var registry = _registry()
+	if registry == null:
+		return ids
+	var lower = " %s " % text.to_lower()
+	for key in registry.get_npc_keys():
+		var first = registry.get_npc_name(key).split(" ", false)
+		var names: Array = [str(key)]
+		if not first.is_empty() and first[0].length() >= 3:
+			names.append(first[0].to_lower())
+		for name in names:
+			if RegEx.create_from_string("[^a-z0-9_]%s[^a-z0-9_]" % name).search(lower):
+				ids.append(registry.get_npc_id(key))
+				break
+	return ids
+
+func _on_calendar_flag_fired(flag_name: String, _at_minute: int) -> void:
+	if flag_name == SEASON_END_POINT and end_on_season_end and _game_ended == "":
+		end_game.call_deferred("season_end")
+
+# --- spread_event (§12) -----------------------------------------------------------
+
+## The spread_event effect: PlayerEvents.spread(event_id, to, via). "*" means the event's region
+## Returns {"ok", "reason", "scheduled", "refused"}
+func spread_player_event(event_id: String, to: Array, via: String = "", _actor: String = "", _source: Dictionary = {}) -> Dictionary:
+	var pe = get_player_events()
+	if pe == null or not pe.has_method("spread"):
+		return {"ok": false, "reason": "PlayerEvents unavailable", "scheduled": [], "refused": []}
+	if pe.has_method("get_event") and pe.get_event(event_id).is_empty():
+		return {"ok": false, "reason": "no player event '%s'" % event_id, "scheduled": [], "refused": []}
+	var result = pe.spread(event_id, to, via)
+	var scheduled: Array = result.get("scheduled", []) if result is Dictionary else []
+	var refused: Array = result.get("refused", []) if result is Dictionary else []
+	if scheduled.is_empty() and not refused.is_empty():
+		return {"ok": false, "reason": "spread refused: %s" % ", ".join(refused.map(func(r): return str(r.get("reason", "")))), "scheduled": [], "refused": refused}
+	return {"ok": true, "reason": "", "scheduled": scheduled, "refused": refused}
+
+# --- emergent beats (§12) ---------------------------------------------------------
+
+## Load emergence templates from another folder (tests); "" = the current emergence_dir. Clears instances
+func load_emergence(dir_path: String = "") -> int:
+	if dir_path != "":
+		emergence_dir = dir_path
+	_emergence.reset()
+	return _emergence.load_templates(emergence_dir)
+
+func get_emergence():
+	return _emergence
+
+func get_emergence_templates() -> Array:
+	return _emergence.template_order.duplicate()
+
+func get_emergence_errors() -> Array:
+	return _emergence.load_errors.duplicate()
+
+## Emergent instances, oldest first (closed ones too unless include_closed is false)
+func get_emergent_instances(include_closed: bool = true) -> Array:
+	return _emergence.get_instances(include_closed)
+
+## Queue a hook that does not live in a storyline file (emergent beats). Deduplicated like _enqueue
+func enqueue_external(sid: String, beat_id: String, hook_id: String, trigger: String) -> void:
+	for item in _decision_queue:
+		if item.storyline == sid and item.hook == hook_id:
+			return
+	_decision_queue.append({"storyline": sid, "beat": beat_id, "hook": hook_id, "trigger": trigger, "queued_round": _round})
+	decision_queued.emit(sid, hook_id)
+
+## Chronicle an emergent instantiation, decision or close (mode "emergent"); memory (if any) becomes
+## the bound NPCs' canon memory (WorldEvents). Never carries the player's thoughts
+func record_emergent(inst: Dictionary, choice: String, hook_id: String, applied: Array, dropped: Array, memory: String, npcs: Array, extra: Dictionary = {}) -> Dictionary:
+	_seq += 1
+	var first_role = str(inst.roles.values()[0]) if not inst.get("roles", {}).is_empty() else ""
+	var entry = {
+		"seq": _seq, "round": _round, "time": Time.get_unix_time_from_system(), "game_minutes": _now(),
+		"storyline": Emergence.PREFIX + str(inst.template), "beat": str(inst.id), "hook": hook_id,
+		"hook_type": str(extra.get("hook_type", "emergent")), "trigger": str(extra.get("trigger", choice)),
+		"npc": str(extra.get("npc", first_role)), "location": str(inst.get("location", "")), "mode": "emergent",
+		"agent_mode": str(extra.get("agent_mode", "offline")), "fallback_reason": str(extra.get("fallback_reason", "")),
+		"emergent": str(inst.id), "template": str(inst.template), "roles": inst.get("roles", {}).duplicate(),
+		"event_id": str(inst.get("event_id", "")), "choice": choice,
+		"label": str(extra.get("label", "")) if str(extra.get("label", "")) != "" else str(inst.get("title", "")),
+		"reason": str(extra.get("reason", "")), "applied": applied.duplicate(true), "dropped": dropped.duplicate(true),
+	}
+	_chronicle.append(entry)
+	if _chronicle.size() > MAX_CHRONICLE:
+		_chronicle = _chronicle.slice(_chronicle.size() - MAX_CHRONICLE)
+	if choice not in ["instantiated", "resolved", "expired"]:
+		print("[StorylineDirector] %s at %s/%s: %s (%d applied, %d dropped)" % [entry.npc, inst.id, hook_id, choice, applied.size(), dropped.size()])
+	if memory != "":
+		_register_world_event(memory, npcs.map(func(k): return _npc_id(str(k))))
+	decision_recorded.emit(entry)
+	if choice not in ["instantiated", "resolved", "expired", "pass"]:
+		emergent_acted.emit(entry)
+	return entry
+
+# --- inner-voice steering (§13) -----------------------------------------------------
+
+## The decision queue as this round takes it: the player's intentions (InnerVoice) move matching hooks,
+## and hooks of NPCs whose wants oppose them, ahead; otherwise arrival order. priority =
+## score_target(hook) + 0.5 * max pressure_for(eligible NPC); ties keep arrival order
+func _ordered_queue() -> Array:
+	var queue = _decision_queue.duplicate()
+	var voice = get_inner_voice()
+	if voice == null or not voice.has_active_intentions():
+		return queue
+	var scored: Array = []
+	for i in queue.size():
+		scored.append({"p": get_queue_priority(queue[i]), "i": i, "item": queue[i]})
+	scored.sort_custom(func(a, b):
+		if not is_equal_approx(a.p, b.p):
+			return a.p > b.p
+		return a.i < b.i)
+	return scored.map(func(s): return s.item)
+
+## How strongly the player's intentions pull one queued hook forward (0 without intentions)
+func get_queue_priority(item: Dictionary) -> float:
+	var voice = get_inner_voice()
+	if voice == null or not voice.has_active_intentions():
+		return 0.0
+	var target: Dictionary = {}
+	if _emergence.owns(str(item.storyline)):
+		target = _emergence.priority_target(item)
+	else:
+		var found = _find_hook(str(item.storyline), str(item.hook))
+		if found.is_empty():
+			return 0.0
+		target = hook_target(str(item.storyline), found.beat, found.hook)
+	if target.is_empty():
+		return 0.0
+	var pressure = 0.0
+	for key in target.get("npcs", []):
+		pressure = maxf(pressure, voice.pressure_for(str(key)))
+	return voice.score_target(target) + 0.5 * pressure
+
+## What InnerVoice scores a storyline hook against: its eligible NPCs, storyline, beat, hook, the flags
+## the beat and its options touch, and its words
+func hook_target(sid: String, beat: Dictionary, hook: Dictionary) -> Dictionary:
+	var flags: Array = []
+	for f in beat.get("resolves_on", []) + beat.get("requires", []):
+		var flag = str(f).trim_prefix("!")
+		if flag not in flags:
+			flags.append(flag)
+	var text = "%s %s %s" % [str(_storylines.get(sid, {}).get("title", "")), str(beat.get("title", "")), str(hook.get("situation", ""))]
+	for option in hook.get("options", []):
+		if not option is Dictionary:
+			continue
+		text += " " + str(option.get("label", ""))
+		for effect in option.get("effects", []):
+			if effect is Dictionary and effect.has("flag") and str(effect.flag) not in flags:
+				flags.append(str(effect.flag))
+	return {"npcs": hook.get("eligible", []).map(func(k): return str(k)), "storyline": sid, "beat": str(beat.get("id", "")),
+		"hook": str(hook.get("id", "")), "flags": flags, "text": text}
+
+## Intention focus of a personal turn: its Life step scored by InnerVoice, plus pressure on that NPC
+func _personal_focus(key: String, plan: Dictionary) -> float:
+	var voice = get_inner_voice()
+	if voice == null or not voice.has_active_intentions():
+		return 0.0
+	var soul = _souls.get(key)
+	var arc: Dictionary = soul.get_arc(str(plan.arc)) if soul else {}
+	var step: Dictionary = soul.get_step(str(plan.arc), str(plan.step)) if soul else {}
+	var target = {"npcs": [key], "arc": "%s/%s" % [key, plan.arc], "flags": [str(step.get("flag", "")), str(arc.get("result", {}).get("flag", ""))],
+		"text": "%s %s" % [str(arc.get("prose", "")), str(step.get("text", ""))]}
+	return snappedf(voice.score_target(target) + voice.pressure_for(key), 0.001)
+
+# --- the end (§15) ---------------------------------------------------------------
+
+## End the game: generate the epilogue from the world state (Epilogue.generate), let Claude rewrite it
+## in Claude mode (validated: no facts beyond the state, else the offline text stands), keep it and
+## emit epilogue_ready. reason: "player" (the player chose to end), "season_end", "debug"
+func end_game(reason: String = "player") -> Dictionary:
+	var epilogue: Dictionary = EpilogueScript.generate({"trigger": reason})
+	if agency_mode == "claude":
+		epilogue = await EpilogueScript.rewrite(epilogue, _get_claude_client(), get_tree() if is_inside_tree() else null)
+	_epilogue = epilogue
+	_game_ended = reason
+	print("[StorylineDirector] The game ended (%s): epilogue of %d sections" % [reason, epilogue.get("sections", []).size()])
+	epilogue_ready.emit(epilogue)
+	return epilogue
+
+## The last epilogue end_game() made ({} before the end)
+func get_epilogue() -> Dictionary:
+	return _epilogue.duplicate(true)
+
+## Why the game ended ("" while it goes on)
+func get_game_ended() -> String:
+	return _game_ended
+
+# =============================================================================
 # QUERIES
 # =============================================================================
 
@@ -2335,6 +2848,10 @@ func save() -> Dictionary:
 		"personal_round": _personal_round,
 		"life": _save_life(),
 		"registered_tiers": _save_registered_tiers(),
+		"emergence": _emergence.save(),
+		"flag_actors": _flag_actors.duplicate(),
+		"flag_player_chain": _flag_player_chain.duplicate(),
+		"game_ended": _game_ended,
 	}
 
 func load_from_dict(data: Dictionary) -> void:
@@ -2395,6 +2912,10 @@ func load_from_dict(data: Dictionary) -> void:
 			_set_tier_quiet(key, str(tiers[key]))
 		elif not _souls.has(key) and str(tiers[key]) in TIERS:
 			_pending(key)["tier"] = str(tiers[key])
+	_emergence.load_from_dict(data.get("emergence", {}) if data.get("emergence") is Dictionary else {})
+	_flag_actors = data.get("flag_actors", {}).duplicate() if data.get("flag_actors") is Dictionary else {}
+	_flag_player_chain = data.get("flag_player_chain", {}).duplicate() if data.get("flag_player_chain") is Dictionary else {}
+	_game_ended = str(data.get("game_ended", ""))
 
 ## Forget all progress (beats, decisions, drift); content stays loaded
 func reset_state() -> void:
@@ -2420,6 +2941,11 @@ func reset_state() -> void:
 	_time_rounds_owed = 0
 	_personal_round = 0
 	_pending_soul_state.clear()
+	_emergence.reset()
+	_flag_actors.clear()
+	_flag_player_chain.clear()
+	_epilogue = {}
+	_game_ended = ""
 	for key in _souls:
 		_souls[key].reset_weights()
 		_souls[key].reset_life()

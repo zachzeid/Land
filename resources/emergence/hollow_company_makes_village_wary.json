@@ -1,0 +1,108 @@
+{
+  "id": "hollow_company_makes_village_wary",
+  "title": "The Company You Keep",
+  "summary": "Time spent with Varn's men makes Thornhaven folk wary of the player.",
+  "trigger": {
+    "event": {
+      "kind": "kept_company",
+      "about": [
+        "varn",
+        "archetype:hollow_grunt"
+      ],
+      "min_count": 2
+    }
+  },
+  "roles": {
+    "neighbour": {
+      "from": "heard_event",
+      "faction": "thornhaven",
+      "prefer": "familiarity_desc"
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 2,
+  "expires_days": 3,
+  "location": "{neighbour.home}",
+  "hooks": [
+    {
+      "id": "whose_side",
+      "type": "react",
+      "eligible_role": "neighbour",
+      "trigger": "on_open",
+      "situation": "People say {player} has been keeping company with the Hollow's men: {event.summary}. Varn's men don't keep company with anyone for nothing.",
+      "options": [
+        {
+          "id": "ask_straight",
+          "label": "Ask them straight whose side they're on",
+          "appeal": {
+            "trust": 0.4,
+            "affection": 0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{neighbour}",
+              "text": "Ask {player} quietly whose side they're on, before the village decides for them."
+            }
+          ]
+        },
+        {
+          "id": "warn_the_lane",
+          "label": "Warn the neighbours to say less around them",
+          "appeal": {
+            "trust": -0.4,
+            "fear": 0.3
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{neighbour}",
+              "dimension": "trust",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "shut_the_door",
+          "label": "Shut the door on them until you know",
+          "appeal": {
+            "fear": 0.5,
+            "affection": -0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{neighbour}",
+              "text": "Keep {player} out of your house and say little until you know who they drink with."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{neighbour}",
+              "dimension": "trust",
+              "delta": -12
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; everyone has to eat",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:neighbour",
+    "expired"
+  ]
+}

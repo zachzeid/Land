@@ -760,7 +760,8 @@
     "recut_tile_seen": "The player saw that Elena's lot tile had been recut by a careful, unpractised hand",
     "davin_found": "The player found Davin, Bjorn's apprentice taken in the second Tithe, alive and hiding at Old Maud's hut",
     "pit_seam_names_seen": "The player saw names cut into the Pit's seam wall, Hesk Marlow's among them, by the people the Tithe took",
-    "pit_tally_book_found": "The player found the Pit's tally book, its columns of salt and names kept in a neat, practised hand"
+    "pit_tally_book_found": "The player found the Pit's tally book, its columns of salt and names kept in a neat, practised hand",
+    "tithe_drawing_known": "Word reached the stranger that Elder Mathias had drawn Elena's name for the Tithe"
   },
   "relationship_decay": {
     "note": "Points per game day without contact, moving toward baseline 0 (familiarity floor 5 once met).",
@@ -821,8 +822,197 @@
       "tn_collection_night": {
         "day": 7,
         "hour": 22,
-        "description": "Night fell on Collection Night, and the Hollow's cart came to Thornhaven's gate"
+        "description": "Night fell on Collection Night, and the Hollow's cart came to Thornhaven's gate",
+        "movable": true,
+        "shift_rules": [
+          {
+            "when": "hc_varn_dead",
+            "action": "delay",
+            "days": 2,
+            "reason": "With Varn dead the Hollow had no one to lead the cart, and it came late."
+          },
+          {
+            "when": "cou_council_refuses",
+            "action": "delay",
+            "days": -1,
+            "reason": "The Hollow answered the council's defiance a night early."
+          },
+          {
+            "when": "tn_taken_freed",
+            "action": "cancel",
+            "reason": "With the Pit emptied, there was no one left to fill it, and no cart came."
+          }
+        ]
+      },
+      "tn_drawing": {
+        "day": 1,
+        "hour": 20,
+        "minute": 10,
+        "description": "Elder Mathias drew a name from the urn for the Tithe",
+        "movable": true,
+        "shift_rules": [
+          {
+            "when": "tn_drawing_disrupted",
+            "action": "delay",
+            "days": 1,
+            "reason": "The drawing was broken off and called again for the next evening."
+          }
+        ]
+      },
+      "season_end": {
+        "day": 30,
+        "hour": 20,
+        "description": "The autumn turned to winter in the Western Valley",
+        "movable": false
       }
     }
-  }
+  },
+  "factions": [
+    {
+      "id": "thornhaven",
+      "name": "Thornhaven folk",
+      "region": "western_valley",
+      "members": [
+        "gregor",
+        "elena",
+        "bjorn",
+        "davin"
+      ],
+      "archetypes": [
+        "valley_farmer",
+        "woodcutter",
+        "tavern_regular",
+        "valley_widow"
+      ]
+    },
+    {
+      "id": "thornhaven_council",
+      "name": "The council",
+      "region": "western_valley",
+      "members": [
+        "mathias"
+      ],
+      "archetypes": []
+    },
+    {
+      "id": "peacekeepers",
+      "name": "Thornhaven's peacekeepers",
+      "region": "western_valley",
+      "members": [
+        "aldric"
+      ],
+      "archetypes": [
+        "peacekeeper_recruit"
+      ]
+    },
+    {
+      "id": "iron_hollow",
+      "name": "Iron Hollow",
+      "region": "western_valley",
+      "members": [
+        "varn",
+        "mira"
+      ],
+      "archetypes": [
+        "hollow_grunt"
+      ],
+      "note": "Mira's membership is hidden; she is reckoned as Thornhaven folk until mira_boss_revealed."
+    },
+    {
+      "id": "the_crown",
+      "name": "The Crown",
+      "region": "the_capitol",
+      "members": [
+        "edric",
+        "corwin",
+        "renna"
+      ],
+      "archetypes": [
+        "courier"
+      ]
+    },
+    {
+      "id": "house_ashdown",
+      "name": "House Ashdown",
+      "region": "the_capitol",
+      "members": [
+        "seraphine"
+      ],
+      "archetypes": [
+        "house_servant"
+      ]
+    },
+    {
+      "id": "merchants_guild",
+      "name": "The Merchants' Guild",
+      "region": "the_capitol",
+      "members": [
+        "hollis"
+      ],
+      "archetypes": [
+        "clerk",
+        "dockhand",
+        "street_hawker"
+      ]
+    },
+    {
+      "id": "cathedral",
+      "name": "The Cathedral of the Dawn",
+      "region": "the_capitol",
+      "members": [
+        "ysolde",
+        "anselm"
+      ],
+      "archetypes": [
+        "cathedral_acolyte",
+        "novice_monk",
+        "pilgrim"
+      ]
+    },
+    {
+      "id": "the_warrens",
+      "name": "The Warrens",
+      "region": "the_capitol",
+      "members": [
+        "rook"
+      ],
+      "archetypes": [
+        "warrens_urchin"
+      ]
+    },
+    {
+      "id": "the_road",
+      "name": "Road and river folk",
+      "region": "kingsroad",
+      "members": [
+        "wren",
+        "oskar"
+      ],
+      "archetypes": [
+        "carter"
+      ]
+    },
+    {
+      "id": "greystone",
+      "name": "Greystone miners",
+      "region": "eastern_march",
+      "members": [
+        "dagna"
+      ],
+      "archetypes": [
+        "miner"
+      ]
+    },
+    {
+      "id": "ashguard",
+      "name": "Fort Ashguard",
+      "region": "eastern_march",
+      "members": [
+        "lucan"
+      ],
+      "archetypes": [
+        "garrison_soldier"
+      ]
+    }
+  ]
 }

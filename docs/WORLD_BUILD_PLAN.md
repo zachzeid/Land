@@ -147,3 +147,31 @@ It also owns the eight canon endings. The neglect ending is `tn_the_cart_rolled`
 passes without the player, and it is the only spine ending allowed without a player flag. The
 calendar flags (`tn_day_2..7`, `tn_collection_night`) are world fixed points that any file may
 gate on.
+
+---
+
+# Phase 5: The non-linear world
+
+Spec: `docs/WORLD_SCHEMA.md` Part II (§10-15). `world.json` gains `factions`, movable calendar
+points with `shift_rules`, `tn_drawing` (Day 1 20:10) and `season_end` (Day 30).
+
+| owner | files |
+|-------|-------|
+| events engine | new `scripts/world_state/player_events.gd`, `scripts/world_state/reputation.gd`; edits to `event_propagator.gd`, `world_events.gd`, `scripts/dialogue/**`, `scripts/npcs/base_npc.gd`; new `scripts/debug/test_player_events.gd` |
+| director engine | `scripts/storyline/**` (shift_fixed_point, spread_event, the emergence runtime, inner-voice steering, epilogue generator), `scripts/world_state/world_state.gd` calendar code; new `scripts/debug/test_emergence.gd`, `test_epilogue.gd` |
+| opening & UI | `scripts/world/opening_sequence.gd`, `scenes/interiors/thornhaven_chapel.tscn`, new `scripts/ui/inner_voice_ui.gd` + scene, a new epilogue screen UI |
+| emergence writer | `resources/emergence/**` |
+| storyline integrator | the 16 storyline JSONs (adding `shift_fixed_point` options, `tn_drawing_disrupted`, reactions to reputation), soul Agency lines granting `shift_fixed_point` / `spread_event` |
+| shared, append-only | `scripts/ui/debug_console.gd`, and `world_state.gd` save/load sections, in delimited blocks; re-read before every edit |
+
+**API contract between the engines:**
+- **Events engine:**
+  - `PlayerEvents.record(kind, summary, about, opts) -> event_id`, `PlayerEvents.get_event(id)`, `PlayerEvents.known_by(npc_key)`, `PlayerEvents.events_matching(query)`, and the signals `player_event_recorded(ev)` and `player_event_changed(ev)` (status or truth).
+  - `Reputation.of(scope, id) -> float` (−100..100), where scope is `npc|faction|region`.
+  - `PlayerEvents.spread(event_id, to_keys, via)`. The director engine's `spread_event` effect calls this.
+- **Director engine:**
+  - `StorylineDirector.shift_fixed_point(point, days|cancel, reason, actor)`
+  - `InnerVoice.think(text) -> intention`
+  - `Epilogue.generate() -> Dictionary`
+  - Emergent instances, chronicled with mode `emergent`.
+- **Opening & UI:** calls `InnerVoice.think`, `Epilogue.generate`, and the drawing point and flags.

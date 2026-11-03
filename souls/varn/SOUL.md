@@ -59,8 +59,8 @@ village go on believing she was only a widow.
 
 ## Agency
 - intercept: set_flag, agenda, move_npc, block_beat, spread_rumor
-- react: agenda, adjust_relationship, shift_want, move_npc
-- scheme: set_flag, agenda, spread_rumor, move_npc, shift_want
+- react: agenda, adjust_relationship, shift_want, move_npc, spread_event
+- scheme: set_flag, agenda, spread_rumor, move_npc, shift_want, shift_fixed_point
 - reveal: set_flag, agenda, adjust_relationship
 - betray: set_flag, spread_rumor, agenda, block_beat, adjust_relationship
 - converse: agenda, adjust_relationship, set_flag, spread_rumor, move_npc

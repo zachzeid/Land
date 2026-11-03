@@ -1,0 +1,108 @@
+{
+  "id": "crown_company_shuts_the_warrens",
+  "title": "Friends on the Hill",
+  "summary": "Time with the crown's people makes the Warrens close up around the player.",
+  "trigger": {
+    "event": {
+      "kind": "kept_company",
+      "about": [
+        "edric",
+        "corwin",
+        "renna"
+      ],
+      "min_count": 1
+    }
+  },
+  "roles": {
+    "lookout": {
+      "from": "heard_event",
+      "faction": "the_warrens",
+      "prefer": "nearest"
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 2,
+  "expires_days": 3,
+  "location": "{lookout.home}",
+  "hooks": [
+    {
+      "id": "they_talk_to_the_hill",
+      "type": "react",
+      "eligible_role": "lookout",
+      "trigger": "on_open",
+      "situation": "Word on the river stairs: {player} {event.summary}. Last time the Hill took an interest in the Warrens, it used the river.",
+      "options": [
+        {
+          "id": "run_if_they_come",
+          "label": "Run if they come down the stairs",
+          "appeal": {
+            "fear": 0.6
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{lookout}",
+              "text": "If {player} comes down the river stairs, don't let them see where you sleep. Say nothing and go."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{lookout}",
+              "dimension": "fear",
+              "delta": 10
+            }
+          ]
+        },
+        {
+          "id": "tell_the_crew",
+          "label": "Tell the others they talk to the Hill",
+          "appeal": {
+            "trust": -0.4,
+            "affection": -0.2
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{lookout}",
+              "dimension": "trust",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "ask_them_why",
+          "label": "Ask them what the Hill wants",
+          "appeal": {
+            "affection": 0.4,
+            "trust": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{lookout}",
+              "text": "Ask {player}, from a safe distance, what the people on the Hill want with the Warrens."
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; watch them",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:lookout",
+    "expired"
+  ]
+}

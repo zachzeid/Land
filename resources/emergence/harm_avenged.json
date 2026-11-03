@@ -1,0 +1,161 @@
+{
+  "id": "harm_avenged",
+  "title": "Somebody's Someone",
+  "summary": "The player hurt someone; the person hurt, and those who heard, answer it.",
+  "trigger": {
+    "event": {
+      "kind": "harm"
+    }
+  },
+  "roles": {
+    "victim": {
+      "from": "event_about",
+      "prefer": "nearest"
+    },
+    "avenger": {
+      "from": "heard_event",
+      "prefer": "affection_asc"
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 2,
+  "expires_days": 3,
+  "location": "{victim.home}",
+  "hooks": [
+    {
+      "id": "the_hurt_one",
+      "type": "react",
+      "eligible_role": "victim",
+      "trigger": "on_open",
+      "situation": "{player} {event.summary}. It was you they hurt, and it still aches.",
+      "options": [
+        {
+          "id": "demand_amends",
+          "label": "Demand they make it right",
+          "appeal": {
+            "fear": -0.5,
+            "respect": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{victim}",
+              "text": "Tell {player} what they did to you and what it will take to set it right. Name a price."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{victim}",
+              "dimension": "trust",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "keep_away",
+          "label": "Keep well away from them",
+          "appeal": {
+            "fear": 0.6
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{victim}",
+              "dimension": "fear",
+              "delta": 12
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; remember it",
+          "appeal": {
+            "familiarity": 0.1,
+            "affection": 0.3
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{victim}",
+              "dimension": "trust",
+              "delta": -6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "one_of_ours",
+      "type": "react",
+      "eligible_role": "avenger",
+      "trigger": "on_open",
+      "situation": "You heard {player} {event.summary}. {victim} is someone you know.",
+      "options": [
+        {
+          "id": "reckoning",
+          "label": "Go and settle it with them",
+          "appeal": {
+            "affection": -0.5,
+            "fear": -0.6
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{avenger}",
+              "text": "Confront {player} about what they did to {victim}, and make them answer for it where people can see."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{avenger}",
+              "dimension": "trust",
+              "delta": -15
+            }
+          ]
+        },
+        {
+          "id": "raise_the_hue",
+          "label": "Take it to whoever keeps the peace",
+          "appeal": {
+            "trust": -0.4,
+            "fear": 0.3
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{avenger}",
+              "dimension": "trust",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "never_turn_your_back",
+          "label": "Say nothing; never turn your back on them",
+          "appeal": {
+            "familiarity": 0.1,
+            "fear": 0.5
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{avenger}",
+              "dimension": "fear",
+              "delta": 8
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:victim",
+    "talked_to:avenger",
+    "expired"
+  ]
+}

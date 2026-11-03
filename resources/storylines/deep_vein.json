@@ -1939,6 +1939,13 @@
             }
           ]
         }
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "tn_taken_freed",
+          "value": true
+        }
       ]
     },
     {

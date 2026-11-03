@@ -1,0 +1,116 @@
+{
+  "id": "insult_remembered",
+  "title": "The Thing You Said",
+  "summary": "Someone the player insulted carries it; pride, hurt or fear decides what happens.",
+  "trigger": {
+    "event": {
+      "kind": "insult"
+    }
+  },
+  "roles": {
+    "insulted": {
+      "from": "event_about",
+      "prefer": "respect_desc"
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 2,
+  "expires_days": 5,
+  "location": "{insulted.home}",
+  "hooks": [
+    {
+      "id": "still_stings",
+      "type": "react",
+      "eligible_role": "insulted",
+      "trigger": "on_open",
+      "situation": "{player} {event.summary}. People heard it. You have been hearing it since.",
+      "options": [
+        {
+          "id": "demand_amends",
+          "label": "Have it out with them; ask them to take it back",
+          "appeal": {
+            "respect": 0.4,
+            "fear": -0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{insulted}",
+              "text": "Tell {player} what they said about you, word for word, and wait for them to take it back."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{insulted}",
+              "dimension": "respect",
+              "delta": -8
+            }
+          ]
+        },
+        {
+          "id": "pay_it_back",
+          "label": "Tell everyone what kind of person talks like that",
+          "appeal": {
+            "affection": -0.5,
+            "fear": -0.3
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{insulted}",
+              "dimension": "affection",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "hurt_and_cold",
+          "label": "Be civil and cold; let them wonder",
+          "appeal": {
+            "affection": 0.3,
+            "trust": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{insulted}",
+              "text": "Be civil to {player} and no more. If they ask what's wrong, tell them they know."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{insulted}",
+              "dimension": "affection",
+              "delta": -8
+            }
+          ]
+        },
+        {
+          "id": "swallow_it",
+          "label": "Swallow it; you can't afford to answer back",
+          "appeal": {
+            "familiarity": 0.1,
+            "fear": 0.5
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{insulted}",
+              "dimension": "affection",
+              "delta": -4
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:insulted",
+    "expired"
+  ]
+}

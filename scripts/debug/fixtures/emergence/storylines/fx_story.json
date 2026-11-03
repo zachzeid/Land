@@ -1,0 +1,169 @@
+{
+  "id": "fx_story",
+  "title": "The Fixture Ledger",
+  "summary": "Test-only storyline for scripts/debug/test_emergence.gd.",
+  "prefix": "fx_",
+  "act_span": [
+    1,
+    1
+  ],
+  "flags": {
+    "fx_ledger_burned": "Aldric burned the merchant's ledger in the square",
+    "fx_girl_hidden": "Mira hid the girl in the tavern cellar",
+    "fx_girl_taken": "Varn took the girl up the trail",
+    "fx_story_done": "The fixture matter was settled"
+  },
+  "player_flags": [],
+  "crossovers": [],
+  "beats": [
+    {
+      "id": "the_ledger",
+      "title": "The Ledger in the Square",
+      "act": 1,
+      "summary": "A ledger turns up in the square.",
+      "location": "thornhaven_town_square",
+      "requires": [],
+      "resolves_on": [
+        "fx_ledger_burned"
+      ],
+      "hooks": [
+        {
+          "id": "burn_it",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "aldric"
+          ],
+          "once": false,
+          "situation": "A ledger full of numbers lies in the square.",
+          "options": [
+            {
+              "id": "burn",
+              "label": "Burn the ledger",
+              "serves": [
+                "keep_the_peace"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Say nothing of the ledger."
+                }
+              ]
+            },
+            {
+              "id": "leave",
+              "label": "Leave it",
+              "serves": [],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_girl",
+      "title": "The Girl in the Cellar",
+      "act": 1,
+      "summary": "Elena needs hiding before the cart.",
+      "location": "thornhaven_tavern",
+      "requires": [],
+      "resolves_on": [
+        "fx_girl_hidden"
+      ],
+      "hooks": [
+        {
+          "id": "hide_elena",
+          "type": "react",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "once": false,
+          "situation": "Elena will be taken by the cart unless someone hides her.",
+          "options": [
+            {
+              "id": "hide",
+              "label": "Hide Elena in the cellar",
+              "serves": [
+                "see_who_fights"
+              ],
+              "aids": "elena",
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger the cellar is safe."
+                }
+              ]
+            },
+            {
+              "id": "wait",
+              "label": "Wait",
+              "serves": [],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_cart",
+      "title": "The Cart on the Trail",
+      "act": 1,
+      "summary": "Varn means to take the girl.",
+      "location": "iron_hollow_camp",
+      "requires": [],
+      "resolves_on": [
+        "fx_girl_taken"
+      ],
+      "hooks": [
+        {
+          "id": "take_her",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "once": false,
+          "situation": "The girl is in the village.",
+          "options": [
+            {
+              "id": "take",
+              "label": "Take the girl",
+              "serves": [
+                "take_the_girl"
+              ],
+              "harms": [
+                "elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Smile at the stranger."
+                }
+              ]
+            },
+            {
+              "id": "not_yet",
+              "label": "Not yet",
+              "serves": [],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "ledger_ash",
+      "title": "Ashes of the Ledger",
+      "requires": [
+        "fx_ledger_burned"
+      ],
+      "summary": "The ledger burned and nobody read it."
+    }
+  ]
+}

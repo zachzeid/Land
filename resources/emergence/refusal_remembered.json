@@ -1,0 +1,104 @@
+{
+  "id": "refusal_remembered",
+  "title": "When You Said No",
+  "summary": "Someone who asked the player for help, and was refused, decides what that means.",
+  "trigger": {
+    "event": {
+      "kind": "refusal"
+    }
+  },
+  "roles": {
+    "asker": {
+      "from": "event_about",
+      "prefer": "affection_desc"
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 2,
+  "expires_days": 3,
+  "location": "{asker.home}",
+  "hooks": [
+    {
+      "id": "after_no",
+      "type": "react",
+      "eligible_role": "asker",
+      "trigger": "on_open",
+      "situation": "You asked {player} for help, and they said no: {event.summary}. You had nobody else to ask.",
+      "options": [
+        {
+          "id": "ask_again",
+          "label": "Swallow your pride and ask again",
+          "appeal": {
+            "affection": 0.5,
+            "trust": 0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{asker}",
+              "text": "Ask {player} one more time, and tell them what it costs you to ask twice."
+            }
+          ]
+        },
+        {
+          "id": "their_reasons",
+          "label": "Allow that they had their reasons",
+          "appeal": {
+            "respect": 0.5
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{asker}",
+              "dimension": "respect",
+              "delta": 3
+            }
+          ]
+        },
+        {
+          "id": "hold_it_against_them",
+          "label": "Tell people who wouldn't lift a finger",
+          "appeal": {
+            "affection": -0.4,
+            "trust": -0.3
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{asker}",
+              "dimension": "affection",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; don't ask them for anything again",
+          "appeal": {
+            "familiarity": 0.1,
+            "fear": 0.3
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{asker}",
+              "dimension": "trust",
+              "delta": -6
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:asker",
+    "expired"
+  ]
+}

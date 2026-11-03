@@ -1,0 +1,106 @@
+{
+  "id": "threat_carried_round",
+  "title": "Talk of a Threat",
+  "summary": "People who only heard about a threat decide what kind of stranger made it.",
+  "trigger": {
+    "event": {
+      "kind": "threat"
+    }
+  },
+  "roles": {
+    "hearer": {
+      "from": "heard_event",
+      "prefer": "nearest"
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 2,
+  "expires_days": 2,
+  "location": "{hearer.home}",
+  "hooks": [
+    {
+      "id": "heard_it_said",
+      "type": "react",
+      "eligible_role": "hearer",
+      "trigger": "on_open",
+      "situation": "Everyone is telling it a little differently, but the bones are the same: {player} {event.summary}.",
+      "options": [
+        {
+          "id": "pass_it_on",
+          "label": "Pass it on, a shade darker than you heard it",
+          "appeal": {
+            "fear": 0.4,
+            "affection": -0.3
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{hearer}",
+              "dimension": "fear",
+              "delta": 8
+            }
+          ]
+        },
+        {
+          "id": "ask_them",
+          "label": "Ask {player} whether it's true",
+          "appeal": {
+            "respect": 0.3,
+            "familiarity": 0.2,
+            "fear": -0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{hearer}",
+              "text": "Ask {player}, carefully, whether they really said what people say they said, and why."
+            }
+          ]
+        },
+        {
+          "id": "shrug",
+          "label": "Shrug; a threat is only a stranger's temper",
+          "appeal": {
+            "fear": -0.5,
+            "affection": 0.3
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{hearer}",
+              "dimension": "respect",
+              "delta": -5
+            }
+          ]
+        },
+        {
+          "id": "keep_clear",
+          "label": "Say nothing; keep clear of them",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{hearer}",
+              "dimension": "fear",
+              "delta": 4
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:hearer",
+    "days:2",
+    "expired"
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "id": "elder_begs_a_day",
+  "title": "One More Day",
+  "summary": "The player made Mathias a promise that needs time; he weighs asking the Hollow for a day's grace.",
+  "trigger": {
+    "event": {
+      "kind": "promise",
+      "status": "open",
+      "about": [
+        "mathias"
+      ]
+    },
+    "flag": "!tn_collection_night"
+  },
+  "roles": {
+    "elder": {
+      "from": "npc:mathias"
+    }
+  },
+  "cooldown_days": 30,
+  "max_active": 1,
+  "expires_days": 2,
+  "location": "council_hall",
+  "hooks": [
+    {
+      "id": "time_is_the_price",
+      "type": "aid",
+      "eligible_role": "elder",
+      "trigger": "on_open",
+      "situation": "{player} gave you their word: {event.summary}. If they mean it, they need time, and time is the one thing the council has never asked of the Hollow's messenger.",
+      "options": [
+        {
+          "id": "beg_a_day",
+          "label": "Ask the messenger for one more day",
+          "appeal": {
+            "trust": 0.5,
+            "respect": 0.3
+          },
+          "effects": [
+            {
+              "type": "shift_fixed_point",
+              "point": "tn_collection_night",
+              "reason": "The elder begged the Hollow's messenger for one more day, and the cart came a night late.",
+              "days": 1
+            },
+            {
+              "type": "agenda",
+              "npc": "mathias",
+              "text": "Tell {player} you asked the Hollow for one more day for them, and what it cost an old man to ask."
+            }
+          ]
+        },
+        {
+          "id": "ask_nothing",
+          "label": "Ask nothing; paying on time is what keeps the village unburned",
+          "appeal": {
+            "fear": 0.4,
+            "trust": -0.3
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "mathias",
+              "text": "Tell {player} the council will ask the Hollow for no mercy. What they promised must be done before the cart."
+            }
+          ]
+        },
+        {
+          "id": "hold_them_to_it",
+          "label": "Remind them what they promised",
+          "appeal": {
+            "respect": 0.3,
+            "trust": -0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "mathias",
+              "text": "Remind {player} what they promised you, and that you are too old to be lied to twice."
+            }
+          ]
+        },
+        {
+          "id": "pray",
+          "label": "Pray, and say nothing",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:elder",
+    "days:2",
+    "expired"
+  ]
+}

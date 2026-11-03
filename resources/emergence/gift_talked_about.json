@@ -1,0 +1,196 @@
+{
+  "id": "gift_talked_about",
+  "title": "A Gift Talked About",
+  "summary": "A gift the player gave gets talked about; the giver's reputation and the receiver's pride both move.",
+  "trigger": {
+    "event": {
+      "kind": "gift"
+    }
+  },
+  "roles": {
+    "recipient": {
+      "from": "event_about",
+      "prefer": "nearest"
+    },
+    "gossip": {
+      "from": "heard_event",
+      "prefer": "nearest"
+    }
+  },
+  "cooldown_days": 1,
+  "max_active": 2,
+  "expires_days": 2,
+  "location": "{recipient.home}",
+  "hooks": [
+    {
+      "id": "people_have_seen",
+      "type": "react",
+      "eligible_role": "recipient",
+      "trigger": "on_open",
+      "situation": "{player} {event.summary}. People have seen it, and now they are talking.",
+      "options": [
+        {
+          "id": "proud_of_it",
+          "label": "Show it off; let them talk",
+          "appeal": {
+            "affection": 0.5
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{recipient}",
+              "dimension": "affection",
+              "delta": 8
+            }
+          ]
+        },
+        {
+          "id": "pay_it_back",
+          "label": "Find a way to give something back; you don't like owing",
+          "appeal": {
+            "trust": 0.3,
+            "respect": 0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{recipient}",
+              "text": "Give {player} something back, even something small. You don't like owing anyone."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{recipient}",
+              "dimension": "trust",
+              "delta": 5
+            }
+          ]
+        },
+        {
+          "id": "give_it_back",
+          "label": "Give it back; you can't afford what people will say",
+          "appeal": {
+            "fear": 0.5,
+            "trust": -0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{recipient}",
+              "text": "Give {player} back their gift, politely, and tell them people in a small place talk."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{recipient}",
+              "dimension": "affection",
+              "delta": -3
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; keep it close",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{recipient}",
+              "dimension": "affection",
+              "delta": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "what_its_buying",
+      "type": "react",
+      "eligible_role": "gossip",
+      "trigger": "on_open",
+      "situation": "Everyone has heard: {player} {event.summary}.",
+      "options": [
+        {
+          "id": "generous_sort",
+          "label": "Say what a generous sort they are",
+          "appeal": {
+            "affection": 0.4,
+            "trust": 0.2
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{gossip}",
+              "dimension": "affection",
+              "delta": 5
+            }
+          ]
+        },
+        {
+          "id": "what_does_it_buy",
+          "label": "Ask out loud what a gift like that is buying",
+          "appeal": {
+            "trust": -0.5,
+            "fear": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{gossip}",
+              "text": "Ask {player}, half joking, what they mean to buy with gifts like that, and who's next."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{gossip}",
+              "dimension": "trust",
+              "delta": -5
+            }
+          ]
+        },
+        {
+          "id": "hint_for_one",
+          "label": "Let them know your own family could use a kindness",
+          "appeal": {
+            "affection": 0.2,
+            "respect": -0.2,
+            "familiarity": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{gossip}",
+              "text": "Let {player} know, without quite asking, that your own family could use a kindness this autumn."
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; it's none of yours",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:recipient",
+    "talked_to:gossip",
+    "expired"
+  ]
+}

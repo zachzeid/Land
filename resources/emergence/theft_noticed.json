@@ -1,0 +1,147 @@
+{
+  "id": "theft_noticed",
+  "title": "Light Fingers",
+  "summary": "Something the player took is missed; the owner and anyone who saw decide what to do.",
+  "trigger": {
+    "event": {
+      "kind": "theft"
+    }
+  },
+  "roles": {
+    "owner": {
+      "from": "event_about",
+      "prefer": "trust_desc"
+    },
+    "witness": {
+      "from": "event_witness",
+      "prefer": "nearest"
+    }
+  },
+  "cooldown_days": 1,
+  "max_active": 2,
+  "expires_days": 3,
+  "location": "{owner.home}",
+  "hooks": [
+    {
+      "id": "something_missing",
+      "type": "react",
+      "eligible_role": "owner",
+      "trigger": "on_open",
+      "situation": "It's gone: {event.summary}. The last pair of hands anywhere near it were {player}'s.",
+      "options": [
+        {
+          "id": "ask_straight",
+          "label": "Ask them straight out",
+          "appeal": {
+            "respect": 0.4,
+            "fear": -0.3,
+            "familiarity": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{owner}",
+              "text": "Ask {player} straight out whether they took it, and say you'd rather have it back than an argument."
+            }
+          ]
+        },
+        {
+          "id": "cry_thief",
+          "label": "Cry thief so everyone knows",
+          "appeal": {
+            "trust": -0.5,
+            "affection": -0.3
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{owner}",
+              "dimension": "trust",
+              "delta": -15
+            }
+          ]
+        },
+        {
+          "id": "lock_the_door",
+          "label": "Let it pass, and keep an eye on them",
+          "appeal": {
+            "familiarity": 0.1,
+            "fear": 0.4
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{owner}",
+              "dimension": "trust",
+              "delta": -10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "you_saw",
+      "type": "reveal",
+      "eligible_role": "witness",
+      "trigger": "on_open",
+      "situation": "You saw {player} do it: {event.summary}. They don't know you saw. Or they do.",
+      "options": [
+        {
+          "id": "tell_the_owner",
+          "label": "Tell {owner} who took it",
+          "appeal": {
+            "trust": -0.4,
+            "affection": -0.2
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "{owner}"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "a_share_for_silence",
+          "label": "Let them know silence has a price",
+          "appeal": {
+            "fear": -0.4,
+            "respect": -0.3,
+            "trust": -0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{witness}",
+              "text": "Let {player} know you saw what they took, and that a little silence costs a little coin."
+            }
+          ]
+        },
+        {
+          "id": "keep_quiet",
+          "label": "Keep it to yourself",
+          "appeal": {
+            "familiarity": 0.1,
+            "affection": 0.3,
+            "fear": 0.3
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:owner",
+    "talked_to:witness",
+    "expired"
+  ]
+}

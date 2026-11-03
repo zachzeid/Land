@@ -2,12 +2,14 @@ extends CanvasLayer
 ## Quest Journal UI - Player-facing quest tracking interface
 ## Toggle with J key, shows active/completed/discovered quests with objectives and hints
 ## Pauses game while open, uses CanvasLayer 10 for proper UI stacking
+## The Thoughts tab lists the player's private intentions (InnerVoiceUI.get_thoughts(), WORLD_SCHEMA §13)
 
 @onready var panel: Panel = $Panel
 @onready var close_button: Button = $Panel/Header/CloseButton
 @onready var active_tab: Button = $Panel/TabBar/ActiveTab
 @onready var completed_tab: Button = $Panel/TabBar/CompletedTab
 @onready var discovered_tab: Button = $Panel/TabBar/DiscoveredTab
+@onready var thoughts_tab: Button = get_node_or_null("Panel/TabBar/ThoughtsTab")
 @onready var quest_list: VBoxContainer = $Panel/Content/QuestListScroll/QuestList
 @onready var quest_title: Label = $Panel/Content/DetailScroll/DetailContent/QuestTitle
 @onready var quest_type_badge: Label = $Panel/Content/DetailScroll/DetailContent/QuestTypeBadge
@@ -15,7 +17,7 @@ extends CanvasLayer
 @onready var objectives_container: VBoxContainer = $Panel/Content/DetailScroll/DetailContent/ObjectivesContainer
 @onready var no_quest_label: Label = $Panel/Content/DetailScroll/DetailContent/NoQuestLabel
 
-enum Tab { ACTIVE, COMPLETED, DISCOVERED }
+enum Tab { ACTIVE, COMPLETED, DISCOVERED, THOUGHTS }
 
 var is_open: bool = false
 var current_tab: Tab = Tab.ACTIVE
@@ -46,6 +48,8 @@ func _ready():
 	active_tab.pressed.connect(func(): _switch_tab(Tab.ACTIVE))
 	completed_tab.pressed.connect(func(): _switch_tab(Tab.COMPLETED))
 	discovered_tab.pressed.connect(func(): _switch_tab(Tab.DISCOVERED))
+	if thoughts_tab:
+		thoughts_tab.pressed.connect(func(): _switch_tab(Tab.THOUGHTS))
 
 	# Connect to quest events
 	if QuestManager:
@@ -60,8 +64,8 @@ func _ready():
 
 func _input(event: InputEvent):
 	if event.is_action_pressed("open_journal"):
-		# Don't open during dialogue
-		if _is_in_dialogue():
+		# Don't open during dialogue, or while a thought is being typed (J is a letter too)
+		if _is_in_dialogue() or _is_typing_thought():
 			return
 		_toggle_journal()
 		get_viewport().set_input_as_handled()
@@ -97,6 +101,10 @@ func _is_in_dialogue() -> bool:
 		return true
 	return false
 
+func _is_typing_thought() -> bool:
+	var inner_voice = get_tree().get_first_node_in_group("inner_voice_ui")
+	return inner_voice != null and "is_open" in inner_voice and inner_voice.is_open
+
 func _switch_tab(tab: Tab):
 	current_tab = tab
 
@@ -104,6 +112,8 @@ func _switch_tab(tab: Tab):
 	active_tab.modulate = COLOR_ACTIVE_TAB if tab == Tab.ACTIVE else COLOR_INACTIVE_TAB
 	completed_tab.modulate = COLOR_ACTIVE_TAB if tab == Tab.COMPLETED else COLOR_INACTIVE_TAB
 	discovered_tab.modulate = COLOR_ACTIVE_TAB if tab == Tab.DISCOVERED else COLOR_INACTIVE_TAB
+	if thoughts_tab:
+		thoughts_tab.modulate = COLOR_ACTIVE_TAB if tab == Tab.THOUGHTS else COLOR_INACTIVE_TAB
 
 	_refresh_quest_list()
 
@@ -112,6 +122,11 @@ func _refresh_quest_list():
 	for child in quest_list.get_children():
 		child.queue_free()
 	quest_buttons.clear()
+
+	if current_tab == Tab.THOUGHTS:
+		_update_tab_counts()
+		_refresh_thoughts()
+		return
 
 	# Get quests for current tab
 	var quest_ids: Array = []
@@ -349,6 +364,8 @@ func _show_empty_state():
 			no_quest_label.text = "No completed quests yet.\n\nComplete quests to see them here."
 		Tab.DISCOVERED:
 			no_quest_label.text = "No discovered quests.\n\nExplore and talk to NPCs to find new quests."
+		Tab.THOUGHTS:
+			no_quest_label.text = "No thoughts kept yet.\n\nPress T to think something through. Only you will know."
 
 func _update_tab_counts():
 	var active_count = QuestManager.get_active_quest_ids().size() if QuestManager else 0
@@ -358,6 +375,8 @@ func _update_tab_counts():
 	active_tab.text = "Active (%d)" % active_count
 	completed_tab.text = "Completed (%d)" % completed_count
 	discovered_tab.text = "Discovered (%d)" % discovered_count
+	if thoughts_tab:
+		thoughts_tab.text = "Thoughts (%d)" % get_thoughts().size()
 
 # Event handlers
 func _on_quest_changed(_quest_id: String):
@@ -371,3 +390,72 @@ func _on_quest_completed(_quest_id: String, _ending: String):
 func _on_objective_completed(_quest_id: String, _objective_id: String):
 	if is_open and selected_quest_id == _quest_id:
 		_show_quest_details(_quest_id)
+
+# =============================================================================
+# THOUGHTS (the player's intentions; never shown to anyone else)
+# =============================================================================
+
+## Past intentions, oldest first (InnerVoiceUI.get_thoughts())
+func get_thoughts() -> Array:
+	var inner_voice = get_tree().get_first_node_in_group("inner_voice_ui") if is_inside_tree() else null
+	if inner_voice and inner_voice.has_method("get_thoughts"):
+		return inner_voice.get_thoughts()
+	return []
+
+## The text a thought is listed by: what the player wrote, else the intention's goal
+static func thought_text(thought) -> String:
+	if not thought is Dictionary:
+		return str(thought)
+	for key in ["text", "raw", "thought", "goal"]:
+		if str(thought.get(key, "")) != "":
+			return str(thought[key])
+	return str(thought.get("intention", {}).get("goal", "(a thought)")) if thought.get("intention") is Dictionary else "(a thought)"
+
+func _refresh_thoughts():
+	var thoughts = get_thoughts()
+	if thoughts.is_empty():
+		_show_empty_state()
+		return
+	var newest_first = thoughts.duplicate()
+	newest_first.reverse()
+	for i in newest_first.size():
+		var thought = newest_first[i]
+		var btn = Button.new()
+		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		btn.clip_text = true
+		btn.text = "  " + thought_text(thought)
+		btn.pressed.connect(func(): _show_thought(thought))
+		quest_list.add_child(btn)
+	_show_thought(newest_first[0])
+
+func _show_thought(thought):
+	for child in objectives_container.get_children():
+		if child.name != "ObjectivesHeader":
+			child.queue_free()
+	no_quest_label.visible = false
+	quest_title.visible = true
+	quest_type_badge.visible = true
+	quest_description.visible = true
+	objectives_container.visible = true
+	quest_title.text = thought_text(thought)
+	var when = str(thought.get("time", "")) if thought is Dictionary else ""
+	quest_type_badge.text = "[THOUGHT]" + ("  " + when if when != "" else "")
+	quest_type_badge.modulate = COLOR_HINT
+	var intention = thought.get("intention", thought) if thought is Dictionary else {}
+	var lines: Array = []
+	if intention is Dictionary:
+		if str(intention.get("goal", "")) != "" and str(intention.get("goal")) != quest_title.text:
+			lines.append("[b]Meaning to:[/b] %s" % intention.goal)
+		var about = intention.get("about", [])
+		if about is Array and not about.is_empty():
+			lines.append("[b]About:[/b] %s" % ", ".join(about.map(func(a): return _get_npc_display_name(str(a)))))
+		if str(intention.get("stance", "")) != "":
+			lines.append("[b]Stance:[/b] %s" % intention.stance)
+		if intention.has("strength"):
+			lines.append("[b]How strongly:[/b] %s" % str(intention.strength))
+		if str(intention.get("status", "")) != "":
+			lines.append("[b]Since then:[/b] %s" % intention.status)
+	if lines.is_empty():
+		lines.append("[color=#9aa7b4]Kept to yourself.[/color]")
+	quest_description.text = "\n".join(lines)

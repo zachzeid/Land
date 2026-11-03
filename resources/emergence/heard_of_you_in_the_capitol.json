@@ -1,0 +1,99 @@
+{
+  "id": "heard_of_you_in_the_capitol",
+  "title": "Your Name Arrived First",
+  "summary": "The player reaches the Capitol for the first time, and somebody there has already heard of them.",
+  "trigger": {
+    "event": {
+      "kind": "seen_at",
+      "region": "the_capitol",
+      "first": true
+    }
+  },
+  "roles": {
+    "knower": {
+      "from": "near_player",
+      "region": "the_capitol",
+      "knows_of_player": true,
+      "prefer": "familiarity_desc"
+    }
+  },
+  "cooldown_days": 30,
+  "max_active": 1,
+  "expires_days": 2,
+  "location": "{knower.home}",
+  "hooks": [
+    {
+      "id": "i_know_that_face",
+      "type": "react",
+      "eligible_role": "knower",
+      "trigger": "on_open",
+      "situation": "{player} has just come in through the Dawn Gate. You know the description from the talk off the Kingsroad: the one from the valley. You heard of them before you ever saw them.",
+      "options": [
+        {
+          "id": "greet_by_reputation",
+          "label": "Greet them by what you heard, and see if it fits",
+          "appeal": {
+            "affection": 0.4,
+            "respect": 0.4
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{knower}",
+              "text": "Greet {player} by what you heard of them out west, and see whether the story fits the face."
+            }
+          ]
+        },
+        {
+          "id": "sell_the_news",
+          "label": "Tell people who'll pay that they've arrived",
+          "appeal": {
+            "trust": -0.3,
+            "respect": 0.2
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "agenda",
+              "npc": "{knower}",
+              "text": "Keep {player} talking long enough to learn where they mean to lodge."
+            }
+          ]
+        },
+        {
+          "id": "give_them_room",
+          "label": "Give them room; that kind of story follows its owner",
+          "appeal": {
+            "fear": 0.5
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{knower}",
+              "dimension": "fear",
+              "delta": 5
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; let the Capitol find out for itself",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": []
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:knower",
+    "expired"
+  ]
+}

@@ -43,7 +43,7 @@ and more afraid that it will.
 
 ## Agency
 - intercept: agenda, set_flag, move_npc, block_beat
-- react: agenda, adjust_relationship, shift_want
+- react: agenda, adjust_relationship, shift_want, spread_event
 - scheme: agenda, set_flag
 - reveal: set_flag, agenda, adjust_relationship
 - aid: agenda, adjust_relationship, set_flag, move_npc, unlock_beat

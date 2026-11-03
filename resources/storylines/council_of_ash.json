@@ -37,7 +37,8 @@
     "cou_called_the_rising": "The player climbed onto a cart in the town square and called Thornhaven to refuse the Tithe at the gate on Collection Night.",
     "cou_bargain_laid_bare": "The player laid the council's bargain for Elena before the village, coin by coin, from the undercroft to the forest path.",
     "cou_bargain_kept": "The player learned of the council's bargain for Elena and gave Elder Mathias their word to keep it from the village.",
-    "cou_held_the_gate": "The player stood at the village gate with Captain Aldric's six when the rising wavered."
+    "cou_held_the_gate": "The player stood at the village gate with Captain Aldric's six when the rising wavered.",
+    "cou_fund_bought_nights": "Elder Mathias sent a tithe of the tribute fund up the forest path, by the widow's hand, to buy Thornhaven more nights before the cart"
   },
   "player_flags": [
     "cou_told_the_elder",
@@ -63,7 +64,10 @@
     "hc_varn_ascendant",
     "tithe_rangers_arrive",
     "des_varn_route_sold",
-    "vein_miners_rise"
+    "vein_miners_rise",
+    "tn_cart_delayed",
+    "tn_cart_advanced",
+    "tn_collection_night_cancelled"
   ],
   "beats": [
     {
@@ -149,7 +153,7 @@
           "eligible": [
             "aldric"
           ],
-          "situation": "The council is gathering. You have six farmers, a proclamation in your footlocker and seven days. They will want to pay.",
+          "situation": "The council is gathering. You have six farmers, a proclamation in your footlocker and a week at most. They will want to pay.",
           "options": [
             {
               "id": "demand_refusal",
@@ -434,7 +438,7 @@
           "eligible": [
             "mira"
           ],
-          "situation": "The Elder has said the sum aloud. You know exactly what the Hollow will ask for on the seventh night.",
+          "situation": "The Elder has said the sum aloud. You know exactly what the Hollow will ask for on Collection Night.",
           "options": [
             {
               "id": "price_it",
@@ -851,7 +855,7 @@
           "eligible": [
             "mathias"
           ],
-          "situation": "Four days left. The councillors look to you. Pay, bargain or refuse: you must put one of them to the vote, or put them off one more day.",
+          "situation": "The days are running out. The councillors look to you. Pay, bargain or refuse: you must put one of them to the vote, or put them off one more day.",
           "options": [
             {
               "id": "put_off",
@@ -952,7 +956,7 @@
           "eligible": [
             "mathias"
           ],
-          "situation": "Two days. Farmers watch the forest road. Councillors who swore to refuse now ask, very quietly, what the Hollow might take instead.",
+          "situation": "The days run short. Farmers watch the forest road. Councillors who swore to refuse now ask, very quietly, what the Hollow might take instead.",
           "options": [
             {
               "id": "bargain_for_her",
@@ -1619,6 +1623,113 @@
               ]
             }
           ]
+        },
+        {
+          "id": "cou_mathias_buys_nights",
+          "type": "aid",
+          "trigger": "on_flag:tn_plan_bargain",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The stranger means to bargain with the Hollow, and a bargain needs time to make. The undercroft could buy time before it buys anything else.",
+          "options": [
+            {
+              "id": "buy_two_nights",
+              "label": "Send a tithe of the fund up the forest path to buy two more nights",
+              "serves": [
+                "save_thornhaven",
+                "avoid_the_hollow_war"
+              ],
+              "effects": [
+                {
+                  "type": "shift_fixed_point",
+                  "point": "tn_collection_night",
+                  "days": 2,
+                  "reason": "Elder Mathias sent a tithe of the tribute fund up the forest path, and the Hollow sold Thornhaven two more nights."
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "cou_fund_bought_nights",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "tn_cart_delayed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger he has bought them two nights with the council's coin. Ask them to spend them well."
+                }
+              ]
+            },
+            {
+              "id": "keep_it_whole",
+              "label": "Keep the fund whole; a short purse on the night may bring a second name",
+              "serves": [
+                "guard_the_tribute_fund",
+                "keep_the_peace_paid"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the fund must stay whole for the night itself. He dares not spend a coin of it early."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mira_and_the_bought_nights",
+          "type": "scheme",
+          "trigger": "on_flag:cou_fund_bought_nights",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The Elder bought two nights with the council's coin, and the coin came up the path through your hands.",
+          "options": [
+            {
+              "id": "honour_it",
+              "label": "Honour it; a council that buys nights will buy anything",
+              "serves": [
+                "own_the_council",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Mira says the men took the coin and will wait. She wept to carry it. The council should be grateful."
+                }
+              ]
+            },
+            {
+              "id": "keep_the_coin_and_the_night",
+              "label": "Keep the coin and send the cart on its old night anyway",
+              "serves": [
+                "rule_from_shadow",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "shift_fixed_point",
+                  "point": "tn_collection_night",
+                  "days": -2,
+                  "reason": "The Boss kept the council's coin and sent the cart on the night it was always going to come."
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Mira came to him in tears: the men took the coin and laughed. The cart comes when it comes."
+                }
+              ],
+              "harms": [
+                "mathias"
+              ]
+            }
+          ]
         }
       ]
     },
@@ -1645,7 +1756,7 @@
           "eligible": [
             "aldric"
           ],
-          "situation": "Three days. The council talks. You unfold the proclamation by lamplight and cross out last year's date.",
+          "situation": "Days, not weeks. The council talks. You unfold the proclamation by lamplight and cross out last year's date.",
           "options": [
             {
               "id": "lay_it_before_mathias",
@@ -1869,11 +1980,11 @@
         {
           "id": "cou_aldric_day_six",
           "type": "scheme",
-          "trigger": "on_flag:tn_day_6",
+          "trigger": "on_flag:tn_collection_night_eve",
           "eligible": [
             "aldric"
           ],
-          "situation": "Tomorrow night the cart comes. The council still has not answered.",
+          "situation": "The cart is close. The council still has not answered.",
           "options": [
             {
               "id": "post_it",
@@ -1910,11 +2021,11 @@
         {
           "id": "cou_aldric_breaks_the_block",
           "type": "aid",
-          "trigger": "on_flag:tn_day_7",
+          "trigger": "on_flag:tn_collection_night_eve",
           "eligible": [
             "aldric"
           ],
-          "situation": "The Elder forbade your paper. The cart comes tonight.",
+          "situation": "The Elder forbade your paper. The cart is nearly at the gate.",
           "options": [
             {
               "id": "post_over_him",
@@ -3651,6 +3762,55 @@
               ]
             }
           ]
+        },
+        {
+          "id": "cou_mira_hurries_the_cart",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The stranger has called Thornhaven to its gate. A rising given a week becomes a war; given a night, it is a crowd with pitchforks.",
+          "options": [
+            {
+              "id": "a_night_early",
+              "label": "Bring the cart a night early, before the barns empty",
+              "serves": [
+                "harvest_the_tithe",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_fixed_point",
+                  "point": "tn_collection_night",
+                  "days": -1,
+                  "reason": "The Boss heard Thornhaven was rising and sent the cart a night early, before the barns could empty onto the road."
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "tn_cart_advanced",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "aldric"
+              ]
+            },
+            {
+              "id": "let_it_gather",
+              "label": "Let it gather; a crowd at a gate is easier to count than a crowd in barns",
+              "serves": [
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, admiring, how many have come to the gate, and whose sons they are."
+                }
+              ]
+            }
+          ]
         }
       ]
     }
@@ -3689,6 +3849,25 @@
         "!cou_village_rises"
       ],
       "summary": "The council bought its way through Collection Night with the undercroft's coin, and the stranger kept the bargain quiet. Every word of it had passed through the widow's hands first."
+    },
+    {
+      "id": "cou_the_village_stands_unopposed",
+      "title": "The Village Stands, and No Cart Comes",
+      "requires": [
+        "cou_village_rises",
+        "cou_called_the_rising",
+        "tn_collection_night_cancelled"
+      ],
+      "summary": "Thornhaven rose and came to its gate, and no cart came to meet it, because the Pit was already empty. The village that would have fought spent the night welcoming its children home, and the council never again sat to decide who to pay."
+    },
+    {
+      "id": "cou_a_council_without_a_tithe",
+      "title": "A Council Without a Tithe",
+      "requires": [
+        "cou_told_the_elder",
+        "tn_collection_night_cancelled"
+      ],
+      "summary": "No cart came, and Elder Mathias, who knew now that the lot was rigged, struck the Tithe from Thornhaven's law before the whole council. The undercroft fund went back to the families it was taken from."
     },
     {
       "id": "cou_ash_and_embers",

@@ -1,0 +1,112 @@
+{
+  "id": "broken_promise_surfaces",
+  "title": "The Promise You Didn't Keep",
+  "summary": "The person a promise was made to learns it was broken.",
+  "trigger": {
+    "event": {
+      "kind": "promise",
+      "status": "broken"
+    }
+  },
+  "roles": {
+    "wronged": {
+      "from": "event_about",
+      "prefer": "affection_desc"
+    }
+  },
+  "cooldown_days": 2,
+  "max_active": 2,
+  "expires_days": 3,
+  "location": "{wronged.home}",
+  "hooks": [
+    {
+      "id": "confront",
+      "type": "react",
+      "eligible_role": "wronged",
+      "trigger": "on_open",
+      "situation": "{player} swore it: {event.summary}. They didn't. You counted on it, and now you know better.",
+      "options": [
+        {
+          "id": "demand",
+          "label": "Find them and demand an answer",
+          "appeal": {
+            "trust": -0.5,
+            "fear": -0.3,
+            "respect": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{wronged}",
+              "text": "Ask {player} why their word was worth nothing, and don't let them change the subject."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{wronged}",
+              "dimension": "trust",
+              "delta": -10
+            }
+          ]
+        },
+        {
+          "id": "tell_others",
+          "label": "Make sure the village knows",
+          "appeal": {
+            "affection": -0.5,
+            "fear": -0.2
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{wronged}",
+              "dimension": "trust",
+              "delta": -12
+            }
+          ]
+        },
+        {
+          "id": "one_more_chance",
+          "label": "Tell them it isn't too late to make it right",
+          "appeal": {
+            "affection": 0.5,
+            "trust": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{wronged}",
+              "text": "Tell {player} what their broken word cost you, and that you'd still take it kept late over never."
+            }
+          ]
+        },
+        {
+          "id": "let_it_go",
+          "label": "Say nothing; remember it",
+          "appeal": {
+            "familiarity": 0.1,
+            "fear": 0.4
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{wronged}",
+              "dimension": "trust",
+              "delta": -8
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:wronged",
+    "expired"
+  ]
+}

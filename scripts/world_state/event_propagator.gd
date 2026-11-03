@@ -140,6 +140,21 @@ func _spread(flag_name: String, rule: Dictionary) -> void:
 		if not reached:
 			_queue(key, memory)
 
+## A memory from another system (PlayerEvents: a player event seen or heard) for one NPC key
+## Same path as story news: delivered now if the NPC is loaded, else queued for its initialize();
+## deduped per NPC by memory.flag here and by source_flag in its RAG collection (across sessions)
+## memory: {flag, how, text, event_type, importance, emotion}
+func deliver_memory(npc_key: String, memory: Dictionary) -> void:
+	if npc_key == "" or str(memory.get("flag", "")) == "":
+		return
+	var reached = false
+	for npc in get_loaded_npcs():
+		if _npc_key(npc.npc_id) == npc_key:
+			reached = true
+			_deliver(npc, memory)
+	if not reached:
+		_queue(npc_key, memory)
+
 ## Hand an NPC everything that reached it while it wasn't loaded
 ## Called by BaseNPC at the end of initialize()
 func deliver_pending(npc: Node) -> void:

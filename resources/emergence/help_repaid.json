@@ -1,0 +1,115 @@
+{
+  "id": "help_repaid",
+  "title": "One Good Turn",
+  "summary": "Someone the player helped, often a nobody, finds a way to pay it back.",
+  "trigger": {
+    "event": {
+      "kind": "help"
+    }
+  },
+  "roles": {
+    "helped": {
+      "from": "event_about",
+      "prefer": "affection_desc"
+    }
+  },
+  "cooldown_days": 1,
+  "max_active": 3,
+  "expires_days": 4,
+  "location": "{helped.home}",
+  "hooks": [
+    {
+      "id": "pay_it_back",
+      "type": "aid",
+      "eligible_role": "helped",
+      "trigger": "on_open",
+      "situation": "Not long ago {player} {event.summary}. They didn't have to. You haven't forgotten it.",
+      "options": [
+        {
+          "id": "share_what_you_have",
+          "label": "Press on them what you can spare",
+          "appeal": {
+            "affection": 0.5,
+            "familiarity": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{helped}",
+              "text": "Find {player} and press on them what you can spare: bread, a dry bed, a mended strap. Don't take no."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{helped}",
+              "dimension": "affection",
+              "delta": 8
+            }
+          ]
+        },
+        {
+          "id": "warn_them",
+          "label": "Tell them what you've heard said about them, and by whom",
+          "appeal": {
+            "trust": 0.5,
+            "fear": 0.2
+          },
+          "effects": [
+            {
+              "type": "agenda",
+              "npc": "{helped}",
+              "text": "Tell {player} what you've overheard: who is asking about them, and which road not to take after dark."
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{helped}",
+              "dimension": "trust",
+              "delta": 8
+            }
+          ]
+        },
+        {
+          "id": "speak_well",
+          "label": "Tell your people what the stranger did for you",
+          "appeal": {
+            "respect": 0.4,
+            "affection": 0.3
+          },
+          "effects": [
+            {
+              "type": "spread_event",
+              "event": "{event.id}",
+              "to": [
+                "*"
+              ]
+            },
+            {
+              "type": "adjust_relationship",
+              "npc": "{helped}",
+              "dimension": "respect",
+              "delta": 5
+            }
+          ]
+        },
+        {
+          "id": "say_nothing",
+          "label": "Say nothing; you'll know them if they need you",
+          "appeal": {
+            "familiarity": 0.1
+          },
+          "effects": [
+            {
+              "type": "adjust_relationship",
+              "npc": "{helped}",
+              "dimension": "trust",
+              "delta": 4
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolves_on": [
+    "talked_to:helped",
+    "expired"
+  ]
+}

@@ -565,6 +565,8 @@ func respond_to_player(player_message: String):
 
 		# The NPC may act on what was said (docs/WORLD_SCHEMA.md §6); the Director enforces plausibility
 		_apply_conversation_actions(parsed_response, player_message, npc_response)
+		# What the player claimed, promised, threatened... becomes player events this NPC (and anyone here) witnessed
+		_record_player_utterances(parsed_response)
 
 		# Automatically record interaction based on Claude's analysis
 		if analysis and analysis.has("interaction_type"):
@@ -1447,7 +1449,7 @@ func request_checked_reply(messages: Array, system_prompt: String) -> Dictionary
 	var response = await claude_client.send_message(messages, system_prompt)
 	if not response is Dictionary or not response.has("text"):
 		return {"ok": false, "error": str(response.get("error", "Unknown error")) if response is Dictionary else "bad response",
-			"response": "", "analysis": null, "actions": [], "commitments": [], "regenerated": false, "sanitised": []}
+			"response": "", "analysis": null, "actions": [], "commitments": [], "utterances": [], "regenerated": false, "sanitised": []}
 	var parsed = _parse_npc_response(str(response.text))
 	var found = _forbidden_in_reply(parsed)
 	var regenerated = false
@@ -1508,9 +1510,20 @@ func _apply_conversation_actions(reply: Dictionary, player_message: String, npc_
 	if debug_console and debug_console.has_method("log_conversation_actions"):
 		debug_console.log_conversation_actions(npc_name, last_conversation_actions)
 
+## The reply's utterances become player events (PlayerEvents validates kinds, caps the count, and
+## takes this NPC plus everyone present at its location as witnesses). Returns the event ids
+func _record_player_utterances(reply: Dictionary) -> Array:
+	var utterances = reply.get("utterances", [])
+	if not utterances is Array or utterances.is_empty():
+		return []
+	var player_events = get_node_or_null("/root/PlayerEvents")
+	if player_events == null or not player_events.has_method("record_utterances"):
+		return []
+	return player_events.record_utterances(npc_id, utterances, get_current_location())
+
 ## Parse NPC response JSON with fallback to plain text
 func _parse_npc_response(raw_text: String) -> Dictionary:
-	var result = {"response": "", "analysis": null, "actions": [], "commitments": []}
+	var result = {"response": "", "analysis": null, "actions": [], "commitments": [], "utterances": []}
 	
 	# Try to extract JSON from response (Claude might wrap it in markdown)
 	var json_start = raw_text.find("{")
@@ -1533,6 +1546,11 @@ func _parse_npc_response(raw_text: String) -> Dictionary:
 					result.actions = data.actions
 				if data.get("commitments") is Array:
 					result.commitments = data.commitments.map(func(c): return str(c))
+				# What the player said, as this NPC heard it (docs/WORLD_SCHEMA.md §10): analysis.utterances
+				if result.analysis is Dictionary and result.analysis.get("utterances") is Array:
+					result.utterances = result.analysis.utterances
+				elif data.get("utterances") is Array:
+					result.utterances = data.utterances
 				
 				# Return successfully parsed JSON
 				if result.response != "":

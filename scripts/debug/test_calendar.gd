@@ -7,8 +7,10 @@ extends SceneTree
 # - they are world-caused (no witnesses), base flags with descriptions, known to the Director,
 #   and no storyline effect may set them
 # - the debug command `day <n>`
-# - the opening: congregation gathered in the chapel, narration sets tithe_drawing_witnessed and is
-#   skippable, the congregation walks home afterwards, and nothing writes a save
+# - the opening: congregation gathered in the chapel at 20:00, a skippable establishing card that hands
+#   control to the player, the drawing (tn_drawing, 20:10) setting tithe_drawing_witnessed for a player
+#   in the chapel, the congregation walking home afterwards, and nothing writing a save
+#   (the opening's choices are in test_opening.gd)
 # Fakes only: no API calls, no ChromaDB, no save file written
 # Run: godot --headless --path . -s res://scripts/debug/test_calendar.gd
 
@@ -59,7 +61,7 @@ func _init():
 	world_state.set_idle_clock_rate(0.0)
 	director.round_boundaries_enabled = false
 	director.set_round_timer_paused(true)
-	root.get_node("EventBus").calendar_flag_fired.connect(func(flag, _at): fired_log.append(flag))
+	root.get_node("EventBus").calendar_flag_fired.connect(func(flag, _at): if flag in CALENDAR_ORDER: fired_log.append(flag))
 
 	print("============================================================")
 	print("🧪 CALENDAR + OPENING TEST")
@@ -92,7 +94,8 @@ func _init():
 
 func _test_calendar_loaded():
 	print("world.json calendar")
-	var calendar: Array = world_state.get_calendar()
+	# The seven days (the drawing, its eve and season_end are checked in test_opening / the director's tests)
+	var calendar: Array = world_state.get_calendar().filter(func(e): return e.flag in CALENDAR_ORDER)
 	_check("Seven fixed points, in clock order", calendar.map(func(e): return e.flag) == CALENDAR_ORDER)
 	_check("A new game starts at calendar.start: day 1, 20:00", world_state.start_minute == 20 * 60)
 	_fresh()
@@ -126,7 +129,7 @@ func _test_long_jump():
 	_check("A fixed point never fires again, even if its flag was cleared", fired_log.size() == 4 and not world_state.get_world_flag("tn_day_3"))
 	world_state.advance_time(10 * DAY, "travel:very_long")
 	_check("Ten more days fire the rest, Collection Night last", fired_log == CALENDAR_ORDER)
-	_check("All fired, each recorded", world_state.get_calendar().all(func(e): return e.fired))
+	_check("All fired, each recorded", world_state.get_calendar().filter(func(e): return e.flag in CALENDAR_ORDER).all(func(e): return e.fired))
 
 func _test_reentrant_listener():
 	print("A listener that moves the clock")
@@ -174,7 +177,7 @@ func _test_save_load():
 	_fresh()
 	world_state.advance_time(3 * DAY + 12 * 60, "travel")  # day 5, 08:00
 	var saved = JSON.parse_string(JSON.stringify(world_state.save()))
-	_check("The save carries which fixed points fired", saved.get("calendar_fired", {}).keys() == ["tn_day_2", "tn_day_3", "tn_day_4", "tn_day_5"])
+	_check("The save carries which fixed points fired", saved.get("calendar_fired", {}).keys().filter(func(f): return f in CALENDAR_ORDER) == ["tn_day_2", "tn_day_3", "tn_day_4", "tn_day_5"])
 	_fresh()
 	world_state.load_from_dict(saved)
 	_check("Loading restores the clock", world_state.get_time_string() == "Day 5, 08:00")
@@ -231,6 +234,7 @@ func _test_opening():
 	_check("SceneManager owns the opening", opening != null and opening.has_method("play"))
 	if opening == null:
 		return
+	opening.reset()
 	if not save_existed:
 		_check("No save file: it is a new game and the opening wants to play", world_state.is_new_game() and opening.should_play())
 	var gathered: Array = opening.gather_congregation()
@@ -240,20 +244,27 @@ func _test_opening():
 	_check("The spawner puts them in the chapel", all_there and not spawner.should_be_at("aldric", "thornhaven_chapel") and not spawner.should_be_at("mathias", "thornhaven_town_square"))
 
 	var finished: Array = []
-	opening.opening_finished.connect(func(skipped): finished.append(skipped))
+	var on_finished = func(skipped): finished.append(skipped)
+	opening.opening_finished.connect(on_finished)
+	var real_location = scene_manager.current_location
+	scene_manager.current_location = scene_manager.get_location("thornhaven_chapel")  # the player stands in the chapel
 	opening.playing = true  # as play() would, without loading scenes headless
-	opening.start_narration()
-	_check("The narration sets tithe_drawing_witnessed", world_state.get_world_flag("tithe_drawing_witnessed"))
-	_check("...and shows the popup", opening.get_node_or_null("OpeningNarration") != null)
-	_check("The flag is a discovery flag with canon text", StoryFlags.is_discovery_flag("tithe_drawing_witnessed") and StoryFlags.get_flag_description("tithe_drawing_witnessed").contains("Elena"))
+	opening.show_establishing()
+	_check("A short establishing card, and no flag yet", opening.get_card_kind() == "establishing" and not world_state.get_world_flag("tithe_drawing_witnessed"))
 	_check("It will not play twice", not opening.should_play())
-	opening._next_page()
 	opening.skip()
 	await process_frame
-	_check("Skip ends it at once", finished == [true] and opening.get_node_or_null("OpeningNarration") == null and not opening.playing)
+	_check("Skip ends it at once and hands control to the player", finished == [true] and opening.get_node_or_null("OpeningNarration") == null and opening.phase == "awaiting")
+	opening.opening_finished.disconnect(on_finished)
+	world_state.advance_time(10, "idle")
+	_check("At 20:10 the drawing sets tithe_drawing_witnessed for the player in the chapel", world_state.has_calendar_fired("tn_drawing")
+		and world_state.get_world_flag("tithe_drawing_witnessed") and opening.get_card_kind() == "drawing")
+	_check("The flag is a discovery flag with canon text", StoryFlags.is_discovery_flag("tithe_drawing_witnessed") and StoryFlags.get_flag_description("tithe_drawing_witnessed").contains("Elena"))
+	opening.skip()
+	scene_manager.current_location = real_location
 
-	# The drawing breaks up two hours on, if the player lingers
-	world_state.advance_time(60, "idle")
+	# The drawing breaks up two hours after they gathered, if the player lingers
+	world_state.advance_time(50, "idle")
 	_check("An hour later they are still at the drawing", spawner.should_be_at("gregor", "thornhaven_chapel"))
 	world_state.advance_time(60, "idle")
 	var gregor_id = registry.get_npc_id("gregor")
@@ -264,13 +275,14 @@ func _test_opening():
 		and spawner.should_be_at("mathias", "thornhaven_town_square"))
 	_check("Nobody is left marked at the drawing", world_state.npc_states.values().all(func(s): return not (s is Dictionary and s.has("at_drawing"))))
 
-	# Leaving the chapel sends them home at once; NPCs moved meanwhile are left alone
+	# After the drawing, leaving the chapel sends them home at once; NPCs moved meanwhile are left alone
 	opening.gather_congregation()
 	world_state.set_npc_location(registry.get_npc_id("mira"), "thornhaven_tavern")
 	scene_manager.scene_transition_started.emit("thornhaven_chapel", "thornhaven_town_square")
 	var elena_id = registry.get_npc_id("elena")
-	_check("Leaving the chapel sends the congregation home", world_state.get_npc_location(elena_id) == registry.get_npc_home("elena"))
+	_check("Leaving the chapel after the drawing sends the congregation home", world_state.get_npc_location(elena_id) == registry.get_npc_home("elena"))
 	_check("Mira, moved since, is not sent anywhere", world_state.get_npc_location(registry.get_npc_id("mira")) == "thornhaven_tavern" and not world_state.is_npc_travelling(registry.get_npc_id("mira")))
+	opening.reset()
 
 	# Davin's scene may not exist yet: the spawner skips it without an error
 	var hut = Node2D.new()
