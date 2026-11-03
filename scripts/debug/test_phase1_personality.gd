@@ -1,6 +1,10 @@
-extends Node
+extends SceneTree
 ## Test Suite for Phase 1: Personality Anchoring System
 ## Run this to validate the structured personality implementation
+## No API calls, no ChromaDB, no save file written
+## Run: godot --headless --path . -s res://scripts/debug/test_phase1_personality.gd
+
+const Support = preload("res://scripts/debug/legacy_test_support.gd")
 
 ## ============================================================================
 ## PHASE 1 SUCCESS CRITERIA
@@ -21,7 +25,11 @@ var tests_passed: int = 0
 var tests_failed: int = 0
 var test_results: Array = []
 
-func _ready():
+func _init():
+	await process_frame
+	await process_frame
+	Support.start_watchdog(self, "PHASE 1 VALIDATION TEST SUITE")
+	Support.guard_save(self)
 	print("\n" + "=".repeat(60))
 	print("PHASE 1 VALIDATION TEST SUITE")
 	print("Personality Anchoring System")
@@ -30,6 +38,7 @@ func _ready():
 	await run_all_tests()
 
 	print_summary()
+	quit(0 if tests_failed == 0 else 1)
 
 func run_all_tests():
 	await test_sc1_resource_loading()
@@ -210,10 +219,10 @@ func test_sc4_personality_modifiers():
 	else:
 		record_fail("SC-4b", "Respect modifier wrong: expected %d, got %d" % [expected_respect, modified.respect])
 
-	# Gregor has fear_sensitivity = 1.2
-	var expected_fear = int(10 * 1.2)
+	# Gregor has fear_sensitivity = 1.2, then fear gains scale by 0.5 + intimidation_susceptibility / 100
+	var expected_fear = int(int(10 * 1.2) * (0.5 + gregor.intimidation_susceptibility / 100.0))
 	if modified.fear == expected_fear:
-		record_pass("SC-4c", "Fear sensitivity modifier applied correctly (1.2x)")
+		record_pass("SC-4c", "Fear sensitivity (1.2x) and intimidation susceptibility applied correctly")
 	else:
 		record_fail("SC-4c", "Fear modifier wrong: expected %d, got %d" % [expected_fear, modified.fear])
 
@@ -343,12 +352,14 @@ func test_sc7_context_builder_integration():
 
 	var system_prompt = context.system_prompt
 
-	# Check core identity is at the TOP of the prompt
+	# Response format comes first (without it Claude won't return JSON), then the core identity, before anything else
 	var identity_pos = system_prompt.find("CORE IDENTITY")
-	if identity_pos >= 0 and identity_pos < 100:
-		record_pass("SC-7a", "Core identity appears at top of system prompt")
+	var format_pos = system_prompt.find("CRITICAL: Response Format")
+	var relationship_pos = system_prompt.find("Multi-Dimensional Relationship")
+	if format_pos >= 0 and format_pos < 10 and identity_pos > format_pos and identity_pos < relationship_pos:
+		record_pass("SC-7a", "Core identity follows the response format, ahead of the rest of the prompt")
 	else:
-		record_fail("SC-7a", "Core identity should be at start of prompt (pos: %d)" % identity_pos)
+		record_fail("SC-7a", "Core identity should follow the response format (format: %d, identity: %d)" % [format_pos, identity_pos])
 
 	# Check personality summary is included
 	if "YOUR PERSONALITY" in system_prompt:
@@ -427,7 +438,7 @@ func test_sc8_kpi_tracker():
 
 	if final_metrics.has("identity_anchor_adherence") and \
 	   final_metrics.has("speech_pattern_compliance") and \
-	   final_metrics.has("overall_health"):
+	   final_metrics.get("overall_health") in ["EXCELLENT", "GOOD", "FAIR", "POOR", "CRITICAL"]:
 		record_pass("SC-8d", "KPI final metrics contain all expected fields")
 	else:
 		record_fail("SC-8d", "KPI final metrics missing expected fields")
@@ -479,4 +490,5 @@ func print_summary():
 			if not result.passed:
 				print("  - %s: %s" % [result.id, result.message])
 
-	print("=".repeat(60) + "\n")
+	print("=".repeat(60))
+	print("✅ ALL TESTS PASSED" if tests_failed == 0 else "❌ %d CHECK(S) FAILED" % tests_failed)

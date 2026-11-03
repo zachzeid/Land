@@ -1,98 +1,60 @@
 extends SceneTree
 
-# Test showing full progression: Neutral Stranger → Trusted Friend
+# Tests that the prompt ContextBuilder sends changes as a relationship grows from stranger to trusted friend:
+# each stage's dimension readings and behavioral guidance differ, and the stranger-only guidance goes away
+# No API calls, no ChromaDB, no save file written
+# Run: godot --headless --path . -s res://scripts/debug/test_full_evolution.gd
+
+const Support = preload("res://scripts/debug/legacy_test_support.gd")
+const PERSONALITY = "You are Gregor, a cautious merchant in Thornhaven. You've seen too many adventurers come and go. You protect your daughter Elena fiercely."
+const STAGES = [
+	["Initial meeting", {"trust": 0, "respect": 0, "affection": 0, "fear": 0, "familiarity": 0}, "Hello, I'd like to buy some supplies."],
+	["After the quest", {"trust": 15, "respect": 10, "affection": 8, "fear": 0, "familiarity": 5}, "I dealt with those bandits for you."],
+	["After the gift", {"trust": 23, "respect": 15, "affection": 23, "fear": 0, "familiarity": 15}, "I found this book about horses for Elena."],
+	["Trusted friend", {"trust": 51, "respect": 35, "affection": 43, "fear": -10, "familiarity": 30}, "You fought well back there."],
+]
+
+var failures: int = 0
 
 func _init():
+	await process_frame
+	await process_frame
+	Support.start_watchdog(self, "FULL RELATIONSHIP EVOLUTION TEST")
+	Support.guard_save(self)
 	print("============================================================")
 	print("🧪 FULL RELATIONSHIP EVOLUTION TEST")
 	print("============================================================\n")
-	
-	var ContextBuilder = load("res://scripts/dialogue/context_builder.gd")
-	var builder = ContextBuilder.new()
-	
-	var base_personality = "You are Gregor, a cautious merchant in Thornhaven. You've seen too many adventurers come and go. You protect your daughter Elena fiercely."
-	
-	# Show 4 stages of relationship evolution
-	var stages = [
-		{
-			"name": "Initial Meeting (Neutral Stranger)",
-			"dims": {"trust": 0, "respect": 0, "affection": 0, "fear": 0, "familiarity": 0},
-			"player_message": "Hello, I'd like to buy some supplies."
-		},
-		{
-			"name": "After Helping with Quest",
-			"dims": {"trust": 15, "respect": 10, "affection": 8, "fear": 0, "familiarity": 5},
-			"player_message": "I dealt with those bandits for you. Your wagons are safe now."
-		},
-		{
-			"name": "After Thoughtful Gift",
-			"dims": {"trust": 23, "respect": 15, "affection": 23, "fear": 0, "familiarity": 15},
-			"player_message": "I found this book about horses for Elena. Heard she loves them."
-		},
-		{
-			"name": "After Bonding Experience (Trusted Friend)",
-			"dims": {"trust": 51, "respect": 35, "affection": 43, "fear": -10, "familiarity": 30},
-			"player_message": "That was intense. You fought well back there."
-		}
-	]
-	
-	for stage in stages:
-		print("\n======================================================================")
-		print("📍 STAGE: %s" % stage.name)
-		print("======================================================================")
-		print("\n📊 Dimensions:")
-		print("   Trust: %d, Respect: %d, Affection: %d, Fear: %d, Familiarity: %d" % 
-			[stage.dims.trust, stage.dims.respect, stage.dims.affection, 
-			 stage.dims.fear, stage.dims.familiarity])
-		print("\n💬 Player: \"%s\"\n" % stage.player_message)
-		
-		var context = builder.build_context({
-			"system_prompt": base_personality,
-			"relationship_dimensions": stage.dims,
-			"conversation_history": [],
-			"player_input": stage.player_message
-		})
-		
-		# Extract behavioral guidance section
-		var system_prompt = context.system_prompt
-		
-		# Show dimension interpretations
-		if "**Trust:**" in system_prompt:
-			var trust_start = system_prompt.find("**Trust:**")
-			var fam_end = system_prompt.find("\n\n", system_prompt.find("**Familiarity:**"))
-			var dims_section = system_prompt.substr(trust_start, fam_end - trust_start)
-			
-			print("🎭 How Gregor Sees Player:")
-			for line in dims_section.split("\n"):
-				if line.strip_edges() != "":
-					print("   %s" % line)
-		
-		# Show behavioral guidance
-		if "**How these feelings affect your behavior:**" in system_prompt:
-			var guidance_start = system_prompt.find("**How these feelings affect your behavior:**")
-			var guidance_end = system_prompt.find("\n\n##", guidance_start)
-			if guidance_end == -1:
-				guidance_end = system_prompt.find("\n\n", guidance_start + 50)
-			var guidance_section = system_prompt.substr(guidance_start, guidance_end - guidance_start)
-			
-			print("\n💡 Expected Behavior:")
-			for line in guidance_section.split("\n"):
-				var trimmed = line.strip_edges()
-				if trimmed != "" and not trimmed.begins_with("**How"):
-					print("   %s" % line)
-	
-	print("\n\n======================================================================")
-	print("✅ PROGRESSION VALIDATED")
-	print("======================================================================")
-	print("\n🎯 Key Observations:")
-	print("   • Dimensions evolve through interactions (not time-based)")
-	print("   • Each dimension affects Claude's tone independently")
-	print("   • Behavioral guidance changes dynamically")
-	print("   • NO pre-canned dialogue - Claude generates from dimensions")
-	print("\n📋 Next Steps:")
-	print("   1. Test in live game with actual Claude responses")
-	print("   2. Record interactions through UI")
-	print("   3. Observe Claude's evolving personality over multiple conversations")
-	print("   4. Implement ChromaDB pattern analysis (Phase 2)\n")
-	
-	quit()
+	var builder = load("res://scripts/dialogue/context_builder.gd").new()
+	var sections = []
+	var guidance = []
+	for stage in STAGES:
+		var context = builder.build_context({"system_prompt": PERSONALITY, "relationship_dimensions": stage[1], "conversation_history": [], "player_input": stage[2]})
+		var prompt: String = context.system_prompt
+		_check("%s: the player's line is the message" % stage[0], context.messages[-1].content == stage[2])
+		var start = prompt.find("**Trust:**")
+		var stop = prompt.find("\n\n", prompt.find("**Familiarity:**"))
+		_check("%s: dimension readings present" % stage[0], start >= 0 and stop > start)
+		sections.append(prompt.substr(start, stop - start))
+		var g_start = prompt.find("**How these feelings affect your behavior:**")
+		guidance.append(prompt.substr(g_start, prompt.find("## Roleplay Instructions") - g_start) if g_start >= 0 else "")
+
+	for i in range(1, STAGES.size()):
+		_check("'%s' reads differently from '%s'" % [STAGES[i][0], STAGES[i - 1][0]], sections[i] != sections[i - 1])
+	_check("A stranger is treated formally", "Formal, asking basic questions" in guidance[0])
+	_check("A trusted friend is no longer treated formally", not "Formal, asking basic questions" in guidance[3])
+	_check("A trusted friend gets open-but-bounded trust guidance", "trust is building" in guidance[3])
+	_check("A trusted friend gets a friendly tone", "Friendly and welcoming tone" in guidance[3])
+	_check("Stage 1 trust reads cautious, stage 4 trusting", "cautious" in sections[0] and "You trust them - they seem reliable" in sections[3])
+	builder.free()
+	_finish()
+
+func _check(label: String, passed: bool):
+	print("  %s %s" % ["✓" if passed else "✗", label])
+	if not passed:
+		failures += 1
+
+func _finish():
+	print("\n============================================================")
+	print("✅ ALL TESTS PASSED" if failures == 0 else "❌ %d CHECK(S) FAILED" % failures)
+	print("============================================================")
+	quit(0 if failures == 0 else 1)

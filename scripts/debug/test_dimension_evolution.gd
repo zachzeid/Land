@@ -1,149 +1,75 @@
 extends SceneTree
-# Test Multi-Dimensional Behavior Evolution
-# Demonstrates how relationship dimensions affect Claude's responses with NO pre-canned dialogue
+
+# Tests BaseNPC.record_interaction evolving the five relationship dimensions over four interactions
+# (quest, thoughtful gift, emotional support, shared danger) in in-memory mode:
+# dimensions move the right way, each interaction is remembered with its impacts, EventBus hears each change,
+# and the prompt Claude would see changes from stranger to friend
+# Fakes only: no API calls, no ChromaDB, no save file written
+# Run: godot --headless --path . -s res://scripts/debug/test_dimension_evolution.gd
+
+const Support = preload("res://scripts/debug/legacy_test_support.gd")
+
+var failures: int = 0
+var changes: Array = []
 
 func _init():
-	print("\n" + "=".repeat(60))
-	print("🧪 TESTING MULTI-DIMENSIONAL BEHAVIOR EVOLUTION")
-	print("=".repeat(60) + "\n")
-	
-	await _test_dimension_evolution()
-	
-	print("\n" + "=".repeat(60))
-	print("✅ TEST COMPLETE - Check if Claude's responses evolved")
-	print("=".repeat(60) + "\n")
-	
-	quit()
+	await process_frame
+	await process_frame
+	Support.start_watchdog(self, "DIMENSION EVOLUTION TEST")
+	Support.guard_save(self)
+	print("============================================================")
+	print("🧪 DIMENSION EVOLUTION TEST")
+	print("============================================================\n")
+	root.get_node("EventBus").npc_relationship_changed.connect(func(data): if data.get("npc_id") == "test_gregor_dimensions": changes.append(data))
+	var npc = load("res://scripts/npcs/base_npc.gd").new()
+	npc.npc_id = "test_gregor_dimensions"
+	npc.npc_name = "Gregor"
+	npc.system_prompt = "You are Gregor, a cautious merchant. You're professional but guarded with strangers."
+	root.add_child(npc)
+	_check("NPC initializes in-memory", await npc.initialize(false))
+	var stranger_prompt = _prompt(npc)
 
-func _test_dimension_evolution():
-	print("Creating test NPC with base personality...")
-	
-	# Create test NPC
-	var BaseNPCScript = load("res://scripts/npcs/base_npc.gd")
-	var test_npc = BaseNPCScript.new()
-	test_npc.npc_id = "test_gregor_dimensions"
-	test_npc.npc_name = "Gregor"
-	test_npc.system_prompt = """You are Gregor, a cautious merchant in a JRPG village.
-You're professional but guarded with strangers. You value trust and loyalty."""
-	
-	root.add_child(test_npc)
-	
-	# Initialize NPC in-memory mode (no ChromaDB needed)
-	print("Initializing NPC in-memory mode (no ChromaDB)...")
-	var init_result = await test_npc.initialize(false)  # false = in-memory mode
-	
-	if not init_result:
-		print("❌ NPC initialization failed!")
-		return
-	
-	print("✅ NPC initialized successfully\n")
-	
-	print("\n📊 INITIAL STATE: All dimensions at 0")
-	print("   Trust: 0, Respect: 0, Affection: 0, Fear: 0, Familiarity: 0")
-	print("   Expected: Neutral, professional greeting\n")
-	
-	# Scenario 1: Player helps with quest
-	print("🎬 INTERACTION 1: Player completes quest (helps with bandits)")
-	await test_npc.record_interaction("quest_completed", {
-		"description": "Player defeated bandits raiding my supply wagons. Village is safe!",
-		"importance": 10,
-		"emotion": "grateful"
-	})
-	
-	await root.create_timer(0.5).timeout
-	
-	print("\n📊 AFTER QUEST:")
-	print("   Trust: %d (+15), Respect: %d (+10), Affection: %d (+8), Familiarity: %d (+5)" % 
-		[test_npc.relationship_trust, test_npc.relationship_respect, 
-		 test_npc.relationship_affection, test_npc.relationship_familiarity])
-	print("   Expected: Warmer, shows gratitude, more open\n")
-	
-	# Scenario 2: Thoughtful gift
-	print("🎬 INTERACTION 2: Player gives thoughtful gift (rare book for daughter)")
-	await test_npc.record_interaction("gift_received", {
-		"description": "Player gave me rare book about horses for Elena. They remembered she loves horses!",
-		"importance": 9,
-		"emotion": "deeply_touched",
-		"thoughtfulness": "high"
-	})
-	
-	await root.create_timer(0.5).timeout
-	
-	print("\n📊 AFTER GIFT:")
-	print("   Trust: %d, Respect: %d, Affection: %d (+15), Familiarity: %d (+10)" % 
-		[test_npc.relationship_trust, test_npc.relationship_respect, 
-		 test_npc.relationship_affection, test_npc.relationship_familiarity])
-	print("   Expected: Personal connection, references thoughtfulness\n")
-	
-	# Scenario 3: Emotional support
-	print("🎬 INTERACTION 3: Player listens to worries about daughter")
-	await test_npc.record_interaction("emotional_support", {
-		"description": "Player listened to my worries about Elena. Didn't judge, just listened.",
-		"importance": 8,
-		"emotion": "vulnerable"
-	})
-	
-	await root.create_timer(0.5).timeout
-	
-	print("\n📊 AFTER EMOTIONAL SUPPORT:")
-	print("   Trust: %d (+8), Respect: %d, Affection: %d (+10), Familiarity: %d (+5)" % 
-		[test_npc.relationship_trust, test_npc.relationship_respect, 
-		 test_npc.relationship_affection, test_npc.relationship_familiarity])
-	print("   Expected: Feels safe opening up, considers player friend\n")
-	
-	# Scenario 4: Shared danger
-	print("🎬 INTERACTION 4: Fight together during village attack")
-	await test_npc.record_interaction("shared_danger", {
-		"description": "Player fought alongside me when bandits attacked village. Back-to-back combat.",
-		"importance": 10,
-		"emotion": "bonded"
-	})
-	
-	await root.create_timer(0.5).timeout
-	
-	print("\n📊 AFTER SHARED DANGER:")
-	print("   Trust: %d (+20), Respect: %d (+15), Affection: %d (+10), Fear: %d (-10), Familiarity: %d (+15)" % 
-		[test_npc.relationship_trust, test_npc.relationship_respect, 
-		 test_npc.relationship_affection, test_npc.relationship_fear, test_npc.relationship_familiarity])
-	print("   Expected: Deep bond, considers player ally/friend, possibly more\n")
-	
-	# Final state summary
-	print("\n" + "─".repeat(60))
-	print("📈 EVOLUTION SUMMARY:")
-	print("─".repeat(60))
-	print("Trust:       %d/100 - %s" % [test_npc.relationship_trust, _interpret_trust(test_npc.relationship_trust)])
-	print("Respect:     %d/100 - %s" % [test_npc.relationship_respect, _interpret_respect(test_npc.relationship_respect)])
-	print("Affection:   %d/100 - %s" % [test_npc.relationship_affection, _interpret_affection(test_npc.relationship_affection)])
-	print("Fear:        %d/100 - %s" % [test_npc.relationship_fear, _interpret_fear(test_npc.relationship_fear)])
-	print("Familiarity: %d/100 - %s" % [test_npc.relationship_familiarity, _interpret_familiarity(test_npc.relationship_familiarity)])
-	print("─".repeat(60))
-	print("\n✨ PERSONALITY EVOLUTION:")
-	print("   Started: Cautious professional merchant")
-	print("   Now: Trusting friend who values player deeply")
-	print("   Claude will generate completely different responses")
-	print("   NO pre-canned dialogue - all based on dimensions + memories\n")
+	await npc.record_interaction("quest_completed", {"description": "Player defeated bandits raiding my supply wagons.", "importance": 10, "emotion": "grateful"})
+	_check("Quest: trust, respect and affection rise", npc.relationship_trust > 0 and npc.relationship_respect > 0 and npc.relationship_affection > 0)
+	_check("Quest: a stranger's trust gain is dampened (15 x 0.7 = 10)", int(npc.relationship_trust) == 10)
+	var after_quest = npc.relationship_affection
+	await npc.record_interaction("gift_received", {"description": "Player gave me a rare book about horses for Elena.", "importance": 9, "emotion": "deeply_touched", "thoughtfulness": "high"})
+	_check("Thoughtful gift: affection +15", int(npc.relationship_affection - after_quest) == 15)
+	await npc.record_interaction("emotional_support", {"description": "Player listened to my worries about Elena.", "importance": 8, "emotion": "vulnerable"})
+	await npc.record_interaction("shared_danger", {"description": "Player fought alongside me when bandits attacked.", "importance": 10, "emotion": "bonded"})
+	_check("Shared danger: fear drops below zero", npc.relationship_fear < 0)
+	_check("Familiarity sums 5 + 10 + 5 + 15 = 35", int(npc.relationship_familiarity) == 35)
+	_check("All dimensions stay in range", abs(npc.relationship_trust) <= 100 and abs(npc.relationship_affection) <= 100 and npc.relationship_familiarity >= 0)
+	_check("Legacy status follows the dimensions", npc.relationship_status > 0)
 
-func _interpret_trust(value: int) -> String:
-	if value >= 50: return "Trusts them"
-	elif value >= 25: return "Starting to trust"
-	else: return "Neutral/Cautious"
+	var cache: Array = npc.rag_memory.memory_cache
+	_check("Each interaction is remembered", cache.size() == 4)
+	_check("Memories carry their impacts", cache.size() == 4 and cache[3].metadata.get("impact_fear") == -10 and cache[3].metadata.get("event_type") == "shared_danger")
+	_check("EventBus heard 4 relationship changes", changes.size() == 4)
+	_check("The last change reports the new dimensions", changes.size() == 4 and is_equal_approx(changes[3].new_dimensions.familiarity, npc.relationship_familiarity))
 
-func _interpret_respect(value: int) -> String:
-	if value >= 50: return "Respects them"
-	elif value >= 25: return "Growing respect"
-	else: return "Neutral"
+	var friend_prompt = _prompt(npc)
+	_check("The prompt changes from stranger to friend", friend_prompt != stranger_prompt)
+	_check("The stranger was treated formally, the friend is not", "Formal, asking basic questions" in stranger_prompt and not "Formal, asking basic questions" in friend_prompt)
 
-func _interpret_affection(value: int) -> String:
-	if value >= 50: return "Genuinely likes them"
-	elif value >= 25: return "Warming up"
-	else: return "Neutral"
+	npc.queue_free()
+	await process_frame
+	_finish()
 
-func _interpret_fear(value: int) -> String:
-	if value >= 25: return "Somewhat afraid"
-	elif value <= -10: return "Feels safe"
-	else: return "Neutral"
+func _prompt(npc) -> String:
+	return npc.context_builder.build_context({
+		"system_prompt": npc.system_prompt,
+		"relationship_dimensions": {"trust": npc.relationship_trust, "respect": npc.relationship_respect, "affection": npc.relationship_affection, "fear": npc.relationship_fear, "familiarity": npc.relationship_familiarity},
+		"player_input": "Hello"
+	}).system_prompt
 
-func _interpret_familiarity(value: int) -> String:
-	if value >= 50: return "Knows them well"
-	elif value >= 25: return "Getting to know"
-	else: return "Stranger"
+func _check(label: String, passed: bool):
+	print("  %s %s" % ["✓" if passed else "✗", label])
+	if not passed:
+		failures += 1
+
+func _finish():
+	print("\n============================================================")
+	print("✅ ALL TESTS PASSED" if failures == 0 else "❌ %d CHECK(S) FAILED" % failures)
+	print("============================================================")
+	quit(0 if failures == 0 else 1)

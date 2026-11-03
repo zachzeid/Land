@@ -1,135 +1,77 @@
 extends SceneTree
-# Test ChromaClient with running ChromaDB server
+
+# Tests ChromaClient against the local ChromaDB (chroma_cli.py, PersistentClient):
+# connection, collections, storing memories, semantic search, importance filtering, counts, deletion
+# Uses a temp ChromaDB directory (LAND_CHROMA_PATH), never ./chroma; SKIPs if python3 cannot import chromadb
+# Run: godot --headless --path . -s res://scripts/debug/test_chroma_client.gd
+
+const Support = preload("res://scripts/debug/legacy_test_support.gd")
+const COLLECTION = "npc_test_merchant"
+
+var failures: int = 0
 
 func _init():
-	print("\n=== ChromaClient Integration Test ===\n")
-	
-	var chroma_client = load("res://scripts/memory/chroma_client.gd").new()
-	root.add_child(chroma_client)
-	
-	# Test 1: Connection
-	print("Test 1: Testing ChromaDB connection...")
-	var connected = await chroma_client.test_connection()
-	if not connected:
-		print("❌ FAIL: Could not connect to ChromaDB")
-		print("Make sure ChromaDB is running: chroma run --host localhost --port 8000\n")
-		quit()
+	await process_frame
+	await process_frame
+	Support.start_watchdog(self, "CHROMACLIENT INTEGRATION TEST")
+	print("============================================================")
+	print("🧪 CHROMACLIENT INTEGRATION TEST")
+	print("============================================================\n")
+	if not Support.chroma_available():
+		print("SKIP (python3 cannot import chromadb)")
+		quit(0)
 		return
-	print("✅ PASS: Connected to ChromaDB\n")
-	
-	# Test 2: Create collection
-	print("Test 2: Creating test NPC collection...")
-	var collection_name = "npc_test_merchant"
-	var collection = await chroma_client.create_collection(collection_name)
-	if collection.has("error"):
-		print("❌ FAIL: %s" % collection.error)
-	else:
-		print("✅ PASS: Collection created: %s\n" % collection_name)
-	
-	# Test 3: Add memories
-	print("Test 3: Adding test memories...")
-	var memories_to_add = [
-		{
-			"collection": collection_name,
-			"id": "test_memory_001",
-			"document": "The player asked me about magical swords. I told them about the legendary Frostblade hidden in the northern mountains.",
-			"metadata": {
-				"event_type": "conversation",
-				"importance": 7,
-				"emotion": "helpful",
-				"timestamp": Time.get_unix_time_from_system()
-			}
-		},
-		{
-			"collection": collection_name,
-			"id": "test_memory_002",
-			"document": "I saw the player steal bread from my stall. They looked hungry but that's still wrong. I'm disappointed.",
-			"metadata": {
-				"event_type": "witnessed_crime",
-				"importance": 8,
-				"emotion": "disappointed",
-				"timestamp": Time.get_unix_time_from_system()
-			}
-		},
-		{
-			"collection": collection_name,
-			"id": "test_memory_003",
-			"document": "The player bought a healing potion from me. They were polite and paid fair price. Seems like a decent person.",
-			"metadata": {
-				"event_type": "transaction",
-				"importance": 5,
-				"emotion": "neutral",
-				"timestamp": Time.get_unix_time_from_system()
-			}
-		}
+	var chroma_dir = Support.use_temp_chroma()
+	var chroma = load("res://scripts/memory/chroma_client.gd").new()
+	root.add_child(chroma)
+
+	_check("Connection works", chroma.test_connection())
+	_check("Collection created", not chroma.create_collection(COLLECTION).has("error"))
+
+	var now = Time.get_unix_time_from_system()
+	var memories = [
+		{"id": "test_memory_001", "event_type": "conversation", "importance": 7, "emotion": "helpful",
+			"document": "The player asked me about magical swords. I told them about the legendary Frostblade hidden in the northern mountains."},
+		{"id": "test_memory_002", "event_type": "witnessed_crime", "importance": 8, "emotion": "disappointed",
+			"document": "I saw the player steal bread from my stall. They looked hungry but that's still wrong. I'm disappointed."},
+		{"id": "test_memory_003", "event_type": "transaction", "importance": 5, "emotion": "neutral",
+			"document": "The player bought a healing potion from me. They were polite and paid fair price. Seems like a decent person."},
 	]
-	
-	var stored_count = 0
-	for memory in memories_to_add:
-		var result = await chroma_client.add_memory(memory)
-		if not result.has("error"):
-			stored_count += 1
-	
-	print("✅ PASS: Stored %d/%d memories\n" % [stored_count, memories_to_add.size()])
-	
-	# Test 4: Query memories (semantic search)
-	print("Test 4: Querying memories with semantic search...")
-	
-	var test_queries = [
-		{"query": "theft stealing crime", "expected_topic": "stealing bread"},
-		{"query": "weapons swords combat", "expected_topic": "Frostblade"},
-		{"query": "business trade purchase", "expected_topic": "healing potion"}
-	]
-	
-	for test_query in test_queries:
-		print("\n  Query: '%s'" % test_query.query)
-		var results = await chroma_client.query_memories({
-			"collection": collection_name,
-			"query": test_query.query,
-			"limit": 2
-		})
-		
-		if results.size() > 0:
-			print("  Top result: %s" % results[0].document.substr(0, 60) + "...")
-			print("  Relevance distance: %.3f" % results[0].distance)
-		else:
-			print("  No results found")
-	
-	print("\n✅ PASS: Semantic search working\n")
-	
-	# Test 5: Filter by importance
-	print("Test 5: Filtering by importance...")
-	var important_memories = await chroma_client.query_memories({
-		"collection": collection_name,
-		"query": "player interaction",
-		"limit": 10,
-		"min_importance": 7
-	})
-	
-	print("Memories with importance >= 7: %d" % important_memories.size())
-	for mem in important_memories:
-		print("  - Importance: %d - %s" % [mem.metadata.importance, mem.document.substr(0, 40) + "..."])
-	
-	print("\n✅ PASS: Importance filtering working\n")
-	
-	# Test 6: Collection info
-	print("Test 6: Getting collection info...")
-	var count = await chroma_client.get_collection_count(collection_name)
-	print("Total memories in collection: %d" % count)
-	print("✅ PASS: Collection info retrieved\n")
-	
-	# Cleanup: Delete test collection
-	print("Cleaning up test collection...")
-	await chroma_client.delete_collection(collection_name)
-	
-	print("\n=== All Tests Passed! ===")
-	print("\nChromaClient is ready for NPC memory storage.")
-	print("Key features working:")
-	print("  ✓ Connection to ChromaDB")
-	print("  ✓ Create collections per NPC")
-	print("  ✓ Store memories with metadata")
-	print("  ✓ Semantic similarity search")
-	print("  ✓ Importance-based filtering")
-	print("\n")
-	
-	quit()
+	var stored = 0
+	for m in memories:
+		var result = chroma.add_memory({"collection": COLLECTION, "id": m.id, "document": m.document,
+			"metadata": {"event_type": m.event_type, "importance": m.importance, "emotion": m.emotion, "timestamp": now}})
+		if result.get("success", false):
+			stored += 1
+	_check("All 3 memories stored", stored == 3)
+	_check("Collection count is 3", chroma.get_collection_count(COLLECTION) == 3)
+
+	# Semantic search: the closest memory is the one on topic
+	var queries = [["theft stealing crime", "test_memory_002"], ["weapons swords combat", "test_memory_001"], ["buying a potion, paying a fair price", "test_memory_003"]]
+	for q in queries:
+		var results = chroma.query_memories({"collection": COLLECTION, "query": q[0], "limit": 2})
+		_check("'%s' finds %s first" % [q[0], q[1]], results.size() == 2 and results[0].id == q[1])
+
+	var important = chroma.query_memories({"collection": COLLECTION, "query": "player interaction", "limit": 10, "min_importance": 7})
+	var all_important = important.size() == 2
+	for m in important:
+		all_important = all_important and int(m.metadata.importance) >= 7
+	_check("min_importance 7 returns only the 2 memories at 7+", all_important)
+
+	chroma.delete_collection(COLLECTION)
+	_check("Deleted collection is gone", not COLLECTION in chroma.list_collections())
+
+	chroma.free()
+	Support.remove_temp_chroma(chroma_dir)
+	_finish()
+
+func _check(label: String, passed: bool):
+	print("  %s %s" % ["✓" if passed else "✗", label])
+	if not passed:
+		failures += 1
+
+func _finish():
+	print("\n============================================================")
+	print("✅ ALL TESTS PASSED" if failures == 0 else "❌ %d CHECK(S) FAILED" % failures)
+	print("============================================================")
+	quit(0 if failures == 0 else 1)

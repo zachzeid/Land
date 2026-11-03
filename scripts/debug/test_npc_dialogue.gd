@@ -1,199 +1,75 @@
-extends Node
-## Test script to verify NPC dialogue system end-to-end
-## Run this from Godot to test ChromaDB + Claude integration
+extends SceneTree
 
-var test_npc: Node = null
+# Tests the NPC dialogue pipeline up to (not including) Claude, in in-memory mode:
+# BaseNPC → RAGMemory tiers (pinned / important / regular) → retrieve_tiered → format_tiered_memories
+# → ContextBuilder prompt sections (DEFINING MOMENTS, Significant Memories, relevant)
+# Fakes only: no API calls, no ChromaDB, no save file written
+# Run: godot --headless --path . -s res://scripts/debug/test_npc_dialogue.gd
 
-func _ready():
-	print("=== NPC DIALOGUE SYSTEM TEST ===")
-	print("Testing: ChromaDB → RAGMemory → ContextBuilder → Claude")
-	print("")
+const Support = preload("res://scripts/debug/legacy_test_support.gd")
 
-	# Run tests after a short delay to ensure everything is loaded
-	await get_tree().create_timer(0.5).timeout
-	await run_tests()
+var failures: int = 0
 
-func run_tests():
-	print("--- Test 1: Create Test NPC ---")
-	var result1 = await test_create_npc()
-	print("Result: %s\n" % ("PASS" if result1 else "FAIL"))
+func _init():
+	await process_frame
+	await process_frame
+	Support.start_watchdog(self, "NPC DIALOGUE PIPELINE TEST")
+	Support.guard_save(self)
+	print("============================================================")
+	print("🧪 NPC DIALOGUE PIPELINE TEST")
+	print("============================================================\n")
+	var npc = CharacterBody2D.new()
+	npc.set_script(load("res://scripts/npcs/base_npc.gd"))
+	npc.npc_id = "test_npc_001"
+	npc.npc_name = "Test Merchant"
+	root.add_child(npc)
+	_check("NPC initializes in-memory, no KPI", await npc.initialize(false, false))
+	var rag = npc.rag_memory
 
-	print("--- Test 2: Store Memories ---")
-	var result2 = await test_store_memories()
-	print("Result: %s\n" % ("PASS" if result2 else "FAIL"))
+	_check("Pinned memory stored", await rag.store({"text": "I met the player for the first time. They seemed friendly.", "event_type": "first_meeting", "importance": 10, "emotion": "curious", "memory_tier": 0, "is_milestone": true}))
+	_check("Important memory stored", await rag.store({"text": "The player helped me retrieve stolen goods from bandits.", "event_type": "quest_completed", "importance": 8, "emotion": "grateful", "memory_tier": 1}))
+	_check("Regular memory stored", await rag.store({"text": "We discussed the weather and local rumors.", "event_type": "conversation", "importance": 5, "emotion": "neutral", "memory_tier": 2}))
 
-	print("--- Test 3: Retrieve Tiered Memories ---")
-	var result3 = await test_tiered_retrieval()
-	print("Result: %s\n" % ("PASS" if result3 else "FAIL"))
-
-	print("--- Test 4: Context Building ---")
-	var result4 = await test_context_builder()
-	print("Result: %s\n" % ("PASS" if result4 else "FAIL"))
-
-	print("=== TEST SUMMARY ===")
-	var passed = [result1, result2, result3, result4].count(true)
-	print("Passed: %d/4" % passed)
-
-	if passed == 4:
-		print("\nAll tests passed! System is ready for Claude integration.")
-	else:
-		print("\nSome tests failed. Check the output above for details.")
-
-	# Cleanup
-	if test_npc:
-		test_npc.queue_free()
-
-func test_create_npc() -> bool:
-	# Load base NPC script
-	var BaseNPCScript = load("res://scripts/npcs/base_npc.gd")
-	if not BaseNPCScript:
-		print("  ERROR: Could not load base_npc.gd")
-		return false
-
-	# Create NPC instance
-	test_npc = CharacterBody2D.new()
-	test_npc.set_script(BaseNPCScript)
-	test_npc.npc_id = "test_npc_001"
-	test_npc.npc_name = "Test Merchant"
-	add_child(test_npc)
-
-	# Initialize with in-memory mode (no ChromaDB dependency)
-	print("  Initializing NPC in in-memory mode...")
-	var init_result = await test_npc.initialize(false, false)  # No ChromaDB, no KPI
-
-	if init_result:
-		print("  NPC initialized successfully")
-		print("  - NPC ID: %s" % test_npc.npc_id)
-		print("  - Name: %s" % test_npc.npc_name)
-		return true
-	else:
-		print("  ERROR: NPC initialization failed")
-		return false
-
-func test_store_memories() -> bool:
-	if not test_npc or not test_npc.rag_memory:
-		print("  ERROR: No NPC or RAGMemory available")
-		return false
-
-	var rag = test_npc.rag_memory
-
-	# Store a pinned memory (milestone)
-	print("  Storing pinned memory (first_meeting)...")
-	var pinned_result = await rag.store({
-		"text": "I met the player for the first time. They seemed friendly.",
-		"event_type": "first_meeting",
-		"importance": 10,
-		"emotion": "curious",
-		"memory_tier": 0,  # PINNED
-		"is_milestone": true
-	})
-
-	# Store an important memory
-	print("  Storing important memory (quest_completed)...")
-	var important_result = await rag.store({
-		"text": "The player helped me retrieve stolen goods from bandits.",
-		"event_type": "quest_completed",
-		"importance": 8,
-		"emotion": "grateful",
-		"memory_tier": 1  # IMPORTANT
-	})
-
-	# Store regular memories
-	print("  Storing regular memories (conversations)...")
-	var conv_result = await rag.store({
-		"text": "We discussed the weather and local rumors.",
-		"event_type": "conversation",
-		"importance": 5,
-		"emotion": "neutral",
-		"memory_tier": 2  # REGULAR
-	})
-
-	if pinned_result and important_result and conv_result:
-		print("  All memories stored successfully")
-		return true
-	else:
-		print("  ERROR: Some memories failed to store")
-		return false
-
-func test_tiered_retrieval() -> bool:
-	if not test_npc or not test_npc.rag_memory:
-		print("  ERROR: No NPC or RAGMemory available")
-		return false
-
-	var rag = test_npc.rag_memory
-
-	print("  Retrieving tiered memories...")
 	var tiered = await rag.retrieve_tiered("bandits quest")
+	_check("One pinned memory", tiered.pinned.size() == 1 and "first time" in tiered.pinned[0].get("document", ""))
+	_check("One important memory", tiered.important.size() == 1 and "stolen goods" in tiered.important[0].get("document", ""))
+	_check("The regular memory is relevant, not repeated", tiered.relevant.size() == 1 and "weather" in tiered.relevant[0].get("document", ""))
+	_check("Characters are counted against the budget", tiered.total_chars > 0)
 
-	print("  Results:")
-	print("    - Pinned: %d memories" % tiered.pinned.size())
-	print("    - Important: %d memories" % tiered.important.size())
-	print("    - Relevant: %d memories" % tiered.relevant.size())
-	print("    - Total chars: %d" % tiered.total_chars)
-
-	# Verify we got the expected memories
-	if tiered.pinned.size() >= 1:
-		print("  Pinned memory content: %s..." % tiered.pinned[0].get("document", "").substr(0, 50))
-
-	# Format for context
 	var formatted = rag.format_tiered_memories(tiered)
-	print("  Formatted pinned: %d strings" % formatted.pinned.size())
-	print("  Formatted important: %d strings" % formatted.important.size())
-	print("  Formatted relevant: %d strings" % formatted.relevant.size())
+	_check("Pinned formatted as a MILESTONE", formatted.pinned.size() == 1 and formatted.pinned[0].begins_with("[MILESTONE - first_meeting"))
+	_check("Important formatted as IMPORTANT", formatted.important.size() == 1 and formatted.important[0].begins_with("[IMPORTANT - quest_completed"))
 
-	return tiered.pinned.size() >= 1 or tiered.important.size() >= 1
-
-func test_context_builder() -> bool:
-	if not test_npc or not test_npc.context_builder:
-		print("  ERROR: No NPC or ContextBuilder available")
-		return false
-
-	var rag = test_npc.rag_memory
-	var builder = test_npc.context_builder
-
-	# Get tiered memories
-	var tiered = await rag.retrieve_tiered("hello merchant")
-	var formatted = rag.format_tiered_memories(tiered)
-
-	# Set up test relationship dimensions
-	test_npc.relationship_trust = 30
-	test_npc.relationship_affection = 20
-	test_npc.relationship_familiarity = 40
-
-	print("  Building context with tiered memories...")
-	var context = builder.build_context({
+	var context = npc.context_builder.build_context({
 		"system_prompt": "You are a friendly merchant named Test.",
-		"npc_id": test_npc.npc_id,
+		"npc_id": npc.npc_id,
 		"tiered_memories": formatted,
-		"relationship_dimensions": {
-			"trust": test_npc.relationship_trust,
-			"respect": 0,
-			"affection": test_npc.relationship_affection,
-			"fear": 0,
-			"familiarity": test_npc.relationship_familiarity
-		},
+		"relationship_dimensions": {"trust": 30, "respect": 0, "affection": 20, "fear": 0, "familiarity": 40},
 		"world_state": {},
 		"conversation_history": [],
 		"player_input": "Hello there!"
 	})
+	var prompt: String = context.system_prompt
+	_check("Prompt has DEFINING MOMENTS with the pinned memory", "## DEFINING MOMENTS" in prompt and "first time" in prompt)
+	_check("Prompt has Significant Memories with the important one", "## Significant Memories" in prompt and "stolen goods" in prompt)
+	_check("Prompt has the relevant memory", "## Recent & Relevant Memories" in prompt and "weather" in prompt)
+	_check("Defining moments come before significant memories", prompt.find("## DEFINING MOMENTS") < prompt.find("## Significant Memories"))
+	_check("One message: the player's input", context.messages.size() == 1 and context.messages[0].content == "Hello there!")
 
-	print("  Context built successfully")
-	print("  - System prompt length: %d chars" % context.system_prompt.length())
-	print("  - Messages count: %d" % context.messages.size())
+	var empty = npc.context_builder.build_context({"system_prompt": "x", "relationship_dimensions": {"trust": 1}, "player_input": "Hi"}).system_prompt
+	_check("No memories: says so", "You have no significant memories of this person yet." in empty)
 
-	# Check for tiered memory sections in prompt
-	var has_defining = "DEFINING MOMENTS" in context.system_prompt
-	var has_significant = "Significant Memories" in context.system_prompt or "no significant memories" in context.system_prompt.to_lower()
+	npc.queue_free()
+	await process_frame
+	_finish()
 
-	print("  - Contains 'DEFINING MOMENTS': %s" % has_defining)
-	print("  - Contains memory section: %s" % has_significant)
+func _check(label: String, passed: bool):
+	print("  %s %s" % ["✓" if passed else "✗", label])
+	if not passed:
+		failures += 1
 
-	# Print a snippet of the system prompt
-	print("\n  System prompt preview (first 500 chars):")
-	print("  ---")
-	var preview = context.system_prompt.substr(0, 500)
-	for line in preview.split("\n"):
-		print("  | %s" % line)
-	print("  ---")
-
-	return context.system_prompt.length() > 100 and context.messages.size() > 0
+func _finish():
+	print("\n============================================================")
+	print("✅ ALL TESTS PASSED" if failures == 0 else "❌ %d CHECK(S) FAILED" % failures)
+	print("============================================================")
+	quit(0 if failures == 0 else 1)
