@@ -611,8 +611,10 @@ func _fight_key(a: Node, b: Node) -> String:
 # =============================================================================
 
 ## Seconds of real time. Tests pin it with set_test_clock(t); t < 0 restores it
+## Seconds of unpaused play (not the wall clock): a pause stops recovery, stagger and block timing,
+## and frame-locked runs (--write-movie) keep the same rhythm as real play. Tests pin it
 func now() -> float:
-	return _clock if _clock >= 0.0 else Time.get_ticks_msec() / 1000.0
+	return _clock if _clock >= 0.0 else _play_time
 
 func set_test_clock(t: float) -> void:
 	_clock = t
@@ -622,7 +624,10 @@ func reset() -> void:
 	_state.clear()
 	_fights.clear()
 
+var _play_time: float = 0.0
+
 func _process(delta: float) -> void:
+	_play_time += delta
 	var t = now()
 	for id in _state.keys():
 		var st = _state[id]

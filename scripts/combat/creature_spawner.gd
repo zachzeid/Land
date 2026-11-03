@@ -95,8 +95,27 @@ func _spots(scene_root: Node) -> Array:
 		if default is Node2D:
 			center = default.position
 		for a in 6:
-			spots.append(center + Vector2.RIGHT.rotated(TAU * a / 6.0) * RING)
+			spots.append(_inside_walls(scene_root, center, center + Vector2.RIGHT.rotated(TAU * a / 6.0) * RING))
 	return spots
+
+const SOLID_MASK = 4      # 2d_physics layer 3, world_solid (walls, buildings)
+const WALL_MARGIN = 48.0
+
+## A ring spot past a wall comes back inside it (the first windowed run had a wolf beyond the forest
+## path's east wall, where no blade could reach it). Scene markers (CreatureSpawns) are used as placed
+func _inside_walls(scene_root: Node, center: Vector2, spot: Vector2) -> Vector2:
+	if scene_root == null or not scene_root.is_inside_tree() or scene_root.get_viewport() == null:
+		return spot
+	var space = scene_root.get_viewport().get_world_2d().direct_space_state
+	var origin = scene_root.global_position
+	var query = PhysicsRayQueryParameters2D.create(origin + center, origin + spot, SOLID_MASK)
+	query.collide_with_areas = false
+	var hit = space.intersect_ray(query)
+	if hit.is_empty():
+		return spot
+	var dir = (spot - center).normalized()
+	var back = (hit.position - origin) - dir * WALL_MARGIN
+	return back if (back - center).dot(dir) > 0.0 else center + dir * WALL_MARGIN
 
 func _day() -> int:
 	var world_state = get_node_or_null("/root/WorldState")

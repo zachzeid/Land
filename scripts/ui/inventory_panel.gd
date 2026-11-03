@@ -8,9 +8,9 @@ extends CanvasLayer
 const UI = preload("res://scripts/ui/player_ui.gd")
 const SkillsPage = preload("res://scripts/ui/skills_page.gd")
 ## Equipment slots (spec §6) and the slot an item kind goes to when its definition names none
-const SLOTS = ["main_hand", "off_hand", "armour", "tool"]
-const SLOT_NAMES = {"main_hand": "Main hand", "off_hand": "Off hand", "armour": "Armour", "tool": "Tool"}
-const KIND_SLOT = {"weapon": "main_hand", "armour": "armour", "tool": "tool"}
+const SLOTS = ["main_hand", "off_hand", "body", "head", "tool"]  # Inventory's equipment slots
+const SLOT_NAMES = {"main_hand": "Main hand", "off_hand": "Off hand", "body": "Body", "head": "Head", "tool": "Tool"}
+const KIND_SLOT = {"weapon": "main_hand", "armour": "body", "tool": "tool"}
 
 ## Injectable for tests; the Inventory autoload otherwise
 var inventory: Node = null
@@ -134,8 +134,8 @@ func refresh() -> void:
 	if items.is_empty():
 		_items.add_child(UI.label("You carry nothing.", 14, UI.FAINT))
 	for item in items:
-		if not item is Dictionary:
-			continue
+		if not item is Dictionary or str(item.get("slot", "")) != "":
+			continue  # worn or held: listed under Equipped above
 		var row = HBoxContainer.new()
 		var line = _cell(describe(item, inv), 440)
 		line.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -182,8 +182,11 @@ func slot_for(item: Dictionary) -> String:
 	var d = UI.item_def(str(item.get("id", "")), _inventory())
 	if d.has("slot") and str(d.slot) in SLOTS:
 		return str(d.slot)
-	if "shield" in d.get("tags", []):
+	var tags: Array = d.get("tags", [])
+	if "shield" in tags or "off_hand" in tags:
 		return "off_hand"
+	if str(d.get("kind", "")) == "armour":
+		return "head" if "head" in tags else "body"
 	return KIND_SLOT.get(str(d.get("kind", item.get("kind", ""))), "")
 
 func is_equipped(item: Dictionary) -> bool:
