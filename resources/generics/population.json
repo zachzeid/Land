@@ -118,6 +118,11 @@
       {
         "archetype": "tavern_regular",
         "count": 1
+      },
+      {
+        "archetype": "house_companion",
+        "count": 2,
+        "hours": [15, 24]
       }
     ],
     "ferrisford": [

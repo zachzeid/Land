@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cy9xk4n0q3wsh"]
+[gd_scene load_steps=27 format=3 uid="uid://cy9xk4n0q3wsh"]
 
 [ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
 [ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="2_scene_trigger"]
@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/tavern_table.png" id="7_tavern_table"]
 [ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/tavern_fireplace.png" id="8_fireplace"]
 [ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/crates_barrels.png" id="9_crates"]
+[ext_resource type="Script" path="res://scripts/world/bed.gd" id="10_bed"]
+[ext_resource type="Script" path="res://scripts/world/room_door.gd" id="11_room_door"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
 size = Vector2(1024, 40)
@@ -23,6 +25,39 @@ size = Vector2(200, 100)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fireplace_collision"]
 size = Vector2(120, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tav_40x632"]
+size = Vector2(40, 632)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tav_40x152"]
+size = Vector2(40, 152)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tav_640x40"]
+size = Vector2(640, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tav_40x944"]
+size = Vector2(40, 944)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tav_24x117"]
+size = Vector2(24, 117)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tav_24x235"]
+size = Vector2(24, 235)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tav_24x234"]
+size = Vector2(24, 234)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tav_368x24"]
+size = Vector2(368, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tav_140x70"]
+size = Vector2(140, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tav_120x150"]
+size = Vector2(120, 150)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tav_40x80"]
+size = Vector2(40, 80)
 
 [node name="TavernInterior" type="Node2D"]
 
@@ -71,21 +106,6 @@ offset_left = -512.0
 offset_top = -20.0
 offset_right = 512.0
 offset_bottom = 20.0
-color = Color(0.4, 0.28, 0.18, 1)
-
-[node name="West" type="StaticBody2D" parent="Walls"]
-position = Vector2(-492, 0)
-collision_layer = 4
-script = ExtResource("1_world_solid")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/West"]
-shape = SubResource("RectangleShape2D_wall_v")
-
-[node name="Visual" type="ColorRect" parent="Walls/West"]
-offset_left = -20.0
-offset_top = -472.0
-offset_right = 20.0
-offset_bottom = 472.0
 color = Color(0.4, 0.28, 0.18, 1)
 
 [node name="East" type="StaticBody2D" parent="Walls"]
@@ -188,6 +208,393 @@ position = Vector2(0, 350)
 
 [node name="from_exterior" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(0, 350)
+
+[node name="TavernRooms" type="Node2D" parent="."]
+
+[node name="WingFloor" type="ColorRect" parent="TavernRooms"]
+z_index = -10
+offset_left = -1132
+offset_top = -512
+offset_right = -512
+offset_bottom = 512
+color = Color(0.28, 0.22, 0.16, 1)
+
+[node name="WingBoards" type="ColorRect" parent="TavernRooms"]
+z_index = -10
+offset_left = -1092
+offset_top = -472
+offset_right = -512
+offset_bottom = 472
+color = Color(0.33, 0.26, 0.19, 1)
+
+[node name="Stairs" type="ColorRect" parent="TavernRooms"]
+z_index = -9
+offset_left = -472
+offset_top = 170
+offset_right = -390
+offset_bottom = 310
+color = Color(0.3, 0.22, 0.15, 1)
+
+[node name="StairsSign" type="Label" parent="TavernRooms"]
+z_index = 5
+offset_left = -511
+offset_top = 130
+offset_right = -351
+offset_bottom = 150
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Stairs to the rooms"
+horizontal_alignment = 1
+
+[node name="WestUpper" type="StaticBody2D" parent="Walls"]
+position = Vector2(-492, -156)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WestUpper"]
+shape = SubResource("RectangleShape2D_tav_40x632")
+
+[node name="Visual" type="ColorRect" parent="Walls/WestUpper"]
+offset_left = -20
+offset_top = -316
+offset_right = 20
+offset_bottom = 316
+color = Color(0.4, 0.28, 0.18, 1)
+
+[node name="WestLower" type="StaticBody2D" parent="Walls"]
+position = Vector2(-492, 396)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WestLower"]
+shape = SubResource("RectangleShape2D_tav_40x152")
+
+[node name="Visual" type="ColorRect" parent="Walls/WestLower"]
+offset_left = -20
+offset_top = -76
+offset_right = 20
+offset_bottom = 76
+color = Color(0.4, 0.28, 0.18, 1)
+
+[node name="WingNorth" type="StaticBody2D" parent="Walls"]
+position = Vector2(-812, -492)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WingNorth"]
+shape = SubResource("RectangleShape2D_tav_640x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/WingNorth"]
+offset_left = -320
+offset_top = -20
+offset_right = 320
+offset_bottom = 20
+color = Color(0.4, 0.28, 0.18, 1)
+
+[node name="WingSouth" type="StaticBody2D" parent="Walls"]
+position = Vector2(-812, 492)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WingSouth"]
+shape = SubResource("RectangleShape2D_tav_640x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/WingSouth"]
+offset_left = -320
+offset_top = -20
+offset_right = 320
+offset_bottom = 20
+color = Color(0.4, 0.28, 0.18, 1)
+
+[node name="WingWest" type="StaticBody2D" parent="Walls"]
+position = Vector2(-1112, 0)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WingWest"]
+shape = SubResource("RectangleShape2D_tav_40x944")
+
+[node name="Visual" type="ColorRect" parent="Walls/WingWest"]
+offset_left = -20
+offset_top = -472
+offset_right = 20
+offset_bottom = 472
+color = Color(0.4, 0.28, 0.18, 1)
+
+[node name="Partition1" type="StaticBody2D" parent="Walls"]
+position = Vector2(-712, -413.25)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Partition1"]
+shape = SubResource("RectangleShape2D_tav_24x117")
+
+[node name="Visual" type="ColorRect" parent="Walls/Partition1"]
+offset_left = -12
+offset_top = -58.75
+offset_right = 12
+offset_bottom = 58.75
+color = Color(0.4, 0.28, 0.18, 1)
+
+[node name="Partition2" type="StaticBody2D" parent="Walls"]
+position = Vector2(-712, -157)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Partition2"]
+shape = SubResource("RectangleShape2D_tav_24x235")
+
+[node name="Visual" type="ColorRect" parent="Walls/Partition2"]
+offset_left = -12
+offset_top = -117.5
+offset_right = 12
+offset_bottom = 117.5
+color = Color(0.4, 0.28, 0.18, 1)
+
+[node name="Partition3" type="StaticBody2D" parent="Walls"]
+position = Vector2(-712, 157.75)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Partition3"]
+shape = SubResource("RectangleShape2D_tav_24x234")
+
+[node name="Visual" type="ColorRect" parent="Walls/Partition3"]
+offset_left = -12
+offset_top = -117.25
+offset_right = 12
+offset_bottom = 117.25
+color = Color(0.4, 0.28, 0.18, 1)
+
+[node name="Partition4" type="StaticBody2D" parent="Walls"]
+position = Vector2(-712, 413.5)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Partition4"]
+shape = SubResource("RectangleShape2D_tav_24x117")
+
+[node name="Visual" type="ColorRect" parent="Walls/Partition4"]
+offset_left = -12
+offset_top = -58.5
+offset_right = 12
+offset_bottom = 58.5
+color = Color(0.4, 0.28, 0.18, 1)
+
+[node name="Divider1" type="StaticBody2D" parent="Walls"]
+position = Vector2(-908, -157)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Divider1"]
+shape = SubResource("RectangleShape2D_tav_368x24")
+
+[node name="Visual" type="ColorRect" parent="Walls/Divider1"]
+offset_left = -184
+offset_top = -12
+offset_right = 184
+offset_bottom = 12
+color = Color(0.4, 0.28, 0.18, 1)
+
+[node name="Divider2" type="StaticBody2D" parent="Walls"]
+position = Vector2(-908, 158)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Divider2"]
+shape = SubResource("RectangleShape2D_tav_368x24")
+
+[node name="Visual" type="ColorRect" parent="Walls/Divider2"]
+offset_left = -184
+offset_top = -12
+offset_right = 184
+offset_bottom = 12
+color = Color(0.4, 0.28, 0.18, 1)
+
+[node name="Room1Frame" type="StaticBody2D" parent="TavernRooms"]
+position = Vector2(-1010, -314.5)
+collision_layer = 8
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TavernRooms/Room1Frame"]
+shape = SubResource("RectangleShape2D_tav_140x70")
+
+[node name="Visual" type="ColorRect" parent="TavernRooms/Room1Frame"]
+offset_left = -70
+offset_top = -35
+offset_right = 70
+offset_bottom = 35
+color = Color(0.5, 0.42, 0.3, 1)
+
+[node name="Room1Bed" type="Area2D" parent="TavernRooms"]
+position = Vector2(-900, -314.5)
+script = ExtResource("10_bed")
+location_id = "thornhaven_tavern"
+spawn_point = "room_1"
+rent = 3
+keeper = "mira"
+interaction_name = "Take a room for the night"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TavernRooms/Room1Bed"]
+shape = SubResource("RectangleShape2D_tav_120x150")
+
+[node name="InteractionPrompt" type="Label" parent="TavernRooms/Room1Bed"]
+visible = false
+offset_left = -110.0
+offset_top = -100.0
+offset_right = 110.0
+offset_bottom = -80.0
+horizontal_alignment = 1
+text = "[E] Take a room for the night"
+
+[node name="Room1Door" type="Area2D" parent="TavernRooms"]
+position = Vector2(-745, -314.5)
+script = ExtResource("11_room_door")
+location_id = "thornhaven_tavern"
+room = "room_1"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TavernRooms/Room1Door"]
+shape = SubResource("RectangleShape2D_tav_40x80")
+
+[node name="Room1Sign" type="Label" parent="TavernRooms"]
+z_index = 5
+offset_left = -710
+offset_top = -384.5
+offset_right = -530
+offset_bottom = -364.5
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Room 1"
+horizontal_alignment = 1
+
+[node name="room_1" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-820, -314.5)
+
+[node name="Room2Frame" type="StaticBody2D" parent="TavernRooms"]
+position = Vector2(-1010, 0.5)
+collision_layer = 8
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TavernRooms/Room2Frame"]
+shape = SubResource("RectangleShape2D_tav_140x70")
+
+[node name="Visual" type="ColorRect" parent="TavernRooms/Room2Frame"]
+offset_left = -70
+offset_top = -35
+offset_right = 70
+offset_bottom = 35
+color = Color(0.5, 0.42, 0.3, 1)
+
+[node name="Room2Bed" type="Area2D" parent="TavernRooms"]
+position = Vector2(-900, 0.5)
+script = ExtResource("10_bed")
+location_id = "thornhaven_tavern"
+spawn_point = "room_2"
+rent = 3
+keeper = "mira"
+interaction_name = "Take a room for the night"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TavernRooms/Room2Bed"]
+shape = SubResource("RectangleShape2D_tav_120x150")
+
+[node name="InteractionPrompt" type="Label" parent="TavernRooms/Room2Bed"]
+visible = false
+offset_left = -110.0
+offset_top = -100.0
+offset_right = 110.0
+offset_bottom = -80.0
+horizontal_alignment = 1
+text = "[E] Take a room for the night"
+
+[node name="Room2Door" type="Area2D" parent="TavernRooms"]
+position = Vector2(-745, 0.5)
+script = ExtResource("11_room_door")
+location_id = "thornhaven_tavern"
+room = "room_2"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TavernRooms/Room2Door"]
+shape = SubResource("RectangleShape2D_tav_40x80")
+
+[node name="Room2Sign" type="Label" parent="TavernRooms"]
+z_index = 5
+offset_left = -710
+offset_top = -69.5
+offset_right = -530
+offset_bottom = -49.5
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Room 2"
+horizontal_alignment = 1
+
+[node name="room_2" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-820, 0.5)
+
+[node name="Room3Frame" type="StaticBody2D" parent="TavernRooms"]
+position = Vector2(-1010, 315)
+collision_layer = 8
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TavernRooms/Room3Frame"]
+shape = SubResource("RectangleShape2D_tav_140x70")
+
+[node name="Visual" type="ColorRect" parent="TavernRooms/Room3Frame"]
+offset_left = -70
+offset_top = -35
+offset_right = 70
+offset_bottom = 35
+color = Color(0.5, 0.42, 0.3, 1)
+
+[node name="Room3Bed" type="Area2D" parent="TavernRooms"]
+position = Vector2(-900, 315)
+script = ExtResource("10_bed")
+location_id = "thornhaven_tavern"
+spawn_point = "room_3"
+rent = 3
+keeper = "mira"
+interaction_name = "Take a room for the night"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TavernRooms/Room3Bed"]
+shape = SubResource("RectangleShape2D_tav_120x150")
+
+[node name="InteractionPrompt" type="Label" parent="TavernRooms/Room3Bed"]
+visible = false
+offset_left = -110.0
+offset_top = -100.0
+offset_right = 110.0
+offset_bottom = -80.0
+horizontal_alignment = 1
+text = "[E] Take a room for the night"
+
+[node name="Room3Door" type="Area2D" parent="TavernRooms"]
+position = Vector2(-745, 315)
+script = ExtResource("11_room_door")
+location_id = "thornhaven_tavern"
+room = "room_3"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TavernRooms/Room3Door"]
+shape = SubResource("RectangleShape2D_tav_40x80")
+
+[node name="Room3Sign" type="Label" parent="TavernRooms"]
+z_index = 5
+offset_left = -710
+offset_top = 245
+offset_right = -530
+offset_bottom = 265
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Room 3"
+horizontal_alignment = 1
+
+[node name="room_3" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-820, 315)
 
 [node name="TavernKeeper" parent="." groups=["npcs"] instance=ExtResource("4_tavern_keeper")]
 position = Vector2(-320, -180)
