@@ -40,6 +40,8 @@ const DEFAULT_MATERIAL_GRADE = 50.0
 const SERVES_VARN_FLAG = "hc_player_backed_varn"
 const VARN_KEY = "varn"
 const PLAYER = "player"
+## The smithing 50 perk (resources/player/perks.json): what the player makes carries their mark
+const MAKERS_MARK_PERK = "smithing_50_makers_mark"
 
 # Content
 var recipes: Dictionary = {}       # id -> recipe
@@ -313,14 +315,13 @@ func repair(item_id: String, station_id: String) -> Dictionary:
 	var trespass = leave_status(station_id) in ["refused", "none"]
 	if not _take(cost):
 		return {"ok": false, "item": {}, "reason": "the materials could not be taken"}
-	if not _inventory().remove(item_id, 1):
+	if not _mend(item_id, record):
 		_give_back(cost)
-		return {"ok": false, "item": {}, "reason": "the item could not be taken up"}
+		return {"ok": false, "item": {}, "reason": "the item could not be mended"}
 	var props: Dictionary = record.duplicate(true)
 	for k in ["id", "qty", "broken"]:
 		props.erase(k)
 	props["durability"] = float(record.get("max_durability", record.get("durability", 1)))
-	_give(item_id, 1, props)
 	var minutes = int(fix.get("minutes", 30)) * (2 if broken else 1)
 	_advance(minutes, "repair")
 	var witnesses = _witnesses_at(_live_stations.get(station_id))
@@ -366,7 +367,7 @@ func cook(ingredients: Array, station_id: String) -> Dictionary:
 	var potency = float(result.get("potency", 0.0))
 	var quality = clampi(roundi(float(result.get("quality", potency))), 0, 100)
 	var props = {"quality": quality, "potency": potency, "effects": result.get("effects", []),
-		"dubious": result.get("dubious", false) == true, "maker": PLAYER if _has_perk("makers_mark") else "",
+		"dubious": result.get("dubious", false) == true, "maker": PLAYER if _has_mark() else "",
 		"provenance": {"from": station_id, "stolen": false, "owner": ""}}
 	for k in ["name", "text", "kind"]:
 		if result.has(k):
@@ -576,6 +577,38 @@ func offer_commission(npc_key: String, item_id: String, due_day: int) -> Diction
 	commissions[id] = {"id": id, "npc": npc_key, "item": item_id, "due_day": due_day, "event": ev, "status": "open", "minute": _now()}
 	return {"ok": ev != "", "commission_id": id, "event_id": ev, "reason": "" if ev != "" else "the promise could not be recorded"}
 
+## Inventory.repair mends the most worn record (broken first) fully, keeping quality, maker and
+## provenance; without it, the record is taken up and put back whole
+func _mend(item_id: String, record: Dictionary) -> bool:
+	var inv = _inventory()
+	if inv and inv.has_method("repair"):
+		return inv.repair(item_id, -1.0)
+	if not (inv and inv.remove(item_id, 1)):
+		return false
+	var props: Dictionary = record.duplicate(true)
+	for k in ["id", "qty", "uid", "broken", "recognised"]:
+		props.erase(k)
+	props["durability"] = float(record.get("max_durability", record.get("durability", 1)))
+	return _give(item_id, 1, props)
+
+## Give something the player carries to someone: a gift with its quality, and for a weapon or armour
+## a help about them too (arming a side: emergence's buyer_for_the_blades reads a help about a Hollow
+## member). Returns {ok, reason, quality, events}
+func give_item(npc_key: String, item_id: String) -> Dictionary:
+	var record = _best(item_id)
+	if record.is_empty():
+		return {"ok": false, "reason": "you have no %s" % _item_name(item_id), "quality": 0, "events": []}
+	if not _inventory().remove(item_id, 1):
+		return {"ok": false, "reason": "it could not be handed over", "quality": 0, "events": []}
+	var quality = int(record.get("quality", 50))
+	var who = _npc_name(npc_key)
+	var thing = _with_article(_quality_word(quality), _item_name(item_id))
+	var made = " of their own make" if str(record.get("maker", "")) == PLAYER else ""
+	var events: Array = [_record("gift", "gave %s %s%s" % [who, thing, made], [npc_key], {"witnesses": [npc_key], "with_present": true})]
+	if _item_kind(item_id) in ["weapon", "armour"]:
+		events.append(_record("help", "armed %s with %s" % [who, thing], [npc_key], {"witnesses": [npc_key], "with_present": true}))
+	return {"ok": true, "reason": "", "quality": quality, "events": events.filter(func(e): return e != "")}
+
 ## Hand over the best `item_id` the player carries for an open commission to npc_key: a help and a
 ## gift with its quality, and the promise kept (unless it already broke). Returns {ok, reason, quality, events}
 func deliver_commission(npc_key: String, item_id: String) -> Dictionary:
@@ -673,9 +706,9 @@ func _use_skill(skill_name: String, difficulty: float, context: Dictionary) -> D
 	var s = _stats()
 	return s.use_skill(skill_name, difficulty, context) if s else {}
 
-func _has_perk(perk: String) -> bool:
+func _has_mark() -> bool:
 	var s = _stats()
-	return s != null and s.has_perk(perk)
+	return s != null and (s.has_perk(MAKERS_MARK_PERK) or s.has_perk("makers_mark"))
 
 func _inventory_items() -> Array:
 	var inv = _inventory()
@@ -717,7 +750,7 @@ func _give(item_id: String, qty: int, props: Dictionary) -> bool:
 
 ## A made thing: quality, durability scaled by quality (half at 0, one and a half at 100), the maker's mark
 func _made_props(out: Dictionary, quality: int, station_id: String) -> Dictionary:
-	var props = {"quality": quality, "maker": PLAYER if _has_perk("makers_mark") else "",
+	var props = {"quality": quality, "maker": PLAYER if _has_mark() else "",
 		"provenance": {"from": station_id, "stolen": false, "owner": ""}}
 	if out.has("durability"):
 		var d = roundf(float(out.durability) * (0.5 + quality / 100.0))
@@ -814,6 +847,14 @@ func _owned_place(n: Dictionary) -> String:
 
 func _kind_name(kind: String) -> String:
 	return str(station_kinds.get(kind, {}).get("name", kind.replace("_", " "))).to_lower()
+
+func _item_kind(item_id: String) -> String:
+	var inv = _inventory()
+	if inv and inv.has_method("get_definition"):
+		var def = inv.get_definition(item_id)
+		if def is Dictionary and def.has("kind"):
+			return str(def.kind)
+	return str(_item_defs.get(item_id, {}).get("kind", ""))
 
 func _item_name(item_id: String) -> String:
 	var def: Dictionary = _item_defs.get(item_id, {})
