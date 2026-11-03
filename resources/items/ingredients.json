@@ -1,0 +1,344 @@
+{
+  "_note": "Herbcraft and cooking ingredients (Herbcraft, resources/crafting/ingredients.json, owns their effects). value in pennies.",
+  "items": [
+    {
+      "id": "common_salt",
+      "name": "Common salt",
+      "kind": "material",
+      "weight": 0.2,
+      "stack": 20,
+      "value": 2,
+      "tags": [
+        "salt",
+        "mineral"
+      ],
+      "description": "Grey kitchen salt, for pots and preserving."
+    },
+    {
+      "id": "honey",
+      "name": "Honey",
+      "kind": "food",
+      "weight": 0.3,
+      "stack": 10,
+      "value": 4,
+      "tags": [
+        "sweet",
+        "healing"
+      ],
+      "description": "A small crock of heather honey."
+    },
+    {
+      "id": "yarrow",
+      "name": "Yarrow",
+      "kind": "material",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "herb",
+        "healing"
+      ],
+      "description": "Feathery leaves that staunch a cut."
+    },
+    {
+      "id": "comfrey",
+      "name": "Comfrey",
+      "kind": "material",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "herb",
+        "healing"
+      ],
+      "description": "Knitbone, the old women call it."
+    },
+    {
+      "id": "willow_bark",
+      "name": "Willow bark",
+      "kind": "material",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "herb",
+        "pain"
+      ],
+      "description": "Bitter bark that dulls an ache."
+    },
+    {
+      "id": "river_mint",
+      "name": "River mint",
+      "kind": "material",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "herb",
+        "stamina"
+      ],
+      "description": "Mint from the banks at Ferrisford."
+    },
+    {
+      "id": "watercress",
+      "name": "Watercress",
+      "kind": "food",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "herb",
+        "greens"
+      ],
+      "description": "Peppery cress from clean water."
+    },
+    {
+      "id": "nettle",
+      "name": "Nettle",
+      "kind": "material",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "herb",
+        "greens"
+      ],
+      "description": "Stings raw, good in a pot."
+    },
+    {
+      "id": "ginger_root",
+      "name": "Ginger root",
+      "kind": "material",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 6,
+      "tags": [
+        "spice",
+        "warmth"
+      ],
+      "description": "A dear root brought up the river from the Capitol."
+    },
+    {
+      "id": "mustard_seed",
+      "name": "Mustard seed",
+      "kind": "material",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 2,
+      "tags": [
+        "spice",
+        "warmth"
+      ],
+      "description": "Hot seed for a poultice or a pot."
+    },
+    {
+      "id": "garlic",
+      "name": "Garlic",
+      "kind": "food",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "herb",
+        "warmth"
+      ],
+      "description": "A string of cloves."
+    },
+    {
+      "id": "valerian_root",
+      "name": "Valerian root",
+      "kind": "material",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 2,
+      "tags": [
+        "herb",
+        "sleep"
+      ],
+      "description": "It smells of old feet and brings sleep."
+    },
+    {
+      "id": "hops",
+      "name": "Hops",
+      "kind": "material",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "herb",
+        "sleep"
+      ],
+      "description": "For ale, and for a restless night."
+    },
+    {
+      "id": "chamomile",
+      "name": "Chamomile",
+      "kind": "material",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "herb",
+        "sleep"
+      ],
+      "description": "Small daisy heads, gently calming."
+    },
+    {
+      "id": "deathcap",
+      "name": "Deathcap",
+      "kind": "material",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 0,
+      "tags": [
+        "mushroom",
+        "poison"
+      ],
+      "description": "A pale mushroom that looks like supper and is not."
+    },
+    {
+      "id": "nightshade_berries",
+      "name": "Nightshade berries",
+      "kind": "material",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 0,
+      "tags": [
+        "berry",
+        "poison",
+        "sleep"
+      ],
+      "description": "Black, glossy and deadly."
+    },
+    {
+      "id": "field_mushroom",
+      "name": "Field mushroom",
+      "kind": "food",
+      "weight": 0.1,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "mushroom",
+        "food"
+      ],
+      "description": "An honest mushroom from the meadow."
+    },
+    {
+      "id": "oats",
+      "name": "Oats",
+      "kind": "food",
+      "weight": 0.5,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "grain",
+        "food"
+      ],
+      "description": "A sack of rolled oats."
+    },
+    {
+      "id": "barley",
+      "name": "Barley",
+      "kind": "food",
+      "weight": 0.5,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "grain",
+        "food"
+      ],
+      "description": "Pearl barley, for pottage and ale."
+    },
+    {
+      "id": "turnip",
+      "name": "Turnip",
+      "kind": "food",
+      "weight": 0.3,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "vegetable",
+        "food"
+      ],
+      "description": "A winter turnip."
+    },
+    {
+      "id": "apple",
+      "name": "Apple",
+      "kind": "food",
+      "weight": 0.2,
+      "stack": 20,
+      "value": 1,
+      "tags": [
+        "fruit",
+        "food"
+      ],
+      "description": "A sharp little apple."
+    },
+    {
+      "id": "mutton",
+      "name": "Mutton",
+      "kind": "food",
+      "weight": 0.8,
+      "stack": 10,
+      "value": 3,
+      "tags": [
+        "meat",
+        "food"
+      ],
+      "description": "A cut of old sheep."
+    },
+    {
+      "id": "venison",
+      "name": "Venison",
+      "kind": "food",
+      "weight": 0.8,
+      "stack": 10,
+      "value": 5,
+      "tags": [
+        "meat",
+        "food"
+      ],
+      "description": "Deer meat. Whose deer is another question."
+    },
+    {
+      "id": "boar_meat",
+      "name": "Boar meat",
+      "kind": "food",
+      "weight": 0.8,
+      "stack": 10,
+      "value": 4,
+      "tags": [
+        "meat",
+        "food"
+      ],
+      "description": "Dark meat from a Darkwood boar."
+    },
+    {
+      "id": "river_trout",
+      "name": "River trout",
+      "kind": "food",
+      "weight": 0.4,
+      "stack": 10,
+      "value": 2,
+      "tags": [
+        "fish",
+        "food"
+      ],
+      "description": "A speckled trout."
+    },
+    {
+      "id": "eel",
+      "name": "Eel",
+      "kind": "food",
+      "weight": 0.4,
+      "stack": 10,
+      "value": 2,
+      "tags": [
+        "fish",
+        "food"
+      ],
+      "description": "A river eel, still slippery."
+    }
+  ]
+}

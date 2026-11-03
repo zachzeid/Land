@@ -1,0 +1,126 @@
+{
+  "_note": "Tools: equip to the tool slot (or a hand). Durability wears with use; a broken tool can be mended at a station.",
+  "items": [
+    {
+      "id": "smiths_hammer",
+      "name": "Smith's hammer",
+      "kind": "tool",
+      "weight": 2.0,
+      "stack": 1,
+      "value": 30,
+      "tags": [
+        "hammer",
+        "smithing",
+        "blunt"
+      ],
+      "description": "A cross-peen hammer, the face worn bright. For the anvil, though it will crack a skull.",
+      "slots": [
+        "tool",
+        "main_hand"
+      ],
+      "max_durability": 200,
+      "skill": "smithing"
+    },
+    {
+      "id": "felling_axe",
+      "name": "Felling axe",
+      "kind": "tool",
+      "weight": 3.0,
+      "stack": 1,
+      "value": 36,
+      "tags": [
+        "axe",
+        "woodcraft",
+        "blade"
+      ],
+      "description": "A long-hafted axe for trees, not men.",
+      "slots": [
+        "tool",
+        "main_hand"
+      ],
+      "max_durability": 150,
+      "skill": "woodcraft"
+    },
+    {
+      "id": "pick",
+      "name": "Pick",
+      "kind": "tool",
+      "weight": 3.5,
+      "stack": 1,
+      "value": 40,
+      "tags": [
+        "pick",
+        "mining"
+      ],
+      "description": "An iron pick of the kind every Greystone miner carries down and back up.",
+      "slots": [
+        "tool",
+        "main_hand"
+      ],
+      "max_durability": 150,
+      "skill": "mining"
+    },
+    {
+      "id": "knife",
+      "name": "Knife",
+      "kind": "tool",
+      "weight": 0.3,
+      "stack": 1,
+      "value": 6,
+      "tags": [
+        "knife",
+        "blade",
+        "herbcraft"
+      ],
+      "description": "A work knife: for rope, roots, hides and bread.",
+      "slots": [
+        "tool",
+        "main_hand",
+        "off_hand"
+      ],
+      "max_durability": 80,
+      "skill": "herbcraft"
+    },
+    {
+      "id": "sickle",
+      "name": "Sickle",
+      "kind": "tool",
+      "weight": 0.8,
+      "stack": 1,
+      "value": 12,
+      "tags": [
+        "sickle",
+        "herbcraft",
+        "blade"
+      ],
+      "description": "A curved blade for flax, grain and herbs.",
+      "slots": [
+        "tool",
+        "main_hand"
+      ],
+      "max_durability": 100,
+      "skill": "herbcraft"
+    },
+    {
+      "id": "gregors_file",
+      "name": "Gregor's file",
+      "kind": "tool",
+      "weight": 0.4,
+      "stack": 1,
+      "value": 18,
+      "tags": [
+        "file",
+        "smithing"
+      ],
+      "description": "A fine iron file with a nick in the tang. Gregor would know it anywhere.",
+      "slots": [
+        "tool"
+      ],
+      "max_durability": 120,
+      "skill": "smithing",
+      "known_by": [
+        "gregor"
+      ]
+    }
+  ]
+}

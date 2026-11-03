@@ -1,0 +1,209 @@
+{
+  "_note": "Food and remedies: effects are applied by whoever uses them (PlayerStats.heal). Cooking (Herbcraft) makes others.",
+  "items": [
+    {
+      "id": "bread",
+      "name": "Bread",
+      "kind": "food",
+      "weight": 0.3,
+      "stack": 10,
+      "value": 1,
+      "tags": [
+        "food",
+        "grain"
+      ],
+      "description": "A round loaf, a day old.",
+      "effects": {
+        "health": 8,
+        "stamina": 10
+      }
+    },
+    {
+      "id": "stew",
+      "name": "Stew",
+      "kind": "food",
+      "weight": 0.5,
+      "stack": 5,
+      "value": 2,
+      "tags": [
+        "food",
+        "warmth"
+      ],
+      "description": "Whatever was in the pot, and better for it.",
+      "effects": {
+        "health": 20,
+        "stamina": 25
+      }
+    },
+    {
+      "id": "fever_root_tea",
+      "name": "Fever-root tea",
+      "kind": "remedy",
+      "weight": 0.2,
+      "stack": 5,
+      "value": 4,
+      "tags": [
+        "remedy",
+        "fever"
+      ],
+      "description": "Fever-root steeped in hot water. It quiets the Grey Fever for a night; it cures nothing."
+    },
+    {
+      "id": "grey_fever_cure",
+      "name": "The Grey Fever cure",
+      "kind": "remedy",
+      "weight": 0.2,
+      "stack": 5,
+      "value": 240,
+      "tags": [
+        "remedy",
+        "fever",
+        "cure",
+        "story"
+      ],
+      "description": "Fever-root steeped with Greystone's white salt. It cures the Grey Fever."
+    },
+    {
+      "id": "salt_draught",
+      "name": "Salt draught",
+      "kind": "remedy",
+      "weight": 0.2,
+      "stack": 5,
+      "value": 3,
+      "tags": [
+        "remedy"
+      ],
+      "description": "Salt water with something in it. Restores a little."
+    },
+    {
+      "id": "healing_draught",
+      "name": "Healing draught",
+      "kind": "remedy",
+      "weight": 0.2,
+      "stack": 5,
+      "value": 12,
+      "tags": [
+        "remedy",
+        "healing"
+      ],
+      "description": "Yarrow and comfrey, steeped strong."
+    },
+    {
+      "id": "rousing_tonic",
+      "name": "Rousing tonic",
+      "kind": "remedy",
+      "weight": 0.2,
+      "stack": 5,
+      "value": 10,
+      "tags": [
+        "remedy",
+        "stamina"
+      ],
+      "description": "Mint and ginger. Puts the wind back in you."
+    },
+    {
+      "id": "warming_tonic",
+      "name": "Warming tonic",
+      "kind": "remedy",
+      "weight": 0.2,
+      "stack": 5,
+      "value": 8,
+      "tags": [
+        "remedy",
+        "warmth"
+      ],
+      "description": "Mustard and garlic, hot enough to sweat."
+    },
+    {
+      "id": "sleeping_draught",
+      "name": "Sleeping draught",
+      "kind": "remedy",
+      "weight": 0.2,
+      "stack": 5,
+      "value": 10,
+      "tags": [
+        "remedy",
+        "sleep"
+      ],
+      "description": "Valerian and hops. Sleep comes, whether wanted or not."
+    },
+    {
+      "id": "poison_draught",
+      "name": "Poison draught",
+      "kind": "remedy",
+      "weight": 0.2,
+      "stack": 5,
+      "value": 30,
+      "tags": [
+        "poison"
+      ],
+      "description": "A small bottle that kills."
+    },
+    {
+      "id": "meat_stew",
+      "name": "Meat stew",
+      "kind": "food",
+      "weight": 0.5,
+      "stack": 5,
+      "value": 3,
+      "tags": [
+        "food",
+        "warmth",
+        "meat"
+      ],
+      "description": "Meat, roots and broth."
+    },
+    {
+      "id": "fish_stew",
+      "name": "Fish stew",
+      "kind": "food",
+      "weight": 0.5,
+      "stack": 5,
+      "value": 3,
+      "tags": [
+        "food",
+        "fish"
+      ],
+      "description": "River fish in a thin broth."
+    },
+    {
+      "id": "pottage",
+      "name": "Pottage",
+      "kind": "food",
+      "weight": 0.5,
+      "stack": 5,
+      "value": 1,
+      "tags": [
+        "food",
+        "grain"
+      ],
+      "description": "Grain and greens boiled thick. What most people eat."
+    },
+    {
+      "id": "tainted_food",
+      "name": "Stew",
+      "kind": "food",
+      "weight": 0.5,
+      "stack": 5,
+      "value": 2,
+      "tags": [
+        "food",
+        "poison"
+      ],
+      "description": "Whatever was in the pot, and better for it."
+    },
+    {
+      "id": "dubious_food",
+      "name": "Dubious food",
+      "kind": "food",
+      "weight": 0.5,
+      "stack": 5,
+      "value": 0,
+      "tags": [
+        "food",
+        "dubious"
+      ],
+      "description": "Something went into the pot that should not have."
+    }
+  ]
+}
