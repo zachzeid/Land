@@ -1,0 +1,49 @@
+{
+	"_doc": "Weapon stats by item id (docs/PLAYER_SYSTEMS.md §3). damage: per type (cut, pierce, blunt, fire). stamina: per action. reach: pixels (range for ranged). arc: degrees of the swing either side of facing, total. speed: swings per second (a heavy takes 1.8x as long). poise: poise damage of a light hit (a heavy deals 2x). durability_per_hit: wear on each landed hit. skill: the skill a landed hit uses. fists are what a broken weapon hits like.",
+	"weapons": {
+		"fists": {
+			"name": "bare fists", "kind": "melee", "damage": {"blunt": 4}, "stamina": {"light": 10, "heavy": 25},
+			"reach": 40, "arc": 70, "speed": 1.6, "poise": 5, "durability_per_hit": 0, "skill": "blunt", "block": 0.3
+		},
+		"hunting_knife": {
+			"name": "hunting knife", "kind": "melee", "damage": {"cut": 7, "pierce": 5}, "stamina": {"light": 8, "heavy": 20},
+			"reach": 44, "arc": 80, "speed": 1.8, "poise": 4, "durability_per_hit": 1, "skill": "blades", "block": 0.4
+		},
+		"iron_sword": {
+			"name": "iron sword", "kind": "melee", "damage": {"cut": 14, "pierce": 4}, "stamina": {"light": 10, "heavy": 25},
+			"reach": 60, "arc": 100, "speed": 1.3, "poise": 10, "durability_per_hit": 1, "skill": "blades", "block": 0.6
+		},
+		"steel_sword": {
+			"name": "steel sword", "kind": "melee", "damage": {"cut": 18, "pierce": 6}, "stamina": {"light": 10, "heavy": 25},
+			"reach": 62, "arc": 100, "speed": 1.35, "poise": 12, "durability_per_hit": 0.5, "skill": "blades", "block": 0.65
+		},
+		"woodaxe": {
+			"name": "woodcutter's axe", "kind": "melee", "damage": {"cut": 15, "blunt": 3}, "stamina": {"light": 12, "heavy": 28},
+			"reach": 56, "arc": 90, "speed": 1.0, "poise": 16, "durability_per_hit": 1, "skill": "blades", "block": 0.5
+		},
+		"smith_hammer": {
+			"name": "smith's hammer", "kind": "melee", "damage": {"blunt": 16}, "stamina": {"light": 12, "heavy": 30},
+			"reach": 48, "arc": 80, "speed": 0.9, "poise": 26, "durability_per_hit": 0.5, "skill": "blunt", "block": 0.45
+		},
+		"cudgel": {
+			"name": "cudgel", "kind": "melee", "damage": {"blunt": 11}, "stamina": {"light": 10, "heavy": 25},
+			"reach": 50, "arc": 90, "speed": 1.2, "poise": 18, "durability_per_hit": 1, "skill": "blunt", "block": 0.45
+		},
+		"quarterstaff": {
+			"name": "quarterstaff", "kind": "melee", "damage": {"blunt": 10}, "stamina": {"light": 10, "heavy": 25},
+			"reach": 72, "arc": 120, "speed": 1.3, "poise": 16, "durability_per_hit": 1, "skill": "blunt", "block": 0.6
+		},
+		"torch": {
+			"name": "torch", "kind": "melee", "damage": {"blunt": 4, "fire": 6}, "stamina": {"light": 10, "heavy": 25},
+			"reach": 44, "arc": 80, "speed": 1.4, "poise": 5, "durability_per_hit": 2, "skill": "blunt", "block": 0.2
+		},
+		"hunting_bow": {
+			"name": "hunting bow", "kind": "ranged", "damage": {"pierce": 16}, "stamina": {"shoot": 12},
+			"reach": 520, "speed": 0.8, "projectile_speed": 640, "poise": 6, "durability_per_hit": 1, "skill": "bows", "ammo": "arrow"
+		},
+		"sling": {
+			"name": "sling", "kind": "ranged", "damage": {"blunt": 9}, "stamina": {"shoot": 12},
+			"reach": 380, "speed": 1.0, "projectile_speed": 480, "poise": 10, "durability_per_hit": 0.5, "skill": "bows", "ammo": "sling_stone"
+		}
+	}
+}
