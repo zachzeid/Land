@@ -183,7 +183,7 @@ func store(memory_data: Dictionary, custom_id: String = "", skip_validation: boo
 	var memory_id = custom_id
 	if memory_id == "":
 		var timestamp = Time.get_unix_time_from_system()
-		memory_id = "%s_%d_%s" % [npc_id, timestamp, event_type]
+		memory_id = "%s_%d_%d_%s" % [npc_id, timestamp, Time.get_ticks_usec(), event_type]  # usec: same-type memories in one second must not overwrite
 
 	# Auto-detect memory tier and milestones
 	var importance = memory_data.get("importance", 5)
