@@ -24,6 +24,9 @@ func start_conversation(npc_id: String, npc_node: Node):
 func end_conversation(npc_id: String):
 	if active_conversations.has(npc_id):
 		active_conversations.erase(npc_id)
+		var world_state = get_node_or_null("/root/WorldState")
+		if world_state and world_state.has_method("request_save"):
+			world_state.request_save("talked to " + npc_id)
 
 func add_to_history(npc_id: String, speaker: String, message: String):
 	if not conversation_history.has(npc_id):

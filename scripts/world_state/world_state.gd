@@ -10,8 +10,24 @@ var npc_states := {}  # Stores NPC state (alive/dead, location, etc.)
 var event_propagation_state := {}  # Loaded EventPropagator state (it autoloads after us)
 var storyline_state := {}  # Loaded StorylineDirector state (it autoloads after us)
 var generics_state := {}  # Loaded generic NPC state (DynamicNPCRegistry.generics autoloads after us)
+var quest_state := {}  # Loaded QuestManager state (it autoloads after us)
+var player_location := ""  # Where the player stood when the game was saved ("" = a new game)
 
 const SAVE_PATH = "user://game_save.json"
+const SAVE_BACKUP_PATH = "user://game_save.bak.json"  # the previous good save, kept in case a write is cut short
+var save_path: String = SAVE_PATH            # tests point these at their own files
+var save_backup_path: String = SAVE_BACKUP_PATH
+signal game_saved(path: String, reason: String)
+
+## Autosave: what the player does is remembered, so the world saves as it goes, not only on a death
+## Requests are coalesced (one write per AUTOSAVE_DELAY_SECONDS) and the idle clock saves every
+## AUTOSAVE_IDLE_SECONDS of unpaused play. Off in headless runs (tests, boot checks) unless --autosave
+const AUTOSAVE_DELAY_SECONDS = 2.0
+const AUTOSAVE_IDLE_SECONDS = 300.0
+var autosave_enabled: bool = true
+var _autosave_timer: Timer = null
+var _idle_save_timer: Timer = null
+var _save_reason: String = ""
 
 ## Game clock: minutes since midnight of day 1. A new game starts at world.json calendar.start
 ## (The Tithe Night: day 1, 20:00, the drawing). START_MINUTE is the fallback when world.json has none
@@ -40,6 +56,9 @@ func _ready():
 	load_calendar()
 	game_minutes = start_minute
 	load_game()  # Auto-load on startup
+	_setup_autosave()
+	# QuestManager and SceneManager autoload after us: restore their part once everyone is ready
+	call_deferred("_apply_late_save_state")
 	# A save made before a fixed point passed fires it once everyone is listening
 	call_deferred("fire_due_calendar_flags")
 	# Unpaused real time nudges the clock, so a short walk across the village still ends
@@ -616,7 +635,7 @@ func register_npc_death(npc_id: String, death_data: Dictionary):
 		"death_timestamp": death_data.get("timestamp", Time.get_unix_time_from_system())
 	}, true)
 	npc_states[npc_id] = state
-	save_game()  # Auto-save on NPC death
+	request_save("npc_death")
 	print("[WorldState] NPC death registered: %s" % npc_id)
 
 func is_npc_alive(npc_id: String) -> bool:
@@ -655,8 +674,32 @@ func save() -> Dictionary:
 		# --- END events engine save ---
 		"event_propagation": _get_event_propagation_state(),
 		"storylines": _get_storyline_state(),
-		"generics": _get_generics_state()
+		"generics": _get_generics_state(),
+		"quests": _get_quest_state(),
+		"player_location": _get_player_location()
 	}
+
+func _get_quest_state() -> Dictionary:
+	var quests = get_node_or_null("/root/QuestManager")
+	return quests.get_save_data() if quests and quests.has_method("get_save_data") else quest_state
+
+func _get_player_location() -> String:
+	var scene_manager = get_node_or_null("/root/SceneManager")
+	if scene_manager and scene_manager.has_method("get_current_location_id"):
+		var id = str(scene_manager.get_current_location_id())
+		if id != "" and id != "none":
+			return id
+	return player_location
+
+func _apply_late_save_state() -> void:
+	if not loaded_from_save:
+		return
+	var quests = get_node_or_null("/root/QuestManager")
+	if quests and quests.has_method("load_save_data") and not quest_state.is_empty():
+		quests.load_save_data(quest_state)
+	var scene_manager = get_node_or_null("/root/SceneManager")
+	if player_location != "" and scene_manager and scene_manager.has_method("restore_location"):
+		scene_manager.restore_location(player_location)
 
 # --- BEGIN director engine save helpers (inner voice: the player's intentions, for the epilogue) ---
 var inner_voice_state := {}  # loaded InnerVoice state (kept until InnerVoice is ready)
@@ -723,6 +766,8 @@ func _apply_event_propagation_state(data: Dictionary):
 
 func load_from_dict(data: Dictionary):
 	faction_reputations = data.get("faction_reputations", {})
+	quest_state = data.get("quests", {}) if data.get("quests") is Dictionary else {}
+	player_location = str(data.get("player_location", ""))
 	npc_relationships = data.get("npc_relationships", {})
 	active_quests = data.get("active_quests", [])
 	completed_quests = data.get("completed_quests", [])
@@ -757,43 +802,118 @@ func _load_calendar_fired(data: Dictionary) -> void:
 		if not _calendar_fired.has(entry.flag) and world_flags.get(entry.flag, false) == true:
 			_calendar_fired[entry.flag] = _effective_minute(entry)
 
-## Save game to disk
-func save_game():
-	var save_data = save()
-	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
-	if file:
-		file.store_string(JSON.stringify(save_data, "\t"))
-		file.close()
-		print("[WorldState] Game saved to: %s" % SAVE_PATH)
-	else:
+## Save game to disk. Written beside the save, then moved over it, so a crash mid-write never leaves
+## a half file; the save it replaces is kept as save_backup_path. Returns true on success
+func save_game() -> bool:
+	var tmp_path = save_path + ".tmp"
+	var file = FileAccess.open(tmp_path, FileAccess.WRITE)
+	if file == null:
 		push_error("[WorldState] Failed to save game")
+		return false
+	file.store_string(JSON.stringify(save(), "\t"))
+	file.close()
+	var dir = DirAccess.open(save_path.get_base_dir())
+	if dir == null:
+		push_error("[WorldState] Failed to save game")
+		return false
+	if dir.file_exists(save_path.get_file()):
+		if dir.file_exists(save_backup_path.get_file()):
+			dir.remove(save_backup_path.get_file())
+		dir.rename(save_path.get_file(), save_backup_path.get_file())
+	if dir.rename(tmp_path.get_file(), save_path.get_file()) != OK:
+		push_error("[WorldState] Failed to save game")
+		return false
+	print("[WorldState] Game saved to: %s%s" % [save_path, " (%s)" % _save_reason if _save_reason != "" else ""])
+	game_saved.emit(save_path, _save_reason)
+	_save_reason = ""
+	return true
 
-## Load game from disk
-func load_game():
-	if not FileAccess.file_exists(SAVE_PATH):
-		print("[WorldState] No save file found, starting fresh")
+## Ask for an autosave. Many requests in a burst (a conversation ending, a round, a flag) make one write
+func request_save(reason: String = "") -> void:
+	if not autosave_enabled or _autosave_timer == null or _save_held():
 		return
-	
-	var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
-	if file:
-		var json_str = file.get_as_text()
-		file.close()
-		
-		var json = JSON.new()
-		var parse_result = json.parse(json_str)
-		
-		if parse_result == OK and json.data is Dictionary:
-			load_from_dict(json.data)
-			loaded_from_save = true
-			print("[WorldState] Game loaded from: %s" % SAVE_PATH)
-			print("[WorldState] Loaded %d NPC states" % npc_states.size())
-		else:
-			push_error("[WorldState] Failed to parse save file")
-	else:
-		push_error("[WorldState] Failed to open save file")
+	if _save_reason == "":
+		_save_reason = reason
+	if _autosave_timer.is_stopped():
+		_autosave_timer.start()
+
+## Not mid-opening (the drawing is the game's first moment; a save there would skip it) and not
+## once the story has ended (the epilogue is the last word)
+func _save_held() -> bool:
+	var scene_manager = get_node_or_null("/root/SceneManager")
+	var opening = scene_manager.opening if scene_manager and "opening" in scene_manager else null
+	if opening and "playing" in opening and opening.playing:
+		return true
+	for ui in get_tree().get_nodes_in_group("player_ui"):
+		if "story_over" in ui and ui.story_over:
+			return true
+	return false
+
+func _setup_autosave() -> void:
+	var args = OS.get_cmdline_user_args()
+	autosave_enabled = "--no-autosave" not in args and (DisplayServer.get_name() != "headless" or "--autosave" in args)
+	_autosave_timer = Timer.new()
+	_autosave_timer.one_shot = true
+	_autosave_timer.wait_time = AUTOSAVE_DELAY_SECONDS
+	_autosave_timer.process_mode = Node.PROCESS_MODE_ALWAYS
+	_autosave_timer.timeout.connect(func(): if autosave_enabled and not _save_held(): save_game())
+	add_child(_autosave_timer)
+	_idle_save_timer = Timer.new()
+	_idle_save_timer.wait_time = AUTOSAVE_IDLE_SECONDS
+	_idle_save_timer.process_mode = Node.PROCESS_MODE_PAUSABLE
+	_idle_save_timer.timeout.connect(func(): request_save("idle"))
+	add_child(_idle_save_timer)
+	_idle_save_timer.start()
+	EventBus.time_advanced.connect(func(_m, _total, reason): if reason != "idle": request_save(reason))
+	EventBus.calendar_flag_fired.connect(func(flag_name, _at): request_save(flag_name))
+	EventBus.quest_started.connect(func(_id, _data): request_save("quest"))
+	EventBus.quest_completed.connect(func(_id, _npc, _outcome): request_save("quest"))
+	call_deferred("_connect_late_autosave")
+
+## Signals of autoloads that come after us
+func _connect_late_autosave() -> void:
+	var director = get_node_or_null("/root/StorylineDirector")
+	if director and director.has_signal("round_completed"):
+		director.round_completed.connect(func(_n, _reason, _entries): request_save("round"))
+	var scene_manager = get_node_or_null("/root/SceneManager")
+	if scene_manager and scene_manager.has_signal("scene_transition_completed"):
+		scene_manager.scene_transition_completed.connect(func(location): request_save("arrived " + str(location)))
+
+## Closing the window saves at once (no timer to wait for)
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST and autosave_enabled and not _save_held():
+		_save_reason = "quit"
+		save_game()
+
+## Load game from disk. A save that is missing or will not parse falls back to the previous one
+func load_game():
+	for path in [save_path, save_backup_path]:
+		if not FileAccess.file_exists(path):
+			continue
+		var data = _read_save(path)
+		if data.is_empty():
+			push_error("[WorldState] Failed to read save file: %s" % path)
+			continue
+		load_from_dict(data)
+		loaded_from_save = true
+		print("[WorldState] Game loaded from: %s" % path)
+		print("[WorldState] Loaded %d NPC states" % npc_states.size())
+		return
+	print("[WorldState] No save file found, starting fresh")
+
+func _read_save(path: String) -> Dictionary:
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return {}
+	var json = JSON.new()
+	var ok = json.parse(file.get_as_text()) == OK and json.data is Dictionary
+	file.close()
+	return json.data if ok else {}
 
 func load_state(data: Dictionary):
 	faction_reputations = data.get("faction_reputations", {})
+	quest_state = data.get("quests", {}) if data.get("quests") is Dictionary else {}
+	player_location = str(data.get("player_location", ""))
 	npc_relationships = data.get("npc_relationships", {})
 	active_quests = data.get("active_quests", [])
 	completed_quests = data.get("completed_quests", [])

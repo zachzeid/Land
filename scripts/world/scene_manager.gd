@@ -318,6 +318,17 @@ func _adopt_initial_scene() -> void:
 		print("[SceneManager] Initial scene is %s" % current_location.location_id)
 		_reconcile_npcs(current_location.location_id)
 
+## A loaded save: put the player back where they stood, with no walking time and no fade
+func restore_location(location_id: String) -> void:
+	if not locations.has(location_id):
+		push_warning("[SceneManager] Saved location '%s' is unknown; staying put" % location_id)
+		return
+	if current_location == null:
+		_adopt_initial_scene()
+	if current_location and current_location.location_id == location_id:
+		return
+	transition_to(location_id, "default", 0.0, false)
+
 ## NPCs off the world.json roster (dynamic NPCs) show only where their own location says
 func _filter_npcs_for_location(location_id: String):
 	var registry = get_node_or_null("/root/WorldRegistry")
