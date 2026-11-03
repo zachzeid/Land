@@ -121,6 +121,7 @@ func _init():
 	_test_debug_command()
 	_test_time_of_day()
 	_test_story_option_hours()
+	await _test_opening_hours()
 
 	opening.reset()
 	opening.player_events = null
@@ -527,7 +528,10 @@ func _test_time_of_day():
 	_check("At 20:00 Aldric does not leave to drill at first light", plan.get("step", "") != "drill_at_first_light")
 	world_state.reset_calendar(world_state.start_minute + 9 * 60 + 15)  # day 2, 05:15
 	plan = director._plan_personal_turn("aldric", true)
-	_check("At 05:15 he does", plan.get("step", "") == "drill_at_first_light")
+	_check("At 05:15 he waits: dawn, but the world opens at 06:00", plan.get("step", "") != "drill_at_first_light")
+	world_state.reset_calendar(world_state.start_minute + 10 * 60 + 15)  # day 2, 06:15
+	plan = director._plan_personal_turn("aldric", true)
+	_check("At 06:15 he drills", plan.get("step", "") == "drill_at_first_light")
 	world_state.reset_calendar(world_state.start_minute + 6 * 60)  # 02:00
 	var awake: Array = []
 	for key in registry.get_npc_keys():
@@ -538,6 +542,8 @@ func _test_time_of_day():
 			if not TimeWindow.contains(str(step.get("when", "")), arrive_hour):
 				awake.append("%s/%s" % [key, p.step])
 	_check("At 02:00 a step is taken only in its window, at the hour they arrive (%s)" % [awake], awake.is_empty())
+	var anyone: Array = registry.get_npc_keys().filter(func(k): return not director._plan_personal_turn(k, true).is_empty())
+	_check("At 02:00 the world is closed: nobody takes any step (%s)" % [anyone], anyone.is_empty())
 	_fresh()
 
 
@@ -572,5 +578,25 @@ func _test_story_option_hours():
 	_check("...and Elena's 'into the dark' hook follows at that hour", queued or director.get_chronicle().any(func(c): return c.get("hook", "") == "elena_at_the_fenns_door"))
 	var saved: Dictionary = director.save()
 	_check("Scheduled acts are saved with the game", saved.has("scheduled"))
+	_fresh()
+
+## Opening hours (world.json): every place, every NPC, 06:00-24:00 on the game clock
+func _test_opening_hours():
+	print("Opening hours")
+	_fresh()
+	var TimeWindow = load("res://scripts/storyline/time_window.gd")
+	_check("world.json: 06:00 to 24:00", registry.get_opening_hours() == [6, 24])
+	_check("Open at 06:00 and 23:59, closed at 00:00 and 05:59", TimeWindow.is_open(6 * 60) and TimeWindow.is_open(23 * 60 + 59) and not TimeWindow.is_open(24 * 60) and not TimeWindow.is_open(5 * 60 + 59))
+	_check("A night act decided at 01:00 waits for 21:00 (night and open)", TimeWindow.next_open_and_in("night", 24 * 60 + 60) == 24 * 60 + 21 * 60)
+	_check("A 2-hour walk at 23:00 waits for morning: it cannot leave or arrive while closed", TimeWindow.departure_for_open_arrival(23 * 60, 120) == 24 * 60 + 6 * 60)
+	_check("A 30-minute walk at 23:00 goes at once", TimeWindow.departure_for_open_arrival(23 * 60, 30) == 23 * 60)
+	world_state.reset_calendar(world_state.start_minute + 6 * 60)  # day 2, 02:00
+	var queued_before = director.get_decision_queue().size()
+	var made: Array = await director.advance_round("test")
+	_check("A story round at 02:00 takes no decisions", made.is_empty() and director.get_decision_queue().size() >= queued_before)
+	world_state.reset_calendar(world_state.start_minute + 3 * 60 + 30)  # 23:30
+	var sent: Dictionary = director.send_npc("aldric", "forest_path")
+	var arrival_ok = not sent.has("scheduled_at") or TimeWindow.is_open(int(sent.scheduled_at) + int(sent.minutes))
+	_check("A journey never arrives while the world is closed", sent.ok and arrival_ok)
 	_fresh()
 

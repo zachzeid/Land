@@ -1014,5 +1014,11 @@
         "garrison_soldier"
       ]
     }
-  ]
+  ],
+  "opening_hours": {
+    "open_hour": 6,
+    "close_hour": 24,
+    "clock": "game",
+    "note": "Every place, for every NPC: between close and open nobody acts or arrives anywhere. The game clock (WorldState), not real time. Story rounds wait, personal steps wait, scheduled effects wait, and a journey that would arrive while its destination is closed leaves later so that it arrives at opening. Calendar fixed points (world-caused) still fire on time."
+  }
 }

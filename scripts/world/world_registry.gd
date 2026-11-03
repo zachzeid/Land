@@ -340,6 +340,14 @@ func get_era() -> String:
 func get_world_rules() -> Array:
 	return data.get("world_rules", []).duplicate()
 
+## world.json "opening_hours": [open_hour, close_hour) on the game clock, for every place and NPC
+## (nobody acts or arrives anywhere outside them). Without the key the world never closes
+func get_opening_hours() -> Array:
+	var hours = data.get("opening_hours", {})
+	if not hours is Dictionary:
+		return [0, 24]
+	return [int(hours.get("open_hour", 0)), int(hours.get("close_hour", 24))]
+
 ## world.json "calendar": {"start": {day, hour, minute}, "flags": {flag: {day, hour, description}}}
 func get_calendar() -> Dictionary:
 	var calendar = data.get("calendar", {})

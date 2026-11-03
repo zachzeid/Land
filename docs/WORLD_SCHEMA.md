@@ -320,6 +320,12 @@ Machine lines (exact shape):
   current weight sets how hard the NPC pursues the arc.
 - Step: `- \`<step_id>\`: <text> | after: <step_id|none> | needs: <flags, comma-separated, ! allowed | none> | at: <location id|any> | takes: <rounds 1-6> | effects: <types>`, optionally followed by
   `| when: <window>` and then `| player: helps|needed`.
+  - **Opening hours** (world.json `opening_hours`, game clock, 06:00-24:00): every place, for every
+    NPC. Outside them nobody acts or arrives anywhere: story rounds take no decisions (queued hooks
+    wait), personal steps wait, scheduled effects wait, a timed option's effects land at the first
+    minute inside both its window and the hours, and a journey that would arrive while the world is
+    closed leaves later so it arrives at opening. Night windows therefore end at midnight. Calendar
+    points still fire on time; the player is not held to the hours.
   - **`when`** is the hour the step can be taken, checked at the hour the NPC would arrive:
     `dawn` (05-08), `morning` (06-12), `day` (08-18), `afternoon` (12-17), `evening` (17-22),
     `dark` (19-05), `night` (21-05), `tonight` (18-04), `any`, or `HH-HH` (wraps past midnight when the end is

@@ -457,6 +457,14 @@ func advance_round(reason: String = "manual") -> Array:
 		return []
 	_in_round = true
 	_round += 1
+	if not TimeWindowScript.is_open(_now()):
+		# Opening hours (world.json): nobody acts anywhere; queued hooks wait for the world to open
+		_in_round = false
+		if _round_timer and _round_timer.is_inside_tree():
+			_round_timer.start()
+		print("[StorylineDirector] Round %d (%s): the world is closed (opening hours); %d queued" % [_round, reason, _decision_queue.size()])
+		round_completed.emit(_round, reason, [])
+		return []
 	_enqueue_idle_hooks()
 	# Emergent beats: close what resolved, grow what the world now matches, queue idle hooks
 	_emergence.check_resolutions()
@@ -621,7 +629,7 @@ func _carry_out(sid: String, beat: Dictionary, hook: Dictionary, trigger: String
 	# An option done at a time of day (`"when"`, e.g. "after dark"): decided now, carried out when the
 	# window next opens, through the scheduled effects (saved, and validated again when they land)
 	var when = str(decision.get("option", {}).get("when", "")) if decision.get("option") is Dictionary else ""
-	var act_at = TimeWindowScript.next_open(when, _now()) if when != "" else _now()
+	var act_at = TimeWindowScript.next_open_and_in(when if when != "" else "any", _now())
 	var option_denial = ""
 	if soul and not decision.get("option", {}).is_empty():
 		option_denial = soul.get_option_denial_reason(decision.option)
@@ -906,6 +914,13 @@ func send_npc(npc: String, location: String) -> Dictionary:
 		if leg < 0:
 			return {"ok": false, "reason": "place: %s cannot be reached from %s on the roads" % [location, from], "minutes": 0}
 		minutes += leg
+	# Opening hours: a journey that would arrive while the world is closed leaves later, so it arrives
+	# at opening. The move is scheduled and lands (and is chronicled) then
+	var depart = TimeWindowScript.departure_for_open_arrival(_now(), minutes)
+	if depart > _now():
+		_schedule_effect(depart, {"type": "move_npc", "npc": key, "location": location}, key, {"opening_hours": true}, "waits for opening hours")
+		print("[StorylineDirector] %s will set off for %s at minute %d (arrives at opening)" % [key, location, depart])
+		return {"ok": true, "reason": "", "minutes": minutes, "scheduled_at": depart}
 	if world_state and world_state.has_method("start_npc_travel"):
 		world_state.start_npc_travel(npc_id, location, minutes, from)
 	for live in get_loaded_npcs(key):
@@ -1516,6 +1531,8 @@ func _schedule_effect(at: int, effect: Dictionary, actor_key: String, source: Di
 ## Delayed effects whose word has arrived land now (called when the game clock moves)
 func _run_scheduled_effects() -> void:
 	var now = _now()
+	if not TimeWindowScript.is_open(now):
+		return  # opening hours: they land when the world opens
 	var due: Array = []
 	var waiting: Array = []
 	for item in _scheduled:
@@ -1971,8 +1988,10 @@ func _in_step_window(step: Dictionary, travel_minutes: int = 0) -> bool:
 	var world_state = _world_state()
 	if world_state == null or not world_state.has_method("get_game_minutes"):
 		return true
-	var hour = floori(((int(world_state.get_game_minutes()) + travel_minutes) % (24 * 60)) / 60.0)
-	return TimeWindowScript.contains(str(step.get("when", "")), hour)
+	var arrive = int(world_state.get_game_minutes()) + travel_minutes
+	var hour = floori((arrive % (24 * 60)) / 60.0)
+	return TimeWindowScript.contains(str(step.get("when", "")), hour) and TimeWindowScript.is_open(arrive) \
+		and TimeWindowScript.is_open(int(world_state.get_game_minutes()))  # setting off is acting too
 
 func _personal_place(key: String, at: String) -> Dictionary:
 	if at == "any":

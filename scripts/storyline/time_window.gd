@@ -45,3 +45,39 @@ static func next_open(when: String, now_minute: int) -> int:
 		if contains(when, floori((minute % (24 * 60)) / 60.0)):
 			return minute
 	return now_minute
+
+# =============================================================================
+# OPENING HOURS (world.json "opening_hours": every place, every NPC, on the game clock)
+# =============================================================================
+
+## [open_hour, close_hour) from WorldRegistry; [0, 24] (always open) without one
+static func opening_hours() -> Array:
+	var tree = Engine.get_main_loop() as SceneTree
+	var registry = tree.root.get_node_or_null("WorldRegistry") if tree else null
+	return registry.get_opening_hours() if registry and registry.has_method("get_opening_hours") else [0, 24]
+
+static func is_open(minute: int) -> bool:
+	var hours = opening_hours()
+	return contains("%02d-%02d" % [hours[0], hours[1]], floori((posmod(minute, 24 * 60)) / 60.0)) if hours != [0, 24] else true
+
+## The first minute at or after now_minute inside both the window and the opening hours
+## (now_minute itself if both hold). A window that never meets the opening hours: now_minute
+static func next_open_and_in(when: String, now_minute: int) -> int:
+	for step in 2 * 24 * 60:
+		var minute = now_minute + step
+		if is_open(minute) and contains(when, floori((minute % (24 * 60)) / 60.0)):
+			return minute
+	return now_minute
+
+## The earliest departure at or after now_minute that is in opening hours and arrives (after
+## travel_minutes) in them too: setting off is acting. A journey too long to fit leaves at opening
+static func departure_for_open_arrival(now_minute: int, travel_minutes: int) -> int:
+	for step in 2 * 24 * 60:
+		var depart = now_minute + step
+		if is_open(depart) and is_open(depart + travel_minutes):
+			return depart
+	for step in 24 * 60:
+		if is_open(now_minute + step):
+			return now_minute + step
+	return now_minute
+

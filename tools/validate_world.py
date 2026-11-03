@@ -312,6 +312,15 @@ def all_declared_flags():
 
 def validate_world_rules(flags_known):
     where = "resources/world/world.json"
+    hours = WORLD.get("opening_hours")
+    if hours is not None:
+        o, c = hours.get("open_hour"), hours.get("close_hour")
+        if not (isinstance(o, int) and isinstance(c, int) and 0 <= o <= 23 and 1 <= c <= 24 and o != c):
+            err(where, f"opening_hours needs open_hour 0-23 and close_hour 1-24, got {o}-{c}")
+        for name, pt in WORLD.get("calendar", {}).get("flags", {}).items():
+            h = pt.get("hour", 0)
+            if isinstance(o, int) and isinstance(c, int) and not ((o <= h < c) if o < c else (h >= o or h < c)):
+                warnings.append(f"WARN {where}: calendar '{name}' fires at {h}:00, while the world is closed (it still fires; NPCs answer at opening)")
     for name, pt in WORLD.get("calendar", {}).get("flags", {}).items():
         for rule in pt.get("shift_rules", []):
             if not pt.get("movable"):
