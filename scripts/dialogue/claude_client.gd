@@ -109,7 +109,7 @@ func _sanitize_content(content: String) -> String:
 		"forget everything above",
 		"new instructions:",
 		"system:",
-		"[SYSTEM]",
+		"[system]",  # patterns are matched against the lowercased input
 		"<system>",
 		"you are now",
 		"your new role is"
