@@ -1,0 +1,525 @@
+{
+  "about": "Herbcraft and cooking (docs/PLAYER_SYSTEMS.md §4). Free combination of 1-5 ingredients at a campfire or herb table; scripts/crafting/herbcraft.gd reads this file. Remedies, not wonders: herbs, roots, salt and food doing what herbs, roots, salt and food do.",
+  "effect_tags": {
+    "healing": "restores health: effects.healing, points of health",
+    "stamina": "restores stamina: effects.stamina, points of stamina",
+    "warmth": "keeps out the cold: effects.warmth_minutes, game minutes",
+    "fever": "works against the Grey Fever: effects.fever is fever_quiet (with effects.fever_quiet_days) or, for fever-root steeped with white salt, fever_cure",
+    "sleep": "brings sleep: effects.sleep_minutes, game minutes of heavy sleep",
+    "poison": "does harm to whoever eats it: effects.poison, points of health lost; poison spoils any remedy it is mixed into"
+  },
+  "categories": {
+    "herb": "leaves and flowers, steeped or chewed",
+    "root": "roots and bark, steeped long",
+    "mushroom": "eaten as food; some are deadly",
+    "grain": "a food base for pottage",
+    "vegetable": "a food base for pottage",
+    "fruit": "a food base for pottage",
+    "meat": "a food base for stew",
+    "fish": "a food base for stew",
+    "sweet": "honey; softens a remedy or a meal",
+    "seasoning": "common salt and the like; no effect alone, but a meal seasoned well does more",
+    "mineral": "the white salt of Greystone's deep vein"
+  },
+  "ingredients": [
+    {
+      "id": "fever_root",
+      "name": "Fever-root",
+      "category": "root",
+      "tags": [
+        "fever"
+      ],
+      "strength": 3,
+      "found_at": [
+        "forest_path"
+      ],
+      "season": "any",
+      "text": "A pale, knotted root dug under the ash trees on the forest path. Steeped strong it quiets the Grey Fever for a few days. Alone it has never cured anyone."
+    },
+    {
+      "id": "white_salt",
+      "name": "White salt",
+      "category": "mineral",
+      "tags": [
+        "fever"
+      ],
+      "strength": 2,
+      "found_at": [
+        "greystone_mines",
+        "the_pit"
+      ],
+      "season": "any",
+      "story_gated": true,
+      "text": "White mineral salt from Greystone's deep vein, the kind no apothecary in the valley sells. Steeped with fever-root it is the old receipt for the Grey Fever."
+    },
+    {
+      "id": "common_salt",
+      "name": "Common salt",
+      "category": "seasoning",
+      "tags": [],
+      "strength": 0,
+      "found_at": [
+        "thornhaven_gregor_shop",
+        "capitol_market",
+        "ferrisford"
+      ],
+      "season": "any",
+      "text": "Grey cooking salt from the coast, sold by the pound. It does nothing alone; it makes a meal worth more."
+    },
+    {
+      "id": "honey",
+      "name": "Honey",
+      "category": "sweet",
+      "tags": [
+        "healing"
+      ],
+      "strength": 1,
+      "found_at": [
+        "healer_hut",
+        "old_mill",
+        "brackenmoor_abbey"
+      ],
+      "season": "any",
+      "text": "Comb honey from the hives behind Maud's hut and the abbey's orchard. It takes the bitterness out of a draught."
+    },
+    {
+      "id": "yarrow",
+      "name": "Yarrow",
+      "category": "herb",
+      "tags": [
+        "healing"
+      ],
+      "strength": 2,
+      "found_at": [
+        "village_gate",
+        "forest_path"
+      ],
+      "season": "summer",
+      "text": "Soldier's woundwort, white-flowered by the roadside. Bound on a cut it stops the bleeding; steeped it mends."
+    },
+    {
+      "id": "comfrey",
+      "name": "Comfrey",
+      "category": "herb",
+      "tags": [
+        "healing"
+      ],
+      "strength": 3,
+      "found_at": [
+        "healer_hut",
+        "brackenmoor_abbey"
+      ],
+      "season": "spring",
+      "text": "Knitbone. The abbey's herb garden grows it in rows; Maud grows it by her door."
+    },
+    {
+      "id": "willow_bark",
+      "name": "Willow bark",
+      "category": "root",
+      "tags": [
+        "healing"
+      ],
+      "strength": 2,
+      "found_at": [
+        "ferrisford",
+        "forest_path"
+      ],
+      "season": "any",
+      "text": "Bark stripped from the river willows. Chewed or steeped it eases aches and a hot head."
+    },
+    {
+      "id": "river_mint",
+      "name": "River mint",
+      "category": "herb",
+      "tags": [
+        "stamina"
+      ],
+      "strength": 1,
+      "found_at": [
+        "ferrisford",
+        "old_mill"
+      ],
+      "season": "spring",
+      "text": "Water mint from the banks below the ferry. It clears the head and the lungs."
+    },
+    {
+      "id": "watercress",
+      "name": "Watercress",
+      "category": "herb",
+      "tags": [
+        "stamina"
+      ],
+      "strength": 2,
+      "found_at": [
+        "ferrisford"
+      ],
+      "season": "spring",
+      "text": "Peppery cress cut from the shallows at Ferrisford. Bargemen eat it raw by the handful."
+    },
+    {
+      "id": "nettle",
+      "name": "Nettle",
+      "category": "herb",
+      "tags": [
+        "stamina"
+      ],
+      "strength": 1,
+      "found_at": [
+        "village_gate",
+        "forest_path",
+        "greystone_mines"
+      ],
+      "season": "spring",
+      "text": "Young nettle tops, picked with a glove. Boiled they lose the sting and keep the strength."
+    },
+    {
+      "id": "ginger_root",
+      "name": "Ginger root",
+      "category": "root",
+      "tags": [
+        "warmth"
+      ],
+      "strength": 3,
+      "found_at": [
+        "capitol_market"
+      ],
+      "season": "any",
+      "text": "A dear root brought up the river to the Lantern Market. One knob warms a man through a winter night."
+    },
+    {
+      "id": "mustard_seed",
+      "name": "Mustard seed",
+      "category": "seasoning",
+      "tags": [
+        "warmth"
+      ],
+      "strength": 2,
+      "found_at": [
+        "thornhaven_gregor_shop",
+        "capitol_market"
+      ],
+      "season": "any",
+      "text": "Brown mustard seed, ground in a mortar. It bites, and the heat stays."
+    },
+    {
+      "id": "garlic",
+      "name": "Garlic",
+      "category": "herb",
+      "tags": [
+        "warmth"
+      ],
+      "strength": 1,
+      "found_at": [
+        "thornhaven_town_square",
+        "brackenmoor_abbey"
+      ],
+      "season": "summer",
+      "text": "Cottage-garden garlic. It warms the blood and keeps a stew honest."
+    },
+    {
+      "id": "valerian_root",
+      "name": "Valerian root",
+      "category": "root",
+      "tags": [
+        "sleep"
+      ],
+      "strength": 3,
+      "found_at": [
+        "forest_path",
+        "brackenmoor_abbey"
+      ],
+      "season": "autumn",
+      "text": "It smells of old socks and brings sleep like a blow to the head. The monks use it sparingly."
+    },
+    {
+      "id": "hops",
+      "name": "Hops",
+      "category": "herb",
+      "tags": [
+        "sleep"
+      ],
+      "strength": 2,
+      "found_at": [
+        "thornhaven_tavern",
+        "old_mill"
+      ],
+      "season": "autumn",
+      "text": "Dried hop cones from the Rusty Nail's brewing. A pillow stuffed with them is a sound night."
+    },
+    {
+      "id": "chamomile",
+      "name": "Chamomile",
+      "category": "herb",
+      "tags": [
+        "sleep"
+      ],
+      "strength": 1,
+      "found_at": [
+        "healer_hut",
+        "brackenmoor_abbey"
+      ],
+      "season": "summer",
+      "text": "Little apple-scented daisies. A cup calms a fretful child or a frightened grown one."
+    },
+    {
+      "id": "deathcap",
+      "name": "Deathcap",
+      "category": "mushroom",
+      "tags": [
+        "poison"
+      ],
+      "strength": 4,
+      "found_at": [
+        "forest_path"
+      ],
+      "season": "autumn",
+      "text": "A pale-green mushroom under the oaks. It tastes of nothing, and the dying starts a day later."
+    },
+    {
+      "id": "nightshade_berries",
+      "name": "Nightshade berries",
+      "category": "herb",
+      "tags": [
+        "poison"
+      ],
+      "strength": 3,
+      "found_at": [
+        "forest_path",
+        "iron_hollow_camp"
+      ],
+      "season": "summer",
+      "text": "Glossy black berries on a dull vine. Children are warned off them, and not every child listens."
+    },
+    {
+      "id": "field_mushroom",
+      "name": "Field mushroom",
+      "category": "mushroom",
+      "tags": [
+        "stamina"
+      ],
+      "strength": 1,
+      "found_at": [
+        "forest_path",
+        "village_gate"
+      ],
+      "season": "autumn",
+      "text": "Pink-gilled mushrooms from the meadows. Good fried; easily mistaken by a careless picker."
+    },
+    {
+      "id": "oats",
+      "name": "Oats",
+      "category": "grain",
+      "tags": [
+        "healing"
+      ],
+      "strength": 1,
+      "found_at": [
+        "old_mill",
+        "thornhaven_gregor_shop"
+      ],
+      "season": "any",
+      "text": "Rolled oats from the mill. The base of every pottage in the valley."
+    },
+    {
+      "id": "barley",
+      "name": "Barley",
+      "category": "grain",
+      "tags": [
+        "stamina"
+      ],
+      "strength": 1,
+      "found_at": [
+        "old_mill",
+        "kingsroad_waystation"
+      ],
+      "season": "any",
+      "text": "Pearl barley. It thickens a stew and keeps a walker walking."
+    },
+    {
+      "id": "turnip",
+      "name": "Turnip",
+      "category": "vegetable",
+      "tags": [
+        "healing"
+      ],
+      "strength": 1,
+      "found_at": [
+        "thornhaven_town_square",
+        "brackenmoor_abbey"
+      ],
+      "season": "autumn",
+      "text": "A poor man's meal, and a filling one."
+    },
+    {
+      "id": "apple",
+      "name": "Apple",
+      "category": "fruit",
+      "tags": [
+        "stamina"
+      ],
+      "strength": 1,
+      "found_at": [
+        "thornhaven_town_square",
+        "brackenmoor_abbey"
+      ],
+      "season": "autumn",
+      "text": "Sharp russets from the abbey orchard and the valley's cottage trees."
+    },
+    {
+      "id": "mutton",
+      "name": "Mutton",
+      "category": "meat",
+      "tags": [
+        "healing"
+      ],
+      "strength": 2,
+      "found_at": [
+        "thornhaven_gregor_shop",
+        "capitol_market"
+      ],
+      "season": "any",
+      "text": "Salted mutton by the joint. Most of the valley eats meat on feast days only."
+    },
+    {
+      "id": "venison",
+      "name": "Venison",
+      "category": "meat",
+      "tags": [
+        "healing",
+        "stamina"
+      ],
+      "strength": 2,
+      "found_at": [
+        "forest_path"
+      ],
+      "season": "autumn",
+      "text": "Deer meat. In the crown's forests, taking it without leave is poaching."
+    },
+    {
+      "id": "boar_meat",
+      "name": "Boar meat",
+      "category": "meat",
+      "tags": [
+        "healing"
+      ],
+      "strength": 3,
+      "found_at": [
+        "forest_path"
+      ],
+      "season": "any",
+      "text": "Dark, rich meat from the wild boar of the Darkwood, for whoever lives through the hunt."
+    },
+    {
+      "id": "river_trout",
+      "name": "River trout",
+      "category": "fish",
+      "tags": [
+        "stamina"
+      ],
+      "strength": 2,
+      "found_at": [
+        "ferrisford",
+        "old_mill"
+      ],
+      "season": "summer",
+      "text": "Brown trout from the Ferris and the mill race."
+    },
+    {
+      "id": "eel",
+      "name": "Eel",
+      "category": "fish",
+      "tags": [
+        "healing"
+      ],
+      "strength": 2,
+      "found_at": [
+        "ferrisford",
+        "capitol_docks"
+      ],
+      "season": "any",
+      "text": "Eels from the traps under the River Quarter's wharves. The dockers live on eel pie."
+    }
+  ],
+  "dishes": [
+    {
+      "id": "grey_fever_cure",
+      "name": "The Grey Fever cure",
+      "kind": "remedy",
+      "text": "Fever-root steeped with the white salt of Greystone's deep vein: the old receipt from Brackenmoor's archive. Drunk in full it breaks the Grey Fever for good.",
+      "story_flag": "grey_cure_recipe_known",
+      "deed": "steeped fever-root with Greystone's white salt and made the true cure for the Grey Fever"
+    },
+    {
+      "id": "fever_root_tea",
+      "name": "Fever-root tea",
+      "kind": "remedy",
+      "text": "Fever-root steeped strong. It quiets the Grey Fever for a few days, as root always has. It cures nothing; the fever comes back."
+    },
+    {
+      "id": "salt_draught",
+      "name": "Salt draught",
+      "kind": "remedy",
+      "text": "White salt stirred into water. It holds the Grey Fever down for a few days, the way the Hollow's half measures held Elena's. Without fever-root it cures nothing."
+    },
+    {
+      "id": "healing_draught",
+      "name": "Healing draught",
+      "kind": "remedy",
+      "text": "A bitter green draught of wound-herbs. It eases pain and helps a body mend."
+    },
+    {
+      "id": "rousing_tonic",
+      "name": "Rousing tonic",
+      "kind": "remedy",
+      "text": "A sharp, cold tonic of river herbs. It puts the wind back in a tired walker."
+    },
+    {
+      "id": "warming_tonic",
+      "name": "Warming tonic",
+      "kind": "remedy",
+      "text": "A hot, biting tonic. It keeps the cold out for a few hours on the road."
+    },
+    {
+      "id": "sleeping_draught",
+      "name": "Sleeping draught",
+      "kind": "remedy",
+      "text": "A heavy, sour draught. Whoever drinks it sleeps hard and wakes slow."
+    },
+    {
+      "id": "poison_draught",
+      "name": "Bitter draught",
+      "kind": "remedy",
+      "text": "A draught that will do harm to whoever drinks it. Any good herb in it is spoiled."
+    },
+    {
+      "id": "meat_stew",
+      "name": "Meat stew",
+      "kind": "food",
+      "text": "A thick stew of meat and whatever else was to hand."
+    },
+    {
+      "id": "fish_stew",
+      "name": "Fish stew",
+      "kind": "food",
+      "text": "A river stew of fish, the way the bargemen make it."
+    },
+    {
+      "id": "pottage",
+      "name": "Pottage",
+      "kind": "food",
+      "text": "A pot of grain and greens, the valley's everyday meal."
+    },
+    {
+      "id": "tainted_food",
+      "name": "Stew",
+      "kind": "food",
+      "text": "It looks and smells like any other stew. It is not."
+    },
+    {
+      "id": "dubious_food",
+      "name": "Dubious food",
+      "kind": "food",
+      "text": "A grey, doubtful mess. It fills a stomach, barely, and does nothing else."
+    }
+  ]
+}
