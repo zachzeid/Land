@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dz0yl5o1r4xti"]
+[gd_scene load_steps=16 format=3 uid="uid://dz0yl5o1r4xti"]
 
 [ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
 [ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="2_scene_trigger"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/blacksmith_anvil.png" id="7_anvil"]
 [ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/blacksmith_workbench.png" id="8_workbench"]
 [ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/crates_barrels.png" id="9_crates"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="10_story_item"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
 size = Vector2(1024, 40)
@@ -23,6 +24,9 @@ size = Vector2(180, 140)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_anvil_collision"]
 size = Vector2(80, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_order_book"]
+size = Vector2(40, 30)
 
 [node name="BlacksmithInterior" type="Node2D"]
 
@@ -143,6 +147,29 @@ position = Vector2(-350, 200)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("9_crates")
 
+[node name="OrderBook" type="Area2D" parent="Furniture"]
+z_index = 6
+position = Vector2(280, -200)
+script = ExtResource("10_story_item")
+interaction_name = "Read Order Book"
+flag_to_set = "bulk_orders_found"
+discovery_text = "[b]Bjorn's order book[/b]
+
+A soot-stained book lies open beside the workbench. Most entries are horseshoes, hinges and plough blades, but one customer stands out. Gregor has ordered swords and spearheads every few weeks for months, far more than a village shop could ever sell, and with them things no shop sells at all: pick-heads by the dozen, and chain, 'drawn even, good links, shackle ends'.
+
+Each order is paid in full and marked 'collected at night'."
+reexamine_text = "Gregor's orders fill page after page: blades, pick-heads, chain with shackle ends. Where could it all be going?"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/OrderBook"]
+shape = SubResource("RectangleShape2D_order_book")
+
+[node name="Visual" type="ColorRect" parent="Furniture/OrderBook"]
+offset_left = -16.0
+offset_top = -12.0
+offset_right = 16.0
+offset_bottom = 12.0
+color = Color(0.3, 0.22, 0.14, 1)
+
 [node name="Exit" type="Area2D" parent="."]
 position = Vector2(0, 460)
 collision_layer = 32
@@ -178,6 +205,36 @@ position = Vector2(0, 350)
 
 [node name="from_exterior" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(0, 350)
+
+[node name="TileMould" type="Area2D" parent="Furniture"]
+z_index = 6
+position = Vector2(200, -120)
+script = ExtResource("10_story_item")
+interaction_name = "Look at the Tile Mould"
+flag_to_set = ""
+discovery_text = "[b]The tile mould[/b]
+
+On a shelf by the workbench, wrapped in oiled leather, sits a two-part stone mould: a row of small blank slabs, each with a hammer over a pine tree cut into its back. The lot tiles for the chapel urn are cast here, from the forge's own iron.
+
+A card is tucked into the leather in Bjorn's blunt hand: 'Each tile two ounces and a half, filed square, name cut once and clean. A lot is only fair if every tile is the same.' Below it, a tally of how many he cast each year, one for every name the council counted."
+reexamine_text = "Bjorn's lot-tile mould. 'A lot is only fair if every tile is the same.'"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/TileMould"]
+shape = SubResource("RectangleShape2D_order_book")
+
+[node name="Visual" type="ColorRect" parent="Furniture/TileMould"]
+offset_left = -18.0
+offset_top = -10.0
+offset_right = 18.0
+offset_bottom = 10.0
+color = Color(0.45, 0.42, 0.38, 1)
+
+[node name="Wrap" type="ColorRect" parent="Furniture/TileMould"]
+offset_left = -20.0
+offset_top = -4.0
+offset_right = 20.0
+offset_bottom = 4.0
+color = Color(0.4, 0.28, 0.16, 1)
 
 [node name="Blacksmith" parent="." groups=["npcs"] instance=ExtResource("4_blacksmith")]
 position = Vector2(-100, -50)

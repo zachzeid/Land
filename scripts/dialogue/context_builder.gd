@@ -27,6 +27,11 @@ func build_context(params: Dictionary) -> Dictionary:
 	var conversation_history = params.get("conversation_history", [])
 	var player_input = params.get("player_input", "")
 
+	# Storyline layer: this NPC's SOUL, agendas it means to raise, and what it may do (docs/WORLD_SCHEMA.md §6)
+	# Placed right after the identity block, so prompt truncation never cuts it
+	var soul_npc_id = npc_id if npc_id != "" else (str(personality.npc_id) if personality != null and "npc_id" in personality else "")
+	var storyline_block = _build_storyline_section(soul_npc_id)
+
 	# Build enhanced system prompt with current context
 	var enhanced_system: String
 	if personality != null:
@@ -35,7 +40,8 @@ func build_context(params: Dictionary) -> Dictionary:
 			personality,
 			tiered_memories,
 			dimensions,
-			world_state
+			world_state,
+			storyline_block
 		)
 	else:
 		# Fallback to legacy system prompt
@@ -45,7 +51,8 @@ func build_context(params: Dictionary) -> Dictionary:
 			tiered_memories,
 			relationship,
 			dimensions,
-			world_state
+			world_state,
+			storyline_block
 		)
 
 	# Build message history for Claude
@@ -59,7 +66,7 @@ func build_context(params: Dictionary) -> Dictionary:
 ## Build system prompt from structured NPCPersonality resource
 ## PRIORITY ORDER: Critical sections at top survive truncation
 ## Response Format MUST be first - without it, Claude won't return valid JSON
-func _build_system_prompt_from_personality(personality: Resource, tiered_memories: Dictionary, dimensions: Dictionary, world_state: Dictionary) -> String:
+func _build_system_prompt_from_personality(personality: Resource, tiered_memories: Dictionary, dimensions: Dictionary, world_state: Dictionary, storyline_block: String = "") -> String:
 	var prompt = ""
 
 	# =========================================================================
@@ -72,6 +79,7 @@ func _build_system_prompt_from_personality(personality: Resource, tiered_memorie
 	# SECTION 2: CORE IDENTITY (Essential for character consistency)
 	# =========================================================================
 	prompt += personality.get_core_identity_block()
+	prompt += storyline_block
 
 	# =========================================================================
 	# SECTION 3: CANONICAL WORLD FACTS (Prevents hallucination)
@@ -121,6 +129,32 @@ func _build_system_prompt_from_personality(personality: Resource, tiered_memorie
 	prompt += _build_behavioral_section(dimensions, personality)
 
 	return prompt
+
+## SOUL + pending agendas + conversation agency from StorylineDirector ("" when it has nothing for this NPC)
+func _build_storyline_section(npc_id: String) -> String:
+	if npc_id == "":
+		return ""
+	var tree = Engine.get_main_loop() as SceneTree
+	var director = tree.root.get_node_or_null("StorylineDirector") if tree else null
+	var generic_block = _build_generic_section(npc_id, director)
+	if director == null or not director.has_method("get_conversation_block"):
+		return generic_block
+	var block = director.get_conversation_block(npc_id) + generic_block
+	var config = tree.root.get_node_or_null("Config")
+	var agency_on = config == null or not ("conversation_agency" in config) or config.conversation_agency
+	if agency_on and director.has_method("get_conversation_agency_block"):
+		block += director.get_conversation_agency_block(npc_id)
+	return block
+
+## A generic NPC's seed and its most important, most recent layers (docs/WORLD_SCHEMA.md §9)
+## When the Director already has its soul (essence, wants, voice) only the seed + layers are added
+func _build_generic_section(npc_id: String, director: Node) -> String:
+	var tree = Engine.get_main_loop() as SceneTree
+	var registry = tree.root.get_node_or_null("DynamicNPCRegistry") if tree else null
+	if registry == null or not registry.has_method("is_generic") or not registry.is_generic(npc_id):
+		return ""
+	var director_has_soul = director != null and director.has_method("get_soul") and director.get_soul(npc_id) != null
+	return registry.get_generic_prompt_block(npc_id, not director_has_soul)
 
 ## Build relationship section with personality-aware interpretation
 func _build_relationship_section(dimensions: Dictionary, personality: Resource) -> String:
@@ -323,8 +357,11 @@ func _build_response_format_section() -> String:
 	section += '      "origin": null,\n'
 	section += '      "notable_facts": []\n'
 	section += '    }\n'
-	section += '  }\n'
+	section += '  },\n'
+	section += '  "actions": [],\n'
+	section += '  "commitments": []\n'
 	section += '}\n\n'
+	section += '"actions" and "commitments" are optional and usually empty; see WHAT YOU CAN DO, NOT JUST SAY.\n\n'
 
 	# Phase 5: Add constrained interaction types from config
 	section += "### ALLOWED interaction_type VALUES (use EXACTLY one of these):\n"
@@ -359,7 +396,7 @@ func _build_response_format_section() -> String:
 ## Build enhanced system prompt with RAG memories and current state (LEGACY)
 ## Now uses tiered_memories dictionary instead of separate arrays
 ## PRIORITY ORDER: Response Format first to survive truncation
-func _build_system_prompt(base_prompt: String, npc_id: String, tiered_memories: Dictionary, relationship: float, dimensions: Dictionary, world_state: Dictionary) -> String:
+func _build_system_prompt(base_prompt: String, npc_id: String, tiered_memories: Dictionary, relationship: float, dimensions: Dictionary, world_state: Dictionary, storyline_block: String = "") -> String:
 	var prompt = ""
 
 	# =========================================================================
@@ -371,6 +408,7 @@ func _build_system_prompt(base_prompt: String, npc_id: String, tiered_memories: 
 	# SECTION 2: BASE PROMPT (NPC identity)
 	# =========================================================================
 	prompt += base_prompt + "\n\n"
+	prompt += storyline_block
 
 	# =========================================================================
 	# SECTION 3: CANONICAL WORLD FACTS (prevents hallucination)

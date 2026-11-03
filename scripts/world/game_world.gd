@@ -6,6 +6,14 @@ extends Node2D
 @export var use_chromadb: bool = true
 
 func _ready():
+	# A new game opens on the Tithe drawing in the chapel, not here (scripts/world/opening_sequence.gd)
+	var scene_manager = get_node_or_null("/root/SceneManager")
+	var opening = scene_manager.opening if scene_manager and "opening" in scene_manager else null
+	if opening and opening.should_play():
+		print("[GameWorld] New game: opening on the Tithe drawing")
+		opening.call_deferred("play")
+		return
+
 	print("[GameWorld] Initializing world...")
 
 	# Wait one frame to ensure all child nodes are ready

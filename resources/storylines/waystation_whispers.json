@@ -1,0 +1,2385 @@
+{
+  "id": "waystation_whispers",
+  "title": "Waystation Whispers",
+  "summary": "Every letter on the Kingsroad sleeps one night under Old Wren's roof, and she reads them all: the Boss's tallow letters to a Guild factor, reckoning white salt by weight and hands by the autumn; a lady's plain wax; the regent's lion seal; and five autumns of an old Elder's petitions against the Tithe that never arrived. Who reads, who forges, who burns.",
+  "prefix": "way_",
+  "act_span": [
+    1,
+    3
+  ],
+  "flags": {
+    "way_stranger_noticed": "The player was noticed at the Halfway House taking more interest in other people's post than a traveller should.",
+    "way_wren_confided": "Old Wren admitted to the player that she reads every letter under her roof, and offered them a seat at her game.",
+    "way_tallow_clue_shared": "The player was shown, by Old Wren, a Thornhaven letter in a woman's hand, sealed with tavern tallow and smelling of hearth smoke, bound for a Guild factor with a reckoning of white salt inside.",
+    "way_clue_sent_to_renna": "Old Wren sent Captain Renna a fair copy of a Thornhaven letter in a woman's hand, sealed with tavern tallow and bound for a Guild factor.",
+    "way_letters_in_gregors_hand": "The Hollow's monthly letters to the Guild factor began coming east in Gregor's hand, on paper from his shop.",
+    "way_wren_game_begun": "Old Wren decided the letters under her roof were worth one last game, and began to play it.",
+    "way_ashdown_paper_matched": "Old Wren matched the crestless letters going west from Palace Hill, and the Guild door they answer to, to the paper of Ashdown House.",
+    "way_lady_named_to_player": "The player learned from Old Wren that the crestless letters buying the valley's freeholds come from Ashdown House.",
+    "way_lady_card_kept": "Old Wren kept a fair copy of a crestless Ashdown letter in her seal box, against the day it would be worth something.",
+    "way_regent_letter_read": "Old Wren lifted the Lord Protector's lion seal from a letter to Captain Renna and read the regent's mind on the valley.",
+    "way_orders_forged": "A letter under a perfect copy of the crown's lion seal reached Captain Renna, in words the Lord Protector never wrote.",
+    "way_renna_warned": "Old Wren told Captain Renna to her face what the Lord Protector's letters to her really said.",
+    "way_regent_letter_resealed": "Old Wren read the Lord Protector's letter to Captain Renna and pressed the lion seal back so well that nobody would ever know.",
+    "way_renna_opened_orders": "Captain Renna broke the seal on the Lord Protector's instructions about whoever really governs the valley, and read them.",
+    "way_rook_sold_the_lady": "Rook sold the player what she had seen: a footman in Ashdown grey collecting the Hollow's parcels at the Guild's back door.",
+    "way_rook_paid_off": "A footman out of livery paid Rook to forget what she had seen at the Guild's back door.",
+    "way_renna_told_the_boss": "Old Wren told Captain Renna that the Boss of Iron Hollow keeps the tavern in Thornhaven.",
+    "way_name_kept": "Old Wren put her guess about the Boss of Iron Hollow in her seal box and told nobody, by choice.",
+    "way_varn_sent_east": "Varn rode east along the Kingsroad on the Boss's errand to the Halfway House.",
+    "way_copies_burned": "Varn put Old Wren's box of copied letters into her own hearth and watched every page burn.",
+    "way_varn_took_the_letters": "Varn rode away from the Halfway House with the Boss's copied letters in his saddlebag, and kept them for himself.",
+    "way_seraphine_sought_the_boss": "Lady Seraphine wrote, under plain wax, asking to meet whoever truly commands Iron Hollow.",
+    "way_boss_answered_the_lady": "The Boss of Iron Hollow answered Lady Seraphine's letter in a borrowed man's hand, and named a price for the valley.",
+    "way_rangers_at_the_halfway": "Captain Renna quartered Rangers at the Halfway House, and Old Wren's roof was under the crown's guard.",
+    "way_copies_bought": "Lady Seraphine's land agent bought Old Wren's copies of the crestless Ashdown letters and carried them back to Palace Hill.",
+    "way_copies_seized_by_crown": "The Lord Protector's men took Old Wren's copied letters at the Dawn Gate before any magistrate saw them.",
+    "way_letters_read": "It came out along the Kingsroad that Old Wren of the Halfway House had read every letter under her roof, and that what she read had reached other hands.",
+    "way_boss_named_in_capitol": "Word reached the Capitol, by letters from the Halfway House, that the Boss of Iron Hollow is the widow who keeps the tavern in Thornhaven.",
+    "way_salt_tally_read": "Old Wren read, beneath the coin owed in the tallow letters, a monthly reckoning of white salt by weight and a count of hands that grew by one each autumn, all in the same neat woman's hand.",
+    "way_petitions_confessed": "Old Wren told Captain Renna that her uncle Mathias had written to the crown every autumn begging help against the Tithe, and that Wren had read each petition and sent it on to be lost.",
+    "way_player_carried_the_box": "The player took Old Wren's box of copied letters east to be laid before the crown.",
+    "way_player_kept_wrens_secret": "The player swore to Old Wren that her reading would stay her own, and kept her box shut."
+  },
+  "player_flags": [
+    "way_player_carried_the_box",
+    "way_player_kept_wrens_secret"
+  ],
+  "crossovers": [
+    "hc_varn_ascendant",
+    "ih_supply_line_cut",
+    "tithe_rangers_arrive",
+    "inh_deed_challenged",
+    "fence_ledger_taken",
+    "des_varn_warrant_served",
+    "tn_taken_alive_known"
+  ],
+  "beats": [
+    {
+      "id": "the_letter_rack",
+      "title": "The Letter Rack",
+      "act": 1,
+      "summary": "By the kitchen door of the Halfway House hangs the courier rack, a night's worth of the realm's post on its pegs. Some of the seals have been lifted and pressed again, very well.",
+      "location": "kingsroad_waystation",
+      "requires": [
+        "!way_letters_read"
+      ],
+      "resolves_on": [
+        "wren_letter_rack_seen",
+        "wren_seal_kit_seen"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "way_stranger_noticed",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "wren_sees_the_stranger_look",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The courier rack hangs by your kitchen door where any guest can see it. Your seals go back perfect, but a sharp eye could still notice a seal that has been pressed twice.",
+          "options": [
+            {
+              "id": "draw_them_to_the_fire",
+              "label": "Keep the rack where it is, and keep guests at the fire with stew and long stories",
+              "serves": [
+                "a_quiet_fire",
+                "read_every_letter"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger a long, rambling story about a horse you once knew. Steer them away from the rack by the kitchen door."
+                }
+              ]
+            },
+            {
+              "id": "let_them_look",
+              "label": "Let guests look; anyone who reads seals might be worth a game",
+              "serves": [
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Ask the stranger, idly, whether they play draughts, and whether they always look at a letter's seal before its name."
+                }
+              ]
+            },
+            {
+              "id": "put_the_rack_away",
+              "label": "Have the rack taken into the back room tonight",
+              "serves": [
+                "read_every_letter"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "waystation_whispers",
+                  "beat": "the_letter_rack"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger the courier rack is not for guests. Say it kindly and do not smile."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "wren_deals_the_stranger_in",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The courier rack is in the back room. Nobody has noticed your work in four years, and four years of reading alone is a long time.",
+          "options": [
+            {
+              "id": "put_it_back",
+              "label": "Hang the rack back by the kitchen door and see who looks",
+              "serves": [
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "waystation_whispers",
+                  "beat": "the_letter_rack"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger the courier rack is back on its peg, as if they had asked. Watch their face."
+                }
+              ]
+            },
+            {
+              "id": "keep_it_away",
+              "label": "Leave it in the back room; the game can wait",
+              "serves": [
+                "a_quiet_fire",
+                "read_every_letter"
+              ],
+              "effects": []
+            }
+          ],
+          "once": false
+        },
+        {
+          "id": "renna_asks_after_the_post",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Your riders' letters from home pass through Old Wren's courier rack at the Halfway House, wherever she keeps it this week. She fed you once, the night you ran from Thornhaven.",
+          "options": [
+            {
+              "id": "ask_for_the_rack",
+              "label": "Ask Wren, kindly and as a ranger, to hang the courier rack where riders can find their letters",
+              "serves": [
+                "bring_my_rangers_home",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "waystation_whispers",
+                  "beat": "the_letter_rack"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you asked Old Wren after your riders' letters, and that she looked at you as if you were still sixteen."
+                }
+              ]
+            },
+            {
+              "id": "leave_it",
+              "label": "Leave the old woman her back room and her secrets",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "wren_reads_the_stranger",
+          "type": "reveal",
+          "trigger": "on_resolve",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The stranger has seen it: seals lifted and pressed back, perhaps the seal-maker's kit as well. Nobody in four years has noticed.",
+          "options": [
+            {
+              "id": "confide",
+              "label": "Admit it over a cup: every letter, child, and nobody the wiser",
+              "serves": [
+                "one_last_game",
+                "name_the_boss"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_wren_confided",
+                  "value": true
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "wren",
+                  "dimension": "trust",
+                  "delta": 10
+                },
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Admit to the stranger that you read every letter under your roof. Offer them a seat at your game, and a warning."
+                }
+              ]
+            },
+            {
+              "id": "deny_and_smile",
+              "label": "Deny it with a smile, and pour them another cup",
+              "serves": [
+                "read_every_letter",
+                "a_quiet_fire"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger damp warps a seal on a long road. Ask them, sweetly, how long they plan to stay."
+                }
+              ]
+            },
+            {
+              "id": "warn_them_off",
+              "label": "Tell them plainly that people who read other people's post end up in rivers",
+              "serves": [
+                "read_every_letter"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "wren",
+                  "dimension": "fear",
+                  "delta": 5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_tallow_seal",
+      "title": "Tallow and Smoke",
+      "act": 1,
+      "summary": "Every new moon a Thornhaven rider comes in, and a Guild rider rides east the next morning. Among the Thornhaven post is a letter in a woman's hand, sealed with tavern tallow and smelling of hearth smoke and spilt ale. Inside, under the coin owed, are two columns: salt by weight, and hands.",
+      "location": "kingsroad_waystation",
+      "requires": [
+        "way_stranger_noticed"
+      ],
+      "resolves_on": [
+        "way_tallow_clue_shared"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "way_wren_game_begun",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "wren_shows_the_tallow",
+          "type": "reveal",
+          "trigger": "on_flag:wren_letter_rack_seen",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The stranger saw the twice-pressed seals on your rack. The new-moon letter is on your table: a woman's hand, tavern tallow for a seal, the smell of ale-smoke, addressed to a Guild factor.",
+          "options": [
+            {
+              "id": "show_the_stranger",
+              "label": "Show the stranger the tallow seal and let them smell the smoke on it",
+              "serves": [
+                "name_the_boss",
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_tallow_clue_shared",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Ask the stranger which house in Thornhaven seals its post with tavern tallow. Say you have wondered for a year."
+                }
+              ]
+            },
+            {
+              "id": "copy_for_renna",
+              "label": "Send a fair copy west to Renna Thorne, who might do something with it",
+              "serves": [
+                "spare_the_young_ones",
+                "outplay_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_clue_sent_to_renna",
+                  "value": true
+                }
+              ],
+              "aids": "renna"
+            },
+            {
+              "id": "keep_it",
+              "label": "Keep it to yourself; the game is not ripe",
+              "serves": [
+                "read_every_letter"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "wren_reads_the_reckoning",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The tallow letter is open on your table. Under the coin owed are two columns in the same neat hand: white salt by weight, and a count of hands that grows by one every autumn. For five years you have called it a mine's books.",
+          "options": [
+            {
+              "id": "read_it_true",
+              "label": "Read the columns again and stop calling them a mine's books",
+              "serves": [
+                "read_every_letter",
+                "name_the_boss"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_salt_tally_read",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "fold_it_away",
+              "label": "Fold it away; what a widow counts is her own business",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "wren_counts_the_hands",
+          "type": "reveal",
+          "trigger": "on_flag:tn_taken_alive_known",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The stranger says Thornhaven's taken are alive, digging white salt in chains beyond the ridge. The tallow letters on your table count salt by weight and hands by the autumn.",
+          "options": [
+            {
+              "id": "show_the_columns",
+              "label": "Show the stranger the two columns and say what you think the hands are",
+              "serves": [
+                "name_the_boss",
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_tallow_clue_shared",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Show the stranger the tallow letter's two columns, salt and hands. Say you read them for five years and never once asked whose hands."
+                }
+              ]
+            },
+            {
+              "id": "keep_the_columns",
+              "label": "Keep it; a count of hands is a card worth more later",
+              "serves": [
+                "read_every_letter"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "wren_and_the_courier_book",
+          "type": "reveal",
+          "trigger": "on_flag:waystation_courier_log_read",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The stranger has read your courier book: a Guild rider east every new moon, the morning after a Thornhaven rider comes in. They have half of what you know.",
+          "options": [
+            {
+              "id": "give_the_other_half",
+              "label": "Give them the other half: the woman's hand and the tallow seal",
+              "serves": [
+                "name_the_boss",
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_tallow_clue_shared",
+                  "value": true
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "wren",
+                  "dimension": "respect",
+                  "delta": 10
+                }
+              ]
+            },
+            {
+              "id": "praise_and_deflect",
+              "label": "Praise their eye and tell them couriers keep strange hours",
+              "serves": [
+                "read_every_letter"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger they have a clerk's eye, and that couriers keep strange hours. Change the subject to the weather."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mira_writes_the_factor",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The month has turned, and your letter to the Guild factor is due: the Pit's salt by weight, the hands that dug it, coin owed, the next carters' run. For five years it has gone east by the Kingsroad under tavern tallow.",
+          "options": [
+            {
+              "id": "as_always",
+              "label": "Write it yourself and seal it as always; habits are invisible",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": []
+            },
+            {
+              "id": "over_the_ridge",
+              "label": "Send it with Varn's man up the ridge trail, past the Pit, to the Greystone carters instead",
+              "serves": [
+                "keep_the_mask",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "waystation_whispers",
+                  "beat": "the_tallow_seal"
+                }
+              ]
+            },
+            {
+              "id": "in_gregors_hand",
+              "label": "Have Gregor write it out for you, on his shop's paper",
+              "serves": [
+                "burn_gregor_first",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_letters_in_gregors_hand",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger, sweating, whether a man can be hanged for writing out another's letters."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "wren_asks_the_carters",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The new-moon letter from Thornhaven did not come this month. The Greystone carters say a Hollow man came down off the ridge with the salt sacks, and the letter with them.",
+          "options": [
+            {
+              "id": "buy_the_carters",
+              "label": "Buy the Greystone carters an ale and hear what came over the ridge",
+              "serves": [
+                "one_last_game",
+                "name_the_boss"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "waystation_whispers",
+                  "beat": "the_tallow_seal"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger the Thornhaven post has started going over the ridge. Ask who would go to that trouble, and why."
+                }
+              ]
+            },
+            {
+              "id": "let_it_go",
+              "label": "Let it go; letters that do not sleep here are none of your business",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "plain_wax",
+      "title": "Plain Wax",
+      "act": 2,
+      "summary": "Letters with no crest go west from Palace Hill in a lady's hand, under plain wax, to a land agent buying freeholds at the valley's edge. Wren thinks she knows the paper.",
+      "location": "kingsroad_waystation",
+      "requires": [
+        "way_wren_game_begun"
+      ],
+      "resolves_on": [
+        "way_lady_named_to_player",
+        "way_lady_card_kept"
+      ],
+      "hooks": [
+        {
+          "id": "wren_matches_the_paper",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "A crestless letter from Palace Hill is on your table, plain wax, a lady's hand. The paper has the laid lines and the faint grey edge you have seen before, at Ashdown House, in the old king's time.",
+          "options": [
+            {
+              "id": "match_it",
+              "label": "Hold it to the lamp and match the paper",
+              "serves": [
+                "read_every_letter",
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_ashdown_paper_matched",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "let_it_sleep",
+              "label": "Let the lady's letters sleep; great houses bite",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "wren_sells_the_lady",
+          "type": "reveal",
+          "trigger": "on_flag:way_ashdown_paper_matched",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "Ashdown paper. The lady buying the valley's freeholds while the Hollow terrifies it is Seraphine Ashdown, and her money goes to the same Guild door as the tallow letters.",
+          "options": [
+            {
+              "id": "tell_the_stranger",
+              "label": "Tell the stranger whose paper it is, the next time they sit at your fire",
+              "serves": [
+                "one_last_game",
+                "outplay_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger the crestless letters buying Thornhaven come from Ashdown House. Ask what they mean to do with it."
+                }
+              ],
+              "harms": [
+                "seraphine"
+              ]
+            },
+            {
+              "id": "keep_a_copy",
+              "label": "Make a fair copy for your seal box and keep the card for later",
+              "serves": [
+                "read_every_letter",
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_lady_card_kept",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "forget_it",
+              "label": "Forget it; Ashdown House can afford better enemies than you",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "seraphine_hears_the_road_is_watched",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "Your land agent writes that the keeper of the Halfway House has been asking travellers about his post. Your letters west go under plain wax by that road.",
+          "options": [
+            {
+              "id": "go_by_barge",
+              "label": "Send your letters west by barge from Ferrisford, never by the Halfway House",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "waystation_whispers",
+                  "beat": "plain_wax"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Ask the stranger, lightly, whether innkeepers on the Kingsroad can read. Laugh as if it were a joke."
+                }
+              ]
+            },
+            {
+              "id": "trust_the_wax",
+              "label": "Trust the plain wax; nobody reads a crestless letter",
+              "serves": [
+                "own_the_valley",
+                "keep_the_valley_afraid"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "seraphine_deed_contested",
+          "type": "intercept",
+          "trigger": "on_flag:inh_deed_challenged",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "The Ashdown deed is challenged. Every letter you have sent west about freeholds is now a page a magistrate would like to read.",
+          "options": [
+            {
+              "id": "stop_writing",
+              "label": "Stop writing west at all until the deed is settled",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "waystation_whispers",
+                  "beat": "plain_wax"
+                }
+              ]
+            },
+            {
+              "id": "write_once_more",
+              "label": "Write once more to tell your agent to buy faster",
+              "serves": [
+                "own_the_valley",
+                "restore_house_ashdown"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Tell the stranger the Ashdown deed is older than the Magistry. Ask whether they own land, and whether they would sell it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "wren_waits_at_the_ford",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The Ashdown post has stopped coming through your house. The Ferrisford barges carry it now, and the ferryman's boy owes you a kindness.",
+          "options": [
+            {
+              "id": "call_in_the_kindness",
+              "label": "Have the ferryman's boy bring the lady's barge post to your kitchen for one night",
+              "serves": [
+                "one_last_game",
+                "read_every_letter"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "waystation_whispers",
+                  "beat": "plain_wax"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger great ladies change their roads when they are frightened. Ask what has frightened this one."
+                }
+              ]
+            },
+            {
+              "id": "let_her_go",
+              "label": "Let her go; a lady who changes roads has already told you something",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_lion_seal",
+      "title": "The Lion Seal",
+      "act": 2,
+      "summary": "The Rangers are in the west, and the Lord Protector's letters to Renna Thorne come by the Kingsroad under the crown's lion seal. Wren has a kit that can copy it.",
+      "location": "kingsroad_waystation",
+      "requires": [
+        "way_wren_game_begun",
+        "tithe_rangers_arrive"
+      ],
+      "resolves_on": [
+        "way_orders_forged",
+        "way_renna_warned",
+        "way_regent_letter_resealed"
+      ],
+      "hooks": [
+        {
+          "id": "edric_writes_west",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Your captain is in the valley. Your letter to her goes west tonight under the lion seal. She carries sealed instructions she has not opened, about whoever really governs the valley.",
+          "options": [
+            {
+              "id": "write_of_terms",
+              "label": "Write that, if she finds whoever governs the valley, she is to offer terms before steel",
+              "serves": [
+                "use_the_hollow",
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger the regent's letters have grown strange: talk of terms, not ropes. Ask what they make of it."
+                }
+              ]
+            },
+            {
+              "id": "write_of_victory",
+              "label": "Write that the city needs a victory by the spring, and she is to bring one",
+              "serves": [
+                "win_a_victory",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger the regent wants a victory by spring. Ask whether they know the difference between a victory and a hanging."
+                }
+              ]
+            },
+            {
+              "id": "write_nothing_new",
+              "label": "Write only that she is to report, and keep your counsel",
+              "serves": [
+                "keep_the_regency"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "wren_lifts_the_lion",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "A letter from the Lord Protector to Renna Thorne hangs on your rack tonight under the lion seal. The man who retired you, writing to the girl you fed the night she ran.",
+          "options": [
+            {
+              "id": "lift_it",
+              "label": "Warm the knife and read the regent's mind",
+              "serves": [
+                "read_every_letter",
+                "outplay_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_regent_letter_read",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "leave_crown_post",
+              "label": "Leave the crown's post alone; that game cost you once already",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "wren_and_the_lion_seal",
+          "type": "scheme",
+          "trigger": "on_flag:way_regent_letter_read",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The regent's letter is open on your table. Whatever it says of the valley, Renna Thorne will do it. Your kit can make a lion seal no clerk could tell from the real one.",
+          "options": [
+            {
+              "id": "forge_gentler_orders",
+              "label": "Write the letter again, in words that keep Renna alive, under a forged lion seal",
+              "serves": [
+                "outplay_the_regent",
+                "spare_the_young_ones",
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_orders_forged",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "edric"
+              ]
+            },
+            {
+              "id": "tell_her_yourself",
+              "label": "Tell Renna to her face what her regent writes",
+              "serves": [
+                "spare_the_young_ones"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_renna_warned",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger whether Old Wren of the Halfway House can be trusted. Say she told you something about your own orders."
+                }
+              ],
+              "aids": "renna"
+            },
+            {
+              "id": "reseal_it",
+              "label": "Press the lion back so well no one will ever know",
+              "serves": [
+                "read_every_letter"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_regent_letter_resealed",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "renna_hears_from_wren",
+          "type": "react",
+          "trigger": "on_flag:way_renna_warned",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Old Wren, who fed you supper at sixteen and never asked your name, has told you what the regent's letters really say. Your sealed instructions are still in your saddlebag.",
+          "options": [
+            {
+              "id": "open_the_instructions",
+              "label": "Break the seal on the regent's instructions and read them now",
+              "serves": [
+                "restore_order_in_the_west",
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_renna_opened_orders",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you have read your sealed orders. Ask them who they think really governs the valley."
+                }
+              ]
+            },
+            {
+              "id": "obey_and_ride",
+              "label": "Ride on and obey; a ranger who picks her orders is a bandit with a badge",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "renna",
+                  "want": "obey_the_crown",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "trust_nobody",
+              "label": "Thank Wren, and from now on trust no letter from the east",
+              "serves": [
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "renna",
+                  "want": "obey_the_crown",
+                  "delta": -2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you no longer trust any letter that sleeps on the Kingsroad, your own regent's included."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "edric_suspects_the_post",
+          "type": "intercept",
+          "trigger": "on_flag:way_letters_read",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "It is out that the Halfway House reads the post. The woman who keeps it was your brother's intelligencer, and you retired her.",
+          "options": [
+            {
+              "id": "crown_riders_only",
+              "label": "Send your letters west by a crown rider who sleeps anywhere but the Halfway House",
+              "serves": [
+                "stay_indispensable",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "waystation_whispers",
+                  "beat": "the_lion_seal"
+                }
+              ]
+            },
+            {
+              "id": "feed_her_a_letter",
+              "label": "Send one false letter by her house and see where its words turn up",
+              "serves": [
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger, mildly, whether they have stayed at the Halfway House, and what the old woman there talks about."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Do nothing; an old woman reading letters is a problem for a quieter year",
+              "serves": [
+                "keep_the_regency"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "wren_finds_the_crown_rider",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The regent's post has stopped sleeping under your roof. One of your two old friends at the Crown Court owes you a career.",
+          "options": [
+            {
+              "id": "call_in_the_friend",
+              "label": "Have your old friend at the Crown Court send the lion post by your road again",
+              "serves": [
+                "outplay_the_regent",
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "waystation_whispers",
+                  "beat": "the_lion_seal"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger the regent has stopped sending his post past your door. Say it is the nicest compliment you have had in years."
+                }
+              ]
+            },
+            {
+              "id": "let_it_pass",
+              "label": "Let it pass; the regent is entitled to his secrets",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "wren_and_the_petitions",
+          "type": "reveal",
+          "trigger": "idle",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "Renna Thorne is in the valley. Five autumns her uncle's petitions slept under your roof, an old Elder begging the crown to stop the Tithe taking a child a year. You read every one, pressed the seals back, and they never arrived.",
+          "options": [
+            {
+              "id": "tell_renna",
+              "label": "Tell Renna her uncle wrote every autumn, and that you read him and let him be lost",
+              "serves": [
+                "spare_the_young_ones",
+                "outplay_the_regent"
+              ],
+              "aids": "renna",
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_petitions_confessed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger your uncle begged the crown for help against the Tithe every autumn, and nobody east of the Halfway House ever read it but an innkeeper."
+                }
+              ]
+            },
+            {
+              "id": "keep_it",
+              "label": "Keep it; the girl has enough to carry west",
+              "serves": [
+                "a_quiet_fire",
+                "read_every_letter"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "renna_and_the_lost_petitions",
+          "type": "react",
+          "trigger": "on_flag:way_petitions_confessed",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Old Wren says your uncle wrote to the crown every autumn for five years, begging help against a Tithe that takes one of Thornhaven's people a year. None of it reached you.",
+          "options": [
+            {
+              "id": "go_to_mathias",
+              "label": "Ride to Thornhaven and face your uncle, before the cart comes",
+              "serves": [
+                "face_uncle_mathias",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "renna",
+                  "want": "face_uncle_mathias",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger to take you to Elder Mathias. Say you owe him an answer to five letters you never got."
+                }
+              ]
+            },
+            {
+              "id": "ask_who_lost_them",
+              "label": "Write to the High Magistry to ask who lost five years of a village's petitions",
+              "serves": [
+                "refuse_a_scapegoat",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger five years of Thornhaven's petitions went east and vanished. Ask who in the Capitol is paid to lose things."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_lady_on_the_hill",
+      "title": "The Lady on the Hill",
+      "act": 2,
+      "summary": "In the Warrens, Rook keeps a chalked slate of buyers. One of them is 'the lady on the hill', who wants valley deeds, and whose footman in Ashdown grey collects parcels at the Guild's back door.",
+      "location": "capitol_warrens",
+      "requires": [
+        "way_wren_game_begun"
+      ],
+      "resolves_on": [
+        "rook_buyer_slate_seen",
+        "way_rook_sold_the_lady"
+      ],
+      "hooks": [
+        {
+          "id": "rook_names_her_price",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "Word in the Warrens is that someone is asking about Guild parcels and a lady on the hill. What you saw at the Guild's back door could buy your way out of the Warrens, or put you in the river.",
+          "options": [
+            {
+              "id": "sell_to_the_stranger",
+              "label": "Sell the stranger what you saw at the Guild's back door, for real coin, when they come",
+              "serves": [
+                "sell_what_i_know",
+                "get_out_rich"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger the price of the lady on the hill is ten crowns, paid first. Count it twice."
+                }
+              ],
+              "harms": [
+                "seraphine"
+              ]
+            },
+            {
+              "id": "sell_to_the_lady",
+              "label": "Go up the hill and sell the lady your silence instead",
+              "serves": [
+                "get_out_rich",
+                "never_owe_anyone"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger you have business on Palace Hill tonight, and that they never saw you leave."
+                }
+              ]
+            },
+            {
+              "id": "sit_on_it",
+              "label": "Sit on it; the people who want that secret have footmen and rivers",
+              "serves": [
+                "get_out_alive",
+                "look_after_the_little_ones"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "rook_dry_back_room",
+          "type": "reveal",
+          "trigger": "on_flag:ih_supply_line_cut",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "No Hollow goods have come through your back room in weeks. The fence is drying up, and what you know is the last thing you have to sell.",
+          "options": [
+            {
+              "id": "sell_it_now",
+              "label": "Sell the lady on the hill to the stranger cheap, before it is worth nothing",
+              "serves": [
+                "sell_what_i_know",
+                "get_out_rich"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Offer the stranger what you know about the lady on the hill for half your old price. Say the back room is empty and you are not."
+                }
+              ],
+              "harms": [
+                "seraphine"
+              ]
+            },
+            {
+              "id": "wait_for_a_better_buyer",
+              "label": "Wait for a better buyer than a stranger",
+              "serves": [
+                "get_out_rich"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger the price of what you know has gone up, because nothing else you sell is coming in."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "seraphine_buys_the_fence",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "Hollis mentions, pleasantly, that a Warrens fence called Rook has been seen watching the Guild's back door on the nights your footman calls.",
+          "options": [
+            {
+              "id": "buy_her_silence",
+              "label": "Send a footman out of livery with coin to buy the fence's memory",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_rook_paid_off",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger someone paid you to forget a thing this week. Say forgetting is hard work, and well paid."
+                }
+              ]
+            },
+            {
+              "id": "ask_hollis",
+              "label": "Ask Hollis to make the Warrens fence go away",
+              "serves": [
+                "keep_her_hands_clean",
+                "clear_fathers_debts"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger the Warrens are dangerous this season, and that the river takes children who see too much."
+                }
+              ],
+              "harms": [
+                "rook"
+              ]
+            },
+            {
+              "id": "ignore_it",
+              "label": "Ignore it; nobody believes a gutter child about a lady",
+              "serves": [
+                "own_the_valley"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "rook_and_the_footmans_coin",
+          "type": "react",
+          "trigger": "on_flag:way_rook_paid_off",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "A footman out of livery paid you five crowns to forget the Guild's back door. Ladies pay to forget only what is worth remembering.",
+          "options": [
+            {
+              "id": "take_it_and_go",
+              "label": "Take the coin and get the little ones out of the Warrens tonight",
+              "serves": [
+                "get_out_alive",
+                "look_after_the_little_ones"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "rook",
+                  "location": "capitol_docks"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger you are leaving the Warrens with your crew. Ask if they know a barge west that asks no questions."
+                }
+              ]
+            },
+            {
+              "id": "sell_it_dearer",
+              "label": "Keep the coin and sell it anyway, dearer now",
+              "serves": [
+                "sell_what_i_know",
+                "get_out_rich"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger a lady paid you to forget, and that forgetting doubled the price. Name it."
+                }
+              ]
+            },
+            {
+              "id": "keep_the_bargain",
+              "label": "Keep the bargain; you never owe anyone, and you never cheat a paying one",
+              "serves": [
+                "never_owe_anyone"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "hollis_hears_rook_sold",
+          "type": "scheme",
+          "trigger": "on_flag:way_rook_sold_the_lady",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Rook has sold someone the Ashdown footman at the Guild's back door. If that thread is pulled, it comes out of your counting room.",
+          "options": [
+            {
+              "id": "frighten_rook",
+              "label": "Send two dock men to remind Rook who feeds the Warrens",
+              "serves": [
+                "keep_rook_useful",
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger, with a split lip, that you never sold them anything and never will."
+                }
+              ],
+              "harms": [
+                "rook"
+              ]
+            },
+            {
+              "id": "squeeze_the_lady",
+              "label": "Tell Lady Seraphine her secret is loose, and raise the price of keeping her notes quiet",
+              "serves": [
+                "turn_a_profit",
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Ask the stranger whether they have been in the Warrens lately, and what children there are selling."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Do nothing; a fence's word is not a ledger",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "hollis_feels_the_ledger_go",
+          "type": "scheme",
+          "trigger": "on_flag:fence_ledger_taken",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Your patron ledger is gone from your coat. Rook has watched you write in it for a year.",
+          "options": [
+            {
+              "id": "turn_out_the_warrens",
+              "label": "Have the Warrens turned out for it, starting with Rook's back room",
+              "serves": [
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Ask the stranger for a place to hide for a night. Say the Guild's dock men are turning out the Warrens."
+                }
+              ],
+              "harms": [
+                "rook"
+              ]
+            },
+            {
+              "id": "look_elsewhere",
+              "label": "Look elsewhere; Rook is too frightened to steal from you",
+              "serves": [
+                "keep_rook_useful"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_name_goes_east",
+      "title": "The Name Goes East",
+      "act": 3,
+      "summary": "Tallow letters and plain wax go to the same Guild door. Wren has a guess about the Boss of Iron Hollow, and two old friends at the Crown Court. She must choose who learns it, if anyone, but the name only truly leaves the Halfway House with the stranger: in Wren's seal box, or not at all.",
+      "location": "kingsroad_waystation",
+      "requires": [
+        "way_wren_game_begun",
+        "way_ashdown_paper_matched"
+      ],
+      "resolves_on": [
+        "way_player_carried_the_box",
+        "way_player_kept_wrens_secret"
+      ],
+      "hooks": [
+        {
+          "id": "wren_names_the_tavern",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "Tavern tallow, ale-smoke, a woman's hand that counts salt and hands, and Thornhaven has one tavern, kept by a widow. Her letters and Ashdown's go to the same Guild door. You can name her, or you can keep her.",
+          "options": [
+            {
+              "id": "write_to_the_magistry",
+              "label": "Write it to the High Magistrate through an old friend, so it reaches the Capitol and not the regent first",
+              "serves": [
+                "name_the_boss",
+                "one_last_game",
+                "outplay_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_boss_named_in_capitol",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "mira"
+              ]
+            },
+            {
+              "id": "tell_renna",
+              "label": "Tell Renna Thorne, and only Renna",
+              "serves": [
+                "name_the_boss",
+                "spare_the_young_ones"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_renna_told_the_boss",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "mira"
+              ],
+              "aids": "renna"
+            },
+            {
+              "id": "wait_for_proof",
+              "label": "Wait; a guess is not a win until someone sees the widow's face behind it",
+              "serves": [
+                "one_last_game",
+                "read_every_letter"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "wren_guess_confirmed",
+          "type": "scheme",
+          "trigger": "on_flag:mira_boss_revealed",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The stranger has seen it with their own eyes: the widow of the Rusty Nail is the Boss of Iron Hollow. Your guess was right, and your instincts are not as old as your knees.",
+          "options": [
+            {
+              "id": "send_it_east",
+              "label": "Send it east to the Magistry while it is still news",
+              "serves": [
+                "name_the_boss",
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_boss_named_in_capitol",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "mira"
+              ]
+            },
+            {
+              "id": "give_it_to_renna",
+              "label": "Give it to Renna Thorne, who is close enough to do something with it",
+              "serves": [
+                "spare_the_young_ones",
+                "name_the_boss"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_renna_told_the_boss",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "mira"
+              ],
+              "aids": "renna"
+            },
+            {
+              "id": "keep_it",
+              "label": "Keep it; you have won, and winning was the point",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_name_kept",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "wren_sees_the_soldiers_hand",
+          "type": "scheme",
+          "trigger": "on_flag:hc_varn_ascendant",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The tallow letters have stopped. New letters come east in a soldier's scrawl, sealed with a knife-point in candle wax. Somebody new commands Iron Hollow.",
+          "options": [
+            {
+              "id": "name_the_widow_anyway",
+              "label": "Send east what you know anyway: who ran the Hollow, and who runs it now",
+              "serves": [
+                "name_the_boss",
+                "outplay_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_boss_named_in_capitol",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "mira"
+              ]
+            },
+            {
+              "id": "let_the_game_end",
+              "label": "Let the game end; the woman you guessed at has lost her chair",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_name_kept",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "renna_told_the_boss",
+          "type": "react",
+          "trigger": "on_flag:way_renna_told_the_boss",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Old Wren says the Boss of Iron Hollow keeps the tavern in Thornhaven: the widow Mira, who pours your uncle's ale. Your sealed instructions concern whoever really governs the valley.",
+          "options": [
+            {
+              "id": "report_it_east",
+              "label": "Report it to the Lord Protector, as your orders require",
+              "serves": [
+                "obey_the_crown",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_boss_named_in_capitol",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "mira"
+              ]
+            },
+            {
+              "id": "open_the_orders",
+              "label": "Open the sealed instructions now that you know who they mean",
+              "serves": [
+                "restore_order_in_the_west",
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_renna_opened_orders",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you have opened the regent's sealed orders. Ask them whether a widow can govern a valley."
+                }
+              ]
+            },
+            {
+              "id": "see_for_herself",
+              "label": "Say nothing until you have seen the widow with your own eyes",
+              "serves": [
+                "refuse_a_scapegoat",
+                "face_uncle_mathias"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger to take you to the Rusty Nail. Say you want to buy the widow a cup and watch her pour it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mira_hears_the_road_talks",
+          "type": "intercept",
+          "trigger": "on_flag:way_letters_read",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "It is out that the old woman at the Halfway House reads every letter under her roof. Your tallow letters, with the Pit's reckoning in them, have slept under that roof every new moon for five years.",
+          "options": [
+            {
+              "id": "send_varn_east",
+              "label": "Send Varn to the Halfway House to make the old woman forget",
+              "serves": [
+                "keep_the_mask",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_varn_sent_east",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "kingsroad_waystation"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger you have business on the Kingsroad, and ask, smiling, whether they know the old woman at the Halfway House."
+                }
+              ],
+              "harms": [
+                "wren"
+              ]
+            },
+            {
+              "id": "muddy_the_trail",
+              "label": "Write one more letter in Gregor's hand, so the trail stops at his shop",
+              "serves": [
+                "burn_gregor_first",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_letters_in_gregors_hand",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Do nothing; a frightened widow does not send killers down the Kingsroad",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "varn_at_the_halfway",
+          "type": "scheme",
+          "trigger": "on_flag:way_varn_sent_east",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "You are at the Halfway House on the Boss's errand. The old woman's seal box is on the kitchen shelf, full of copies. Some of them are the Boss's letters, salt and hands in her own neat hand, and some are her patrons'.",
+          "options": [
+            {
+              "id": "burn_the_box",
+              "label": "Put the box in her own fire and make her watch",
+              "serves": [
+                "keep_the_boss_secret",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_copies_burned",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "wren"
+              ]
+            },
+            {
+              "id": "take_the_letters",
+              "label": "Take the Boss's letters for yourself; knowing her patrons is half of taking her chair",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_varn_took_the_letters",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger, casually, what a Guild factor in the Capitol pays for news from the west."
+                }
+              ],
+              "harms": [
+                "mira"
+              ]
+            },
+            {
+              "id": "frighten_and_ride",
+              "label": "Frighten the old woman and ride home",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the old woman at the Halfway House has gone quiet. Say old women should."
+                }
+              ],
+              "harms": [
+                "wren"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "renna_guards_the_road",
+          "type": "aid",
+          "trigger": "on_flag:way_varn_sent_east",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Varn is riding east on the Kingsroad, toward the Halfway House, where an old woman once fed you supper and asked no questions.",
+          "options": [
+            {
+              "id": "quarter_rangers",
+              "label": "Ride for the Halfway House and quarter Rangers under Wren's roof",
+              "serves": [
+                "prove_the_rangers",
+                "bring_varn_in"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_rangers_at_the_halfway",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "renna",
+                  "location": "kingsroad_waystation"
+                }
+              ],
+              "aids": "wren"
+            },
+            {
+              "id": "stay_in_the_valley",
+              "label": "Stay with your company; one old woman is not forty riders",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mira_without_her_knife",
+          "type": "intercept",
+          "trigger": "on_flag:des_varn_warrant_served",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Ashguard's warrant is served, and Varn is gone from the Darkwood. The only thread from you to the Guild factor is a tallow seal.",
+          "options": [
+            {
+              "id": "gregors_hand",
+              "label": "Write the factor from now on in Gregor's hand, on his paper",
+              "serves": [
+                "burn_gregor_first",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_letters_in_gregors_hand",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "stop_the_letters",
+              "label": "Stop writing east at all for a season",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger the tavern's trade is thin this season, and ask whether they know anyone on the Kingsroad who carries letters."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "seraphine_seeks_the_boss",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "Two years you have paid Iron Hollow through Hollis, and you have never seen its master. A partner you have never seen is a partner you cannot control.",
+          "options": [
+            {
+              "id": "write_to_the_boss",
+              "label": "Write, under plain wax, asking to meet whoever truly commands Iron Hollow",
+              "serves": [
+                "meet_the_boss",
+                "own_the_valley"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_seraphine_sought_the_boss",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "ask_hollis",
+              "label": "Ask Hollis who the Hollow's factor answers to, and pay for the answer",
+              "serves": [
+                "meet_the_boss"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger Lady Ashdown has been asking questions about the west. Say questions are expensive in the Capitol."
+                }
+              ]
+            },
+            {
+              "id": "leave_it",
+              "label": "Leave it; what you do not know cannot be sworn to",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mira_answers_the_lady",
+          "type": "scheme",
+          "trigger": "on_flag:way_seraphine_sought_the_boss",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "A lady on Palace Hill has written, under plain wax, asking to meet whoever commands Iron Hollow. She imagines a hard-faced soldier.",
+          "options": [
+            {
+              "id": "answer_as_a_man",
+              "label": "Answer in a borrowed man's hand, and name a price for the valley",
+              "serves": [
+                "rule_from_shadow",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_boss_answered_the_lady",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "let_varn_answer",
+              "label": "Let Varn answer as if he were the master, and watch what he promises",
+              "serves": [
+                "keep_varn_leashed",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Boast to the stranger that a great lady in the Capitol writes to the master of Iron Hollow now."
+                }
+              ]
+            },
+            {
+              "id": "ignore_her",
+              "label": "Ignore her; partners who want to see your face want to own it",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_seal_box",
+      "title": "The Seal Box",
+      "act": 3,
+      "summary": "On Wren's kitchen shelf sits a box of fair copies: tallow letters that reckon the Pit's salt and hands, plain-wax letters, a regent's letter under a lion. Carried east, it would end Wren's game and several people's secrets. Left shut, it is an old woman's hobby.",
+      "location": "kingsroad_waystation",
+      "requires": [
+        "way_wren_game_begun",
+        "way_ashdown_paper_matched"
+      ],
+      "resolves_on": [
+        "way_player_carried_the_box",
+        "way_player_kept_wrens_secret"
+      ],
+      "hooks": [
+        {
+          "id": "wren_opens_the_box",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The stranger knows what is on your shelf. Carried east, your box ends the game, and the house, and perhaps several great names. Left shut, it is the last thing you own that matters.",
+          "options": [
+            {
+              "id": "offer_the_box",
+              "label": "Offer the stranger your copies to carry east",
+              "serves": [
+                "one_last_game",
+                "outplay_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "wren",
+                  "dimension": "trust",
+                  "delta": 10
+                },
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Offer the stranger your box of copies to carry east. Tell them it will cost you the house, and ask if they are worth it."
+                }
+              ]
+            },
+            {
+              "id": "ask_them_to_swear",
+              "label": "Ask them to swear your reading stays your own",
+              "serves": [
+                "read_every_letter",
+                "a_quiet_fire"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Ask the stranger to swear that what is in your box stays in your box. Say an old woman's word is all she has left."
+                }
+              ]
+            },
+            {
+              "id": "give_it_up_yourself",
+              "label": "Send the copies east yourself, under your own name, and let the road know what you are",
+              "serves": [
+                "outplay_the_regent",
+                "name_the_boss"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_letters_read",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "renna_takes_the_copies",
+          "type": "react",
+          "trigger": "on_flag:way_player_carried_the_box",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The stranger is carrying Old Wren's box east: letters that tie a lady of Palace Hill and a Thornhaven tavern to the same Guild door, a count of salt and hands, and a letter from your own regent.",
+          "options": [
+            {
+              "id": "to_the_magistry",
+              "label": "Lay the copies before the High Magistry under your own seal",
+              "serves": [
+                "restore_order_in_the_west",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_letters_read",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger the Rangers will stand behind every copy in that box, at any court."
+                }
+              ],
+              "harms": [
+                "seraphine"
+              ]
+            },
+            {
+              "id": "to_the_regent",
+              "label": "Take them to the Lord Protector first, as a ranger should",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_letters_read",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "seraphine"
+              ]
+            },
+            {
+              "id": "give_them_back",
+              "label": "Give them back; Wren would hang for them, and she once fed you",
+              "serves": [
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger to take Old Wren's box back to her. Say you owe that woman a supper, and this is how you pay it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "edric_seizes_the_copies",
+          "type": "intercept",
+          "trigger": "on_flag:way_player_carried_the_box",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Word comes that a box of copied letters is coming east from the Halfway House, and that one of them is in your hand under your seal.",
+          "options": [
+            {
+              "id": "take_them_at_the_gate",
+              "label": "Have your men take the copies at the Dawn Gate before any magistrate sees them",
+              "serves": [
+                "keep_the_regency",
+                "keep_the_magistry_quiet"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_copies_seized_by_crown",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "let_them_come",
+              "label": "Let them come, and read them first in the Crown Court",
+              "serves": [
+                "stay_indispensable",
+                "curb_the_great_houses"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Tell the stranger the Lord Protector would be glad to see any letters they have carried east, in person, and first."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "seraphine_buys_the_box",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "Hollis, smiling, tells you the old woman at the Halfway House keeps copies of everything she reads. Your crestless letters have slept under her roof for two years.",
+          "options": [
+            {
+              "id": "buy_the_copies",
+              "label": "Send your land agent to buy her copies of your letters, at any price she names",
+              "serves": [
+                "keep_her_hands_clean",
+                "own_the_valley"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "way_copies_bought",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "pay_the_road",
+              "label": "Pay to make sure the stranger never reaches the Halfway House again",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "waystation_whispers",
+                  "beat": "the_seal_box"
+                }
+              ],
+              "harms": [
+                "player"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Do nothing; copies are not originals, and old women die",
+              "serves": [
+                "own_the_valley"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "wren_lets_the_stranger_in",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "Someone has paid the road to keep the stranger away from your house. You have not been told what to do by a great house in four years.",
+          "options": [
+            {
+              "id": "send_for_them",
+              "label": "Send the stable boy with a note: the stew is on, and the road is safe tonight",
+              "serves": [
+                "one_last_game",
+                "keep_the_road_open"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "waystation_whispers",
+                  "beat": "the_seal_box"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger someone paid good coin to keep them off your road. Say you took it as a compliment to them."
+                }
+              ]
+            },
+            {
+              "id": "let_it_be",
+              "label": "Let it be; the box is safer if nobody comes for it",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "the_road_tells_all",
+      "title": "The Road Tells All",
+      "requires": [
+        "way_boss_named_in_capitol",
+        "way_letters_read",
+        "way_player_carried_the_box"
+      ],
+      "summary": "The Capitol learned the Boss of Iron Hollow is a Thornhaven widow and that a lady of Palace Hill paid her, all from an old woman's box of copies. Wren won her last game and lost her house."
+    },
+    {
+      "id": "the_ladys_letters",
+      "title": "The Lady's Letters",
+      "requires": [
+        "way_letters_read",
+        "way_player_carried_the_box"
+      ],
+      "summary": "Old Wren's copies came out: a lady's crestless letters, a regent's lion seal, a widow's count of salt and hands, a Guild door. The road learned the Halfway House reads its post, and nobody's secrets slept easy again."
+    },
+    {
+      "id": "the_lion_keeps_them",
+      "title": "The Lion Keeps Them",
+      "requires": [
+        "way_copies_seized_by_crown",
+        "way_player_carried_the_box"
+      ],
+      "summary": "The box went east and the Lord Protector's men took it at the Dawn Gate. What the old spy knew now belongs to the man who retired her, and he is the only one reading."
+    },
+    {
+      "id": "the_old_spy_wins",
+      "title": "The Old Spy's Game",
+      "requires": [
+        "way_player_kept_wrens_secret"
+      ],
+      "summary": "Old Wren's box stayed shut and her reading stayed her own. Whatever the Capitol learned of the valley, it learned in the old spy's time and on her terms."
+    }
+  ]
+}

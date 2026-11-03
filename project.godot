@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+WorldRegistry="*res://scripts/world/world_registry.gd"
 EventBus="*res://scripts/world_state/event_bus.gd"
 WorldState="*res://scripts/world_state/world_state.gd"
 WorldKnowledge="*res://scripts/world_state/world_knowledge.gd"
@@ -36,6 +37,9 @@ DynamicNPCGen="*res://scripts/generation/dynamic_npc_generator.gd"
 VoiceManager="*res://scripts/audio/voice_manager.gd"
 QuestManager="*res://scripts/quests/quest_manager.gd"
 SampleQuests="*res://scripts/quests/sample_quests.gd"
+EventPropagator="*res://scripts/world_state/event_propagator.gd"
+StorylineDirector="*res://scripts/storyline/storyline_director.gd"
+TravelMap="*res://scripts/world/travel_map.gd"
 
 [display]
 

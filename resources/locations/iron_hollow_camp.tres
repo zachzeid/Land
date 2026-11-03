@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="LocationData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/location_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+location_id = "iron_hollow_camp"
+display_name = "Iron Hollow"
+region = "Western Valley"
+area = "Darkwood"
+scene_path = "res://scenes/exterior/iron_hollow.tscn"
+is_interior = false
+spawn_points = {
+	"default": "Camp edge",
+	"from_forest": "Camp entrance",
+	"from_forest_path": "Where the forest path enters the camp",
+	"from_travel": "Where the smugglers' ridge trail comes down into the camp"
+}

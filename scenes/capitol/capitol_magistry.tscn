@@ -1,0 +1,1530 @@
+[gd_scene load_steps=29 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
+[ext_resource type="Script" path="res://scripts/world/world_obstacle.gd" id="2_world_obstacle"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/crates_barrels.png" id="3_crates_barrels"]
+[ext_resource type="Texture2D" path="res://assets/generated/props/shop_shelves.png" id="4_shop_shelves"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="5_story_item"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="6_scene_trigger"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="7_dialogue_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="8_debug_interaction_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="9_debug_console"]
+
+[sub_resource type="RectangleShape2D" id="Rect_1024x40"]
+size = Vector2(1024, 40)
+
+[sub_resource type="RectangleShape2D" id="Rect_40x944"]
+size = Vector2(40, 944)
+
+[sub_resource type="RectangleShape2D" id="Rect_320x70"]
+size = Vector2(320, 70)
+
+[sub_resource type="RectangleShape2D" id="Rect_70x30"]
+size = Vector2(70, 30)
+
+[sub_resource type="RectangleShape2D" id="Rect_140x20"]
+size = Vector2(140, 20)
+
+[sub_resource type="RectangleShape2D" id="Rect_12x60"]
+size = Vector2(12, 60)
+
+[sub_resource type="RectangleShape2D" id="Rect_190x26"]
+size = Vector2(190, 26)
+
+[sub_resource type="RectangleShape2D" id="Rect_120x26"]
+size = Vector2(120, 26)
+
+[sub_resource type="RectangleShape2D" id="Rect_140x60"]
+size = Vector2(140, 60)
+
+[sub_resource type="RectangleShape2D" id="Rect_26x22"]
+size = Vector2(26, 22)
+
+[sub_resource type="RectangleShape2D" id="Rect_48x72"]
+size = Vector2(48, 72)
+
+[sub_resource type="RectangleShape2D" id="Rect_60x48"]
+size = Vector2(60, 48)
+
+[sub_resource type="RectangleShape2D" id="Rect_52x40"]
+size = Vector2(52, 40)
+
+[sub_resource type="RectangleShape2D" id="Rect_40x30"]
+size = Vector2(40, 30)
+
+[sub_resource type="RectangleShape2D" id="Rect_200x46"]
+size = Vector2(200, 46)
+
+[sub_resource type="RectangleShape2D" id="Rect_70x90"]
+size = Vector2(70, 90)
+
+[sub_resource type="RectangleShape2D" id="Rect_150x44"]
+size = Vector2(150, 44)
+
+[sub_resource type="RectangleShape2D" id="Rect_90x70"]
+size = Vector2(90, 70)
+
+[sub_resource type="RectangleShape2D" id="Rect_100x40"]
+size = Vector2(100, 40)
+
+[node name="CapitolMagistry" type="Node2D"]
+
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+mouse_filter = 2
+color = Color(0.165, 0.149, 0.133, 1)
+
+[node name="InnerFloor" type="ColorRect" parent="Floor"]
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 984.0
+offset_bottom = 984.0
+mouse_filter = 2
+color = Color(0.29, 0.251, 0.22, 1)
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, -492)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/North"]
+shape = SubResource("Rect_1024x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/North"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.353, 0.314, 0.282, 1)
+
+[node name="South" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, 492)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/South"]
+shape = SubResource("Rect_1024x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/South"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.353, 0.314, 0.282, 1)
+
+[node name="West" type="StaticBody2D" parent="Walls"]
+position = Vector2(-492, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/West"]
+shape = SubResource("Rect_40x944")
+
+[node name="Visual" type="ColorRect" parent="Walls/West"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+mouse_filter = 2
+color = Color(0.353, 0.314, 0.282, 1)
+
+[node name="East" type="StaticBody2D" parent="Walls"]
+position = Vector2(492, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/East"]
+shape = SubResource("Rect_40x944")
+
+[node name="Visual" type="ColorRect" parent="Walls/East"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+mouse_filter = 2
+color = Color(0.353, 0.314, 0.282, 1)
+
+[node name="FloorDetail" type="Node2D" parent="."]
+z_index = -9
+
+[node name="Board1" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = -472.0
+offset_right = 472.0
+offset_bottom = -470.0
+mouse_filter = 2
+color = Color(0.243, 0.208, 0.18, 1)
+
+[node name="Board2" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = -354.0
+offset_right = 472.0
+offset_bottom = -352.0
+mouse_filter = 2
+color = Color(0.243, 0.208, 0.18, 1)
+
+[node name="Board3" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = -236.0
+offset_right = 472.0
+offset_bottom = -234.0
+mouse_filter = 2
+color = Color(0.243, 0.208, 0.18, 1)
+
+[node name="Board4" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = -118.0
+offset_right = 472.0
+offset_bottom = -116.0
+mouse_filter = 2
+color = Color(0.243, 0.208, 0.18, 1)
+
+[node name="Board5" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = 0.0
+offset_right = 472.0
+offset_bottom = 2.0
+mouse_filter = 2
+color = Color(0.243, 0.208, 0.18, 1)
+
+[node name="Board6" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = 118.0
+offset_right = 472.0
+offset_bottom = 120.0
+mouse_filter = 2
+color = Color(0.243, 0.208, 0.18, 1)
+
+[node name="Board7" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = 236.0
+offset_right = 472.0
+offset_bottom = 238.0
+mouse_filter = 2
+color = Color(0.243, 0.208, 0.18, 1)
+
+[node name="Board8" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = 354.0
+offset_right = 472.0
+offset_bottom = 356.0
+mouse_filter = 2
+color = Color(0.243, 0.208, 0.18, 1)
+
+[node name="Bar" type="ColorRect" parent="FloorDetail"]
+offset_left = -260.0
+offset_top = -40.0
+offset_right = 260.0
+offset_bottom = -32.0
+mouse_filter = 2
+color = Color(0.478, 0.384, 0.314, 1)
+
+[node name="Aisle" type="ColorRect" parent="FloorDetail"]
+offset_left = -50.0
+offset_top = -32.0
+offset_right = 50.0
+offset_bottom = 472.0
+mouse_filter = 2
+color = Color(0.227, 0.184, 0.157, 1)
+
+[node name="ArchiveFloor" type="ColorRect" parent="FloorDetail"]
+offset_left = 250.0
+offset_top = -472.0
+offset_right = 472.0
+offset_bottom = 472.0
+mouse_filter = 2
+color = Color(0.243, 0.212, 0.188, 1)
+
+[node name="WallDressing" type="Node2D" parent="."]
+z_index = 3
+
+[node name="Banner1" type="Node2D" parent="WallDressing"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="WallDressing/Banner1"]
+offset_left = -140.0
+offset_top = -474.0
+offset_right = -100.0
+offset_bottom = -470.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="WallDressing/Banner1"]
+offset_left = -136.0
+offset_top = -470.0
+offset_right = -104.0
+offset_bottom = -398.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Band" type="ColorRect" parent="WallDressing/Banner1"]
+offset_left = -136.0
+offset_top = -457.04
+offset_right = -104.0
+offset_bottom = -453.04
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="WallDressing/Banner1"]
+offset_left = -128.0
+offset_top = -438.4
+offset_right = -112.0
+offset_bottom = -422.4
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="WallDressing/Banner1"]
+offset_left = -136.0
+offset_top = -398.0
+offset_right = -125.33333333333333
+offset_bottom = -390.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="TailR" type="ColorRect" parent="WallDressing/Banner1"]
+offset_left = -114.66666666666667
+offset_top = -398.0
+offset_right = -104.0
+offset_bottom = -390.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Banner2" type="Node2D" parent="WallDressing"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="WallDressing/Banner2"]
+offset_left = 100.0
+offset_top = -474.0
+offset_right = 140.0
+offset_bottom = -470.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="WallDressing/Banner2"]
+offset_left = 104.0
+offset_top = -470.0
+offset_right = 136.0
+offset_bottom = -398.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Band" type="ColorRect" parent="WallDressing/Banner2"]
+offset_left = 104.0
+offset_top = -457.04
+offset_right = 136.0
+offset_bottom = -453.04
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="WallDressing/Banner2"]
+offset_left = 112.0
+offset_top = -438.4
+offset_right = 128.0
+offset_bottom = -422.4
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="WallDressing/Banner2"]
+offset_left = 104.0
+offset_top = -398.0
+offset_right = 114.66666666666667
+offset_bottom = -390.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="TailR" type="ColorRect" parent="WallDressing/Banner2"]
+offset_left = 125.33333333333333
+offset_top = -398.0
+offset_right = 136.0
+offset_bottom = -390.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Scales" type="ColorRect" parent="WallDressing"]
+offset_left = -30.0
+offset_top = -479.0
+offset_right = 30.0
+offset_bottom = -461.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Motto" type="Label" parent="WallDressing"]
+offset_left = -200.0
+offset_top = -500.0
+offset_right = 200.0
+offset_bottom = -480.0
+theme_override_colors/font_color = Color(1, 0.92, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 12
+text = "LEX EADEM OMNIBUS: one law for all"
+horizontal_alignment = 1
+
+[node name="ArchiveSign" type="Label" parent="WallDressing"]
+offset_left = 260.0
+offset_top = -470.0
+offset_right = 460.0
+offset_bottom = -450.0
+theme_override_colors/font_color = Color(1, 0.92, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 12
+text = "Archive of Writs"
+horizontal_alignment = 1
+
+[node name="Furniture" type="Node2D" parent="."]
+z_index = 5
+
+[node name="JudgesBench" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-40, -360)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/JudgesBench"]
+shape = SubResource("Rect_320x70")
+
+[node name="Visual" type="ColorRect" parent="Furniture/JudgesBench"]
+offset_left = -160.0
+offset_top = -35.0
+offset_right = 160.0
+offset_bottom = 35.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Front" type="ColorRect" parent="Furniture/JudgesBench"]
+offset_left = -160.0
+offset_top = 0.0
+offset_right = 160.0
+offset_bottom = 35.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Seal" type="ColorRect" parent="Furniture/JudgesBench"]
+offset_left = -20.0
+offset_top = 5.0
+offset_right = 20.0
+offset_bottom = 27.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="HighChair" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-40, -416)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/HighChair"]
+shape = SubResource("Rect_70x30")
+
+[node name="Visual" type="ColorRect" parent="Furniture/HighChair"]
+offset_left = -35.0
+offset_top = -15.0
+offset_right = 35.0
+offset_bottom = 15.0
+mouse_filter = 2
+color = Color(0.369, 0.11, 0.122, 1)
+
+[node name="Dock" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-40, -150)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Dock"]
+shape = SubResource("Rect_140x20")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Dock"]
+offset_left = -70.0
+offset_top = -10.0
+offset_right = 70.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.478, 0.384, 0.314, 1)
+
+[node name="Chains" type="ColorRect" parent="Furniture/Dock"]
+offset_left = -50.0
+offset_top = 10.0
+offset_right = 50.0
+offset_bottom = 14.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="DockSideL" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-112, -126)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/DockSideL"]
+shape = SubResource("Rect_12x60")
+
+[node name="Visual" type="ColorRect" parent="Furniture/DockSideL"]
+offset_left = -6.0
+offset_top = -30.0
+offset_right = 6.0
+offset_bottom = 30.0
+mouse_filter = 2
+color = Color(0.478, 0.384, 0.314, 1)
+
+[node name="DockSideR" type="StaticBody2D" parent="Furniture"]
+position = Vector2(32, -126)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/DockSideR"]
+shape = SubResource("Rect_12x60")
+
+[node name="Visual" type="ColorRect" parent="Furniture/DockSideR"]
+offset_left = -6.0
+offset_top = -30.0
+offset_right = 6.0
+offset_bottom = 30.0
+mouse_filter = 2
+color = Color(0.478, 0.384, 0.314, 1)
+
+[node name="Gallery1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-170, 60)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Gallery1"]
+shape = SubResource("Rect_190x26")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Gallery1"]
+offset_left = -95.0
+offset_top = -13.0
+offset_right = 95.0
+offset_bottom = 13.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Gallery2" type="StaticBody2D" parent="Furniture"]
+position = Vector2(120, 60)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Gallery2"]
+shape = SubResource("Rect_120x26")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Gallery2"]
+offset_left = -60.0
+offset_top = -13.0
+offset_right = 60.0
+offset_bottom = 13.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Gallery3" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-170, 150)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Gallery3"]
+shape = SubResource("Rect_190x26")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Gallery3"]
+offset_left = -95.0
+offset_top = -13.0
+offset_right = 95.0
+offset_bottom = 13.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Gallery4" type="StaticBody2D" parent="Furniture"]
+position = Vector2(120, 150)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Gallery4"]
+shape = SubResource("Rect_120x26")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Gallery4"]
+offset_left = -60.0
+offset_top = -13.0
+offset_right = 60.0
+offset_bottom = 13.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Gallery5" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-170, 240)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Gallery5"]
+shape = SubResource("Rect_190x26")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Gallery5"]
+offset_left = -95.0
+offset_top = -13.0
+offset_right = 95.0
+offset_bottom = 13.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Gallery6" type="StaticBody2D" parent="Furniture"]
+position = Vector2(120, 240)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Gallery6"]
+shape = SubResource("Rect_120x26")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Gallery6"]
+offset_left = -60.0
+offset_top = -13.0
+offset_right = 60.0
+offset_bottom = 13.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Gallery7" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-170, 330)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Gallery7"]
+shape = SubResource("Rect_190x26")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Gallery7"]
+offset_left = -95.0
+offset_top = -13.0
+offset_right = 95.0
+offset_bottom = 13.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Gallery8" type="StaticBody2D" parent="Furniture"]
+position = Vector2(120, 330)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Gallery8"]
+shape = SubResource("Rect_120x26")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Gallery8"]
+offset_left = -60.0
+offset_top = -13.0
+offset_right = 60.0
+offset_bottom = 13.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Table1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-340, -250)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Table1"]
+shape = SubResource("Rect_140x60")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Table1"]
+offset_left = -70.0
+offset_top = -30.0
+offset_right = 70.0
+offset_bottom = 30.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Item1" type="ColorRect" parent="Furniture/Table1"]
+offset_left = -52.0
+offset_top = -15.0
+offset_right = -8.0
+offset_bottom = 15.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Item2" type="ColorRect" parent="Furniture/Table1"]
+offset_left = 15.0
+offset_top = -16.0
+offset_right = 45.0
+offset_bottom = 8.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Item3" type="ColorRect" parent="Furniture/Table1"]
+offset_left = -4.0
+offset_top = 14.0
+offset_right = 4.0
+offset_bottom = 22.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="ClerkStool" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-340, -200)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/ClerkStool"]
+shape = SubResource("Rect_26x22")
+
+[node name="Visual" type="ColorRect" parent="Furniture/ClerkStool"]
+offset_left = -13.0
+offset_top = -11.0
+offset_right = 13.0
+offset_bottom = 11.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Shelf1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(440, -400)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelf1"]
+shape = SubResource("Rect_48x72")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Shelf1"]
+offset_left = -24.0
+offset_top = -36.0
+offset_right = 24.0
+offset_bottom = 36.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Book1" type="ColorRect" parent="Furniture/Shelf1"]
+offset_left = -18.0
+offset_top = -30.0
+offset_right = -9.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Book2" type="ColorRect" parent="Furniture/Shelf1"]
+offset_left = -6.0
+offset_top = -30.0
+offset_right = 3.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Book3" type="ColorRect" parent="Furniture/Shelf1"]
+offset_left = 6.0
+offset_top = -30.0
+offset_right = 15.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Shelf2" type="StaticBody2D" parent="Furniture"]
+position = Vector2(440, -300)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelf2"]
+shape = SubResource("Rect_48x72")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Shelf2"]
+offset_left = -24.0
+offset_top = -36.0
+offset_right = 24.0
+offset_bottom = 36.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Book1" type="ColorRect" parent="Furniture/Shelf2"]
+offset_left = -18.0
+offset_top = -30.0
+offset_right = -9.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Book2" type="ColorRect" parent="Furniture/Shelf2"]
+offset_left = -6.0
+offset_top = -30.0
+offset_right = 3.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Book3" type="ColorRect" parent="Furniture/Shelf2"]
+offset_left = 6.0
+offset_top = -30.0
+offset_right = 15.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Shelf3" type="StaticBody2D" parent="Furniture"]
+position = Vector2(440, -200)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelf3"]
+shape = SubResource("Rect_48x72")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Shelf3"]
+offset_left = -24.0
+offset_top = -36.0
+offset_right = 24.0
+offset_bottom = 36.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Book1" type="ColorRect" parent="Furniture/Shelf3"]
+offset_left = -18.0
+offset_top = -30.0
+offset_right = -9.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Book2" type="ColorRect" parent="Furniture/Shelf3"]
+offset_left = -6.0
+offset_top = -30.0
+offset_right = 3.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Book3" type="ColorRect" parent="Furniture/Shelf3"]
+offset_left = 6.0
+offset_top = -30.0
+offset_right = 15.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Shelf4" type="StaticBody2D" parent="Furniture"]
+position = Vector2(440, -100)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelf4"]
+shape = SubResource("Rect_48x72")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Shelf4"]
+offset_left = -24.0
+offset_top = -36.0
+offset_right = 24.0
+offset_bottom = 36.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Book1" type="ColorRect" parent="Furniture/Shelf4"]
+offset_left = -18.0
+offset_top = -30.0
+offset_right = -9.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Book2" type="ColorRect" parent="Furniture/Shelf4"]
+offset_left = -6.0
+offset_top = -30.0
+offset_right = 3.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Book3" type="ColorRect" parent="Furniture/Shelf4"]
+offset_left = 6.0
+offset_top = -30.0
+offset_right = 15.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Shelf5" type="StaticBody2D" parent="Furniture"]
+position = Vector2(440, 0)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelf5"]
+shape = SubResource("Rect_48x72")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Shelf5"]
+offset_left = -24.0
+offset_top = -36.0
+offset_right = 24.0
+offset_bottom = 36.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Book1" type="ColorRect" parent="Furniture/Shelf5"]
+offset_left = -18.0
+offset_top = -30.0
+offset_right = -9.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Book2" type="ColorRect" parent="Furniture/Shelf5"]
+offset_left = -6.0
+offset_top = -30.0
+offset_right = 3.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Book3" type="ColorRect" parent="Furniture/Shelf5"]
+offset_left = 6.0
+offset_top = -30.0
+offset_right = 15.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Shelf6" type="StaticBody2D" parent="Furniture"]
+position = Vector2(440, 100)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelf6"]
+shape = SubResource("Rect_48x72")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Shelf6"]
+offset_left = -24.0
+offset_top = -36.0
+offset_right = 24.0
+offset_bottom = 36.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Book1" type="ColorRect" parent="Furniture/Shelf6"]
+offset_left = -18.0
+offset_top = -30.0
+offset_right = -9.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Book2" type="ColorRect" parent="Furniture/Shelf6"]
+offset_left = -6.0
+offset_top = -30.0
+offset_right = 3.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Book3" type="ColorRect" parent="Furniture/Shelf6"]
+offset_left = 6.0
+offset_top = -30.0
+offset_right = 15.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Shelf7" type="StaticBody2D" parent="Furniture"]
+position = Vector2(440, 200)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelf7"]
+shape = SubResource("Rect_48x72")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Shelf7"]
+offset_left = -24.0
+offset_top = -36.0
+offset_right = 24.0
+offset_bottom = 36.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Book1" type="ColorRect" parent="Furniture/Shelf7"]
+offset_left = -18.0
+offset_top = -30.0
+offset_right = -9.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Book2" type="ColorRect" parent="Furniture/Shelf7"]
+offset_left = -6.0
+offset_top = -30.0
+offset_right = 3.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Book3" type="ColorRect" parent="Furniture/Shelf7"]
+offset_left = 6.0
+offset_top = -30.0
+offset_right = 15.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Shelf8" type="StaticBody2D" parent="Furniture"]
+position = Vector2(440, 300)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelf8"]
+shape = SubResource("Rect_48x72")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Shelf8"]
+offset_left = -24.0
+offset_top = -36.0
+offset_right = 24.0
+offset_bottom = 36.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Book1" type="ColorRect" parent="Furniture/Shelf8"]
+offset_left = -18.0
+offset_top = -30.0
+offset_right = -9.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Book2" type="ColorRect" parent="Furniture/Shelf8"]
+offset_left = -6.0
+offset_top = -30.0
+offset_right = 3.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Book3" type="ColorRect" parent="Furniture/Shelf8"]
+offset_left = 6.0
+offset_top = -30.0
+offset_right = 15.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Shelf9" type="StaticBody2D" parent="Furniture"]
+position = Vector2(440, 400)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelf9"]
+shape = SubResource("Rect_48x72")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Shelf9"]
+offset_left = -24.0
+offset_top = -36.0
+offset_right = 24.0
+offset_bottom = 36.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Book1" type="ColorRect" parent="Furniture/Shelf9"]
+offset_left = -18.0
+offset_top = -30.0
+offset_right = -9.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Book2" type="ColorRect" parent="Furniture/Shelf9"]
+offset_left = -6.0
+offset_top = -30.0
+offset_right = 3.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Book3" type="ColorRect" parent="Furniture/Shelf9"]
+offset_left = 6.0
+offset_top = -30.0
+offset_right = 15.0
+offset_bottom = 28.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Shelf10" type="StaticBody2D" parent="Furniture"]
+position = Vector2(300, -340)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelf10"]
+shape = SubResource("Rect_60x48")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Shelf10"]
+offset_left = -30.0
+offset_top = -24.0
+offset_right = 30.0
+offset_bottom = 24.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Book1" type="ColorRect" parent="Furniture/Shelf10"]
+offset_left = -24.0
+offset_top = -18.0
+offset_right = -15.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Book2" type="ColorRect" parent="Furniture/Shelf10"]
+offset_left = -12.0
+offset_top = -18.0
+offset_right = -3.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Book3" type="ColorRect" parent="Furniture/Shelf10"]
+offset_left = 0.0
+offset_top = -18.0
+offset_right = 9.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Book4" type="ColorRect" parent="Furniture/Shelf10"]
+offset_left = 12.0
+offset_top = -18.0
+offset_right = 21.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Shelf11" type="StaticBody2D" parent="Furniture"]
+position = Vector2(300, -160)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelf11"]
+shape = SubResource("Rect_60x48")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Shelf11"]
+offset_left = -30.0
+offset_top = -24.0
+offset_right = 30.0
+offset_bottom = 24.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Book1" type="ColorRect" parent="Furniture/Shelf11"]
+offset_left = -24.0
+offset_top = -18.0
+offset_right = -15.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Book2" type="ColorRect" parent="Furniture/Shelf11"]
+offset_left = -12.0
+offset_top = -18.0
+offset_right = -3.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Book3" type="ColorRect" parent="Furniture/Shelf11"]
+offset_left = 0.0
+offset_top = -18.0
+offset_right = 9.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Book4" type="ColorRect" parent="Furniture/Shelf11"]
+offset_left = 12.0
+offset_top = -18.0
+offset_right = 21.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Shelf12" type="StaticBody2D" parent="Furniture"]
+position = Vector2(300, 140)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelf12"]
+shape = SubResource("Rect_60x48")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Shelf12"]
+offset_left = -30.0
+offset_top = -24.0
+offset_right = 30.0
+offset_bottom = 24.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Book1" type="ColorRect" parent="Furniture/Shelf12"]
+offset_left = -24.0
+offset_top = -18.0
+offset_right = -15.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Book2" type="ColorRect" parent="Furniture/Shelf12"]
+offset_left = -12.0
+offset_top = -18.0
+offset_right = -3.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Book3" type="ColorRect" parent="Furniture/Shelf12"]
+offset_left = 0.0
+offset_top = -18.0
+offset_right = 9.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Book4" type="ColorRect" parent="Furniture/Shelf12"]
+offset_left = 12.0
+offset_top = -18.0
+offset_right = 21.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Shelf13" type="StaticBody2D" parent="Furniture"]
+position = Vector2(300, 340)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelf13"]
+shape = SubResource("Rect_60x48")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Shelf13"]
+offset_left = -30.0
+offset_top = -24.0
+offset_right = 30.0
+offset_bottom = 24.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Book1" type="ColorRect" parent="Furniture/Shelf13"]
+offset_left = -24.0
+offset_top = -18.0
+offset_right = -15.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Book2" type="ColorRect" parent="Furniture/Shelf13"]
+offset_left = -12.0
+offset_top = -18.0
+offset_right = -3.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Book3" type="ColorRect" parent="Furniture/Shelf13"]
+offset_left = 0.0
+offset_top = -18.0
+offset_right = 9.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Book4" type="ColorRect" parent="Furniture/Shelf13"]
+offset_left = 12.0
+offset_top = -18.0
+offset_right = 21.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="CrateStack1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-420, 420)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/CrateStack1"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_52x40")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/CrateStack1"]
+scale = Vector2(1, 1)
+texture = ExtResource("3_crates_barrels")
+
+[node name="WritPress" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-420, 40)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/WritPress"]
+position = Vector2(0, 16)
+shape = SubResource("Rect_40x30")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/WritPress"]
+scale = Vector2(1, 1)
+texture = ExtResource("4_shop_shelves")
+
+[node name="Details" type="Node2D" parent="."]
+
+[node name="Docket" type="Area2D" parent="Details"]
+z_index = 6
+position = Vector2(-40, -300)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("5_story_item")
+interaction_name = "Read the Docket"
+flag_to_set = ""
+discovery_text = "[b]The High Magistrate's docket[/b]
+
+In an old man's careful hand, under today's date:
+\"[i]Western Valley. Three years of tithe lost on the road and not one report of it from reeve, elder or captain. Losses that large are not hidden by accident. Who was paid to stay silent, and who did the paying?[/i]\"
+
+Below, underlined twice: [i]Summon the Thornhaven ledger, if it exists.[/i]"
+reexamine_text = "Who was paid to stay silent, and who did the paying?"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Details/Docket"]
+shape = SubResource("Rect_200x46")
+
+[node name="InteractionPrompt" type="Label" parent="Details/Docket"]
+z_index = 10
+visible = false
+offset_left = -90.0
+offset_top = -56.0
+offset_right = 90.0
+offset_bottom = -31.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Read the Docket"
+horizontal_alignment = 1
+
+[node name="ArchiveGap" type="Area2D" parent="Details"]
+z_index = 6
+position = Vector2(380, -50)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("5_story_item")
+interaction_name = "Examine the Shelves"
+flag_to_set = "writ_archive_gap_found"
+discovery_text = "[b]A gap in the archive[/b]
+
+The Western Valley's tithe returns should sit here, year after year in green ribbon. Three years are missing.
+
+In their place, an archive slip: \"[i]Withdrawn for copying. T. Vane, clerk.[/i]\" The date on it is eleven months old. Nothing in the copying room bears that name."
+reexamine_text = "Three years withdrawn, eleven months ago, by T. Vane."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Details/ArchiveGap"]
+shape = SubResource("Rect_70x90")
+
+[node name="InteractionPrompt" type="Label" parent="Details/ArchiveGap"]
+z_index = 10
+visible = false
+offset_left = -90.0
+offset_top = -56.0
+offset_right = 90.0
+offset_bottom = -31.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Examine the Shelves"
+horizontal_alignment = 1
+
+[node name="SealedWrit" type="Area2D" parent="Details"]
+z_index = 6
+position = Vector2(-340, -196)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("5_story_item")
+interaction_name = "Look at the Clerk's Desk"
+flag_to_set = ""
+discovery_text = "[b]A writ, ready-sealed[/b]
+
+A writ of summons lies among the clerk's papers. The Lord Protector's signet is already pressed into the wax, but the name, the charge and the court are blank.
+
+A note pinned to it, in a secretary's hand: \"[i]For use in the valley matter, should a quiet hearing be preferred to a public one.[/i]\""
+reexamine_text = "A sealed writ with no name on it, for a quiet hearing."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Details/SealedWrit"]
+shape = SubResource("Rect_150x44")
+
+[node name="InteractionPrompt" type="Label" parent="Details/SealedWrit"]
+z_index = 10
+visible = false
+offset_left = -90.0
+offset_top = -56.0
+offset_right = 90.0
+offset_bottom = -31.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Look at the Clerk's Desk"
+horizontal_alignment = 1
+
+[node name="DeedRegister" type="Area2D" parent="Details"]
+z_index = 6
+position = Vector2(340, 240)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("5_story_item")
+interaction_name = "Open the Deed Register"
+flag_to_set = ""
+discovery_text = "[b]Register of ancient deeds[/b]
+
+The Ashdown grant is here, copied out two centuries ago: \"[i]all the Western Valley from the Darkwood to the river, to House Ashdown and its heirs, saving the rights of freeholders.[/i]\"
+
+The ink of the last clause is darker than the rest, as if someone has gone over it recently. Someone else has pressed a thumbnail into the margin beside the words [i]saving the rights[/i]."
+reexamine_text = "Saving the rights of freeholders, re-inked recently."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Details/DeedRegister"]
+shape = SubResource("Rect_90x70")
+
+[node name="InteractionPrompt" type="Label" parent="Details/DeedRegister"]
+z_index = 10
+visible = false
+offset_left = -90.0
+offset_top = -56.0
+offset_right = 90.0
+offset_bottom = -31.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Open the Deed Register"
+horizontal_alignment = 1
+
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(0, 460)
+collision_layer = 32
+collision_mask = 1
+script = ExtResource("6_scene_trigger")
+target_location = "capitol_palace"
+target_spawn_point = "from_capitol_magistry"
+require_input = false
+prompt_text = "To the Crown Court"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+shape = SubResource("Rect_100x40")
+
+[node name="DoorVisual" type="ColorRect" parent="Exit"]
+offset_left = -50.0
+offset_top = -20.0
+offset_right = 50.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="ExitLabel" type="Label" parent="Exit"]
+z_index = 11
+offset_left = -120.0
+offset_top = -46.0
+offset_right = 120.0
+offset_bottom = -25.0
+theme_override_colors/font_color = Color(1, 0.92, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 13
+text = "Crown Court"
+horizontal_alignment = 1
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 300)
+
+[node name="from_capitol_palace" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 360)
+
+[node name="NPCs" type="Node2D" parent="."]
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("7_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[node name="DebugInteractionPanel" parent="DialogueUI" instance=ExtResource("8_debug_interaction_panel")]
+visible = false
+
+[node name="DebugConsole" parent="." instance=ExtResource("9_debug_console")]
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

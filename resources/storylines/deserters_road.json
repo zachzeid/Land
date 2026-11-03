@@ -1,0 +1,2575 @@
+{
+  "id": "deserters_road",
+  "title": "The Deserter's Road",
+  "summary": "Varn deserted Fort Ashguard with a wagon of crown arms. Commander Lucan, who sold three wagons himself and blamed all four on Varn, wants him hanged, silenced or back in harness, and his warrant rides west in Tithe week, toward the man who walks the Hollow's cart up the ridge on Collection Night.",
+  "prefix": "des_",
+  "act_span": [
+    1,
+    3
+  ],
+  "flags": {
+    "des_warrant_on_the_road": "Fort Ashguard's old warrant for the deserter Varn left the fort and started west along the Kingsroad.",
+    "des_warrant_sent_west": "Commander Lucan sent his own warrant for the deserter Varn west by picked riders who knew that 'killed resisting' would satisfy it.",
+    "des_lucan_rode_west": "Commander Lucan rode out of Fort Ashguard at the head of a picked patrol to serve his own warrant on Varn.",
+    "des_rangers_hold_warrant": "Captain Renna Thorne took Fort Ashguard's warrant for Varn into the King's Rangers' keeping and swore to serve it alive.",
+    "des_case_against_lucan": "Questions began to be asked outside Fort Ashguard about how four wagons of crown arms had gone missing with only one deserter.",
+    "des_hollis_holds_lucan": "Guildmaster Hollis wrote to Commander Lucan to remind him, politely, whose ledger held the sale of three wagons of Ashguard arms.",
+    "des_kill_order_read": "Old Wren lifted the seal on Commander Lucan's private orders to his riders and read that 'killed resisting' would serve as well as a rope.",
+    "des_kill_order_told": "Captain Renna Thorne was told that Ashguard's riders carried private orders to bring Varn back dead rather than talking.",
+    "des_kill_order_sealed": "Old Wren pressed Commander Lucan's seal back onto his private orders and let them ride west as if nobody had read them.",
+    "des_aldric_joins_the_hunt": "Captain Aldric put Thornhaven's peacekeepers at the service of the Ashguard warrant, to see Varn answer for Marcus.",
+    "des_aldric_stands_aside": "Captain Aldric refused to lend Thornhaven's peacekeepers to Fort Ashguard's quarrel with its deserter.",
+    "des_lucan_knows_aldric": "Commander Lucan learned that Aldric of the Third Foot, who carried him off the field at Harrow Ridge, keeps the peace in Thornhaven.",
+    "des_varn_route_sold": "Someone in Thornhaven sent word east of the nights Varn rides the forest path with only two men at his back.",
+    "des_varn_suspects_the_boss": "Varn learned that his roads had been sold to Ashguard by someone close to the Boss, and began counting which of the Hollow's men were his.",
+    "des_varn_sent_word_east": "Varn sent word to Fort Ashguard that he remembered three wagons of crown arms, and the night they left.",
+    "des_varn_defied_ashguard": "Varn nailed Fort Ashguard's warrant to an ash tree on the forest path with a Hollow knife through the seal.",
+    "des_wagons_witnessed": "The player heard Varn say he watched three wagons of crown arms leave Fort Ashguard by night, a season before he deserted with the fourth.",
+    "des_pardon_offered": "Commander Lucan offered Varn a crown pardon and a sergeant's pay to come back into harness as Ashguard's quiet blade in the west.",
+    "des_pardon_taken": "Varn took Commander Lucan's pardon and kept his knife: the Hollow's man on one side of the forest and Ashguard's on the other.",
+    "des_ambush_laid": "Commander Lucan's riders were sent into the Darkwood to make sure the warrant for Varn ended in 'killed resisting'.",
+    "des_varn_slipped_away": "Varn slipped out of the Darkwood ahead of the warrant and up the smugglers' ridge trail toward the Pit, where his own men stood guard over the Tithe's diggers.",
+    "des_varn_taken_alive": "Varn was taken alive under the Ashguard warrant and put in irons to answer for his desertion.",
+    "des_varn_killed_resisting": "Varn was killed in the Darkwood, and the men who killed him swore he died resisting the Ashguard warrant.",
+    "des_varn_named_lucan": "Varn, in irons, told the King's Rangers that Commander Lucan sold three wagons of crown arms before Varn ever stole the fourth.",
+    "des_armoury_page_burned": "Commander Lucan burned the page of Fort Ashguard's armoury ledger that signed three wagons out to a Guild factor.",
+    "des_lucan_shielded": "Commander Lucan kept his command and his name, and on the crown's books all four wagons of arms stayed a deserter's crime.",
+    "des_varn_warrant_served": "Fort Ashguard's warrant for the deserter Varn was marked served, and the Kingsroad heard that the man it named would never ride free again.",
+    "des_lucan_disgraced": "Commander Lucan Ferrow was shown before the crown to have sold three wagons of Ashguard's arms himself and blamed all four on the deserter Varn.",
+    "des_ridge_fees_known": "It came out that Fort Ashguard's patrols had taken their fee on the ridge trail from Iron Hollow's carts every autumn, and waved through the Thornhaven people chained in them.",
+    "des_varn_on_collection_night": "Ashguard's warrant was still unserved on Collection Night, and Varn walked out of the Darkwood to meet Thornhaven's Tithe cart as he did every autumn.",
+    "des_player_named_lucan": "The player laid the truth of the three wagons before the crown's officers and named Commander Lucan as the man who sold them.",
+    "des_player_buried_the_wagons": "The player gave Commander Lucan their word to say nothing of the three wagons, and let the deserter's crime stay a deserter's.",
+    "des_player_rode_the_forest_path": "The player went into the Darkwood with the party serving Fort Ashguard's warrant on Varn, and saw with their own eyes how it ended.",
+    "des_varn_answered": "Varn answered Fort Ashguard's warrant in his own way, and both the fort and the Hollow knew it."
+  },
+  "player_flags": [
+    "des_player_named_lucan",
+    "des_player_buried_the_wagons",
+    "des_player_rode_the_forest_path"
+  ],
+  "crossovers": [
+    "hc_varn_ascendant",
+    "hc_varn_dead",
+    "cou_martial_law",
+    "ih_supply_line_cut",
+    "tithe_rangers_arrive",
+    "fence_ledger_taken",
+    "mag_trial_called",
+    "way_letters_read",
+    "tn_taken_alive_known"
+  ],
+  "beats": [
+    {
+      "id": "the_old_warrant",
+      "title": "The Old Warrant",
+      "act": 1,
+      "summary": "News comes east that the Hollow's enforcer is a deserter-sergeant of Fort Ashguard. Lucan's five-year-old warrant still hangs in the orderly room, and someone has to carry it west.",
+      "location": "fort_ashguard",
+      "requires": [
+        "!des_warrant_on_the_road"
+      ],
+      "resolves_on": [
+        "des_warrant_sent_west",
+        "des_rangers_hold_warrant",
+        "des_lucan_rode_west"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "des_warrant_on_the_road",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "lucan_signs_it_again",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "A carter from the west swears the man the valley whispers about is Varn, your own deserter-sergeant. Your warrant for him hangs in the orderly room, worded so that 'killed resisting' satisfies it. Varn watched three wagons leave this fort before he stole the fourth.",
+          "options": [
+            {
+              "id": "picked_riders",
+              "label": "Send the warrant west with four riders who understand what 'killed resisting' means",
+              "serves": [
+                "silence_varn",
+                "bury_the_arms_sale"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_warrant_sent_west",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger Ashguard keeps its own house. Ask, as if idly, whether they have ever seen the deserter Varn's face."
+                }
+              ]
+            },
+            {
+              "id": "ride_himself",
+              "label": "Ride west at the head of a patrol and serve it with your own hand",
+              "serves": [
+                "a_victory_of_my_own",
+                "silence_varn"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_warrant_sent_west",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "des_lucan_rode_west",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "lucan",
+                  "location": "kingsroad_waystation"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger Ashguard is riding west to take back its honour from a thief. Ask the shortest road to the Darkwood."
+                }
+              ]
+            },
+            {
+              "id": "leave_it_hanging",
+              "label": "Leave the warrant on its nail; a hunted man has every reason to start talking",
+              "serves": [
+                "bury_the_arms_sale"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "renna_claims_the_warrant",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The Lord Protector's orders send your Rangers west. Ashguard has an old warrant for the very man the valley fears, oddly worded, as if someone wanted it served quickly rather than well. Ashguard lies a few hours off your road east of the Halfway House.",
+          "options": [
+            {
+              "id": "take_it_into_ranger_keeping",
+              "label": "Send a Ranger to Ashguard to take the warrant into the Rangers' keeping, to serve it alive",
+              "serves": [
+                "bring_varn_in",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_rangers_hold_warrant",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger the Rangers carry Ashguard's warrant now, and a warrant served alive is worth ten served dead."
+                }
+              ]
+            },
+            {
+              "id": "ask_the_regent",
+              "label": "Write to the Lord Protector for a crown writ of your own instead",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger whether a Ranger should carry another man's warrant or wait for her own orders."
+                }
+              ]
+            },
+            {
+              "id": "leave_it_to_ashguard",
+              "label": "Leave Ashguard's quarrel with its deserter to Ashguard",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_signed_out_wagons",
+      "title": "Signed Out",
+      "act": 1,
+      "summary": "Fort Ashguard's armoury ledger sits in the quartermaster's press. It blames four wagons on Varn, though three were signed out to a Guild factor days before he ran. The warrant for Varn hangs in the next room.",
+      "location": "fort_ashguard",
+      "requires": [
+        "varn_warrant_seen"
+      ],
+      "resolves_on": [
+        "ashguard_ledger_read"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "des_case_against_lucan",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "lucan_and_the_stranger",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "The stranger who read Varn's warrant is still walking your walls, asking after the deserter. The armoury ledger sits in the quartermaster's press, and the lines signing three wagons out to a Guild factor, days before Varn ran, are in your own hand.",
+          "options": [
+            {
+              "id": "show_the_warrant",
+              "label": "Keep their eyes on the warrant for Varn, and send them hunting him",
+              "serves": [
+                "silence_varn",
+                "a_victory_of_my_own"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Show the stranger Varn's warrant again. Tell them a deserter who sold the crown's arms to bandits has earned whatever it says."
+                }
+              ]
+            },
+            {
+              "id": "lock_the_ledger_away",
+              "label": "Have the armoury ledger moved to your own strongbox tonight",
+              "serves": [
+                "bury_the_arms_sale"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "deserters_road",
+                  "beat": "the_signed_out_wagons"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger the armoury is closed to visitors by the crown's order. Offer them supper with the officers instead."
+                }
+              ]
+            },
+            {
+              "id": "hide_nothing",
+              "label": "Let them look; a commander with nothing to hide hides nothing",
+              "serves": [
+                "restore_ashguards_honour"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "renna_demands_the_books",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The stranger says Ashguard's armoury ledger has been locked away the moment anyone asked about Varn. A Ranger may demand a crown garrison's books in the King's name, once.",
+          "options": [
+            {
+              "id": "demand_the_books",
+              "label": "Send a Ranger's demand to Ashguard for its armoury ledger, in the King's name",
+              "serves": [
+                "prove_the_rangers",
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "deserters_road",
+                  "beat": "the_signed_out_wagons"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger Ashguard's books are open to them now, by the King's name, and ask what they expect to find in them."
+                }
+              ],
+              "aids": "player"
+            },
+            {
+              "id": "leave_the_books",
+              "label": "Leave a garrison's books to its commander; you need Ashguard's riders more than its ledger",
+              "serves": [
+                "obey_the_crown",
+                "bring_my_rangers_home"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "lucan_reads_the_stranger",
+          "type": "reveal",
+          "trigger": "on_resolve",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "The stranger has read the armoury ledger. They know three of the four wagons blamed on Varn were signed out to a Guild factor days before he ran. They have not yet asked you why.",
+          "options": [
+            {
+              "id": "half_the_truth",
+              "label": "Tell them the garrison went four months unpaid in the last war year, and leave it there",
+              "serves": [
+                "restore_ashguards_honour",
+                "keep_ashguard_paid"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger Ashguard's men went four months without pay in the war's last year. Say no more than that, and watch them."
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "lucan",
+                  "dimension": "trust",
+                  "delta": 5
+                }
+              ]
+            },
+            {
+              "id": "freeze_them_out",
+              "label": "Deny everything, coldly, and have them shown to the gate",
+              "serves": [
+                "bury_the_arms_sale"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "lucan",
+                  "dimension": "affection",
+                  "delta": -10
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger clerks make errors in wartime, and that Ashguard's hospitality ends at its gate."
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Say nothing and wait to see what they do with it",
+              "serves": [
+                "bury_the_arms_sale"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "hollis_counts_his_insurance",
+          "type": "scheme",
+          "trigger": "on_flag:ashguard_ledger_read",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Your factor at Ashguard writes that a stranger has read the fort's armoury ledger. Your private ledger holds the other half of that page: three wagons of crown arms you bought from an Ashguard officer five years ago and sold on.",
+          "options": [
+            {
+              "id": "remind_lucan",
+              "label": "Write to Commander Lucan to remind him, politely, whose ledger holds the three wagons",
+              "serves": [
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_hollis_holds_lucan",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Ask the stranger, strained, who sent them to Ashguard and whether they have business with the Merchants' Guild."
+                }
+              ]
+            },
+            {
+              "id": "buy_the_stranger",
+              "label": "Have your factor offer the stranger a Guild commission in exchange for their memory",
+              "serves": [
+                "keep_the_guild_clean",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Offer the stranger well-paid Guild work far from the Eastern March, and say a sensible person forgets old ledgers."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Do nothing; an old ledger at a far fort is not yet your problem",
+              "serves": [
+                "turn_a_profit"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_halfway_seal",
+      "title": "Under Wren's Roof",
+      "act": 1,
+      "summary": "Whoever carries Ashguard's warrant west sleeps at the Halfway House, and so do Lucan's private orders to his riders. Old Wren's warm knife lifts any seal.",
+      "location": "kingsroad_waystation",
+      "requires": [
+        "des_warrant_on_the_road"
+      ],
+      "resolves_on": [
+        "des_kill_order_told",
+        "des_kill_order_sealed"
+      ],
+      "hooks": [
+        {
+          "id": "wren_lifts_the_seal",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "A packet under Fort Ashguard's seal is in your rack tonight, bound west after the deserter Varn, with a thinner letter folded inside it in the commander's own hand.",
+          "options": [
+            {
+              "id": "lift_it",
+              "label": "Warm the knife and read the commander's letter",
+              "serves": [
+                "read_every_letter",
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_kill_order_read",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "let_it_sleep",
+              "label": "Let Ashguard's post sleep; soldiers' quarrels are not your fire",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "wren_weighs_the_orders",
+          "type": "reveal",
+          "trigger": "on_flag:des_kill_order_read",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "Commander Lucan's private letter tells his riders that 'killed resisting' will serve as well as a rope, and that the deserter is not to be allowed to talk. Renna Thorne's Rangers will be riding the same road.",
+          "options": [
+            {
+              "id": "warn_renna",
+              "label": "Send word to Renna Thorne that Ashguard's riders mean to bring back a body",
+              "serves": [
+                "spare_the_young_ones",
+                "keep_the_road_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_kill_order_told",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger why a commander would want his own deserter dead before he could speak. Ask it twice."
+                }
+              ],
+              "harms": [
+                "lucan"
+              ]
+            },
+            {
+              "id": "hint_to_the_stranger",
+              "label": "Tell the stranger, over a cup, that some warrants want a corpse more than a trial",
+              "serves": [
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger, idly, that some warrants are written to be served quickly rather than well. Ask who profits if Varn never talks."
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "wren",
+                  "dimension": "trust",
+                  "delta": 5
+                }
+              ]
+            },
+            {
+              "id": "keep_the_card",
+              "label": "Press the seal back and keep what you read for a better hand",
+              "serves": [
+                "read_every_letter",
+                "a_quiet_fire"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_kill_order_sealed",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "lucan_avoids_the_inn",
+          "type": "intercept",
+          "trigger": "on_flag:way_letters_read",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "Word is out on the Kingsroad that the Halfway House reads the post that sleeps under its roof. Your private orders to your riders went west by that road.",
+          "options": [
+            {
+              "id": "go_round_by_the_ford",
+              "label": "Order your riders round by Ferrisford, never to sleep at the Halfway House",
+              "serves": [
+                "bury_the_arms_sale"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "deserters_road",
+                  "beat": "the_halfway_seal"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Ask the stranger whether they trust innkeepers. Say a soldier learns to sleep in the open."
+                }
+              ]
+            },
+            {
+              "id": "send_a_decoy",
+              "label": "Send a second, honest letter by the Halfway House, all duty and no orders",
+              "serves": [
+                "restore_ashguards_honour"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger Ashguard's orders say Varn is to be brought in by the book. Say it as if you mean it."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Do nothing; an innkeeper's gossip is not proof",
+              "serves": [
+                "silence_varn"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "wren_brings_the_rider_in",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "Ashguard's riders have taken to sleeping in the hedges rather than under your roof. The weather is turning, and riders like a fire.",
+          "options": [
+            {
+              "id": "bring_them_in",
+              "label": "Send the stable boy out with hot bread and the offer of a dry loft",
+              "serves": [
+                "read_every_letter",
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "deserters_road",
+                  "beat": "the_halfway_seal"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger soldiers always come in from the rain in the end, and their letters come in with them."
+                }
+              ]
+            },
+            {
+              "id": "let_them_freeze",
+              "label": "Let them sleep in the hedges; the road is quieter without them",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "harrow_ridge_debt",
+      "title": "The Harrow Ridge Debt",
+      "act": 2,
+      "summary": "Ashguard's warrant reaches Thornhaven, signed by Lucan Ferrow: the young officer Aldric carried off the field at Harrow Ridge with an arrow in his thigh. Ashguard wants the valley's help with its deserter.",
+      "location": "thornhaven_town_square",
+      "requires": [
+        "des_warrant_on_the_road"
+      ],
+      "resolves_on": [
+        "des_aldric_joins_the_hunt",
+        "des_aldric_stands_aside"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "des_lucan_knows_aldric",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "aldric_reads_the_warrant",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "A copy of Ashguard's warrant for Varn is nailed by the well, signed Lucan Ferrow, Commander. You carried that man off Harrow Ridge. Varn walks the Tithe cart up the ridge every autumn, and Marcus died following one. The warrant says 'killed resisting' will do.",
+          "options": [
+            {
+              "id": "join_the_hunt",
+              "label": "Put the peacekeepers at the warrant's service, to see Varn answer for Marcus and the carts",
+              "serves": [
+                "bring_varn_to_justice",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_aldric_joins_the_hunt",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the crown has finally put its name to what Varn is. Ask them to help you learn which nights he rides."
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "write_to_lucan",
+              "label": "Write to Lucan as an old comrade and ask why his warrant reads like an order to kill",
+              "serves": [
+                "bring_varn_to_justice",
+                "spare_the_innocent"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger you once carried this warrant's signer off a battlefield. Ask whether a just warrant needs 'killed resisting'."
+                }
+              ]
+            },
+            {
+              "id": "stand_aside",
+              "label": "Keep six volunteers for the gate on Collection Night, not a crown garrison's quarrel",
+              "serves": [
+                "keep_my_men_alive",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_aldric_stands_aside",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "aldric_under_martial_law",
+          "type": "scheme",
+          "trigger": "on_flag:cou_martial_law",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "You hold Thornhaven under martial law now. No council vote stands between the watch and Ashguard's warrant.",
+          "options": [
+            {
+              "id": "whole_watch",
+              "label": "Put the whole watch at the warrant's service and walk the forest path yourself",
+              "serves": [
+                "bring_varn_to_justice",
+                "take_command"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_aldric_joins_the_hunt",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "aldric",
+                  "location": "forest_path"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the watch rides for the crown's warrant now. Ask them to ride with you."
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "hold_the_gate",
+              "label": "Keep the watch on the gate; martial law is for the village, not for Ashguard",
+              "serves": [
+                "keep_my_men_alive",
+                "arm_the_village"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mira_hears_ashguard",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Aldric sat in your kitchen last night turning Ashguard's warrant over in his hands. A crown garrison wants Varn, who walks your Tithe carts up the ridge and is waiting for you to falter. Ashguard does not know who Varn answers to.",
+          "options": [
+            {
+              "id": "sell_his_roads",
+              "label": "Let it reach Ashguard, through Aldric, which nights Varn rides with only two men",
+              "serves": [
+                "keep_varn_leashed",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_route_sold",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Mention to the stranger, frightened, that Varn rides the forest path on dark nights with hardly any men. Beg them not to say who told."
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "warn_and_bind",
+              "label": "Make sure Varn hears the crown is after him, so he remembers who keeps him safe",
+              "serves": [
+                "keep_varn_leashed",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "spread_rumor",
+                  "flag": "des_warrant_on_the_road",
+                  "to": [
+                    "varn"
+                  ],
+                  "via": "a Hollow runner at the old mill"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Boast to the stranger that no paper from Ashguard will ever reach the Darkwood. Watch how they take it."
+                }
+              ]
+            },
+            {
+              "id": "let_them_bleed",
+              "label": "Do nothing; let Ashguard and Varn bleed each other",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "lucan_hears_the_name",
+          "type": "reveal",
+          "trigger": "on_resolve",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "A reply has come back from Thornhaven, and the captain of its watch is Aldric of the Third Foot. The man who carried you off Harrow Ridge now keeps the peace in the valley where your deserter rules.",
+          "options": [
+            {
+              "id": "soldiers_letter",
+              "label": "Write Aldric a soldier's letter: all honour, Harrow Ridge, and nothing about wagons",
+              "serves": [
+                "restore_ashguards_honour",
+                "bury_the_arms_sale"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger Lucan Ferrow wrote to you of Harrow Ridge. Say he was a good officer once. Ask if he still is."
+                }
+              ]
+            },
+            {
+              "id": "unpaid_garrison",
+              "label": "Tell Aldric the garrison went four months unpaid, and let him guess the rest",
+              "serves": [
+                "keep_ashguard_paid",
+                "restore_ashguards_honour"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger Lucan wrote that Ashguard went unpaid four months in the war. Ask why a commander would tell you that."
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Say nothing to him; gratitude is not the same as trust",
+              "serves": [
+                "bury_the_arms_sale"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "lucan_and_the_covered_carts",
+          "type": "react",
+          "trigger": "on_flag:des_ridge_fees_known",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "It is out that your ridge patrols took their fee from Iron Hollow's carts every autumn. Your sergeants' reports spoke of one covered cart each year, and you never asked what was under the canvas. It was Thornhaven's children.",
+          "options": [
+            {
+              "id": "close_the_trail",
+              "label": "Order the ridge patrols to take no more Hollow coin and stop every cart that climbs",
+              "serves": [
+                "close_the_ridge_trail",
+                "restore_ashguards_honour"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger Ashguard's patrols stop every cart on the ridge from tonight. Do not say what the last ones carried."
+                }
+              ]
+            },
+            {
+              "id": "blame_the_sergeants",
+              "label": "Say the sergeants kept the fees and the reports, and that you never knew",
+              "serves": [
+                "bury_the_arms_sale"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger the ridge fees were a sergeants' racket, never sanctioned. Say it too quickly."
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "lucan",
+                  "dimension": "trust",
+                  "delta": -5
+                }
+              ]
+            },
+            {
+              "id": "write_to_aldric",
+              "label": "Write to Aldric that you did not know, and ask what you can do for the village",
+              "serves": [
+                "restore_ashguards_honour"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger Lucan Ferrow wrote that his patrols waved the Tithe carts through. Ask whether a man can not know that for five years."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "aldric_hears_of_the_fees",
+          "type": "react",
+          "trigger": "on_flag:des_ridge_fees_known",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The crown's own patrols on the ridge trail took a fee from the Hollow's carts every autumn and let them climb with Thornhaven's people in chains. The commander who signed them is the man you carried off Harrow Ridge.",
+          "options": [
+            {
+              "id": "no_more_debts",
+              "label": "Decide Harrow Ridge is paid in full, and say so",
+              "serves": [
+                "expose_the_traitor",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the crown's own patrols waved the Tithe carts up the ridge for a fee. Say Harrow Ridge is paid, and Lucan answers like anyone."
+                },
+                {
+                  "type": "shift_want",
+                  "npc": "aldric",
+                  "want": "find_the_taken",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "keep_it_for_the_gate",
+              "label": "Put it aside until the cart has come and gone",
+              "serves": [
+                "hold_the_gate",
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger you will settle with Ashguard after Collection Night. Ask them to keep the gate first in their mind."
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Say nothing; old comrades are your own grief",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_deserters_answer",
+      "title": "The Deserter's Answer",
+      "act": 2,
+      "summary": "In Iron Hollow, Varn learns his old commander's warrant has come west. He knows what Lucan sold, and Lucan knows he knows.",
+      "location": "iron_hollow_camp",
+      "requires": [
+        "des_warrant_on_the_road",
+        "!hc_varn_dead"
+      ],
+      "resolves_on": [
+        "des_varn_defied_ashguard",
+        "des_wagons_witnessed",
+        "des_pardon_taken",
+        "des_ambush_laid"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "des_varn_answered",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "varn_hears_of_the_paper",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Ashguard's warrant has come west with your name on it, signed by Lucan Ferrow. You watched three wagons of crown arms leave that fort by night, a season before you took the fourth.",
+          "options": [
+            {
+              "id": "write_to_ashguard",
+              "label": "Send word east that you remember three wagons, and the night they left",
+              "serves": [
+                "be_feared",
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_sent_word_east",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger, grinning, whether they have ever met a commander who sleeps badly. Say you know one."
+                }
+              ],
+              "harms": [
+                "lucan"
+              ]
+            },
+            {
+              "id": "nail_it_up",
+              "label": "Nail the warrant to an ash tree on the forest path with a Hollow knife through the seal",
+              "serves": [
+                "be_feared",
+                "crush_the_resistance"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_defied_ashguard",
+                  "value": true
+                },
+                {
+                  "type": "spread_rumor",
+                  "flag": "des_warrant_on_the_road",
+                  "to": [
+                    "*"
+                  ],
+                  "via": "Hollow men laughing at the old mill"
+                }
+              ]
+            },
+            {
+              "id": "keep_it_quiet",
+              "label": "Say nothing to anyone; the Boss need not know the crown wants you",
+              "serves": [
+                "take_the_hollow",
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger that whatever they heard about Ashguard is a lie, and that liars in the Darkwood lose their tongues."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "varn_tells_the_stranger",
+          "type": "reveal",
+          "trigger": "on_flag:varn_confronted",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The stranger has stood in front of you and asked about Ashguard. A man the crown cannot hang without hanging its own commander is a man the Hollow follows.",
+          "options": [
+            {
+              "id": "tell_of_the_wagons",
+              "label": "Tell the stranger about the three wagons and the night they left the fort",
+              "serves": [
+                "take_the_hollow",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_wagons_witnessed",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "des_case_against_lucan",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger Lucan Ferrow sold three wagons before you ever touched the fourth. Ask what they think a warrant is worth now."
+                }
+              ],
+              "harms": [
+                "lucan"
+              ]
+            },
+            {
+              "id": "tell_of_the_ridge_fees",
+              "label": "Tell the stranger Ashguard's ridge patrols took their fee from every Tithe cart you walked up",
+              "serves": [
+                "be_feared",
+                "take_the_hollow"
+              ],
+              "harms": [
+                "lucan"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_ridge_fees_known",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "des_case_against_lucan",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the crown's patrols on the ridge counted the Tithe cart, took their silver and looked away. Ask who they think is the bandit."
+                }
+              ]
+            },
+            {
+              "id": "threaten",
+              "label": "Tell them men who ask about Ashguard end up in the river",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "varn",
+                  "dimension": "fear",
+                  "delta": 10
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Say nothing; a secret spent is a secret gone",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "lucan_answers_the_threat",
+          "type": "betray",
+          "trigger": "on_flag:des_varn_sent_word_east",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "Varn's word has reached you: he remembers three wagons, and the night they left. He has not told anyone yet. That is a price, not a mercy.",
+          "options": [
+            {
+              "id": "offer_a_pardon",
+              "label": "Offer him a pardon and a sergeant's pay to come back into harness as Ashguard's quiet blade",
+              "serves": [
+                "use_varn",
+                "bury_the_arms_sale"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_pardon_offered",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Ask the stranger whether a man can be useful to the crown and still a villain. Say the answer matters to you."
+                }
+              ]
+            },
+            {
+              "id": "make_it_true",
+              "label": "Send riders into the Darkwood with orders that the warrant ends in 'killed resisting'",
+              "serves": [
+                "silence_varn",
+                "bury_the_arms_sale"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_ambush_laid",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger Ashguard will finish its own business in the west, and that bystanders should keep clear of the forest path."
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "call_his_bluff",
+              "label": "Do nothing; a deserter's word against a decorated commander's",
+              "serves": [
+                "restore_ashguards_honour"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "lucan_courts_the_new_boss",
+          "type": "scheme",
+          "trigger": "on_flag:hc_varn_ascendant",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "Your deserter has made himself master of Iron Hollow. A bandit lord in crown harness would be a victory, of a sort, and a silence.",
+          "options": [
+            {
+              "id": "offer_crown_harness",
+              "label": "Offer the new master of the Hollow a pardon in exchange for keeping the valley quiet",
+              "serves": [
+                "use_varn",
+                "a_victory_of_my_own"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_pardon_offered",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger the crown sometimes buys what it cannot break. Ask whether they would carry a letter into the Darkwood."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Do nothing yet; a bandit lord is a harder man to bargain with than a hunted one",
+              "serves": [
+                "silence_varn"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "varn_weighs_the_pardon",
+          "type": "scheme",
+          "trigger": "on_flag:des_pardon_offered",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Lucan Ferrow offers you a pardon, a sergeant's pay and a crown seal, if you come back into harness as his quiet blade in the west.",
+          "options": [
+            {
+              "id": "take_it",
+              "label": "Take the pardon and keep the knife: Ashguard's man on one side of the forest, the Hollow's on the other",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_pardon_taken",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Show the stranger a crown seal and laugh. Tell them the Hollow now has friends in the crown's own forts."
+                }
+              ]
+            },
+            {
+              "id": "tear_it_up",
+              "label": "Nail the pardon to the ash tree beside the warrant",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_defied_ashguard",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "raise_the_price",
+              "label": "Send word back that a sergeant's pay is an insult",
+              "serves": [
+                "take_the_hollow",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger Ashguard is bidding for you, and ask what they would bid."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mira_hears_of_the_pardon",
+          "type": "intercept",
+          "trigger": "on_flag:des_pardon_offered",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "A crown commander is offering Varn a pardon. A pardoned Varn has a master besides you, and a road out of the Hollow that does not run through your kitchen.",
+          "options": [
+            {
+              "id": "sell_his_roads",
+              "label": "Let Ashguard's riders learn, through Aldric, which nights Varn rides alone",
+              "serves": [
+                "keep_varn_leashed",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_route_sold",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Let slip to the stranger, trembling, that Varn rides the forest path on moonless nights. Beg them to forget who said it."
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "let_him_know_you_know",
+              "label": "Have word reach Varn that the Boss reads every letter that comes into the camp",
+              "serves": [
+                "keep_varn_leashed",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Mention to the stranger, too carefully, that the Boss sees every letter that comes into the camp."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Do nothing; let him show you which way he leans",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "varn_smells_a_seller",
+          "type": "betray",
+          "trigger": "on_flag:des_varn_route_sold",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Ashguard knows which nights you ride the forest path with two men. Only the Boss's people knew those nights.",
+          "options": [
+            {
+              "id": "count_her_men",
+              "label": "Change your roads, say nothing, and start counting which men are yours",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_suspects_the_boss",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger who in Thornhaven sells roads to soldiers. Say you have a list, and it is getting shorter."
+                }
+              ]
+            },
+            {
+              "id": "blame_the_stranger",
+              "label": "Decide the stranger sold you, and let them feel it",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "varn",
+                  "dimension": "fear",
+                  "delta": 15
+                }
+              ],
+              "harms": [
+                "player"
+              ]
+            },
+            {
+              "id": "swallow_it",
+              "label": "Swallow it; a lieutenant who doubts the Boss out loud does not stay a lieutenant",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_forest_road",
+      "title": "Killed Resisting",
+      "act": 3,
+      "summary": "The warrant comes to the Darkwood in Tithe week. Rangers who want Varn alive, Ashguard riders who want him silent, Thornhaven's watch who want him to answer for Marcus, and Varn himself, who must still walk the Tithe cart up the ridge on Collection Night. Whatever they do in the trees, the warrant is marked served only when the stranger has gone into the Darkwood with it and come out to tell how it ended.",
+      "location": "forest_path",
+      "requires": [
+        "des_varn_answered",
+        "!hc_varn_dead"
+      ],
+      "resolves_on": [
+        "des_player_rode_the_forest_path"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "des_varn_warrant_served",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "varn_smells_the_rangers",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "There are strangers' horses on the forest path: Rangers in green, and Ashguard grey behind them. The smugglers' ridge trail climbs to the Pit, where your own men keep the diggers, and nobody follows it without knowing it.",
+          "options": [
+            {
+              "id": "over_the_ridge",
+              "label": "Slip up the ridge trail to the Pit and let the warrant hunt an empty forest",
+              "serves": [
+                "take_the_hollow",
+                "hold_the_pit"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "deserters_road",
+                  "beat": "the_forest_road"
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_slipped_away",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "the_pit"
+                }
+              ]
+            },
+            {
+              "id": "meet_them_openly",
+              "label": "Ride out to meet them with your blade drawn and your men behind you",
+              "serves": [
+                "be_feared",
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger to carry a message to the crown: Varn of Iron Hollow is on the forest path, and waiting."
+                }
+              ]
+            },
+            {
+              "id": "set_a_trap",
+              "label": "Let them come deeper into the Darkwood, where your men know the ground",
+              "serves": [
+                "crush_the_resistance",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Invite the stranger to walk the forest path with you tonight. Smile while you say it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "renna_serves_the_warrant",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The forest path at last, and the man named in the warrant somewhere in the trees. You want him alive, in irons and talking.",
+          "options": [
+            {
+              "id": "ride_in_now",
+              "label": "Ride into the Darkwood now with the riders you have",
+              "serves": [
+                "bring_varn_in"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_taken_alive",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "renna",
+                  "location": "forest_path"
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "wait_for_his_night",
+              "label": "Wait until the stranger learns which night he rides light",
+              "serves": [
+                "prove_the_rangers",
+                "bring_my_rangers_home"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger which nights Varn rides the forest path, and with how many. Say you will not throw riders at the trees."
+                }
+              ]
+            },
+            {
+              "id": "ask_for_aldric",
+              "label": "Ask Thornhaven's watch to hold the forest's edge for you",
+              "serves": [
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the Rangers have asked the watch to hold the forest's edge. Ask if they will stand with you."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "renna_with_forty_riders",
+          "type": "intercept",
+          "trigger": "on_flag:tithe_rangers_arrive",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The rest of your company has come west. Forty riders can close the forest path at both ends and take a man without killing him.",
+          "options": [
+            {
+              "id": "close_the_path",
+              "label": "Close the forest path at both ends and take Varn alive",
+              "serves": [
+                "bring_varn_in",
+                "prove_the_rangers",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_taken_alive",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "hold_the_company",
+              "label": "Hold the company back; forty riders in a forest is forty targets",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "renna_hungry_camp",
+          "type": "intercept",
+          "trigger": "on_flag:ih_supply_line_cut",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The Hollow's supplies through Gregor's shop are cut off. Hungry men slip out of the Darkwood every night, and the ones who stay are fewer and slower.",
+          "options": [
+            {
+              "id": "strike_while_hungry",
+              "label": "Strike while the camp is hungry and take Varn alive",
+              "serves": [
+                "bring_varn_in",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_taken_alive",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "starve_them_longer",
+              "label": "Wait; hungrier men fight worse and talk sooner",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger hunger is doing the Rangers' work for them, and ask how long the Hollow's stores will last."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "renna_over_the_ridge",
+          "type": "aid",
+          "trigger": "on_flag:smugglers_trail_found",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The stranger has found the smugglers' trail over the ridge, the road Varn takes when the forest gets crowded, and the road the Hollow's carts climb every autumn.",
+          "options": [
+            {
+              "id": "follow_the_trail",
+              "label": "Take your riders up the smugglers' trail after him, wherever it climbs",
+              "serves": [
+                "bring_varn_in",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "deserters_road",
+                  "beat": "the_forest_road"
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "renna",
+                  "location": "forest_path"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger to show you where the smugglers' trail leaves the Darkwood. Say tonight, not tomorrow."
+                }
+              ]
+            },
+            {
+              "id": "leave_the_ridge",
+              "label": "Leave the ridge; you have no map and forty lives to bring home",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "lucan_makes_it_true",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "The warrant has come to the Darkwood, and Ashguard riders are close enough to reach it. 'Killed resisting' satisfies the warrant you signed. Aldric of the Third Foot may be among the men closing on Varn.",
+          "options": [
+            {
+              "id": "loose_on_the_party",
+              "label": "Order your riders to loose on the arrest party as it closes, whoever stands near him",
+              "serves": [
+                "silence_varn",
+                "bury_the_arms_sale"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_killed_resisting",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "varn",
+                "aldric"
+              ]
+            },
+            {
+              "id": "shoot_him_alone",
+              "label": "Order your riders to wait until Varn stands clear, then shoot",
+              "serves": [
+                "silence_varn",
+                "bury_the_arms_sale"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_killed_resisting",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "serve_it_lawfully",
+              "label": "Ride with the Rangers and see it served by the book",
+              "serves": [
+                "restore_ashguards_honour"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "lucan",
+                  "location": "forest_path"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger Ashguard will see the warrant served lawfully. Ask whether they believe you."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "aldric_at_the_arrest",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Rangers and Ashguard riders are on the forest path for Varn. The man who killed Marcus and walks the Tithe carts is in the trees, and you have six men and the patrol map you drew yourself.",
+          "options": [
+            {
+              "id": "take_him_alive",
+              "label": "Join the Rangers and take him alive, for a rope in daylight",
+              "serves": [
+                "bring_varn_to_justice",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_taken_alive",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "aldric",
+                  "location": "forest_path"
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "watch_and_wait",
+              "label": "Give the Rangers your patrol map and keep your men at the forest's edge",
+              "serves": [
+                "keep_my_men_alive",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Show the stranger your map of the Hollow's patrols. Ask them to carry it to the Ranger captain."
+                }
+              ]
+            },
+            {
+              "id": "marcus_debt",
+              "label": "Find Varn first and settle Marcus's debt with your own blade",
+              "serves": [
+                "bring_varn_to_justice"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_killed_resisting",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "aldric",
+                  "location": "forest_path"
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "aldric_reads_the_tracks",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Varn has gone to ground. Your patrol map shows every way out of the Darkwood the Hollow uses, and one of them is the ridge trail the Tithe carts climb.",
+          "options": [
+            {
+              "id": "track_him",
+              "label": "Read his tracks to the ridge and lead the warrant after him",
+              "serves": [
+                "bring_varn_to_justice"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "deserters_road",
+                  "beat": "the_forest_road"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger Varn went up the ridge, not deeper into the forest. Ask if they will walk it with you."
+                }
+              ]
+            },
+            {
+              "id": "let_him_run",
+              "label": "Let him run; a Varn over the ridge is a Varn not in Thornhaven",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "varn_in_irons",
+          "type": "reveal",
+          "trigger": "on_flag:des_varn_taken_alive",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "You are in irons on the forest path, and the commander who signed your warrant sold three wagons before you took the fourth.",
+          "options": [
+            {
+              "id": "name_lucan",
+              "label": "Tell the Rangers about the three wagons, loudly, in front of everyone",
+              "serves": [
+                "take_the_hollow",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_named_lucan",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "des_case_against_lucan",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "lucan"
+              ]
+            },
+            {
+              "id": "name_the_ridge_fees",
+              "label": "Tell the Rangers Ashguard's patrols waved every Tithe cart up the ridge for a fee",
+              "serves": [
+                "take_the_hollow",
+                "be_feared"
+              ],
+              "harms": [
+                "lucan"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_ridge_fees_known",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "des_case_against_lucan",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "keep_it_as_a_price",
+              "label": "Keep it; a secret is worth a pardon, spent at the right moment",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger, through the bars, that Commander Lucan's neck is worth more than yours, and you know the price of both."
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Say nothing; the Hollow will hear you broke",
+              "serves": [
+                "keep_the_boss_secret",
+                "be_feared"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "wren_warns_renna",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "Ashguard riders bought arrows and lamp oil at your house this week and asked the shortest way to the forest path. Renna Thorne is on that path.",
+          "options": [
+            {
+              "id": "send_the_boy",
+              "label": "Send the stable boy west after Renna with a word about Ashguard's arrows",
+              "serves": [
+                "spare_the_young_ones"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_kill_order_told",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger to watch the Ashguard riders on the forest path. Say an old friend told you they bought arrows, not irons."
+                }
+              ],
+              "aids": "renna"
+            },
+            {
+              "id": "keep_your_fire",
+              "label": "Keep to your fire; the young will do what the young will do",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "varn_and_the_cart",
+          "type": "scheme",
+          "trigger": "on_flag:tn_collection_night",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "It is Collection Night. Ashguard's warrant is somewhere in the trees, and Thornhaven's cart still has to be walked from the gate up the ridge, as you have walked it every autumn.",
+          "options": [
+            {
+              "id": "walk_the_cart",
+              "label": "Walk out of the Darkwood and take the cart yourself; let the warrant see who you are",
+              "serves": [
+                "a_perfect_collection",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_on_collection_night",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "village_gate"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger no paper from Ashguard ever stopped a Tithe cart. Say you will be at the gate tonight, in the open."
+                }
+              ]
+            },
+            {
+              "id": "send_the_cart_up",
+              "label": "Send the cart with your men and wait for it at the Pit, out of the warrant's reach",
+              "serves": [
+                "hold_the_pit",
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_varn_slipped_away",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "the_pit"
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Do nothing yet; let the riders tire themselves in the trees",
+              "serves": [
+                "crush_the_resistance"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "renna_gate_or_trees",
+          "type": "intercept",
+          "trigger": "on_flag:tn_collection_night",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Tonight the Hollow's cart comes to Thornhaven's gate, your uncle's village, and the man named in your warrant will walk beside it out of the trees.",
+          "options": [
+            {
+              "id": "wait_at_the_gate",
+              "label": "Take your riders to Thornhaven's gate and serve the warrant at the cart",
+              "serves": [
+                "bring_varn_in",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "renna",
+                  "location": "village_gate"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger the Rangers will be at Thornhaven's gate tonight for Varn. Ask whether the village will stand or scatter when the cart comes."
+                }
+              ]
+            },
+            {
+              "id": "keep_the_trees",
+              "label": "Keep your riders on the forest path; a gate full of farmers is no place to take a man alive",
+              "serves": [
+                "bring_my_rangers_home",
+                "bring_varn_in"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger the Rangers hold the forest path tonight, cart or no cart. Say a warrant is served in the open, not in a crowd."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_three_wagons",
+      "title": "Three Wagons",
+      "act": 3,
+      "summary": "Before Fort Ashguard's own garrison, the question is put: who sold three wagons of crown arms, and who was blamed for four? Lucan's name and neck hang on the player's word.",
+      "location": "fort_ashguard",
+      "requires": [
+        "des_case_against_lucan"
+      ],
+      "resolves_on": [
+        "des_player_named_lucan",
+        "des_player_buried_the_wagons"
+      ],
+      "hooks": [
+        {
+          "id": "lucan_faces_the_question",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "Someone outside your walls is asking how four wagons left Ashguard with only one deserter, and what your ridge patrols let climb. The stranger knows more than anyone. Your men are on the parade ground, and they would pay for your honesty.",
+          "options": [
+            {
+              "id": "burn_the_page",
+              "label": "Burn the ledger page that signs three wagons out to a Guild factor",
+              "serves": [
+                "bury_the_arms_sale"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_armoury_page_burned",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger Ashguard's ledger shows four wagons stolen by one deserter, and has always shown it."
+                }
+              ]
+            },
+            {
+              "id": "beg_for_the_men",
+              "label": "Ask the stranger, soldier to stranger, to think of the men who went four months unpaid",
+              "serves": [
+                "restore_ashguards_honour",
+                "keep_ashguard_paid"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Ask the stranger to say nothing of the three wagons. Tell them every coin went to men eating their boots. Ask for their word."
+                }
+              ]
+            },
+            {
+              "id": "offer_a_commission",
+              "label": "Offer the stranger a commission at Ashguard, and the gratitude of a commander",
+              "serves": [
+                "bury_the_arms_sale",
+                "a_victory_of_my_own"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Offer the stranger a commission and a horse from Ashguard's stables. Say a wise officer forgets what a clerk wrote in wartime."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "lucan_keeps_his_command",
+          "type": "intercept",
+          "trigger": "on_flag:des_player_buried_the_wagons",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "The stranger has given you their word. Nobody else outside these walls can prove what the signed-out wagons meant.",
+          "options": [
+            {
+              "id": "close_the_matter",
+              "label": "Close the matter: the warrant stands as written, and Ashguard's books say four",
+              "serves": [
+                "bury_the_arms_sale",
+                "restore_ashguards_honour"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_lucan_shielded",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Thank the stranger, stiffly. Tell them Ashguard does not forget a friend, and that you would rather it did."
+                }
+              ]
+            },
+            {
+              "id": "half_confess",
+              "label": "Tell your own officers the truth behind closed doors, and keep it there",
+              "serves": [
+                "restore_ashguards_honour"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_lucan_shielded",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger your officers know now, and only your officers. Ask whether that makes you better or worse."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "renna_carries_the_truth",
+          "type": "react",
+          "trigger": "on_flag:des_player_named_lucan",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The stranger has laid it out: Commander Lucan sold three wagons of crown arms and blamed four on Varn. The warrant you carried west was written to cover his own sale.",
+          "options": [
+            {
+              "id": "under_her_seal",
+              "label": "Write it to the Lord Protector and the High Magistrate under your own seal",
+              "serves": [
+                "prove_the_rangers",
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_lucan_disgraced",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger the Rangers have put Ashguard's sale in writing, and that you will stand behind it at any court."
+                }
+              ],
+              "harms": [
+                "lucan"
+              ]
+            },
+            {
+              "id": "face_him_first",
+              "label": "Face Lucan with it yourself before any letter goes east",
+              "serves": [
+                "refuse_a_scapegoat",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger to come with you to Ashguard. Say a commander deserves to hear it to his face before the crown does."
+                }
+              ]
+            },
+            {
+              "id": "leave_it_to_the_regent",
+              "label": "Say nothing until the Lord Protector asks; the regent may want Ashguard quiet",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "corwin_hears_the_stranger",
+          "type": "reveal",
+          "trigger": "on_flag:des_player_named_lucan",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The stranger's account of Ashguard's three wagons has reached the Magistry: a crown commander who sold the crown's arms and hanged the sale on a deserter.",
+          "options": [
+            {
+              "id": "enter_it_in_the_record",
+              "label": "Enter it in the Magistry's record and summon Commander Lucan to answer",
+              "serves": [
+                "law_applied_evenly",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_lucan_disgraced",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger the Magistry has entered Ashguard's wagons in its record, in ink. Ask what else they saw."
+                }
+              ],
+              "harms": [
+                "lucan"
+              ]
+            },
+            {
+              "id": "ask_for_more",
+              "label": "Ask for the Guild's side of the sale before acting",
+              "serves": [
+                "find_the_lost_reports",
+                "law_applied_evenly"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Ask the stranger who bought three wagons of crown arms from an Ashguard officer. Say a sale needs a buyer."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "corwin_adds_ashguard",
+          "type": "reveal",
+          "trigger": "on_flag:mag_trial_called",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "Your trial of the valley's rot is called. A deserter's warrant, an unpaid garrison and four wagons that do not add up belong in it.",
+          "options": [
+            {
+              "id": "add_the_charge",
+              "label": "Add Ashguard's arms to the charges and call Commander Lucan to answer",
+              "serves": [
+                "try_it_in_the_open",
+                "law_applied_evenly"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_lucan_disgraced",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "lucan"
+              ]
+            },
+            {
+              "id": "call_him_as_witness",
+              "label": "Call Lucan only as a witness, and see what he says under oath",
+              "serves": [
+                "hear_gregors_ledger",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger you mean to put Commander Lucan under oath. Ask what questions they would ask him."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hollis_ledger_loose",
+          "type": "betray",
+          "trigger": "on_flag:fence_ledger_taken",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Your patron ledger is out of your coat and in other hands. One entry is an Ashguard officer's sale of three wagons of crown arms, which the Guild bought and sold on.",
+          "options": [
+            {
+              "id": "sell_lucan_first",
+              "label": "Give the Magistry the Ashguard entry yourself: a Guild cheated by a crown officer",
+              "serves": [
+                "keep_the_guild_clean",
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "des_lucan_disgraced",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger the Guild was deceived by a crown officer and has told the Magistry so. Be wounded about it."
+                }
+              ],
+              "harms": [
+                "lucan"
+              ]
+            },
+            {
+              "id": "tell_lucan_to_deny",
+              "label": "Write to Lucan to deny everything, as you will",
+              "serves": [
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger, firmly, that Ashguard has never had dealings with the Merchants' Guild."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Do nothing; one entry among hundreds may never be read",
+              "serves": [
+                "turn_a_profit"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "aldric_speaks_of_harrow_ridge",
+          "type": "reveal",
+          "trigger": "idle",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The stranger asks what kind of man Lucan Ferrow is. You carried him off Harrow Ridge. Crown arms from a crown fort may be the arms that killed Marcus.",
+          "options": [
+            {
+              "id": "speak_for_him",
+              "label": "Tell them of Harrow Ridge and of a garrison left unpaid by the crown",
+              "serves": [
+                "spare_the_innocent"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger about Harrow Ridge, and the arrow, and an officer who fed his men when the crown would not."
+                }
+              ]
+            },
+            {
+              "id": "speak_against_him",
+              "label": "Tell them a man who sold arms to the Hollow answers for it like Gregor must for the lot",
+              "serves": [
+                "expose_the_traitor",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger that if Ashguard's arms armed the Hollow, Lucan answers for it like any man. Harrow Ridge does not change that."
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Say nothing; the man you carried is not the man who signed that warrant",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "honest_irons",
+      "title": "Honest Irons",
+      "requires": [
+        "des_varn_taken_alive",
+        "des_lucan_disgraced",
+        "des_player_named_lucan"
+      ],
+      "summary": "Varn went east in irons to answer for his desertion, and Commander Lucan went east to answer for the three wagons Varn watched him sell. For once the crown hanged nobody for somebody else's crime."
+    },
+    {
+      "id": "the_commander_falls",
+      "title": "The Commander Falls",
+      "requires": [
+        "des_lucan_disgraced",
+        "des_player_named_lucan"
+      ],
+      "summary": "Lucan Ferrow lost his command and his name over three wagons of crown arms. Whatever became of Varn, Ashguard's warrant is remembered now as a lie written to cover a sale."
+    },
+    {
+      "id": "the_quiet_blade",
+      "title": "The Quiet Blade",
+      "requires": [
+        "des_pardon_taken",
+        "des_player_buried_the_wagons",
+        "!des_varn_warrant_served"
+      ],
+      "summary": "Varn carries a crown pardon and a Hollow knife, and Commander Lucan sleeps no better for it. The three wagons stayed buried, and the deserter became the crown's own secret in the west."
+    },
+    {
+      "id": "the_fourth_wagon",
+      "title": "The Fourth Wagon",
+      "requires": [
+        "des_player_buried_the_wagons",
+        "!des_lucan_disgraced"
+      ],
+      "summary": "On the crown's books a deserter stole four wagons of arms, and the books will say so forever. The player kept Lucan's secret, and Ashguard kept its honour at the price of the truth."
+    }
+  ]
+}

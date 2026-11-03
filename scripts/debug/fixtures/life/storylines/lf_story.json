@@ -1,0 +1,68 @@
+{
+  "id": "lf_story",
+  "title": "Life Fixture",
+  "summary": "Storylines read personal flags; they never set them.",
+  "prefix": "lf_",
+  "act_span": [1, 1],
+  "flags": {
+    "lf_road_closed": "The ore road east was closed.",
+    "lf_forge_burned": "Bjorn's forge burned down.",
+    "lf_coin_ready": "The week's coin was counted out and ready.",
+    "lf_blade_seen": "The village saw the blade Bjorn forged.",
+    "lf_elena_locked_in": "Elena was locked in the back room.",
+    "lf_pledge": "The player pledged to stand with the village."
+  },
+  "player_flags": ["lf_pledge"],
+  "beats": [
+    {
+      "id": "blade_known",
+      "title": "The Blade",
+      "summary": "Word of Bjorn's own blade gets around.",
+      "act": 1,
+      "location": "thornhaven_blacksmith",
+      "requires": ["bjorn_true_blade_forged"],
+      "resolves_on": ["lf_blade_seen"],
+      "on_resolve": [ {"type": "set_flag", "flag": "bjorn_true_blade_clean_iron", "value": false} ],
+      "hooks": [
+        {
+          "id": "bjorn_shows_it",
+          "type": "react",
+          "trigger": "on_open",
+          "eligible": ["bjorn"],
+          "situation": "Your blade is done. People are asking.",
+          "options": [
+            {"id": "show", "label": "Hang it over the door", "serves": ["honest_steel"],
+             "effects": [ {"type": "set_flag", "flag": "lf_blade_seen", "value": true} ]},
+            {"id": "keep", "label": "Keep it wrapped", "serves": [], "effects": []}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_week",
+      "title": "The Week",
+      "summary": "A week in Thornhaven.",
+      "act": 1,
+      "location": "thornhaven_blacksmith",
+      "requires": [],
+      "resolves_on": ["lf_pledge", "mira_count_coin_hidden"],
+      "hooks": [
+        {
+          "id": "bjorn_cheats",
+          "type": "react",
+          "trigger": "on_flag:bjorn_true_blade_the_first_fold",
+          "eligible": ["bjorn"],
+          "situation": "The fold held. You could call the blade finished now.",
+          "options": [
+            {"id": "call_it_done", "label": "Call it finished", "serves": ["honest_steel"],
+             "effects": [
+               {"type": "set_flag", "flag": "bjorn_true_blade_show_someone", "value": true},
+               {"type": "agenda", "npc": "bjorn", "text": "The fold held; tell the stranger."}
+             ]}
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": []
+}

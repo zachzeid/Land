@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="LocationData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/location_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+location_id = "capitol_market"
+display_name = "The Lantern Market"
+region = "The Capitol"
+area = "Highmarch"
+scene_path = "res://scenes/capitol/capitol_market.tscn"
+is_interior = false
+spawn_points = {
+	"default": "The cross street by the stalls",
+	"from_capitol_gate": "The south end of the avenue",
+	"from_capitol_palace": "The north end of the avenue, below Palace Hill",
+	"from_capitol_docks": "The east end of the cross street",
+	"from_capitol_guildhall": "Outside the Guildhall doors",
+	"from_capitol_cathedral": "On the Cathedral steps"
+}

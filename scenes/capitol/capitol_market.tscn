@@ -1,0 +1,5106 @@
+[gd_scene load_steps=47 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
+[ext_resource type="Texture2D" path="res://assets/generated/buildings/village_house_3.png" id="2_village_house_3"]
+[ext_resource type="Texture2D" path="res://assets/generated/buildings/tavern.png" id="3_tavern"]
+[ext_resource type="Texture2D" path="res://assets/generated/buildings/gregor_shop.png" id="4_gregor_shop"]
+[ext_resource type="Texture2D" path="res://assets/generated/buildings/village_house_2.png" id="5_village_house_2"]
+[ext_resource type="Texture2D" path="res://assets/generated/props/well.png" id="6_well"]
+[ext_resource type="Script" path="res://scripts/world/world_obstacle.gd" id="7_world_obstacle"]
+[ext_resource type="Texture2D" path="res://assets/generated/props/barrel.png" id="8_barrel"]
+[ext_resource type="Texture2D" path="res://assets/generated/props/crate.png" id="9_crate"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/crates_barrels.png" id="10_crates_barrels"]
+[ext_resource type="Texture2D" path="res://assets/generated/props/cart.png" id="11_cart"]
+[ext_resource type="Texture2D" path="res://assets/generated/props/lamppost.png" id="12_lamppost"]
+[ext_resource type="Texture2D" path="res://assets/generated/props/tree_maple_1.png" id="13_tree_maple_1"]
+[ext_resource type="Texture2D" path="res://assets/generated/props/bench.png" id="14_bench"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="15_story_item"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="16_scene_trigger"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="17_player"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="18_dialogue_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="19_debug_interaction_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="20_debug_console"]
+
+[sub_resource type="RectangleShape2D" id="Rect_420x300"]
+size = Vector2(420, 300)
+
+[sub_resource type="RectangleShape2D" id="Rect_440x380"]
+size = Vector2(440, 380)
+
+[sub_resource type="RectangleShape2D" id="Rect_220x150"]
+size = Vector2(220, 150)
+
+[sub_resource type="RectangleShape2D" id="Rect_200x160"]
+size = Vector2(200, 160)
+
+[sub_resource type="RectangleShape2D" id="Rect_170x130"]
+size = Vector2(170, 130)
+
+[sub_resource type="RectangleShape2D" id="Rect_140x110"]
+size = Vector2(140, 110)
+
+[sub_resource type="RectangleShape2D" id="Rect_132x104"]
+size = Vector2(132, 104)
+
+[sub_resource type="RectangleShape2D" id="Rect_54x40"]
+size = Vector2(54, 40)
+
+[sub_resource type="RectangleShape2D" id="Rect_112x34"]
+size = Vector2(112, 34)
+
+[sub_resource type="RectangleShape2D" id="Rect_34x26"]
+size = Vector2(34, 26)
+
+[sub_resource type="RectangleShape2D" id="Rect_40x30"]
+size = Vector2(40, 30)
+
+[sub_resource type="RectangleShape2D" id="Rect_52x40"]
+size = Vector2(52, 40)
+
+[sub_resource type="RectangleShape2D" id="Rect_70x44"]
+size = Vector2(70, 44)
+
+[sub_resource type="RectangleShape2D" id="Rect_12x10"]
+size = Vector2(12, 10)
+
+[sub_resource type="RectangleShape2D" id="Rect_26x18"]
+size = Vector2(26, 18)
+
+[sub_resource type="RectangleShape2D" id="Rect_56x18"]
+size = Vector2(56, 18)
+
+[sub_resource type="RectangleShape2D" id="Rect_26x26"]
+size = Vector2(26, 26)
+
+[sub_resource type="RectangleShape2D" id="Rect_110x56"]
+size = Vector2(110, 56)
+
+[sub_resource type="RectangleShape2D" id="Rect_112x44"]
+size = Vector2(112, 44)
+
+[sub_resource type="RectangleShape2D" id="Rect_90x44"]
+size = Vector2(90, 44)
+
+[sub_resource type="RectangleShape2D" id="Rect_100x44"]
+size = Vector2(100, 44)
+
+[sub_resource type="RectangleShape2D" id="Rect_224x40"]
+size = Vector2(224, 40)
+
+[sub_resource type="RectangleShape2D" id="Rect_40x160"]
+size = Vector2(40, 160)
+
+[sub_resource type="RectangleShape2D" id="Rect_80x36"]
+size = Vector2(80, 36)
+
+[sub_resource type="RectangleShape2D" id="Rect_1536x32"]
+size = Vector2(1536, 32)
+
+[sub_resource type="RectangleShape2D" id="Rect_32x1536"]
+size = Vector2(32, 1536)
+
+[node name="CapitolMarket" type="Node2D"]
+
+[node name="SceneBackground" type="Node2D" parent="."]
+z_index = -10
+
+[node name="Paving" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = -768.0
+offset_right = 768.0
+offset_bottom = 768.0
+mouse_filter = 2
+color = Color(0.49, 0.467, 0.431, 1)
+
+[node name="Seam1" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = -740.0
+offset_right = 768.0
+offset_bottom = -738.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam2" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = -684.0
+offset_right = 768.0
+offset_bottom = -682.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam3" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = -628.0
+offset_right = 768.0
+offset_bottom = -626.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam4" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = -572.0
+offset_right = 768.0
+offset_bottom = -570.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam5" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = -516.0
+offset_right = 768.0
+offset_bottom = -514.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam6" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = -460.0
+offset_right = 768.0
+offset_bottom = -458.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam7" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = -404.0
+offset_right = 768.0
+offset_bottom = -402.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam8" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = -348.0
+offset_right = 768.0
+offset_bottom = -346.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam9" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = -292.0
+offset_right = 768.0
+offset_bottom = -290.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam10" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = -236.0
+offset_right = 768.0
+offset_bottom = -234.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam11" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = -180.0
+offset_right = 768.0
+offset_bottom = -178.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam12" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = -124.0
+offset_right = 768.0
+offset_bottom = -122.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam13" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = -68.0
+offset_right = 768.0
+offset_bottom = -66.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam14" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = -12.0
+offset_right = 768.0
+offset_bottom = -10.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam15" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = 44.0
+offset_right = 768.0
+offset_bottom = 46.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam16" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = 100.0
+offset_right = 768.0
+offset_bottom = 102.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam17" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = 156.0
+offset_right = 768.0
+offset_bottom = 158.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam18" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = 212.0
+offset_right = 768.0
+offset_bottom = 214.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam19" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = 268.0
+offset_right = 768.0
+offset_bottom = 270.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam20" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = 324.0
+offset_right = 768.0
+offset_bottom = 326.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam21" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = 380.0
+offset_right = 768.0
+offset_bottom = 382.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam22" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = 436.0
+offset_right = 768.0
+offset_bottom = 438.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam23" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = 492.0
+offset_right = 768.0
+offset_bottom = 494.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam24" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = 548.0
+offset_right = 768.0
+offset_bottom = 550.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam25" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = 604.0
+offset_right = 768.0
+offset_bottom = 606.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam26" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = 660.0
+offset_right = 768.0
+offset_bottom = 662.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Seam27" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = 716.0
+offset_right = 768.0
+offset_bottom = 718.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="Avenue" type="ColorRect" parent="SceneBackground"]
+offset_left = -112.0
+offset_top = -768.0
+offset_right = 112.0
+offset_bottom = 768.0
+mouse_filter = 2
+color = Color(0.557, 0.529, 0.482, 1)
+
+[node name="CrossStreet" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = 220.0
+offset_right = 768.0
+offset_bottom = 380.0
+mouse_filter = 2
+color = Color(0.557, 0.529, 0.482, 1)
+
+[node name="Plaza" type="ColorRect" parent="SceneBackground"]
+offset_left = -220.0
+offset_top = -220.0
+offset_right = 220.0
+offset_bottom = 220.0
+mouse_filter = 2
+color = Color(0.557, 0.529, 0.482, 1)
+
+[node name="PlazaRing" type="ColorRect" parent="SceneBackground"]
+offset_left = -170.0
+offset_top = -170.0
+offset_right = 170.0
+offset_bottom = 170.0
+mouse_filter = 2
+color = Color(0.604, 0.573, 0.518, 1)
+
+[node name="Gutter" type="ColorRect" parent="SceneBackground"]
+offset_left = -768.0
+offset_top = 378.0
+offset_right = 768.0
+offset_bottom = 384.0
+mouse_filter = 2
+color = Color(0.42, 0.38, 0.322, 1)
+
+[node name="GuildSteps" type="ColorRect" parent="SceneBackground"]
+offset_left = -600.0
+offset_top = -236.0
+offset_right = -340.0
+offset_bottom = -206.0
+mouse_filter = 2
+color = Color(0.639, 0.608, 0.549, 1)
+
+[node name="CathedralSteps" type="ColorRect" parent="SceneBackground"]
+offset_left = 300.0
+offset_top = -246.0
+offset_right = 580.0
+offset_bottom = -212.0
+mouse_filter = 2
+color = Color(0.639, 0.608, 0.549, 1)
+
+[node name="Shadows" type="Node2D" parent="."]
+z_index = -5
+
+[node name="Structures" type="Node2D" parent="."]
+z_index = 4
+
+[node name="GuildhallShadow" type="ColorRect" parent="Shadows"]
+offset_left = -670.0
+offset_top = -530.0
+offset_right = -250.0
+offset_bottom = -230.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.28)
+
+[node name="Guildhall" type="StaticBody2D" parent="Structures"]
+position = Vector2(-470, -390)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structures/Guildhall"]
+shape = SubResource("Rect_420x300")
+
+[node name="Roof" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = -210.0
+offset_top = -150.0
+offset_right = 210.0
+offset_bottom = 6.0
+mouse_filter = 2
+color = Color(0.353, 0.227, 0.165, 1)
+
+[node name="RoofRidge" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = -210.0
+offset_top = -150.0
+offset_right = 210.0
+offset_bottom = -144.0
+mouse_filter = 2
+color = Color(0.22, 0.22, 0.247, 1)
+
+[node name="Eave" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = -214.0
+offset_top = 0.0
+offset_right = 214.0
+offset_bottom = 8.0
+mouse_filter = 2
+color = Color(0.22, 0.22, 0.247, 1)
+
+[node name="Facade" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = -210.0
+offset_top = 8.0
+offset_right = 210.0
+offset_bottom = 150.0
+mouse_filter = 2
+color = Color(0.561, 0.478, 0.361, 1)
+
+[node name="Plinth" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = -210.0
+offset_top = 142.0
+offset_right = 210.0
+offset_bottom = 150.0
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Window1" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = -198.0
+offset_top = 19.0
+offset_right = -182.0
+offset_bottom = 41.0
+mouse_filter = 2
+color = Color(0.91, 0.769, 0.416, 0.85)
+
+[node name="Sill1" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = -201.0
+offset_top = 41.0
+offset_right = -179.0
+offset_bottom = 45.0
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Window2" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = -122.0
+offset_top = 19.0
+offset_right = -106.0
+offset_bottom = 41.0
+mouse_filter = 2
+color = Color(0.91, 0.769, 0.416, 0.85)
+
+[node name="Sill2" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = -125.0
+offset_top = 41.0
+offset_right = -103.0
+offset_bottom = 45.0
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Window3" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = -46.0
+offset_top = 19.0
+offset_right = -30.0
+offset_bottom = 41.0
+mouse_filter = 2
+color = Color(0.91, 0.769, 0.416, 0.85)
+
+[node name="Sill3" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = -49.0
+offset_top = 41.0
+offset_right = -27.0
+offset_bottom = 45.0
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Window4" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = 30.0
+offset_top = 19.0
+offset_right = 46.0
+offset_bottom = 41.0
+mouse_filter = 2
+color = Color(0.91, 0.769, 0.416, 0.85)
+
+[node name="Sill4" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = 27.0
+offset_top = 41.0
+offset_right = 49.0
+offset_bottom = 45.0
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Window5" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = 106.0
+offset_top = 19.0
+offset_right = 122.0
+offset_bottom = 41.0
+mouse_filter = 2
+color = Color(0.91, 0.769, 0.416, 0.85)
+
+[node name="Sill5" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = 103.0
+offset_top = 41.0
+offset_right = 125.0
+offset_bottom = 45.0
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Window6" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = 182.0
+offset_top = 19.0
+offset_right = 198.0
+offset_bottom = 41.0
+mouse_filter = 2
+color = Color(0.91, 0.769, 0.416, 0.85)
+
+[node name="Sill6" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = 179.0
+offset_top = 41.0
+offset_right = 201.0
+offset_bottom = 45.0
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Door" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = -22.0
+offset_top = 98.0
+offset_right = 22.0
+offset_bottom = 150.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="DoorArch" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = -26.0
+offset_top = 92.0
+offset_right = 26.0
+offset_bottom = 100.0
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Sign" type="Label" parent="Structures/Guildhall"]
+z_index = 1
+offset_left = -210.0
+offset_top = -22.0
+offset_right = 210.0
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(1, 0.92, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 13
+text = "THE MERCHANTS' GUILDHALL"
+horizontal_alignment = 1
+
+[node name="GuildCrest" type="ColorRect" parent="Structures/Guildhall"]
+offset_left = -18.0
+offset_top = -10.0
+offset_right = 18.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="CathedralShadow" type="ColorRect" parent="Shadows"]
+offset_left = 230.0
+offset_top = -610.0
+offset_right = 670.0
+offset_bottom = -230.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.28)
+
+[node name="Cathedral" type="StaticBody2D" parent="Structures"]
+position = Vector2(440, -430)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structures/Cathedral"]
+shape = SubResource("Rect_440x380")
+
+[node name="Roof" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = -220.0
+offset_top = -190.0
+offset_right = 220.0
+offset_bottom = 7.599999999999994
+mouse_filter = 2
+color = Color(0.29, 0.29, 0.322, 1)
+
+[node name="RoofRidge" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = -220.0
+offset_top = -190.0
+offset_right = 220.0
+offset_bottom = -184.0
+mouse_filter = 2
+color = Color(0.22, 0.22, 0.247, 1)
+
+[node name="Eave" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = -224.0
+offset_top = 1.5999999999999943
+offset_right = 224.0
+offset_bottom = 9.599999999999994
+mouse_filter = 2
+color = Color(0.22, 0.22, 0.247, 1)
+
+[node name="Facade" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = -220.0
+offset_top = 9.599999999999994
+offset_right = 220.0
+offset_bottom = 190.0
+mouse_filter = 2
+color = Color(0.639, 0.608, 0.549, 1)
+
+[node name="Plinth" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = -220.0
+offset_top = 182.0
+offset_right = 220.0
+offset_bottom = 190.0
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Window1" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = -208.0
+offset_top = 20.599999999999994
+offset_right = -192.0
+offset_bottom = 42.599999999999994
+mouse_filter = 2
+color = Color(0.91, 0.769, 0.416, 0.85)
+
+[node name="Sill1" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = -211.0
+offset_top = 42.599999999999994
+offset_right = -189.0
+offset_bottom = 46.599999999999994
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Window2" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = -108.0
+offset_top = 20.599999999999994
+offset_right = -92.0
+offset_bottom = 42.599999999999994
+mouse_filter = 2
+color = Color(0.91, 0.769, 0.416, 0.85)
+
+[node name="Sill2" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = -111.0
+offset_top = 42.599999999999994
+offset_right = -89.0
+offset_bottom = 46.599999999999994
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Window4" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = 92.0
+offset_top = 20.599999999999994
+offset_right = 108.0
+offset_bottom = 42.599999999999994
+mouse_filter = 2
+color = Color(0.91, 0.769, 0.416, 0.85)
+
+[node name="Sill4" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = 89.0
+offset_top = 42.599999999999994
+offset_right = 111.0
+offset_bottom = 46.599999999999994
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Window5" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = 192.0
+offset_top = 20.599999999999994
+offset_right = 208.0
+offset_bottom = 42.599999999999994
+mouse_filter = 2
+color = Color(0.91, 0.769, 0.416, 0.85)
+
+[node name="Sill5" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = 189.0
+offset_top = 42.599999999999994
+offset_right = 211.0
+offset_bottom = 46.599999999999994
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Door" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = -22.0
+offset_top = 138.0
+offset_right = 22.0
+offset_bottom = 190.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="DoorArch" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = -26.0
+offset_top = 132.0
+offset_right = 26.0
+offset_bottom = 140.0
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Sign" type="Label" parent="Structures/Cathedral"]
+z_index = 1
+offset_left = -220.0
+offset_top = -20.400000000000006
+offset_right = 220.0
+offset_bottom = 0.5999999999999943
+theme_override_colors/font_color = Color(1, 0.92, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 13
+text = "CATHEDRAL OF THE DAWN"
+horizontal_alignment = 1
+
+[node name="RoseWindow" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = -35.0
+offset_top = -25.0
+offset_right = 35.0
+offset_bottom = 45.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="RoseInner" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = -20.0
+offset_top = -10.0
+offset_right = 20.0
+offset_bottom = 30.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Spire" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = -24.0
+offset_top = -260.0
+offset_right = 24.0
+offset_bottom = -170.0
+mouse_filter = 2
+color = Color(0.22, 0.22, 0.247, 1)
+
+[node name="SpireSun" type="ColorRect" parent="Structures/Cathedral"]
+offset_left = -11.0
+offset_top = -273.0
+offset_right = 11.0
+offset_bottom = -251.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Townhouse1" type="StaticBody2D" parent="Structures"]
+position = Vector2(-620, -660)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structures/Townhouse1"]
+position = Vector2(0, 10)
+shape = SubResource("Rect_220x150")
+
+[node name="Sprite2D" type="Sprite2D" parent="Structures/Townhouse1"]
+modulate = Color(0.82, 0.82, 0.86, 1)
+scale = Vector2(2, 2)
+texture = ExtResource("2_village_house_3")
+
+[node name="Townhouse2" type="StaticBody2D" parent="Structures"]
+position = Vector2(-380, -680)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structures/Townhouse2"]
+position = Vector2(0, 10)
+shape = SubResource("Rect_200x160")
+
+[node name="Sprite2D" type="Sprite2D" parent="Structures/Townhouse2"]
+modulate = Color(0.82, 0.82, 0.86, 1)
+scale = Vector2(2, 2)
+texture = ExtResource("3_tavern")
+
+[node name="Townhouse3" type="StaticBody2D" parent="Structures"]
+position = Vector2(640, 540)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structures/Townhouse3"]
+position = Vector2(0, 10)
+shape = SubResource("Rect_220x150")
+
+[node name="Sprite2D" type="Sprite2D" parent="Structures/Townhouse3"]
+modulate = Color(0.82, 0.82, 0.86, 1)
+scale = Vector2(2, 2)
+texture = ExtResource("2_village_house_3")
+flip_h = true
+
+[node name="Townhouse4" type="StaticBody2D" parent="Structures"]
+position = Vector2(-620, 560)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structures/Townhouse4"]
+position = Vector2(0, 10)
+shape = SubResource("Rect_220x150")
+
+[node name="Sprite2D" type="Sprite2D" parent="Structures/Townhouse4"]
+modulate = Color(0.82, 0.82, 0.86, 1)
+scale = Vector2(2, 2)
+texture = ExtResource("2_village_house_3")
+
+[node name="Townhouse5" type="StaticBody2D" parent="Structures"]
+position = Vector2(-380, 590)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structures/Townhouse5"]
+position = Vector2(0, 10)
+shape = SubResource("Rect_170x130")
+
+[node name="Sprite2D" type="Sprite2D" parent="Structures/Townhouse5"]
+modulate = Color(0.82, 0.82, 0.86, 1)
+scale = Vector2(2, 2)
+texture = ExtResource("4_gregor_shop")
+
+[node name="Townhouse6" type="StaticBody2D" parent="Structures"]
+position = Vector2(380, 590)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structures/Townhouse6"]
+position = Vector2(0, 10)
+shape = SubResource("Rect_140x110")
+
+[node name="Sprite2D" type="Sprite2D" parent="Structures/Townhouse6"]
+modulate = Color(0.82, 0.82, 0.86, 1)
+scale = Vector2(2, 2)
+texture = ExtResource("5_village_house_2")
+flip_h = true
+
+[node name="WeighHouseShadow" type="ColorRect" parent="Shadows"]
+offset_left = -730.0
+offset_top = -30.0
+offset_right = -530.0
+offset_bottom = 130.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.28)
+
+[node name="WeighHouse" type="StaticBody2D" parent="Structures"]
+position = Vector2(-640, 40)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structures/WeighHouse"]
+shape = SubResource("Rect_200x160")
+
+[node name="Roof" type="ColorRect" parent="Structures/WeighHouse"]
+offset_left = -100.0
+offset_top = -80.0
+offset_right = 100.0
+offset_bottom = 3.200000000000003
+mouse_filter = 2
+color = Color(0.353, 0.275, 0.212, 1)
+
+[node name="RoofRidge" type="ColorRect" parent="Structures/WeighHouse"]
+offset_left = -100.0
+offset_top = -80.0
+offset_right = 100.0
+offset_bottom = -74.0
+mouse_filter = 2
+color = Color(0.22, 0.22, 0.247, 1)
+
+[node name="Eave" type="ColorRect" parent="Structures/WeighHouse"]
+offset_left = -104.0
+offset_top = -2.799999999999997
+offset_right = 104.0
+offset_bottom = 5.200000000000003
+mouse_filter = 2
+color = Color(0.22, 0.22, 0.247, 1)
+
+[node name="Facade" type="ColorRect" parent="Structures/WeighHouse"]
+offset_left = -100.0
+offset_top = 5.200000000000003
+offset_right = 100.0
+offset_bottom = 80.0
+mouse_filter = 2
+color = Color(0.541, 0.514, 0.471, 1)
+
+[node name="Plinth" type="ColorRect" parent="Structures/WeighHouse"]
+offset_left = -100.0
+offset_top = 72.0
+offset_right = 100.0
+offset_bottom = 80.0
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Window1" type="ColorRect" parent="Structures/WeighHouse"]
+offset_left = -88.0
+offset_top = 16.200000000000003
+offset_right = -72.0
+offset_bottom = 38.2
+mouse_filter = 2
+color = Color(0.91, 0.769, 0.416, 0.85)
+
+[node name="Sill1" type="ColorRect" parent="Structures/WeighHouse"]
+offset_left = -91.0
+offset_top = 38.2
+offset_right = -69.0
+offset_bottom = 42.2
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Window2" type="ColorRect" parent="Structures/WeighHouse"]
+offset_left = 72.0
+offset_top = 16.200000000000003
+offset_right = 88.0
+offset_bottom = 38.2
+mouse_filter = 2
+color = Color(0.91, 0.769, 0.416, 0.85)
+
+[node name="Sill2" type="ColorRect" parent="Structures/WeighHouse"]
+offset_left = 69.0
+offset_top = 38.2
+offset_right = 91.0
+offset_bottom = 42.2
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Door" type="ColorRect" parent="Structures/WeighHouse"]
+offset_left = -22.0
+offset_top = 28.0
+offset_right = 22.0
+offset_bottom = 80.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="DoorArch" type="ColorRect" parent="Structures/WeighHouse"]
+offset_left = -26.0
+offset_top = 22.0
+offset_right = 26.0
+offset_bottom = 30.0
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Sign" type="Label" parent="Structures/WeighHouse"]
+z_index = 1
+offset_left = -100.0
+offset_top = -24.799999999999997
+offset_right = 100.0
+offset_bottom = -3.799999999999997
+theme_override_colors/font_color = Color(1, 0.92, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 13
+text = "Guild Weigh-House"
+horizontal_alignment = 1
+
+[node name="LanternMakersShadow" type="ColorRect" parent="Shadows"]
+offset_left = 550.0
+offset_top = -30.0
+offset_right = 750.0
+offset_bottom = 130.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.28)
+
+[node name="LanternMakers" type="StaticBody2D" parent="Structures"]
+position = Vector2(640, 40)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structures/LanternMakers"]
+shape = SubResource("Rect_200x160")
+
+[node name="Roof" type="ColorRect" parent="Structures/LanternMakers"]
+offset_left = -100.0
+offset_top = -80.0
+offset_right = 100.0
+offset_bottom = 3.200000000000003
+mouse_filter = 2
+color = Color(0.29, 0.29, 0.322, 1)
+
+[node name="RoofRidge" type="ColorRect" parent="Structures/LanternMakers"]
+offset_left = -100.0
+offset_top = -80.0
+offset_right = 100.0
+offset_bottom = -74.0
+mouse_filter = 2
+color = Color(0.22, 0.22, 0.247, 1)
+
+[node name="Eave" type="ColorRect" parent="Structures/LanternMakers"]
+offset_left = -104.0
+offset_top = -2.799999999999997
+offset_right = 104.0
+offset_bottom = 5.200000000000003
+mouse_filter = 2
+color = Color(0.22, 0.22, 0.247, 1)
+
+[node name="Facade" type="ColorRect" parent="Structures/LanternMakers"]
+offset_left = -100.0
+offset_top = 5.200000000000003
+offset_right = 100.0
+offset_bottom = 80.0
+mouse_filter = 2
+color = Color(0.541, 0.431, 0.345, 1)
+
+[node name="Plinth" type="ColorRect" parent="Structures/LanternMakers"]
+offset_left = -100.0
+offset_top = 72.0
+offset_right = 100.0
+offset_bottom = 80.0
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Window1" type="ColorRect" parent="Structures/LanternMakers"]
+offset_left = -88.0
+offset_top = 16.200000000000003
+offset_right = -72.0
+offset_bottom = 38.2
+mouse_filter = 2
+color = Color(0.91, 0.769, 0.416, 0.85)
+
+[node name="Sill1" type="ColorRect" parent="Structures/LanternMakers"]
+offset_left = -91.0
+offset_top = 38.2
+offset_right = -69.0
+offset_bottom = 42.2
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Window3" type="ColorRect" parent="Structures/LanternMakers"]
+offset_left = 72.0
+offset_top = 16.200000000000003
+offset_right = 88.0
+offset_bottom = 38.2
+mouse_filter = 2
+color = Color(0.91, 0.769, 0.416, 0.85)
+
+[node name="Sill3" type="ColorRect" parent="Structures/LanternMakers"]
+offset_left = 69.0
+offset_top = 38.2
+offset_right = 91.0
+offset_bottom = 42.2
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Door" type="ColorRect" parent="Structures/LanternMakers"]
+offset_left = -22.0
+offset_top = 28.0
+offset_right = 22.0
+offset_bottom = 80.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="DoorArch" type="ColorRect" parent="Structures/LanternMakers"]
+offset_left = -26.0
+offset_top = 22.0
+offset_right = 26.0
+offset_bottom = 30.0
+mouse_filter = 2
+color = Color(0.275, 0.263, 0.247, 1)
+
+[node name="Sign" type="Label" parent="Structures/LanternMakers"]
+z_index = 1
+offset_left = -100.0
+offset_top = -24.799999999999997
+offset_right = 100.0
+offset_bottom = -3.799999999999997
+theme_override_colors/font_color = Color(1, 0.92, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 13
+text = "Lanterns & Tallow"
+horizontal_alignment = 1
+
+[node name="Fountain" type="StaticBody2D" parent="Structures"]
+position = Vector2(0, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structures/Fountain"]
+shape = SubResource("Rect_132x104")
+
+[node name="Basin" type="ColorRect" parent="Structures/Fountain"]
+offset_left = -75.0
+offset_top = -52.0
+offset_right = 75.0
+offset_bottom = 60.0
+mouse_filter = 2
+color = Color(0.639, 0.608, 0.549, 1)
+
+[node name="Water" type="ColorRect" parent="Structures/Fountain"]
+offset_left = -63.0
+offset_top = -40.0
+offset_right = 63.0
+offset_bottom = 48.0
+mouse_filter = 2
+color = Color(0.235, 0.376, 0.459, 1)
+
+[node name="Spout" type="Sprite2D" parent="Structures/Fountain"]
+position = Vector2(0, -6)
+scale = Vector2(1, 1)
+modulate = Color(0.82, 0.82, 0.86, 1)
+texture = ExtResource("6_well")
+
+[node name="LanternPlinth" type="StaticBody2D" parent="Structures"]
+position = Vector2(0, 140)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structures/LanternPlinth"]
+shape = SubResource("Rect_54x40")
+
+[node name="Visual" type="ColorRect" parent="Structures/LanternPlinth"]
+offset_left = -27.0
+offset_top = -20.0
+offset_right = 27.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.541, 0.514, 0.471, 1)
+
+[node name="Flame" type="ColorRect" parent="Structures/LanternPlinth"]
+offset_left = -8.0
+offset_top = -35.0
+offset_right = 8.0
+offset_bottom = -17.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="FlameGlow" type="ColorRect" parent="Structures/LanternPlinth"]
+offset_left = -35.0
+offset_top = -61.0
+offset_right = 35.0
+offset_bottom = 9.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.18)
+
+[node name="Props" type="Node2D" parent="."]
+
+[node name="Stall1" type="StaticBody2D" parent="Props"]
+position = Vector2(-400, -60)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Stall1"]
+shape = SubResource("Rect_112x34")
+
+[node name="Visual" type="ColorRect" parent="Props/Stall1"]
+offset_left = -56.0
+offset_top = -17.0
+offset_right = 56.0
+offset_bottom = 17.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Goods1" type="ColorRect" parent="Props/Stall1"]
+offset_left = -49.0
+offset_top = -11.0
+offset_right = -23.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Goods2" type="ColorRect" parent="Props/Stall1"]
+offset_left = -13.0
+offset_top = -11.0
+offset_right = 13.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Goods3" type="ColorRect" parent="Props/Stall1"]
+offset_left = 23.0
+offset_top = -11.0
+offset_right = 49.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="PostL" type="ColorRect" parent="Props/Stall1"]
+offset_left = -56.0
+offset_top = -60.0
+offset_right = -50.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="PostR" type="ColorRect" parent="Props/Stall1"]
+offset_left = 50.0
+offset_top = -60.0
+offset_right = 56.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Awning1" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Stripe1" type="ColorRect" parent="Props/Awning1"]
+offset_left = -464.0
+offset_top = -144.0
+offset_right = -442.1666666666667
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Stripe2" type="ColorRect" parent="Props/Awning1"]
+offset_left = -442.6666666666667
+offset_top = -144.0
+offset_right = -420.83333333333337
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Stripe3" type="ColorRect" parent="Props/Awning1"]
+offset_left = -421.3333333333333
+offset_top = -144.0
+offset_right = -399.5
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Stripe4" type="ColorRect" parent="Props/Awning1"]
+offset_left = -400.0
+offset_top = -144.0
+offset_right = -378.1666666666667
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Stripe5" type="ColorRect" parent="Props/Awning1"]
+offset_left = -378.6666666666667
+offset_top = -144.0
+offset_right = -356.83333333333337
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Stripe6" type="ColorRect" parent="Props/Awning1"]
+offset_left = -357.33333333333337
+offset_top = -144.0
+offset_right = -335.50000000000006
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Fringe" type="ColorRect" parent="Props/Awning1"]
+offset_left = -464.0
+offset_top = -110.0
+offset_right = -336.0
+offset_bottom = -105.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stall2" type="StaticBody2D" parent="Props"]
+position = Vector2(-250, -60)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Stall2"]
+shape = SubResource("Rect_112x34")
+
+[node name="Visual" type="ColorRect" parent="Props/Stall2"]
+offset_left = -56.0
+offset_top = -17.0
+offset_right = 56.0
+offset_bottom = 17.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Goods1" type="ColorRect" parent="Props/Stall2"]
+offset_left = -49.0
+offset_top = -11.0
+offset_right = -23.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Goods2" type="ColorRect" parent="Props/Stall2"]
+offset_left = -13.0
+offset_top = -11.0
+offset_right = 13.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Goods3" type="ColorRect" parent="Props/Stall2"]
+offset_left = 23.0
+offset_top = -11.0
+offset_right = 49.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="PostL" type="ColorRect" parent="Props/Stall2"]
+offset_left = -56.0
+offset_top = -60.0
+offset_right = -50.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="PostR" type="ColorRect" parent="Props/Stall2"]
+offset_left = 50.0
+offset_top = -60.0
+offset_right = 56.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Awning2" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Stripe1" type="ColorRect" parent="Props/Awning2"]
+offset_left = -314.0
+offset_top = -144.0
+offset_right = -292.1666666666667
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Stripe2" type="ColorRect" parent="Props/Awning2"]
+offset_left = -292.6666666666667
+offset_top = -144.0
+offset_right = -270.83333333333337
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Stripe3" type="ColorRect" parent="Props/Awning2"]
+offset_left = -271.3333333333333
+offset_top = -144.0
+offset_right = -249.49999999999997
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Stripe4" type="ColorRect" parent="Props/Awning2"]
+offset_left = -250.0
+offset_top = -144.0
+offset_right = -228.16666666666666
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Stripe5" type="ColorRect" parent="Props/Awning2"]
+offset_left = -228.66666666666669
+offset_top = -144.0
+offset_right = -206.83333333333334
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Stripe6" type="ColorRect" parent="Props/Awning2"]
+offset_left = -207.33333333333334
+offset_top = -144.0
+offset_right = -185.5
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Fringe" type="ColorRect" parent="Props/Awning2"]
+offset_left = -314.0
+offset_top = -110.0
+offset_right = -186.0
+offset_bottom = -105.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stall3" type="StaticBody2D" parent="Props"]
+position = Vector2(250, -60)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Stall3"]
+shape = SubResource("Rect_112x34")
+
+[node name="Visual" type="ColorRect" parent="Props/Stall3"]
+offset_left = -56.0
+offset_top = -17.0
+offset_right = 56.0
+offset_bottom = 17.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Goods1" type="ColorRect" parent="Props/Stall3"]
+offset_left = -49.0
+offset_top = -11.0
+offset_right = -23.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Goods2" type="ColorRect" parent="Props/Stall3"]
+offset_left = -13.0
+offset_top = -11.0
+offset_right = 13.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.635, 0.769, 0.416, 1)
+
+[node name="Goods3" type="ColorRect" parent="Props/Stall3"]
+offset_left = 23.0
+offset_top = -11.0
+offset_right = 49.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.788, 0.278, 0.231, 1)
+
+[node name="PostL" type="ColorRect" parent="Props/Stall3"]
+offset_left = -56.0
+offset_top = -60.0
+offset_right = -50.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="PostR" type="ColorRect" parent="Props/Stall3"]
+offset_left = 50.0
+offset_top = -60.0
+offset_right = 56.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Awning3" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Stripe1" type="ColorRect" parent="Props/Awning3"]
+offset_left = 186.0
+offset_top = -144.0
+offset_right = 207.83333333333334
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Stripe2" type="ColorRect" parent="Props/Awning3"]
+offset_left = 207.33333333333334
+offset_top = -144.0
+offset_right = 229.16666666666669
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Stripe3" type="ColorRect" parent="Props/Awning3"]
+offset_left = 228.66666666666666
+offset_top = -144.0
+offset_right = 250.5
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Stripe4" type="ColorRect" parent="Props/Awning3"]
+offset_left = 250.0
+offset_top = -144.0
+offset_right = 271.8333333333333
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Stripe5" type="ColorRect" parent="Props/Awning3"]
+offset_left = 271.3333333333333
+offset_top = -144.0
+offset_right = 293.16666666666663
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Stripe6" type="ColorRect" parent="Props/Awning3"]
+offset_left = 292.66666666666663
+offset_top = -144.0
+offset_right = 314.49999999999994
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Fringe" type="ColorRect" parent="Props/Awning3"]
+offset_left = 186.0
+offset_top = -110.0
+offset_right = 314.0
+offset_bottom = -105.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stall4" type="StaticBody2D" parent="Props"]
+position = Vector2(400, -60)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Stall4"]
+shape = SubResource("Rect_112x34")
+
+[node name="Visual" type="ColorRect" parent="Props/Stall4"]
+offset_left = -56.0
+offset_top = -17.0
+offset_right = 56.0
+offset_bottom = 17.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Goods1" type="ColorRect" parent="Props/Stall4"]
+offset_left = -49.0
+offset_top = -11.0
+offset_right = -23.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Goods2" type="ColorRect" parent="Props/Stall4"]
+offset_left = -13.0
+offset_top = -11.0
+offset_right = 13.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Goods3" type="ColorRect" parent="Props/Stall4"]
+offset_left = 23.0
+offset_top = -11.0
+offset_right = 49.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="PostL" type="ColorRect" parent="Props/Stall4"]
+offset_left = -56.0
+offset_top = -60.0
+offset_right = -50.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="PostR" type="ColorRect" parent="Props/Stall4"]
+offset_left = 50.0
+offset_top = -60.0
+offset_right = 56.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Awning4" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Stripe1" type="ColorRect" parent="Props/Awning4"]
+offset_left = 336.0
+offset_top = -144.0
+offset_right = 357.8333333333333
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Stripe2" type="ColorRect" parent="Props/Awning4"]
+offset_left = 357.3333333333333
+offset_top = -144.0
+offset_right = 379.16666666666663
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.369, 0.11, 0.122, 1)
+
+[node name="Stripe3" type="ColorRect" parent="Props/Awning4"]
+offset_left = 378.6666666666667
+offset_top = -144.0
+offset_right = 400.5
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Stripe4" type="ColorRect" parent="Props/Awning4"]
+offset_left = 400.0
+offset_top = -144.0
+offset_right = 421.8333333333333
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.369, 0.11, 0.122, 1)
+
+[node name="Stripe5" type="ColorRect" parent="Props/Awning4"]
+offset_left = 421.3333333333333
+offset_top = -144.0
+offset_right = 443.16666666666663
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Stripe6" type="ColorRect" parent="Props/Awning4"]
+offset_left = 442.66666666666663
+offset_top = -144.0
+offset_right = 464.49999999999994
+offset_bottom = -110.0
+mouse_filter = 2
+color = Color(0.369, 0.11, 0.122, 1)
+
+[node name="Fringe" type="ColorRect" parent="Props/Awning4"]
+offset_left = 336.0
+offset_top = -110.0
+offset_right = 464.0
+offset_bottom = -105.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stall5" type="StaticBody2D" parent="Props"]
+position = Vector2(-400, 140)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Stall5"]
+shape = SubResource("Rect_112x34")
+
+[node name="Visual" type="ColorRect" parent="Props/Stall5"]
+offset_left = -56.0
+offset_top = -17.0
+offset_right = 56.0
+offset_bottom = 17.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Goods1" type="ColorRect" parent="Props/Stall5"]
+offset_left = -49.0
+offset_top = -11.0
+offset_right = -23.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.604, 0.627, 0.651, 1)
+
+[node name="Goods2" type="ColorRect" parent="Props/Stall5"]
+offset_left = -13.0
+offset_top = -11.0
+offset_right = 13.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.604, 0.627, 0.651, 1)
+
+[node name="Goods3" type="ColorRect" parent="Props/Stall5"]
+offset_left = 23.0
+offset_top = -11.0
+offset_right = 49.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.478, 0.384, 0.314, 1)
+
+[node name="PostL" type="ColorRect" parent="Props/Stall5"]
+offset_left = -56.0
+offset_top = -60.0
+offset_right = -50.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="PostR" type="ColorRect" parent="Props/Stall5"]
+offset_left = 50.0
+offset_top = -60.0
+offset_right = 56.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Awning5" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Stripe1" type="ColorRect" parent="Props/Awning5"]
+offset_left = -464.0
+offset_top = 56.0
+offset_right = -442.1666666666667
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Stripe2" type="ColorRect" parent="Props/Awning5"]
+offset_left = -442.6666666666667
+offset_top = 56.0
+offset_right = -420.83333333333337
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Stripe3" type="ColorRect" parent="Props/Awning5"]
+offset_left = -421.3333333333333
+offset_top = 56.0
+offset_right = -399.5
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Stripe4" type="ColorRect" parent="Props/Awning5"]
+offset_left = -400.0
+offset_top = 56.0
+offset_right = -378.1666666666667
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Stripe5" type="ColorRect" parent="Props/Awning5"]
+offset_left = -378.6666666666667
+offset_top = 56.0
+offset_right = -356.83333333333337
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Stripe6" type="ColorRect" parent="Props/Awning5"]
+offset_left = -357.33333333333337
+offset_top = 56.0
+offset_right = -335.50000000000006
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Fringe" type="ColorRect" parent="Props/Awning5"]
+offset_left = -464.0
+offset_top = 90.0
+offset_right = -336.0
+offset_bottom = 95.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stall6" type="StaticBody2D" parent="Props"]
+position = Vector2(-250, 140)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Stall6"]
+shape = SubResource("Rect_112x34")
+
+[node name="Visual" type="ColorRect" parent="Props/Stall6"]
+offset_left = -56.0
+offset_top = -17.0
+offset_right = 56.0
+offset_bottom = 17.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Goods1" type="ColorRect" parent="Props/Stall6"]
+offset_left = -49.0
+offset_top = -11.0
+offset_right = -23.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.847, 0.69, 0.478, 1)
+
+[node name="Goods2" type="ColorRect" parent="Props/Stall6"]
+offset_left = -13.0
+offset_top = -11.0
+offset_right = 13.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.541, 0.353, 0.227, 1)
+
+[node name="Goods3" type="ColorRect" parent="Props/Stall6"]
+offset_left = 23.0
+offset_top = -11.0
+offset_right = 49.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="PostL" type="ColorRect" parent="Props/Stall6"]
+offset_left = -56.0
+offset_top = -60.0
+offset_right = -50.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="PostR" type="ColorRect" parent="Props/Stall6"]
+offset_left = 50.0
+offset_top = -60.0
+offset_right = 56.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Awning6" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Stripe1" type="ColorRect" parent="Props/Awning6"]
+offset_left = -314.0
+offset_top = 56.0
+offset_right = -292.1666666666667
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Stripe2" type="ColorRect" parent="Props/Awning6"]
+offset_left = -292.6666666666667
+offset_top = 56.0
+offset_right = -270.83333333333337
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stripe3" type="ColorRect" parent="Props/Awning6"]
+offset_left = -271.3333333333333
+offset_top = 56.0
+offset_right = -249.49999999999997
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Stripe4" type="ColorRect" parent="Props/Awning6"]
+offset_left = -250.0
+offset_top = 56.0
+offset_right = -228.16666666666666
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stripe5" type="ColorRect" parent="Props/Awning6"]
+offset_left = -228.66666666666669
+offset_top = 56.0
+offset_right = -206.83333333333334
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Stripe6" type="ColorRect" parent="Props/Awning6"]
+offset_left = -207.33333333333334
+offset_top = 56.0
+offset_right = -185.5
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Fringe" type="ColorRect" parent="Props/Awning6"]
+offset_left = -314.0
+offset_top = 90.0
+offset_right = -186.0
+offset_bottom = 95.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stall7" type="StaticBody2D" parent="Props"]
+position = Vector2(250, 140)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Stall7"]
+shape = SubResource("Rect_112x34")
+
+[node name="Visual" type="ColorRect" parent="Props/Stall7"]
+offset_left = -56.0
+offset_top = -17.0
+offset_right = 56.0
+offset_bottom = 17.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Goods1" type="ColorRect" parent="Props/Stall7"]
+offset_left = -49.0
+offset_top = -11.0
+offset_right = -23.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Goods2" type="ColorRect" parent="Props/Stall7"]
+offset_left = -13.0
+offset_top = -11.0
+offset_right = 13.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Goods3" type="ColorRect" parent="Props/Stall7"]
+offset_left = 23.0
+offset_top = -11.0
+offset_right = 49.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="PostL" type="ColorRect" parent="Props/Stall7"]
+offset_left = -56.0
+offset_top = -60.0
+offset_right = -50.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="PostR" type="ColorRect" parent="Props/Stall7"]
+offset_left = 50.0
+offset_top = -60.0
+offset_right = 56.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Awning7" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Stripe1" type="ColorRect" parent="Props/Awning7"]
+offset_left = 186.0
+offset_top = 56.0
+offset_right = 207.83333333333334
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Stripe2" type="ColorRect" parent="Props/Awning7"]
+offset_left = 207.33333333333334
+offset_top = 56.0
+offset_right = 229.16666666666669
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stripe3" type="ColorRect" parent="Props/Awning7"]
+offset_left = 228.66666666666666
+offset_top = 56.0
+offset_right = 250.5
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Stripe4" type="ColorRect" parent="Props/Awning7"]
+offset_left = 250.0
+offset_top = 56.0
+offset_right = 271.8333333333333
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stripe5" type="ColorRect" parent="Props/Awning7"]
+offset_left = 271.3333333333333
+offset_top = 56.0
+offset_right = 293.16666666666663
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.239, 0.353, 0.502, 1)
+
+[node name="Stripe6" type="ColorRect" parent="Props/Awning7"]
+offset_left = 292.66666666666663
+offset_top = 56.0
+offset_right = 314.49999999999994
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Fringe" type="ColorRect" parent="Props/Awning7"]
+offset_left = 186.0
+offset_top = 90.0
+offset_right = 314.0
+offset_bottom = 95.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stall8" type="StaticBody2D" parent="Props"]
+position = Vector2(400, 140)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Stall8"]
+shape = SubResource("Rect_112x34")
+
+[node name="Visual" type="ColorRect" parent="Props/Stall8"]
+offset_left = -56.0
+offset_top = -17.0
+offset_right = 56.0
+offset_bottom = 17.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Goods1" type="ColorRect" parent="Props/Stall8"]
+offset_left = -49.0
+offset_top = -11.0
+offset_right = -23.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.788, 0.478, 0.353, 1)
+
+[node name="Goods2" type="ColorRect" parent="Props/Stall8"]
+offset_left = -13.0
+offset_top = -11.0
+offset_right = 13.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Goods3" type="ColorRect" parent="Props/Stall8"]
+offset_left = 23.0
+offset_top = -11.0
+offset_right = 49.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.478, 0.384, 0.314, 1)
+
+[node name="PostL" type="ColorRect" parent="Props/Stall8"]
+offset_left = -56.0
+offset_top = -60.0
+offset_right = -50.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="PostR" type="ColorRect" parent="Props/Stall8"]
+offset_left = 50.0
+offset_top = -60.0
+offset_right = 56.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Awning8" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Stripe1" type="ColorRect" parent="Props/Awning8"]
+offset_left = 336.0
+offset_top = 56.0
+offset_right = 357.8333333333333
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Stripe2" type="ColorRect" parent="Props/Awning8"]
+offset_left = 357.3333333333333
+offset_top = 56.0
+offset_right = 379.16666666666663
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Stripe3" type="ColorRect" parent="Props/Awning8"]
+offset_left = 378.6666666666667
+offset_top = 56.0
+offset_right = 400.5
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Stripe4" type="ColorRect" parent="Props/Awning8"]
+offset_left = 400.0
+offset_top = 56.0
+offset_right = 421.8333333333333
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Stripe5" type="ColorRect" parent="Props/Awning8"]
+offset_left = 421.3333333333333
+offset_top = 56.0
+offset_right = 443.16666666666663
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Stripe6" type="ColorRect" parent="Props/Awning8"]
+offset_left = 442.66666666666663
+offset_top = 56.0
+offset_right = 464.49999999999994
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Fringe" type="ColorRect" parent="Props/Awning8"]
+offset_left = 336.0
+offset_top = 90.0
+offset_right = 464.0
+offset_bottom = 95.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stall9" type="StaticBody2D" parent="Props"]
+position = Vector2(-300, 500)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Stall9"]
+shape = SubResource("Rect_112x34")
+
+[node name="Visual" type="ColorRect" parent="Props/Stall9"]
+offset_left = -56.0
+offset_top = -17.0
+offset_right = 56.0
+offset_bottom = 17.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Goods1" type="ColorRect" parent="Props/Stall9"]
+offset_left = -49.0
+offset_top = -11.0
+offset_right = -23.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Goods2" type="ColorRect" parent="Props/Stall9"]
+offset_left = -13.0
+offset_top = -11.0
+offset_right = 13.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Goods3" type="ColorRect" parent="Props/Stall9"]
+offset_left = 23.0
+offset_top = -11.0
+offset_right = 49.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="PostL" type="ColorRect" parent="Props/Stall9"]
+offset_left = -56.0
+offset_top = -60.0
+offset_right = -50.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="PostR" type="ColorRect" parent="Props/Stall9"]
+offset_left = 50.0
+offset_top = -60.0
+offset_right = 56.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Awning9" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Stripe1" type="ColorRect" parent="Props/Awning9"]
+offset_left = -364.0
+offset_top = 416.0
+offset_right = -342.1666666666667
+offset_bottom = 450.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Stripe2" type="ColorRect" parent="Props/Awning9"]
+offset_left = -342.6666666666667
+offset_top = 416.0
+offset_right = -320.83333333333337
+offset_bottom = 450.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stripe3" type="ColorRect" parent="Props/Awning9"]
+offset_left = -321.3333333333333
+offset_top = 416.0
+offset_right = -299.5
+offset_bottom = 450.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Stripe4" type="ColorRect" parent="Props/Awning9"]
+offset_left = -300.0
+offset_top = 416.0
+offset_right = -278.1666666666667
+offset_bottom = 450.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stripe5" type="ColorRect" parent="Props/Awning9"]
+offset_left = -278.6666666666667
+offset_top = 416.0
+offset_right = -256.83333333333337
+offset_bottom = 450.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Stripe6" type="ColorRect" parent="Props/Awning9"]
+offset_left = -257.33333333333337
+offset_top = 416.0
+offset_right = -235.50000000000003
+offset_bottom = 450.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Fringe" type="ColorRect" parent="Props/Awning9"]
+offset_left = -364.0
+offset_top = 450.0
+offset_right = -236.0
+offset_bottom = 455.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stall10" type="StaticBody2D" parent="Props"]
+position = Vector2(300, 480)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Stall10"]
+shape = SubResource("Rect_112x34")
+
+[node name="Visual" type="ColorRect" parent="Props/Stall10"]
+offset_left = -56.0
+offset_top = -17.0
+offset_right = 56.0
+offset_bottom = 17.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Goods1" type="ColorRect" parent="Props/Stall10"]
+offset_left = -49.0
+offset_top = -11.0
+offset_right = -23.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Goods2" type="ColorRect" parent="Props/Stall10"]
+offset_left = -13.0
+offset_top = -11.0
+offset_right = 13.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Goods3" type="ColorRect" parent="Props/Stall10"]
+offset_left = 23.0
+offset_top = -11.0
+offset_right = 49.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="PostL" type="ColorRect" parent="Props/Stall10"]
+offset_left = -56.0
+offset_top = -60.0
+offset_right = -50.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="PostR" type="ColorRect" parent="Props/Stall10"]
+offset_left = 50.0
+offset_top = -60.0
+offset_right = 56.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Awning10" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Stripe1" type="ColorRect" parent="Props/Awning10"]
+offset_left = 236.0
+offset_top = 396.0
+offset_right = 257.8333333333333
+offset_bottom = 430.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Stripe2" type="ColorRect" parent="Props/Awning10"]
+offset_left = 257.3333333333333
+offset_top = 396.0
+offset_right = 279.16666666666663
+offset_bottom = 430.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Stripe3" type="ColorRect" parent="Props/Awning10"]
+offset_left = 278.6666666666667
+offset_top = 396.0
+offset_right = 300.5
+offset_bottom = 430.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Stripe4" type="ColorRect" parent="Props/Awning10"]
+offset_left = 300.0
+offset_top = 396.0
+offset_right = 321.8333333333333
+offset_bottom = 430.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Stripe5" type="ColorRect" parent="Props/Awning10"]
+offset_left = 321.3333333333333
+offset_top = 396.0
+offset_right = 343.16666666666663
+offset_bottom = 430.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Stripe6" type="ColorRect" parent="Props/Awning10"]
+offset_left = 342.66666666666663
+offset_top = 396.0
+offset_right = 364.49999999999994
+offset_bottom = 430.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Fringe" type="ColorRect" parent="Props/Awning10"]
+offset_left = 236.0
+offset_top = 430.0
+offset_right = 364.0
+offset_bottom = 435.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Stall11" type="StaticBody2D" parent="Props"]
+position = Vector2(-160, -560)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Stall11"]
+shape = SubResource("Rect_112x34")
+
+[node name="Visual" type="ColorRect" parent="Props/Stall11"]
+offset_left = -56.0
+offset_top = -17.0
+offset_right = 56.0
+offset_bottom = 17.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Goods1" type="ColorRect" parent="Props/Stall11"]
+offset_left = -49.0
+offset_top = -11.0
+offset_right = -23.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Goods2" type="ColorRect" parent="Props/Stall11"]
+offset_left = -13.0
+offset_top = -11.0
+offset_right = 13.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.29, 0.42, 0.227, 1)
+
+[node name="Goods3" type="ColorRect" parent="Props/Stall11"]
+offset_left = 23.0
+offset_top = -11.0
+offset_right = 49.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="PostL" type="ColorRect" parent="Props/Stall11"]
+offset_left = -56.0
+offset_top = -60.0
+offset_right = -50.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="PostR" type="ColorRect" parent="Props/Stall11"]
+offset_left = 50.0
+offset_top = -60.0
+offset_right = 56.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Awning11" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Stripe1" type="ColorRect" parent="Props/Awning11"]
+offset_left = -224.0
+offset_top = -644.0
+offset_right = -202.16666666666666
+offset_bottom = -610.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Stripe2" type="ColorRect" parent="Props/Awning11"]
+offset_left = -202.66666666666666
+offset_top = -644.0
+offset_right = -180.83333333333331
+offset_bottom = -610.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Stripe3" type="ColorRect" parent="Props/Awning11"]
+offset_left = -181.33333333333334
+offset_top = -644.0
+offset_right = -159.5
+offset_bottom = -610.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Stripe4" type="ColorRect" parent="Props/Awning11"]
+offset_left = -160.0
+offset_top = -644.0
+offset_right = -138.16666666666666
+offset_bottom = -610.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Stripe5" type="ColorRect" parent="Props/Awning11"]
+offset_left = -138.66666666666669
+offset_top = -644.0
+offset_right = -116.83333333333336
+offset_bottom = -610.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Stripe6" type="ColorRect" parent="Props/Awning11"]
+offset_left = -117.33333333333334
+offset_top = -644.0
+offset_right = -95.50000000000001
+offset_bottom = -610.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Fringe" type="ColorRect" parent="Props/Awning11"]
+offset_left = -224.0
+offset_top = -610.0
+offset_right = -96.0
+offset_bottom = -605.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Barrel1" type="StaticBody2D" parent="Props"]
+position = Vector2(-450, -10)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Barrel1"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_34x26")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Barrel1"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("8_barrel")
+
+[node name="Barrel2" type="StaticBody2D" parent="Props"]
+position = Vector2(-200, -10)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Barrel2"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_34x26")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Barrel2"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("8_barrel")
+
+[node name="Barrel3" type="StaticBody2D" parent="Props"]
+position = Vector2(300, -10)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Barrel3"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_34x26")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Barrel3"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("8_barrel")
+
+[node name="Barrel4" type="StaticBody2D" parent="Props"]
+position = Vector2(450, 200)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Barrel4"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_34x26")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Barrel4"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("8_barrel")
+
+[node name="Barrel5" type="StaticBody2D" parent="Props"]
+position = Vector2(-460, 200)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Barrel5"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_34x26")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Barrel5"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("8_barrel")
+
+[node name="Barrel6" type="StaticBody2D" parent="Props"]
+position = Vector2(-200, 590)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Barrel6"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_34x26")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Barrel6"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("8_barrel")
+
+[node name="Barrel7" type="StaticBody2D" parent="Props"]
+position = Vector2(360, 520)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Barrel7"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_34x26")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Barrel7"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("8_barrel")
+
+[node name="Barrel8" type="StaticBody2D" parent="Props"]
+position = Vector2(-200, -600)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Barrel8"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_34x26")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Barrel8"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("8_barrel")
+
+[node name="Barrel9" type="StaticBody2D" parent="Props"]
+position = Vector2(200, -150)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Barrel9"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_34x26")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Barrel9"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("8_barrel")
+
+[node name="Barrel10" type="StaticBody2D" parent="Props"]
+position = Vector2(-320, -140)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Barrel10"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_34x26")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Barrel10"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("8_barrel")
+
+[node name="Crate1" type="StaticBody2D" parent="Props"]
+position = Vector2(-330, 200)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Crate1"]
+position = Vector2(0, 6)
+shape = SubResource("Rect_40x30")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Crate1"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("9_crate")
+
+[node name="Crate2" type="StaticBody2D" parent="Props"]
+position = Vector2(330, 200)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Crate2"]
+position = Vector2(0, 6)
+shape = SubResource("Rect_40x30")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Crate2"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("9_crate")
+
+[node name="Crate3" type="StaticBody2D" parent="Props"]
+position = Vector2(-250, 540)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Crate3"]
+position = Vector2(0, 6)
+shape = SubResource("Rect_40x30")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Crate3"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("9_crate")
+
+[node name="Crate4" type="StaticBody2D" parent="Props"]
+position = Vector2(240, 530)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Crate4"]
+position = Vector2(0, 6)
+shape = SubResource("Rect_40x30")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Crate4"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("9_crate")
+
+[node name="Crate5" type="StaticBody2D" parent="Props"]
+position = Vector2(180, -600)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Crate5"]
+position = Vector2(0, 6)
+shape = SubResource("Rect_40x30")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Crate5"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("9_crate")
+
+[node name="Crate6" type="StaticBody2D" parent="Props"]
+position = Vector2(-120, -620)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Crate6"]
+position = Vector2(0, 6)
+shape = SubResource("Rect_40x30")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Crate6"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("9_crate")
+
+[node name="CrateStack1" type="StaticBody2D" parent="Props"]
+position = Vector2(-540, 160)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/CrateStack1"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_52x40")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/CrateStack1"]
+scale = Vector2(1, 1)
+texture = ExtResource("10_crates_barrels")
+
+[node name="CrateStack2" type="StaticBody2D" parent="Props"]
+position = Vector2(560, 420)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/CrateStack2"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_52x40")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/CrateStack2"]
+scale = Vector2(1, 1)
+texture = ExtResource("10_crates_barrels")
+
+[node name="Cart1" type="StaticBody2D" parent="Props"]
+position = Vector2(560, 220)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Cart1"]
+position = Vector2(0, 12)
+shape = SubResource("Rect_70x44")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Cart1"]
+scale = Vector2(1, 1)
+texture = ExtResource("11_cart")
+
+[node name="Cart2" type="StaticBody2D" parent="Props"]
+position = Vector2(-540, 440)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Cart2"]
+position = Vector2(0, 12)
+shape = SubResource("Rect_70x44")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Cart2"]
+scale = Vector2(1, 1)
+texture = ExtResource("11_cart")
+flip_h = true
+
+[node name="Cart3" type="StaticBody2D" parent="Props"]
+position = Vector2(230, -580)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Cart3"]
+position = Vector2(0, 12)
+shape = SubResource("Rect_70x44")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Cart3"]
+scale = Vector2(1, 1)
+texture = ExtResource("11_cart")
+
+[node name="Lamp1" type="StaticBody2D" parent="Props"]
+position = Vector2(-132, -680)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp1"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp1"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow1" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = -145.0
+offset_top = -715.0
+offset_right = -119.0
+offset_bottom = -689.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp2" type="StaticBody2D" parent="Props"]
+position = Vector2(132, -680)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp2"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp2"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow2" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = 119.0
+offset_top = -715.0
+offset_right = 145.0
+offset_bottom = -689.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp3" type="StaticBody2D" parent="Props"]
+position = Vector2(-132, -520)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp3"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp3"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow3" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = -145.0
+offset_top = -555.0
+offset_right = -119.0
+offset_bottom = -529.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp4" type="StaticBody2D" parent="Props"]
+position = Vector2(132, -520)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp4"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp4"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow4" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = 119.0
+offset_top = -555.0
+offset_right = 145.0
+offset_bottom = -529.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp5" type="StaticBody2D" parent="Props"]
+position = Vector2(-132, -360)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp5"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp5"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow5" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = -145.0
+offset_top = -395.0
+offset_right = -119.0
+offset_bottom = -369.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp6" type="StaticBody2D" parent="Props"]
+position = Vector2(132, -360)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp6"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp6"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow6" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = 119.0
+offset_top = -395.0
+offset_right = 145.0
+offset_bottom = -369.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp7" type="StaticBody2D" parent="Props"]
+position = Vector2(-132, -200)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp7"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp7"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow7" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = -145.0
+offset_top = -235.0
+offset_right = -119.0
+offset_bottom = -209.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp8" type="StaticBody2D" parent="Props"]
+position = Vector2(132, -200)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp8"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp8"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow8" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = 119.0
+offset_top = -235.0
+offset_right = 145.0
+offset_bottom = -209.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp9" type="StaticBody2D" parent="Props"]
+position = Vector2(-132, 220)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp9"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp9"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow9" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = -145.0
+offset_top = 185.0
+offset_right = -119.0
+offset_bottom = 211.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp10" type="StaticBody2D" parent="Props"]
+position = Vector2(132, 220)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp10"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp10"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow10" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = 119.0
+offset_top = 185.0
+offset_right = 145.0
+offset_bottom = 211.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp11" type="StaticBody2D" parent="Props"]
+position = Vector2(-132, 380)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp11"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp11"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow11" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = -145.0
+offset_top = 345.0
+offset_right = -119.0
+offset_bottom = 371.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp12" type="StaticBody2D" parent="Props"]
+position = Vector2(132, 380)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp12"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp12"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow12" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = 119.0
+offset_top = 345.0
+offset_right = 145.0
+offset_bottom = 371.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp13" type="StaticBody2D" parent="Props"]
+position = Vector2(-132, 540)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp13"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp13"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow13" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = -145.0
+offset_top = 505.0
+offset_right = -119.0
+offset_bottom = 531.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp14" type="StaticBody2D" parent="Props"]
+position = Vector2(132, 540)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp14"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp14"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow14" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = 119.0
+offset_top = 505.0
+offset_right = 145.0
+offset_bottom = 531.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp15" type="StaticBody2D" parent="Props"]
+position = Vector2(-132, 680)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp15"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp15"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow15" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = -145.0
+offset_top = 645.0
+offset_right = -119.0
+offset_bottom = 671.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp16" type="StaticBody2D" parent="Props"]
+position = Vector2(132, 680)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp16"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp16"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow16" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = 119.0
+offset_top = 645.0
+offset_right = 145.0
+offset_bottom = 671.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp17" type="StaticBody2D" parent="Props"]
+position = Vector2(-600, 230)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp17"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp17"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow17" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = -613.0
+offset_top = 195.0
+offset_right = -587.0
+offset_bottom = 221.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp18" type="StaticBody2D" parent="Props"]
+position = Vector2(-460, 230)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp18"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp18"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow18" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = -473.0
+offset_top = 195.0
+offset_right = -447.0
+offset_bottom = 221.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp19" type="StaticBody2D" parent="Props"]
+position = Vector2(460, 230)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp19"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp19"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow19" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = 447.0
+offset_top = 195.0
+offset_right = 473.0
+offset_bottom = 221.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="Lamp20" type="StaticBody2D" parent="Props"]
+position = Vector2(600, 230)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Lamp20"]
+position = Vector2(0, 26)
+shape = SubResource("Rect_12x10")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Lamp20"]
+scale = Vector2(1, 1)
+texture = ExtResource("12_lamppost")
+
+[node name="LampGlow20" type="ColorRect" parent="Props"]
+z_index = 30
+offset_left = 587.0
+offset_top = 195.0
+offset_right = 613.0
+offset_bottom = 221.0
+mouse_filter = 2
+color = Color(1, 0.824, 0.478, 0.22)
+
+[node name="LanternString1" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Cord" type="ColorRect" parent="Props/LanternString1"]
+offset_left = -110.0
+offset_top = -460.0
+offset_right = 110.0
+offset_bottom = -458.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Lantern1" type="ColorRect" parent="Props/LanternString1"]
+offset_left = -100.0
+offset_top = -458.0
+offset_right = -92.0
+offset_bottom = -448.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern2" type="ColorRect" parent="Props/LanternString1"]
+offset_left = -72.0
+offset_top = -458.0
+offset_right = -64.0
+offset_bottom = -448.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern3" type="ColorRect" parent="Props/LanternString1"]
+offset_left = -44.0
+offset_top = -458.0
+offset_right = -36.0
+offset_bottom = -448.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern4" type="ColorRect" parent="Props/LanternString1"]
+offset_left = -16.0
+offset_top = -458.0
+offset_right = -8.0
+offset_bottom = -448.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern5" type="ColorRect" parent="Props/LanternString1"]
+offset_left = 12.0
+offset_top = -458.0
+offset_right = 20.0
+offset_bottom = -448.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern6" type="ColorRect" parent="Props/LanternString1"]
+offset_left = 40.0
+offset_top = -458.0
+offset_right = 48.0
+offset_bottom = -448.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern7" type="ColorRect" parent="Props/LanternString1"]
+offset_left = 68.0
+offset_top = -458.0
+offset_right = 76.0
+offset_bottom = -448.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern8" type="ColorRect" parent="Props/LanternString1"]
+offset_left = 96.0
+offset_top = -458.0
+offset_right = 104.0
+offset_bottom = -448.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="LanternString2" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Cord" type="ColorRect" parent="Props/LanternString2"]
+offset_left = -110.0
+offset_top = -300.0
+offset_right = 110.0
+offset_bottom = -298.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Lantern1" type="ColorRect" parent="Props/LanternString2"]
+offset_left = -100.0
+offset_top = -298.0
+offset_right = -92.0
+offset_bottom = -288.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern2" type="ColorRect" parent="Props/LanternString2"]
+offset_left = -72.0
+offset_top = -298.0
+offset_right = -64.0
+offset_bottom = -288.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern3" type="ColorRect" parent="Props/LanternString2"]
+offset_left = -44.0
+offset_top = -298.0
+offset_right = -36.0
+offset_bottom = -288.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern4" type="ColorRect" parent="Props/LanternString2"]
+offset_left = -16.0
+offset_top = -298.0
+offset_right = -8.0
+offset_bottom = -288.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern5" type="ColorRect" parent="Props/LanternString2"]
+offset_left = 12.0
+offset_top = -298.0
+offset_right = 20.0
+offset_bottom = -288.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern6" type="ColorRect" parent="Props/LanternString2"]
+offset_left = 40.0
+offset_top = -298.0
+offset_right = 48.0
+offset_bottom = -288.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern7" type="ColorRect" parent="Props/LanternString2"]
+offset_left = 68.0
+offset_top = -298.0
+offset_right = 76.0
+offset_bottom = -288.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern8" type="ColorRect" parent="Props/LanternString2"]
+offset_left = 96.0
+offset_top = -298.0
+offset_right = 104.0
+offset_bottom = -288.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="LanternString3" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Cord" type="ColorRect" parent="Props/LanternString3"]
+offset_left = -110.0
+offset_top = -150.0
+offset_right = 110.0
+offset_bottom = -148.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Lantern1" type="ColorRect" parent="Props/LanternString3"]
+offset_left = -100.0
+offset_top = -148.0
+offset_right = -92.0
+offset_bottom = -138.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern2" type="ColorRect" parent="Props/LanternString3"]
+offset_left = -72.0
+offset_top = -148.0
+offset_right = -64.0
+offset_bottom = -138.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern3" type="ColorRect" parent="Props/LanternString3"]
+offset_left = -44.0
+offset_top = -148.0
+offset_right = -36.0
+offset_bottom = -138.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern4" type="ColorRect" parent="Props/LanternString3"]
+offset_left = -16.0
+offset_top = -148.0
+offset_right = -8.0
+offset_bottom = -138.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern5" type="ColorRect" parent="Props/LanternString3"]
+offset_left = 12.0
+offset_top = -148.0
+offset_right = 20.0
+offset_bottom = -138.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern6" type="ColorRect" parent="Props/LanternString3"]
+offset_left = 40.0
+offset_top = -148.0
+offset_right = 48.0
+offset_bottom = -138.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern7" type="ColorRect" parent="Props/LanternString3"]
+offset_left = 68.0
+offset_top = -148.0
+offset_right = 76.0
+offset_bottom = -138.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern8" type="ColorRect" parent="Props/LanternString3"]
+offset_left = 96.0
+offset_top = -148.0
+offset_right = 104.0
+offset_bottom = -138.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="LanternString4" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Cord" type="ColorRect" parent="Props/LanternString4"]
+offset_left = -110.0
+offset_top = 0.0
+offset_right = 110.0
+offset_bottom = 2.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Lantern1" type="ColorRect" parent="Props/LanternString4"]
+offset_left = -100.0
+offset_top = 2.0
+offset_right = -92.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern2" type="ColorRect" parent="Props/LanternString4"]
+offset_left = -72.0
+offset_top = 2.0
+offset_right = -64.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern3" type="ColorRect" parent="Props/LanternString4"]
+offset_left = -44.0
+offset_top = 2.0
+offset_right = -36.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern4" type="ColorRect" parent="Props/LanternString4"]
+offset_left = -16.0
+offset_top = 2.0
+offset_right = -8.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern5" type="ColorRect" parent="Props/LanternString4"]
+offset_left = 12.0
+offset_top = 2.0
+offset_right = 20.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern6" type="ColorRect" parent="Props/LanternString4"]
+offset_left = 40.0
+offset_top = 2.0
+offset_right = 48.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern7" type="ColorRect" parent="Props/LanternString4"]
+offset_left = 68.0
+offset_top = 2.0
+offset_right = 76.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern8" type="ColorRect" parent="Props/LanternString4"]
+offset_left = 96.0
+offset_top = 2.0
+offset_right = 104.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="LanternString5" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Cord" type="ColorRect" parent="Props/LanternString5"]
+offset_left = -110.0
+offset_top = 150.0
+offset_right = 110.0
+offset_bottom = 152.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Lantern1" type="ColorRect" parent="Props/LanternString5"]
+offset_left = -100.0
+offset_top = 152.0
+offset_right = -92.0
+offset_bottom = 162.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern2" type="ColorRect" parent="Props/LanternString5"]
+offset_left = -72.0
+offset_top = 152.0
+offset_right = -64.0
+offset_bottom = 162.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern3" type="ColorRect" parent="Props/LanternString5"]
+offset_left = -44.0
+offset_top = 152.0
+offset_right = -36.0
+offset_bottom = 162.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern4" type="ColorRect" parent="Props/LanternString5"]
+offset_left = -16.0
+offset_top = 152.0
+offset_right = -8.0
+offset_bottom = 162.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern5" type="ColorRect" parent="Props/LanternString5"]
+offset_left = 12.0
+offset_top = 152.0
+offset_right = 20.0
+offset_bottom = 162.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern6" type="ColorRect" parent="Props/LanternString5"]
+offset_left = 40.0
+offset_top = 152.0
+offset_right = 48.0
+offset_bottom = 162.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern7" type="ColorRect" parent="Props/LanternString5"]
+offset_left = 68.0
+offset_top = 152.0
+offset_right = 76.0
+offset_bottom = 162.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern8" type="ColorRect" parent="Props/LanternString5"]
+offset_left = 96.0
+offset_top = 152.0
+offset_right = 104.0
+offset_bottom = 162.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="LanternString6" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Cord" type="ColorRect" parent="Props/LanternString6"]
+offset_left = -110.0
+offset_top = 300.0
+offset_right = 110.0
+offset_bottom = 302.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Lantern1" type="ColorRect" parent="Props/LanternString6"]
+offset_left = -100.0
+offset_top = 302.0
+offset_right = -92.0
+offset_bottom = 312.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern2" type="ColorRect" parent="Props/LanternString6"]
+offset_left = -72.0
+offset_top = 302.0
+offset_right = -64.0
+offset_bottom = 312.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern3" type="ColorRect" parent="Props/LanternString6"]
+offset_left = -44.0
+offset_top = 302.0
+offset_right = -36.0
+offset_bottom = 312.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern4" type="ColorRect" parent="Props/LanternString6"]
+offset_left = -16.0
+offset_top = 302.0
+offset_right = -8.0
+offset_bottom = 312.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern5" type="ColorRect" parent="Props/LanternString6"]
+offset_left = 12.0
+offset_top = 302.0
+offset_right = 20.0
+offset_bottom = 312.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern6" type="ColorRect" parent="Props/LanternString6"]
+offset_left = 40.0
+offset_top = 302.0
+offset_right = 48.0
+offset_bottom = 312.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern7" type="ColorRect" parent="Props/LanternString6"]
+offset_left = 68.0
+offset_top = 302.0
+offset_right = 76.0
+offset_bottom = 312.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern8" type="ColorRect" parent="Props/LanternString6"]
+offset_left = 96.0
+offset_top = 302.0
+offset_right = 104.0
+offset_bottom = 312.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="LanternString7" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Cord" type="ColorRect" parent="Props/LanternString7"]
+offset_left = -110.0
+offset_top = 450.0
+offset_right = 110.0
+offset_bottom = 452.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Lantern1" type="ColorRect" parent="Props/LanternString7"]
+offset_left = -100.0
+offset_top = 452.0
+offset_right = -92.0
+offset_bottom = 462.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern2" type="ColorRect" parent="Props/LanternString7"]
+offset_left = -72.0
+offset_top = 452.0
+offset_right = -64.0
+offset_bottom = 462.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern3" type="ColorRect" parent="Props/LanternString7"]
+offset_left = -44.0
+offset_top = 452.0
+offset_right = -36.0
+offset_bottom = 462.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern4" type="ColorRect" parent="Props/LanternString7"]
+offset_left = -16.0
+offset_top = 452.0
+offset_right = -8.0
+offset_bottom = 462.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern5" type="ColorRect" parent="Props/LanternString7"]
+offset_left = 12.0
+offset_top = 452.0
+offset_right = 20.0
+offset_bottom = 462.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern6" type="ColorRect" parent="Props/LanternString7"]
+offset_left = 40.0
+offset_top = 452.0
+offset_right = 48.0
+offset_bottom = 462.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern7" type="ColorRect" parent="Props/LanternString7"]
+offset_left = 68.0
+offset_top = 452.0
+offset_right = 76.0
+offset_bottom = 462.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern8" type="ColorRect" parent="Props/LanternString7"]
+offset_left = 96.0
+offset_top = 452.0
+offset_right = 104.0
+offset_bottom = 462.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="LanternString8" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Cord" type="ColorRect" parent="Props/LanternString8"]
+offset_left = -560.0
+offset_top = 230.0
+offset_right = -300.0
+offset_bottom = 232.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Lantern1" type="ColorRect" parent="Props/LanternString8"]
+offset_left = -550.0
+offset_top = 232.0
+offset_right = -542.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern2" type="ColorRect" parent="Props/LanternString8"]
+offset_left = -522.0
+offset_top = 232.0
+offset_right = -514.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern3" type="ColorRect" parent="Props/LanternString8"]
+offset_left = -494.0
+offset_top = 232.0
+offset_right = -486.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern4" type="ColorRect" parent="Props/LanternString8"]
+offset_left = -466.0
+offset_top = 232.0
+offset_right = -458.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern5" type="ColorRect" parent="Props/LanternString8"]
+offset_left = -438.0
+offset_top = 232.0
+offset_right = -430.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern6" type="ColorRect" parent="Props/LanternString8"]
+offset_left = -410.0
+offset_top = 232.0
+offset_right = -402.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern7" type="ColorRect" parent="Props/LanternString8"]
+offset_left = -382.0
+offset_top = 232.0
+offset_right = -374.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern8" type="ColorRect" parent="Props/LanternString8"]
+offset_left = -354.0
+offset_top = 232.0
+offset_right = -346.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern9" type="ColorRect" parent="Props/LanternString8"]
+offset_left = -326.0
+offset_top = 232.0
+offset_right = -318.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="LanternString9" type="Node2D" parent="Props"]
+z_index = 30
+
+[node name="Cord" type="ColorRect" parent="Props/LanternString9"]
+offset_left = 300.0
+offset_top = 230.0
+offset_right = 560.0
+offset_bottom = 232.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Lantern1" type="ColorRect" parent="Props/LanternString9"]
+offset_left = 310.0
+offset_top = 232.0
+offset_right = 318.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern2" type="ColorRect" parent="Props/LanternString9"]
+offset_left = 338.0
+offset_top = 232.0
+offset_right = 346.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern3" type="ColorRect" parent="Props/LanternString9"]
+offset_left = 366.0
+offset_top = 232.0
+offset_right = 374.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern4" type="ColorRect" parent="Props/LanternString9"]
+offset_left = 394.0
+offset_top = 232.0
+offset_right = 402.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern5" type="ColorRect" parent="Props/LanternString9"]
+offset_left = 422.0
+offset_top = 232.0
+offset_right = 430.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern6" type="ColorRect" parent="Props/LanternString9"]
+offset_left = 450.0
+offset_top = 232.0
+offset_right = 458.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern7" type="ColorRect" parent="Props/LanternString9"]
+offset_left = 478.0
+offset_top = 232.0
+offset_right = 486.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Lantern8" type="ColorRect" parent="Props/LanternString9"]
+offset_left = 506.0
+offset_top = 232.0
+offset_right = 514.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.878, 0.478, 0.227, 1)
+
+[node name="Lantern9" type="ColorRect" parent="Props/LanternString9"]
+offset_left = 534.0
+offset_top = 232.0
+offset_right = 542.0
+offset_bottom = 242.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Tree1" type="StaticBody2D" parent="Props"]
+position = Vector2(-190, -230)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Tree1"]
+position = Vector2(0, 50)
+shape = SubResource("Rect_26x18")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Tree1"]
+scale = Vector2(1, 1)
+texture = ExtResource("13_tree_maple_1")
+
+[node name="Tree2" type="StaticBody2D" parent="Props"]
+position = Vector2(190, -230)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Tree2"]
+position = Vector2(0, 50)
+shape = SubResource("Rect_26x18")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Tree2"]
+scale = Vector2(1, 1)
+texture = ExtResource("13_tree_maple_1")
+
+[node name="Tree3" type="StaticBody2D" parent="Props"]
+position = Vector2(-190, 150)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Tree3"]
+position = Vector2(0, 50)
+shape = SubResource("Rect_26x18")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Tree3"]
+scale = Vector2(1, 1)
+texture = ExtResource("13_tree_maple_1")
+
+[node name="Tree4" type="StaticBody2D" parent="Props"]
+position = Vector2(190, 150)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Tree4"]
+position = Vector2(0, 50)
+shape = SubResource("Rect_26x18")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Tree4"]
+scale = Vector2(1, 1)
+texture = ExtResource("13_tree_maple_1")
+
+[node name="Bench1" type="StaticBody2D" parent="Props"]
+position = Vector2(-90, -120)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Bench1"]
+position = Vector2(0, 4)
+shape = SubResource("Rect_56x18")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Bench1"]
+scale = Vector2(1, 1)
+texture = ExtResource("14_bench")
+
+[node name="Bench2" type="StaticBody2D" parent="Props"]
+position = Vector2(90, -120)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Bench2"]
+position = Vector2(0, 4)
+shape = SubResource("Rect_56x18")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Bench2"]
+scale = Vector2(1, 1)
+texture = ExtResource("14_bench")
+
+[node name="Bench3" type="StaticBody2D" parent="Props"]
+position = Vector2(-90, 110)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Bench3"]
+position = Vector2(0, 4)
+shape = SubResource("Rect_56x18")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Bench3"]
+scale = Vector2(1, 1)
+texture = ExtResource("14_bench")
+
+[node name="Bench4" type="StaticBody2D" parent="Props"]
+position = Vector2(90, 110)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Bench4"]
+position = Vector2(0, 4)
+shape = SubResource("Rect_56x18")
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Bench4"]
+scale = Vector2(1, 1)
+texture = ExtResource("14_bench")
+
+[node name="Brazier1" type="StaticBody2D" parent="Props"]
+position = Vector2(-360, -220)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Brazier1"]
+shape = SubResource("Rect_26x26")
+
+[node name="Bowl" type="ColorRect" parent="Props/Brazier1"]
+offset_left = -14.0
+offset_top = -3.0
+offset_right = 14.0
+offset_bottom = 11.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Coals" type="ColorRect" parent="Props/Brazier1"]
+offset_left = -10.0
+offset_top = -6.0
+offset_right = 10.0
+offset_bottom = 2.0
+mouse_filter = 2
+color = Color(0.816, 0.38, 0.165, 1)
+
+[node name="Flame" type="ColorRect" parent="Props/Brazier1"]
+offset_left = -6.0
+offset_top = -16.0
+offset_right = 6.0
+offset_bottom = -4.0
+mouse_filter = 2
+color = Color(0.949, 0.651, 0.251, 0.85)
+
+[node name="Glow" type="ColorRect" parent="Props/Brazier1"]
+offset_left = -32.0
+offset_top = -38.0
+offset_right = 32.0
+offset_bottom = 26.0
+mouse_filter = 2
+color = Color(1, 0.69, 0.314, 0.15)
+
+[node name="Brazier2" type="StaticBody2D" parent="Props"]
+position = Vector2(300, -220)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Brazier2"]
+shape = SubResource("Rect_26x26")
+
+[node name="Bowl" type="ColorRect" parent="Props/Brazier2"]
+offset_left = -14.0
+offset_top = -3.0
+offset_right = 14.0
+offset_bottom = 11.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Coals" type="ColorRect" parent="Props/Brazier2"]
+offset_left = -10.0
+offset_top = -6.0
+offset_right = 10.0
+offset_bottom = 2.0
+mouse_filter = 2
+color = Color(0.816, 0.38, 0.165, 1)
+
+[node name="Flame" type="ColorRect" parent="Props/Brazier2"]
+offset_left = -6.0
+offset_top = -16.0
+offset_right = 6.0
+offset_bottom = -4.0
+mouse_filter = 2
+color = Color(0.949, 0.651, 0.251, 0.85)
+
+[node name="Glow" type="ColorRect" parent="Props/Brazier2"]
+offset_left = -32.0
+offset_top = -38.0
+offset_right = 32.0
+offset_bottom = 26.0
+mouse_filter = 2
+color = Color(1, 0.69, 0.314, 0.15)
+
+[node name="Brazier3" type="StaticBody2D" parent="Props"]
+position = Vector2(580, -220)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("7_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Brazier3"]
+shape = SubResource("Rect_26x26")
+
+[node name="Bowl" type="ColorRect" parent="Props/Brazier3"]
+offset_left = -14.0
+offset_top = -3.0
+offset_right = 14.0
+offset_bottom = 11.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Coals" type="ColorRect" parent="Props/Brazier3"]
+offset_left = -10.0
+offset_top = -6.0
+offset_right = 10.0
+offset_bottom = 2.0
+mouse_filter = 2
+color = Color(0.816, 0.38, 0.165, 1)
+
+[node name="Flame" type="ColorRect" parent="Props/Brazier3"]
+offset_left = -6.0
+offset_top = -16.0
+offset_right = 6.0
+offset_bottom = -4.0
+mouse_filter = 2
+color = Color(0.949, 0.651, 0.251, 0.85)
+
+[node name="Glow" type="ColorRect" parent="Props/Brazier3"]
+offset_left = -32.0
+offset_top = -38.0
+offset_right = 32.0
+offset_bottom = 26.0
+mouse_filter = 2
+color = Color(1, 0.69, 0.314, 0.15)
+
+[node name="Canopy" type="Node2D" parent="."]
+z_index = 30
+
+[node name="Banner1" type="Node2D" parent="Canopy"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="Canopy/Banner1"]
+offset_left = -655.0
+offset_top = -254.0
+offset_right = -625.0
+offset_bottom = -250.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="Canopy/Banner1"]
+offset_left = -651.0
+offset_top = -250.0
+offset_right = -629.0
+offset_bottom = -202.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Band" type="ColorRect" parent="Canopy/Banner1"]
+offset_left = -651.0
+offset_top = -241.36
+offset_right = -629.0
+offset_bottom = -237.36
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="Canopy/Banner1"]
+offset_left = -645.5
+offset_top = -229.1
+offset_right = -634.5
+offset_bottom = -218.1
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="Canopy/Banner1"]
+offset_left = -651.0
+offset_top = -202.0
+offset_right = -643.6666666666666
+offset_bottom = -194.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="TailR" type="ColorRect" parent="Canopy/Banner1"]
+offset_left = -636.3333333333334
+offset_top = -202.0
+offset_right = -629.0
+offset_bottom = -194.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Banner2" type="Node2D" parent="Canopy"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="Canopy/Banner2"]
+offset_left = -575.0
+offset_top = -254.0
+offset_right = -545.0
+offset_bottom = -250.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="Canopy/Banner2"]
+offset_left = -571.0
+offset_top = -250.0
+offset_right = -549.0
+offset_bottom = -202.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Band" type="ColorRect" parent="Canopy/Banner2"]
+offset_left = -571.0
+offset_top = -241.36
+offset_right = -549.0
+offset_bottom = -237.36
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="Canopy/Banner2"]
+offset_left = -565.5
+offset_top = -229.1
+offset_right = -554.5
+offset_bottom = -218.1
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="Canopy/Banner2"]
+offset_left = -571.0
+offset_top = -202.0
+offset_right = -563.6666666666666
+offset_bottom = -194.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="TailR" type="ColorRect" parent="Canopy/Banner2"]
+offset_left = -556.3333333333334
+offset_top = -202.0
+offset_right = -549.0
+offset_bottom = -194.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Banner3" type="Node2D" parent="Canopy"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="Canopy/Banner3"]
+offset_left = -395.0
+offset_top = -254.0
+offset_right = -365.0
+offset_bottom = -250.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="Canopy/Banner3"]
+offset_left = -391.0
+offset_top = -250.0
+offset_right = -369.0
+offset_bottom = -202.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Band" type="ColorRect" parent="Canopy/Banner3"]
+offset_left = -391.0
+offset_top = -241.36
+offset_right = -369.0
+offset_bottom = -237.36
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="Canopy/Banner3"]
+offset_left = -385.5
+offset_top = -229.1
+offset_right = -374.5
+offset_bottom = -218.1
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="Canopy/Banner3"]
+offset_left = -391.0
+offset_top = -202.0
+offset_right = -383.6666666666667
+offset_bottom = -194.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="TailR" type="ColorRect" parent="Canopy/Banner3"]
+offset_left = -376.3333333333333
+offset_top = -202.0
+offset_right = -369.0
+offset_bottom = -194.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Banner4" type="Node2D" parent="Canopy"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="Canopy/Banner4"]
+offset_left = -315.0
+offset_top = -254.0
+offset_right = -285.0
+offset_bottom = -250.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="Canopy/Banner4"]
+offset_left = -311.0
+offset_top = -250.0
+offset_right = -289.0
+offset_bottom = -202.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Band" type="ColorRect" parent="Canopy/Banner4"]
+offset_left = -311.0
+offset_top = -241.36
+offset_right = -289.0
+offset_bottom = -237.36
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="Canopy/Banner4"]
+offset_left = -305.5
+offset_top = -229.1
+offset_right = -294.5
+offset_bottom = -218.1
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="Canopy/Banner4"]
+offset_left = -311.0
+offset_top = -202.0
+offset_right = -303.6666666666667
+offset_bottom = -194.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="TailR" type="ColorRect" parent="Canopy/Banner4"]
+offset_left = -296.3333333333333
+offset_top = -202.0
+offset_right = -289.0
+offset_bottom = -194.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Banner5" type="Node2D" parent="Canopy"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="Canopy/Banner5"]
+offset_left = 245.0
+offset_top = -262.0
+offset_right = 275.0
+offset_bottom = -258.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="Canopy/Banner5"]
+offset_left = 249.0
+offset_top = -258.0
+offset_right = 271.0
+offset_bottom = -210.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Band" type="ColorRect" parent="Canopy/Banner5"]
+offset_left = 249.0
+offset_top = -249.36
+offset_right = 271.0
+offset_bottom = -245.36
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="Canopy/Banner5"]
+offset_left = 254.5
+offset_top = -237.1
+offset_right = 265.5
+offset_bottom = -226.1
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="Canopy/Banner5"]
+offset_left = 249.0
+offset_top = -210.0
+offset_right = 256.3333333333333
+offset_bottom = -202.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="TailR" type="ColorRect" parent="Canopy/Banner5"]
+offset_left = 263.6666666666667
+offset_top = -210.0
+offset_right = 271.0
+offset_bottom = -202.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Banner6" type="Node2D" parent="Canopy"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="Canopy/Banner6"]
+offset_left = 345.0
+offset_top = -262.0
+offset_right = 375.0
+offset_bottom = -258.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="Canopy/Banner6"]
+offset_left = 349.0
+offset_top = -258.0
+offset_right = 371.0
+offset_bottom = -210.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Band" type="ColorRect" parent="Canopy/Banner6"]
+offset_left = 349.0
+offset_top = -249.36
+offset_right = 371.0
+offset_bottom = -245.36
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="Canopy/Banner6"]
+offset_left = 354.5
+offset_top = -237.1
+offset_right = 365.5
+offset_bottom = -226.1
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="Canopy/Banner6"]
+offset_left = 349.0
+offset_top = -210.0
+offset_right = 356.3333333333333
+offset_bottom = -202.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="TailR" type="ColorRect" parent="Canopy/Banner6"]
+offset_left = 363.6666666666667
+offset_top = -210.0
+offset_right = 371.0
+offset_bottom = -202.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Banner7" type="Node2D" parent="Canopy"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="Canopy/Banner7"]
+offset_left = 505.0
+offset_top = -262.0
+offset_right = 535.0
+offset_bottom = -258.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="Canopy/Banner7"]
+offset_left = 509.0
+offset_top = -258.0
+offset_right = 531.0
+offset_bottom = -210.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Band" type="ColorRect" parent="Canopy/Banner7"]
+offset_left = 509.0
+offset_top = -249.36
+offset_right = 531.0
+offset_bottom = -245.36
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="Canopy/Banner7"]
+offset_left = 514.5
+offset_top = -237.1
+offset_right = 525.5
+offset_bottom = -226.1
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="Canopy/Banner7"]
+offset_left = 509.0
+offset_top = -210.0
+offset_right = 516.3333333333334
+offset_bottom = -202.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="TailR" type="ColorRect" parent="Canopy/Banner7"]
+offset_left = 523.6666666666666
+offset_top = -210.0
+offset_right = 531.0
+offset_bottom = -202.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Banner8" type="Node2D" parent="Canopy"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="Canopy/Banner8"]
+offset_left = 605.0
+offset_top = -262.0
+offset_right = 635.0
+offset_bottom = -258.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="Canopy/Banner8"]
+offset_left = 609.0
+offset_top = -258.0
+offset_right = 631.0
+offset_bottom = -210.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Band" type="ColorRect" parent="Canopy/Banner8"]
+offset_left = 609.0
+offset_top = -249.36
+offset_right = 631.0
+offset_bottom = -245.36
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="Canopy/Banner8"]
+offset_left = 614.5
+offset_top = -237.1
+offset_right = 625.5
+offset_bottom = -226.1
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="Canopy/Banner8"]
+offset_left = 609.0
+offset_top = -210.0
+offset_right = 616.3333333333334
+offset_bottom = -202.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="TailR" type="ColorRect" parent="Canopy/Banner8"]
+offset_left = 623.6666666666666
+offset_top = -210.0
+offset_right = 631.0
+offset_bottom = -202.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Banner9" type="Node2D" parent="Canopy"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="Canopy/Banner9"]
+offset_left = -170.0
+offset_top = -744.0
+offset_right = -130.0
+offset_bottom = -740.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="Canopy/Banner9"]
+offset_left = -166.0
+offset_top = -740.0
+offset_right = -134.0
+offset_bottom = -668.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Band" type="ColorRect" parent="Canopy/Banner9"]
+offset_left = -166.0
+offset_top = -727.04
+offset_right = -134.0
+offset_bottom = -723.04
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="Canopy/Banner9"]
+offset_left = -158.0
+offset_top = -708.4
+offset_right = -142.0
+offset_bottom = -692.4
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="Canopy/Banner9"]
+offset_left = -166.0
+offset_top = -668.0
+offset_right = -155.33333333333334
+offset_bottom = -660.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="TailR" type="ColorRect" parent="Canopy/Banner9"]
+offset_left = -144.66666666666666
+offset_top = -668.0
+offset_right = -134.0
+offset_bottom = -660.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Banner10" type="Node2D" parent="Canopy"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="Canopy/Banner10"]
+offset_left = 130.0
+offset_top = -744.0
+offset_right = 170.0
+offset_bottom = -740.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="Canopy/Banner10"]
+offset_left = 134.0
+offset_top = -740.0
+offset_right = 166.0
+offset_bottom = -668.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Band" type="ColorRect" parent="Canopy/Banner10"]
+offset_left = 134.0
+offset_top = -727.04
+offset_right = 166.0
+offset_bottom = -723.04
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="Canopy/Banner10"]
+offset_left = 142.0
+offset_top = -708.4
+offset_right = 158.0
+offset_bottom = -692.4
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="Canopy/Banner10"]
+offset_left = 134.0
+offset_top = -668.0
+offset_right = 144.66666666666666
+offset_bottom = -660.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="TailR" type="ColorRect" parent="Canopy/Banner10"]
+offset_left = 155.33333333333334
+offset_top = -668.0
+offset_right = 166.0
+offset_bottom = -660.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Details" type="Node2D" parent="."]
+
+[node name="ProclamationBoard" type="Area2D" parent="Details"]
+z_index = 6
+position = Vector2(170, 440)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("15_story_item")
+interaction_name = "Read the Proclamations"
+flag_to_set = ""
+discovery_text = "[b]The crier's board[/b]
+
+Proclamations pasted one over the other until the board is thick as a book.
+
+On top, the regent's seal: \"[i]Let it be known that the tithe of the Western Valley is three years in arrears. Any reeve, elder or freeholder with knowledge of the losses shall give it to the High Magistry.[/i]\"
+
+Beside it, a smaller bill in a careful hand: \"[i]Dawn-tonic for the grey sweats. Given at the Cathedral infirmary, by donation. Two crowns the vial.[/i]\" Two crowns is most of a labourer's season."
+reexamine_text = "The tithe proclamation, and the Cathedral's two-crown tonic."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Details/ProclamationBoard"]
+shape = SubResource("Rect_110x56")
+
+[node name="Visual" type="ColorRect" parent="Details/ProclamationBoard"]
+offset_left = -39.0
+offset_top = -24.0
+offset_right = 39.0
+offset_bottom = 24.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Visual2" type="ColorRect" parent="Details/ProclamationBoard"]
+offset_left = -35.0
+offset_top = -20.0
+offset_right = 35.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Details/ProclamationBoard"]
+z_index = 10
+visible = false
+offset_left = -90.0
+offset_top = -56.0
+offset_right = 90.0
+offset_bottom = -31.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Read the Proclamations"
+horizontal_alignment = 1
+
+[node name="BladeStall" type="Area2D" parent="Details"]
+z_index = 6
+position = Vector2(-400, 186)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("15_story_item")
+interaction_name = "Look at the Blades"
+flag_to_set = ""
+discovery_text = "[b]A guild factor's table[/b]
+
+Good swords, cheap. Too cheap. Each blade carries a little hammer-over-pine stamped near the tang: the smith's mark from Thornhaven, three days west.
+
+The tag on the bundle reads \"[i]Valley steel, Guild-licensed. Received Riverside.[/i]\" A Thornhaven smith sells to Thornhaven folk. Someone else sold these."
+reexamine_text = "Thornhaven steel, three days from home, sold by the Guild."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Details/BladeStall"]
+shape = SubResource("Rect_112x44")
+
+[node name="Visual" type="ColorRect" parent="Details/BladeStall"]
+offset_left = -35.0
+offset_top = -23.0
+offset_right = 35.0
+offset_bottom = -17.0
+mouse_filter = 2
+color = Color(0.784, 0.8, 0.816, 1)
+
+[node name="Visual2" type="ColorRect" parent="Details/BladeStall"]
+offset_left = -30.0
+offset_top = -15.0
+offset_right = 30.0
+offset_bottom = -9.0
+mouse_filter = 2
+color = Color(0.784, 0.8, 0.816, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Details/BladeStall"]
+z_index = 10
+visible = false
+offset_left = -90.0
+offset_top = -56.0
+offset_right = 90.0
+offset_bottom = -31.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Look at the Blades"
+horizontal_alignment = 1
+
+[node name="LanternPlinthInscription" type="Area2D" parent="Details"]
+z_index = 6
+position = Vector2(0, 186)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("15_story_item")
+interaction_name = "Read the Plinth"
+flag_to_set = ""
+discovery_text = "[b]The Lantern of the Grey Year[/b]
+
+A lamp that never goes out, on a plinth worn smooth by hands. The inscription: \"[i]For the eleven thousand of Highmarch taken by the Grey Fever. Lit by the Cathedral of the Dawn, that we remember mercy.[/i]\"
+
+Underneath, in smaller letters added later: \"[i]Restored at the charge of the noble House of Ashdown.[/i]\"
+
+Fresh wax on the steps. Someone has been lighting candles here again this month."
+reexamine_text = "Fresh candles for the Grey Fever, twenty years on."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Details/LanternPlinthInscription"]
+shape = SubResource("Rect_90x44")
+
+[node name="InteractionPrompt" type="Label" parent="Details/LanternPlinthInscription"]
+z_index = 10
+visible = false
+offset_left = -90.0
+offset_top = -56.0
+offset_right = 90.0
+offset_bottom = -31.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Read the Plinth"
+horizontal_alignment = 1
+
+[node name="WeighSlate" type="Area2D" parent="Details"]
+z_index = 6
+position = Vector2(-640, 150)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("15_story_item")
+interaction_name = "Read the Weigh-Slate"
+flag_to_set = ""
+discovery_text = "[b]The Guild weigh-house slate[/b]
+
+Today's receipts, chalked by a clerk with a neat hand:
+\"[i]Warehouse Seven, Riverside. Valley wool, by Ferrisford barge. 40 bales.[/i]\"
+
+The weight column says forty bales of wool weigh as much as a forge's anvil stock. Nobody has corrected it. The origin column, which every other line fills in, is blank."
+reexamine_text = "Forty bales of 'wool' that weigh like iron."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Details/WeighSlate"]
+shape = SubResource("Rect_100x44")
+
+[node name="Visual" type="ColorRect" parent="Details/WeighSlate"]
+offset_left = -25.0
+offset_top = -15.0
+offset_right = 25.0
+offset_bottom = 15.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Visual2" type="ColorRect" parent="Details/WeighSlate"]
+offset_left = -22.0
+offset_top = -12.0
+offset_right = 22.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.169, 0.184, 0.18, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Details/WeighSlate"]
+z_index = 10
+visible = false
+offset_left = -90.0
+offset_top = -56.0
+offset_right = 90.0
+offset_bottom = -31.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Read the Weigh-Slate"
+horizontal_alignment = 1
+
+[node name="Transitions" type="Node2D" parent="."]
+
+[node name="ToDawnGate" type="Area2D" parent="Transitions"]
+position = Vector2(0, 720)
+collision_layer = 32
+collision_mask = 1
+script = ExtResource("16_scene_trigger")
+target_location = "capitol_gate"
+target_spawn_point = "from_capitol_market"
+require_input = false
+prompt_text = "To the Dawn Gate"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToDawnGate"]
+shape = SubResource("Rect_224x40")
+
+[node name="DoorVisual" type="ColorRect" parent="Transitions/ToDawnGate"]
+offset_left = -112.0
+offset_top = -20.0
+offset_right = 112.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.604, 0.573, 0.518, 0.6)
+
+[node name="ExitLabel" type="Label" parent="Transitions/ToDawnGate"]
+z_index = 11
+offset_left = -120.0
+offset_top = -46.0
+offset_right = 120.0
+offset_bottom = -25.0
+theme_override_colors/font_color = Color(1, 0.92, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 13
+text = "The Dawn Gate"
+horizontal_alignment = 1
+
+[node name="ToPalaceHill" type="Area2D" parent="Transitions"]
+position = Vector2(0, -720)
+collision_layer = 32
+collision_mask = 1
+script = ExtResource("16_scene_trigger")
+target_location = "capitol_palace"
+target_spawn_point = "from_capitol_market"
+require_input = false
+prompt_text = "Up to Palace Hill"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToPalaceHill"]
+shape = SubResource("Rect_224x40")
+
+[node name="DoorVisual" type="ColorRect" parent="Transitions/ToPalaceHill"]
+offset_left = -112.0
+offset_top = -20.0
+offset_right = 112.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.604, 0.573, 0.518, 0.6)
+
+[node name="ExitLabel" type="Label" parent="Transitions/ToPalaceHill"]
+z_index = 11
+offset_left = -120.0
+offset_top = -46.0
+offset_right = 120.0
+offset_bottom = -25.0
+theme_override_colors/font_color = Color(1, 0.92, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 13
+text = "Palace Hill: the Crown Court"
+horizontal_alignment = 1
+
+[node name="ToRiverQuarter" type="Area2D" parent="Transitions"]
+position = Vector2(720, 300)
+collision_layer = 32
+collision_mask = 1
+script = ExtResource("16_scene_trigger")
+target_location = "capitol_docks"
+target_spawn_point = "from_capitol_market"
+require_input = false
+prompt_text = "Down to the River Quarter"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/ToRiverQuarter"]
+shape = SubResource("Rect_40x160")
+
+[node name="DoorVisual" type="ColorRect" parent="Transitions/ToRiverQuarter"]
+offset_left = -20.0
+offset_top = -80.0
+offset_right = 20.0
+offset_bottom = 80.0
+mouse_filter = 2
+color = Color(0.604, 0.573, 0.518, 0.6)
+
+[node name="ExitLabel" type="Label" parent="Transitions/ToRiverQuarter"]
+z_index = 11
+offset_left = -120.0
+offset_top = -106.0
+offset_right = 120.0
+offset_bottom = -85.0
+theme_override_colors/font_color = Color(1, 0.92, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 13
+text = "River Quarter"
+horizontal_alignment = 1
+
+[node name="GuildhallDoor" type="Area2D" parent="Transitions"]
+position = Vector2(-470, -222)
+collision_layer = 32
+collision_mask = 1
+script = ExtResource("16_scene_trigger")
+target_location = "capitol_guildhall"
+target_spawn_point = "from_capitol_market"
+prompt_text = "Enter the Guildhall"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/GuildhallDoor"]
+shape = SubResource("Rect_80x36")
+
+[node name="InteractionPrompt" type="Label" parent="Transitions/GuildhallDoor"]
+z_index = 10
+visible = false
+offset_left = -90.0
+offset_top = -56.0
+offset_right = 90.0
+offset_bottom = -31.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Enter the Guildhall"
+horizontal_alignment = 1
+
+[node name="CathedralDoor" type="Area2D" parent="Transitions"]
+position = Vector2(440, -222)
+collision_layer = 32
+collision_mask = 1
+script = ExtResource("16_scene_trigger")
+target_location = "capitol_cathedral"
+target_spawn_point = "from_capitol_market"
+prompt_text = "Enter the Cathedral"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/CathedralDoor"]
+shape = SubResource("Rect_80x36")
+
+[node name="InteractionPrompt" type="Label" parent="Transitions/CathedralDoor"]
+z_index = 10
+visible = false
+offset_left = -90.0
+offset_top = -56.0
+offset_right = 90.0
+offset_bottom = -31.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Enter the Cathedral"
+horizontal_alignment = 1
+
+[node name="Boundaries" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(0, -752)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/North"]
+shape = SubResource("Rect_1536x32")
+
+[node name="South" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(0, 752)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/South"]
+shape = SubResource("Rect_1536x32")
+
+[node name="West" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(-752, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/West"]
+shape = SubResource("Rect_32x1536")
+
+[node name="East" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(752, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/East"]
+shape = SubResource("Rect_32x1536")
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 300)
+
+[node name="from_capitol_gate" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 620)
+
+[node name="from_capitol_palace" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, -620)
+
+[node name="from_capitol_docks" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(620, 300)
+
+[node name="from_capitol_guildhall" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-470, -168)
+
+[node name="from_capitol_cathedral" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(440, -168)
+
+[node name="NPCs" type="Node2D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("17_player")]
+z_index = 10
+position = Vector2(0, 300)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(1.5, 1.5)
+position_smoothing_enabled = true
+position_smoothing_speed = 5.0
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("18_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[node name="DebugInteractionPanel" parent="DialogueUI" instance=ExtResource("19_debug_interaction_panel")]
+visible = false
+
+[node name="DebugConsole" parent="." instance=ExtResource("20_debug_console")]
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

@@ -1,0 +1,2108 @@
+{
+  "id": "magistrates_ledger",
+  "title": "The Magistrate's Ledger",
+  "summary": "Gregor's ledger of rigged draws could reach the Capitol: five years of Tithe names, sold to Iron Hollow and put to digging salt in the Pit. High Magistrate Corwin Vane wants it tried in open court, the Lord Protector wants it quiet, and Elena wants her father alive. The clerk who lost the valley's petitions is the judge's own nephew.",
+  "prefix": "mag_",
+  "act_span": [
+    1,
+    3
+  ],
+  "flags": {
+    "mag_tobias_confessed": "Tobias Vane confessed to his uncle, the High Magistrate, that he had been paid in Guild coin to lose three years of the valley's petitions and loss reports, among them every plea Thornhaven's elder sent the crown against the Tithe.",
+    "mag_word_sent_east": "Word of Gregor Stoneheart's ledger went east from Thornhaven to the High Magistry: five years of rigged Tithe draws, and the names of the neighbours the lot had sent to Iron Hollow in Elena's place.",
+    "mag_ledger_carried": "The player swore to carry Gregor's ledger of rigged draws east along the Kingsroad and lay it on the High Magistrate's own table.",
+    "mag_trial_called": "High Magistrate Corwin Vane called an open trial in the High Magistry of the Western Valley's Tithe: the merchant's ledger of rigged draws, the people sold to the Iron Hollow, and the petitions that never arrived.",
+    "mag_quiet_hearing_set": "The Lord Protector had the matter of the valley's ledger and its Tithe set down for a private hearing in the palace, with no gallery and no record.",
+    "mag_summons_issued": "The High Magistry sent a summons west for Gregor Stoneheart to come east with his ledger of rigged draws and testify.",
+    "mag_gregor_rode_east": "Gregor Stoneheart rode east along the Kingsroad to answer the High Magistry's summons.",
+    "mag_player_hid_gregor": "The player hid Gregor Stoneheart from the Magistry's summons until its rider gave up and went home.",
+    "mag_witness_arrived": "Gregor Stoneheart reached the Capitol alive, by way of a back stair at the Halfway House.",
+    "mag_witness_lost": "Gregor Stoneheart never reached the Capitol; Iron Hollow men took him on the Kingsroad.",
+    "mag_player_took_regents_coin": "The player took the Lord Protector's purse to see the valley's ledger reach the palace before it reached the court.",
+    "mag_nephew_bargain_struck": "High Magistrate Corwin Vane accepted the Lord Protector's offer: his nephew's crime would be forgotten if the valley's trial stayed short.",
+    "mag_nephew_bargain_refused": "High Magistrate Corwin Vane refused the Lord Protector's offer to forget his nephew's crime in exchange for a short trial.",
+    "mag_gregor_testified": "Gregor Stoneheart read his ledger aloud in the High Magistry: every rigged draw, every neighbour's name it fell to, and the white salt the Hollow paid him for each.",
+    "mag_mercy_pleaded": "Elena stood before the crown's judges and asked for her father's life, though the lot he rigged had been rigged for her.",
+    "mag_player_testified": "The player swore before the High Magistry to what they had found in Thornhaven: the rigged lot, the merchant's ledger, and the people the Tithe carried up the ridge to dig.",
+    "mag_guild_named": "The High Magistry named the Merchants' Guild's warehouses as the place where the Iron Hollow's plunder and the Pit's white salt were washed into honest coin.",
+    "mag_nephew_sentenced": "High Magistrate Corwin Vane sentenced his own nephew, Tobias Vane, for losing the valley's petitions against the Tithe, in the same verdict as the rest.",
+    "mag_verdict_given": "A verdict was given on Gregor Stoneheart's ledger of rigged draws and the Tithe it fed.",
+    "mag_gregor_hanged_quietly": "Gregor Stoneheart was hanged in the palace yard at dawn after a hearing with no gallery, and his ledger, with every name the Tithe took, stayed in the palace.",
+    "mag_taken_on_the_record": "The High Magistry read into its record, name by name, the Thornhaven people the Tithe had sold to the Iron Hollow, and that they had been set to dig white salt in chains on crown land.",
+    "mag_cure_traced_to_the_pit": "The High Magistry heard that the white salt in the Cathedral's rationed fever cure came by Greystone's carters and the Guild from a seam where the Tithe's taken dug in chains."
+  },
+  "player_flags": [
+    "mag_ledger_carried",
+    "mag_player_hid_gregor",
+    "mag_player_took_regents_coin",
+    "mag_player_testified"
+  ],
+  "crossovers": [
+    "ih_gregor_fled",
+    "hc_varn_dead",
+    "cou_martial_law",
+    "fev_elena_left_home",
+    "tithe_rangers_arrive",
+    "des_varn_warrant_served",
+    "fence_ledger_taken",
+    "reg_crown_buys_hollow",
+    "inh_ashdown_tied_to_hollow",
+    "tn_taken_freed"
+  ],
+  "beats": [
+    {
+      "id": "the_missing_returns",
+      "act": 1,
+      "title": "Three Years of Silence",
+      "summary": "Act I. An unsigned complaint from a Ferrisford widow says Thornhaven has begged the crown for three years about a Tithe of its own people. The Magistry registry has nothing, and the clerk who keeps it is the High Magistrate's own nephew.",
+      "location": "capitol_magistry",
+      "requires": [
+        "!mag_verdict_given"
+      ],
+      "resolves_on": [
+        "mag_tobias_confessed",
+        "writ_archive_gap_found"
+      ],
+      "hooks": [
+        {
+          "id": "mag_corwin_pulls_the_thread",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "An unsigned complaint from a Ferrisford widow says the valley has written to the crown for three years, begging help against a Tithe that takes one of its people every autumn. Your registry has nothing. Tobias, who keeps it, has a new coat.",
+          "options": [
+            {
+              "id": "question_him",
+              "label": "Call Tobias into chambers with the registry book open between them",
+              "serves": [
+                "find_the_lost_reports",
+                "law_applied_evenly"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_tobias_confessed",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "set_the_stranger_on_it",
+              "label": "Ask the stranger to search the registry's valley shelf for him",
+              "serves": [
+                "find_the_lost_reports",
+                "save_the_nephew"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Ask the stranger to look through the registry's valley shelf for him; a magistrate searching his own archive is noticed."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing yet; he does not want to know what the coat cost",
+              "serves": [
+                "save_the_nephew"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_hollis_warns_the_clerk",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Tobias came to the counting room white-faced: his uncle has been asking about valley papers. A frightened clerk is a clerk who confesses.",
+          "options": [
+            {
+              "id": "send_him_away",
+              "label": "Pay Tobias to visit a cousin in the March until this passes",
+              "serves": [
+                "hold_every_patron",
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Mention to the stranger, as Guild gossip, that the High Magistrate's nephew has gone to the country for his health."
+                }
+              ]
+            },
+            {
+              "id": "steady_him",
+              "label": "Tell Tobias to keep his nerve; a clerk's word is nothing without paper",
+              "serves": [
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Ask the stranger, pleasantly, whether they have business at the Magistry, and whom they have spoken to there."
+                }
+              ]
+            },
+            {
+              "id": "cut_him_loose",
+              "label": "Let the boy sink; the Guild never paid a clerk in writing",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_corwin_takes_the_weight",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "You know now where the valley's petitions went: into Tobias's satchel, for Guild coin, while a village sent a child a year up a ridge and waited for an answer. He is your sister's only son.",
+          "options": [
+            {
+              "id": "thank_the_stranger",
+              "label": "Thank the stranger for what they found, and say what it costs him",
+              "serves": [
+                "find_the_lost_reports",
+                "law_applied_evenly"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "corwin",
+                  "dimension": "trust",
+                  "delta": 10
+                },
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger his own nephew lost the valley's pleas against the Tithe for Guild coin, and that the law does not care whose nephew he is."
+                }
+              ]
+            },
+            {
+              "id": "shield_the_boy",
+              "label": "Resolve to save Tobias if the law leaves any room at all",
+              "serves": [
+                "save_the_nephew"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "corwin",
+                  "want": "save_the_nephew",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mag_edric_hears_of_the_returns",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Vane is asking why three years of valley returns and petitions never reached the crown. They speak of something the valley calls a Tithe, and every answer has your treasury's name on it.",
+          "options": [
+            {
+              "id": "ask_the_stranger",
+              "label": "Find out from the stranger what Vane is digging for",
+              "serves": [
+                "keep_the_magistry_quiet"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger, warmly, what the High Magistrate is digging for in the west, and whether it might wait for spring."
+                }
+              ]
+            },
+            {
+              "id": "let_him_dig",
+              "label": "Let Vane dig; whatever he finds is tithe the crown is owed",
+              "serves": [
+                "fill_the_treasury"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "edric",
+                  "want": "fill_the_treasury",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing; a regent who asks is a regent who knew",
+              "serves": [
+                "stay_indispensable"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a_letter_east",
+      "act": 1,
+      "title": "A Letter East",
+      "summary": "Act I. Gregor's ledger of rigged draws has been found: five autumns, five names. The council would sit on it and keep paying the Tithe; Captain Aldric has heard the new High Magistrate is a man who reads.",
+      "location": "thornhaven_town_square",
+      "requires": [
+        "ledger_found",
+        "!ih_gregor_fled",
+        "!mag_word_sent_east"
+      ],
+      "resolves_on": [
+        "mag_word_sent_east",
+        "mag_ledger_carried"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "mag_word_sent_east",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "mag_aldric_writes_east",
+          "type": "reveal",
+          "trigger": "idle",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The stranger found Gregor's ledger: five years of rigged draws, and the neighbours' names the lot fell to. The council will sit on it and pay. The crown's High Magistrate, they say, is a man who reads what he is sent.",
+          "options": [
+            {
+              "id": "write_to_the_magistry",
+              "label": "Write to the High Magistry about the ledger and the Tithe, over the council's head",
+              "serves": [
+                "expose_the_traitor",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_word_sent_east",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger he has written to the High Magistry of Gregor's rigged draws and the Tithe, over the council's head, and will answer for it."
+                }
+              ]
+            },
+            {
+              "id": "ask_the_stranger",
+              "label": "Ask the stranger to carry the ledger east themselves",
+              "serves": [
+                "expose_the_traitor",
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger to carry Gregor's ledger of rigged draws to the Capitol by hand; he cannot spare a man, and a letter can be lost."
+                }
+              ]
+            },
+            {
+              "id": "council_first",
+              "label": "Lay it before Mathias first, as the valley's law asks",
+              "serves": [
+                "win_the_council"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_mathias_locks_the_ledger",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Aldric wants Gregor's ledger of rigged draws sent to the Capitol. A Capitol trial means the Hollow's anger in Tithe week, and the lot it exposes is the lot you blessed.",
+          "options": [
+            {
+              "id": "lock_it_away",
+              "label": "Lock the ledger in the council's chest under the chapel until the council decides",
+              "serves": [
+                "hold_the_council_together",
+                "mercy_for_gregor"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "magistrates_ledger",
+                  "beat": "a_letter_east"
+                }
+              ]
+            },
+            {
+              "id": "let_it_go",
+              "label": "Tell Aldric the council will not stop a letter east",
+              "serves": [
+                "save_thornhaven",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the council will not stop a letter east; he has sent six begging the crown for help against the Tithe, and none came back."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing and let Aldric do as he will",
+              "serves": [
+                "keep_the_peace_paid"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_aldric_takes_it_back",
+          "type": "aid",
+          "trigger": "on_flag:cou_martial_law",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Thornhaven is under martial law, and the council's chest is no longer the council's. Gregor's ledger of rigged draws is in it.",
+          "options": [
+            {
+              "id": "take_it_out",
+              "label": "Open the chest and send the ledger's word east under his own seal",
+              "serves": [
+                "take_command",
+                "expose_the_traitor"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "magistrates_ledger",
+                  "beat": "a_letter_east"
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "mag_word_sent_east",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "leave_it",
+              "label": "Leave the chest shut; he has enough fights",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_mira_watches_the_road",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Aldric means to send Gregor's ledger east. It names five draws and five neighbours, not the messenger who sent the names. But a Capitol asking about the Tithe is a Capitol that asks where the taken went.",
+          "options": [
+            {
+              "id": "warn_the_hollow",
+              "label": "Send the Hollow's runner word that the merchant's ledger of draws has been found",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "spread_rumor",
+                  "flag": "ledger_found",
+                  "to": [
+                    "varn"
+                  ],
+                  "via": "a word to the Hollow's runner at the tavern's back door"
+                }
+              ]
+            },
+            {
+              "id": "let_it_go",
+              "label": "Let it go east; a Capitol trial hangs Gregor and the trail ends at him",
+              "serves": [
+                "burn_gregor_first",
+                "keep_the_mask"
+              ],
+              "effects": []
+            },
+            {
+              "id": "hold",
+              "label": "Pour the captain's ale and listen",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_writ",
+      "act": 2,
+      "title": "Open Court or Closed Door",
+      "summary": "Act II. Thornhaven's word of the merchant's ledger reaches the High Magistry: a crown village paying a person a year to a gang. Corwin wants it tried before the city; the Lord Protector wants it short, private and far from his name.",
+      "location": "capitol_magistry",
+      "requires": [
+        "mag_word_sent_east",
+        "!mag_trial_called",
+        "!mag_quiet_hearing_set"
+      ],
+      "resolves_on": [
+        "mag_trial_called",
+        "mag_quiet_hearing_set"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "mag_summons_issued",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "mag_edric_asks_for_quiet",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Vane wants to try the valley's Tithe before the whole city. Three years of crown's tithe lost under your regency, five villagers handed to a gang nobody stopped, and nobody yet asking where they went.",
+          "options": [
+            {
+              "id": "private_hearing",
+              "label": "Set the matter down for a private hearing in the palace",
+              "serves": [
+                "keep_the_magistry_quiet",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_quiet_hearing_set",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "bury_the_writ",
+              "label": "Have the writ held at the palace for the crown's review",
+              "serves": [
+                "keep_the_magistry_quiet",
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "magistrates_ledger",
+                  "beat": "the_writ"
+                }
+              ]
+            },
+            {
+              "id": "let_vane_have_it",
+              "label": "Let him; a hanged merchant is a victory too",
+              "serves": [
+                "win_a_victory"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_corwin_calls_the_trial",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "Word has come from Thornhaven's peacekeeper of a merchant's ledger: five years of a rigged lot, and a neighbour sent to the Iron Hollow each autumn. Lost petitions, and people sold from inside a crown village: this is the trial you have waited for.",
+          "options": [
+            {
+              "id": "call_it_open",
+              "label": "Call an open trial of the valley's Tithe and post it on the Magistry door",
+              "serves": [
+                "try_it_in_the_open",
+                "law_applied_evenly",
+                "hear_gregors_ledger"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_trial_called",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "secure_the_witness",
+              "label": "Wait until the merchant and his ledger are safe",
+              "serves": [
+                "hear_gregors_ledger"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Ask the stranger whether Gregor's ledger of draws is safe, and whether Gregor will live long enough to read it to a court."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Hold off; an open trial will drag Tobias into it",
+              "serves": [
+                "save_the_nephew"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_corwin_unbars_the_writ",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "Your writ for the valley's Tithe trial has been taken up to the palace 'for review'. No law gives the regent a judge's writ to review.",
+          "options": [
+            {
+              "id": "write_it_again",
+              "label": "Write the writ again in his own hand and post it on the Magistry door",
+              "serves": [
+                "law_applied_evenly",
+                "check_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "magistrates_ledger",
+                  "beat": "the_writ"
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "mag_trial_called",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Wait for the palace to return it",
+              "serves": [
+                "save_the_nephew"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger his writ went up to the palace for review and has not come down, and ask what they make of that."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mag_corwin_sees_the_gap",
+          "type": "reveal",
+          "trigger": "on_flag:writ_archive_gap_found",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The stranger found three years of valley returns and petitions missing from your archive, signed out by T. Vane. If it goes on the record, the Tithe trial cannot be kept small, and your nephew will be in it.",
+          "options": [
+            {
+              "id": "on_the_record",
+              "label": "Enter the gap in the archive and call the trial open",
+              "serves": [
+                "law_applied_evenly",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_trial_called",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "keep_it_close",
+              "label": "Keep the signed-out slips in his own desk for now",
+              "serves": [
+                "save_the_nephew"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Ask the stranger, as if in theory, what a judge owes a nephew who has broken the law he serves."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_summons",
+      "act": 2,
+      "title": "The Summons",
+      "summary": "Act II. A Magistry summons with a red seal reaches Gregor's shop: he and his ledger of rigged draws are wanted in the Capitol, in the very week of the Tithe. The Hollow will know before he reaches the gate.",
+      "location": "thornhaven_gregor_shop",
+      "requires": [
+        "mag_summons_issued",
+        "!ih_gregor_fled",
+        "!mag_gregor_rode_east"
+      ],
+      "resolves_on": [
+        "mag_gregor_rode_east",
+        "mag_player_hid_gregor",
+        "ih_gregor_fled"
+      ],
+      "hooks": [
+        {
+          "id": "mag_gregor_reads_the_summons",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "A Magistry summons with a red seal: Gregor Stoneheart and his ledger, to the High Magistry, to testify to five rigged draws. Elena's name is still on the lot, and the Hollow will know before you reach the gate.",
+          "options": [
+            {
+              "id": "ride_east",
+              "label": "Saddle the horse and ride east to answer it",
+              "serves": [
+                "make_amends",
+                "escape_the_deal"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_gregor_rode_east",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "kingsroad_waystation"
+                }
+              ]
+            },
+            {
+              "id": "run",
+              "label": "Take Elena and the strongbox and run before the Hollow hears",
+              "serves": [
+                "get_elena_away"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_gregor_fled",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "forest_path"
+                }
+              ]
+            },
+            {
+              "id": "ask_the_stranger",
+              "label": "Ask the stranger whether a man who testifies lives to ride home",
+              "serves": [
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Beg the stranger to tell him honestly whether a man who testifies in the Capitol lives to ride home."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mag_elena_and_the_summons",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Your father has a summons to the Capitol to read out every name he sent up the ridge in your place. Men who testify against the Hollow do not come back. If he goes, he goes alone, unless you go too.",
+          "options": [
+            {
+              "id": "go_with_him",
+              "label": "Tell him she is riding east beside him, and mean it",
+              "serves": [
+                "protect_father",
+                "see_beyond_thornhaven",
+                "choose_my_own_life"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger she is going east with her father to the High Magistry, and that nobody is going to stop her."
+                }
+              ]
+            },
+            {
+              "id": "hide_him",
+              "label": "Ask the stranger to help her hide her father until the rider gives up",
+              "serves": [
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger, low and fast, to help her hide her father until the Magistry's rider gives up and goes home."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Let him decide; it is his reckoning",
+              "serves": [
+                "learn_the_truth",
+                "choose_my_own_life"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_elena_takes_the_road",
+          "type": "react",
+          "trigger": "on_flag:fev_elena_left_home",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "You have walked out through the village gate on a road of your own. The same week, your father's summons came. The road east goes to the Capitol, and to him.",
+          "options": [
+            {
+              "id": "go_east",
+              "label": "Take the Kingsroad east and be in the Capitol when he testifies",
+              "serves": [
+                "see_beyond_thornhaven",
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "kingsroad_waystation"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger she is taking the Kingsroad east, and will be in the Magistry's gallery when her father speaks."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep to her own road; he chose his",
+              "serves": [
+                "choose_my_own_life"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_aldric_escorts_the_witness",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Gregor has a Magistry summons. Alone on the Kingsroad he is a dead man; the Hollow cannot let five years of Tithe names be read in a crown court.",
+          "options": [
+            {
+              "id": "escort_him",
+              "label": "Ride east with Gregor himself and leave the square to his men",
+              "serves": [
+                "expose_the_traitor"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_gregor_rode_east",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "aldric",
+                  "location": "kingsroad_waystation"
+                }
+              ],
+              "aids": "gregor"
+            },
+            {
+              "id": "send_two_men",
+              "label": "Send two of his six with Gregor as far as the Halfway House",
+              "serves": [
+                "expose_the_traitor",
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_gregor_rode_east",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "kingsroad_waystation"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger to ride with Gregor and two peacekeepers as far as the Halfway House; he cannot spare more."
+                }
+              ],
+              "aids": "gregor"
+            },
+            {
+              "id": "hold",
+              "label": "Keep his men home; the Hollow is here, not on the road",
+              "serves": [
+                "break_iron_hollow"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_renna_takes_the_witness",
+          "type": "aid",
+          "trigger": "on_flag:tithe_rangers_arrive",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Your rangers have reached the valley, and a merchant summoned to the High Magistry to testify to the Tithe needs an escort only the crown can give.",
+          "options": [
+            {
+              "id": "escort_him",
+              "label": "Give Gregor four riders and the crown's colours to the Capitol",
+              "serves": [
+                "refuse_a_scapegoat",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_gregor_rode_east",
+                  "value": true
+                }
+              ],
+              "aids": "gregor"
+            },
+            {
+              "id": "leave_it_to_aldric",
+              "label": "Leave the merchant to the valley's own peacekeepers",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_mira_marks_the_merchant",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Gregor has a summons to testify. He thinks you only the messenger, but he knows the salt packets, the folded names, the mill nights and Varn.",
+          "options": [
+            {
+              "id": "watch_the_road",
+              "label": "Have Varn's men watch the Kingsroad for a merchant riding east",
+              "serves": [
+                "burn_gregor_first",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Talk to the stranger about the Kingsroad: how long it is, how lonely past the Halfway House, how often merchants never arrive."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "let_him_go",
+              "label": "Let him ride; he never saw who gave the orders",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_road_east",
+      "act": 2,
+      "title": "The Halfway House",
+      "summary": "Act II. Every rider east stops at Old Wren's Halfway House. Gregor arrives with a summons in his coat; two hard men who are not drovers arrive after him.",
+      "location": "kingsroad_waystation",
+      "requires": [
+        "mag_gregor_rode_east",
+        "!hc_varn_dead",
+        "!des_varn_warrant_served"
+      ],
+      "resolves_on": [
+        "mag_witness_arrived",
+        "mag_witness_lost"
+      ],
+      "hooks": [
+        {
+          "id": "mag_wren_hides_the_merchant",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "A frightened Thornhaven merchant has taken a bed with a Magistry summons in his coat. Two hard men who are not drovers asked after him at supper.",
+          "options": [
+            {
+              "id": "back_stair",
+              "label": "Send him out by the back stair before dawn, on her own horse",
+              "serves": [
+                "keep_the_road_open",
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_witness_arrived",
+                  "value": true
+                }
+              ],
+              "aids": "gregor"
+            },
+            {
+              "id": "read_his_summons",
+              "label": "Read his summons while he sleeps, and tell the stranger who is after him",
+              "serves": [
+                "read_every_letter"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger a merchant came through with a Magistry summons, and that two men asked after him who were not drovers."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep out of it; trouble that is not hers stays outside her door",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_varn_on_the_kingsroad",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The merchant is riding east to read his ledger of draws to a Capitol judge, and a court that hears of the Tithe will ask where the carts go. He is half a day ahead, and the Halfway House is where riders stop.",
+          "options": [
+            {
+              "id": "kill_him",
+              "label": "Ride him down past the Halfway House and leave him in a ditch",
+              "serves": [
+                "be_feared",
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "kingsroad_waystation"
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "mag_witness_lost",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "drag_him_back",
+              "label": "Take him off the road and back to the Hollow alive",
+              "serves": [
+                "keep_gregor_on_the_hook"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "kingsroad_waystation"
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "mag_witness_lost",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "let_him_ride",
+              "label": "Let him go; a Capitol rope for the merchant is no skin off the Hollow",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_aldric_hears_of_the_road",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Word has come back from the Halfway House about Gregor's ride east, good or bad.",
+          "options": [
+            {
+              "id": "tell_the_stranger",
+              "label": "Tell the stranger what the road cost, and who he means to make pay for it",
+              "serves": [
+                "expose_the_traitor"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger what word came back from the Halfway House, and that he means to know whose men were on that road."
+                }
+              ]
+            },
+            {
+              "id": "swear_on_varn",
+              "label": "Swear to see Varn answer for the Kingsroad as well as for Marcus",
+              "serves": [
+                "bring_varn_to_justice"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "aldric",
+                  "want": "bring_varn_to_justice",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_regents_purse",
+      "act": 2,
+      "title": "The Regent's Purse",
+      "summary": "Act II. The Lord Protector does not forbid trials. He offers things: a nephew's freedom to a judge, a purse to a stranger, a quiet word to a guildmaster.",
+      "location": "capitol_palace",
+      "requires": [
+        "mag_summons_issued",
+        "!mag_verdict_given"
+      ],
+      "resolves_on": [
+        "mag_player_took_regents_coin"
+      ],
+      "hooks": [
+        {
+          "id": "mag_edric_offers_the_nephew",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Vane's nephew lost the valley's petitions against the Tithe for Guild coin. You can bury that for him, or let it come out in open court with Vane's name on it.",
+          "options": [
+            {
+              "id": "offer_the_bargain",
+              "label": "Offer Vane his nephew's freedom for a shorter, quieter trial",
+              "serves": [
+                "keep_the_magistry_quiet"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "corwin",
+                  "want": "save_the_nephew",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger, carefully, that the regent offered him his nephew's freedom for a quieter trial, and ask what an honest man does."
+                }
+              ]
+            },
+            {
+              "id": "buy_the_stranger",
+              "label": "Offer the stranger a purse to bring the ledger to the palace first",
+              "serves": [
+                "keep_the_magistry_quiet",
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Offer the stranger a purse to let Gregor's ledger of draws reach the palace before it reaches the court."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Let the trial run; whatever it digs up, it digs up Ashdown and the Guild first",
+              "serves": [
+                "curb_the_great_houses"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_corwin_answers_the_regent",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The Lord Protector has offered to make Tobias's crime disappear if the valley's trial is short and private.",
+          "options": [
+            {
+              "id": "refuse",
+              "label": "Refuse him to his face: the law has no nephews",
+              "serves": [
+                "law_applied_evenly",
+                "check_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_nephew_bargain_refused",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "accept",
+              "label": "Accept, and hate himself for it",
+              "serves": [
+                "save_the_nephew"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_nephew_bargain_struck",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mag_hollis_buys_the_ledger",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "A merchant's ledger is coming east. It names the Hollow's deliveries, and a court that follows them follows the white salt to your warehouses. Whoever holds it before the court does is the man the court needs.",
+          "options": [
+            {
+              "id": "buy_it",
+              "label": "Offer the stranger Guild silver for the ledger, for safekeeping among friends",
+              "serves": [
+                "hold_every_patron",
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Offer the stranger Guild silver for Gregor's ledger, for safekeeping, he says, among friends of the crown."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Wait; the regent wants it buried as much as he does",
+              "serves": [
+                "a_seat_on_the_council"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_open_court",
+      "act": 3,
+      "title": "Open Court",
+      "summary": "Act III. The High Magistry's gallery is full. The merchant's ledger of rigged draws is open on the table, and the court will hear who was sold into the Pit, who dug the salt, and who washed its coin.",
+      "location": "capitol_magistry",
+      "requires": [
+        "mag_trial_called",
+        "!mag_verdict_given"
+      ],
+      "resolves_on": [
+        "mag_player_testified"
+      ],
+      "hooks": [
+        {
+          "id": "mag_gregor_testifies",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "You stand in the High Magistry with your ledger open. Every page is a year, a tile palmed and a neighbour's name, and every one was for Elena. Hesk Marlow's was your own choosing.",
+          "options": [
+            {
+              "id": "tell_it_all",
+              "label": "Read the ledger aloud: every draw, every name, and Hesk Marlow's as his own",
+              "serves": [
+                "make_amends",
+                "escape_the_deal"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_gregor_testified",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "only_himself",
+              "label": "Confess his own guilt and nothing that leads back into the forest",
+              "serves": [
+                "protect_elena",
+                "keep_the_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger he will confess to the court what he did, and not one name more, because names are how daughters die."
+                }
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "Stand mute and let the ledger speak for him",
+              "serves": [
+                "protect_elena"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_elena_pleads",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Your father stands before the High Magistrate for the names he sent up the ridge in your place. The court will decide whether he hangs. You came a long way to be in this room.",
+          "options": [
+            {
+              "id": "plead",
+              "label": "Stand up in the gallery and ask the court for her father's life",
+              "serves": [
+                "protect_father",
+                "choose_my_own_life"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_mercy_pleaded",
+                  "value": true
+                }
+              ],
+              "aids": "gregor"
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing and hold his eyes from the gallery",
+              "serves": [
+                "protect_father"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_edric_and_the_gallery",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Vane's trial is open and the city is in the gallery. If the court asks where the Tithe's taken went, it will ask what the crown's land at Greystone is used for. Everything said here will be at the Lantern Market by nightfall.",
+          "options": [
+            {
+              "id": "clear_the_gallery",
+              "label": "Send a palace clerk to ask that the gallery be cleared for the crown's safety",
+              "serves": [
+                "keep_the_magistry_quiet"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger, as a friend of the crown, to remember that some things said in court are better not repeated in the market."
+                }
+              ]
+            },
+            {
+              "id": "feed_it_the_guild",
+              "label": "Let it run, and make sure the Guild is what the city hears about",
+              "serves": [
+                "curb_the_great_houses",
+                "fill_the_treasury"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Tell the stranger that the Guild's warehouses interest the crown a great deal, and ask what they saw of them."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Sit in the royal box and look surprised",
+              "serves": [
+                "stay_indispensable"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_corwin_gives_verdict",
+          "type": "aid",
+          "trigger": "on_flag:mag_player_testified",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The stranger has sworn to what they found in Thornhaven. With the ledger of rigged draws and their word, you can give the verdict you have waited your whole life to give.",
+          "options": [
+            {
+              "id": "all_of_it",
+              "label": "Spare the merchant's life for his ledger, and name the Guild and his own nephew in the same verdict",
+              "serves": [
+                "law_applied_evenly",
+                "try_it_in_the_open",
+                "hear_gregors_ledger"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_guild_named",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "mag_nephew_sentenced",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "mag_verdict_given",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "spare_tobias",
+              "label": "Spare the merchant's life, name the Guild, and leave Tobias out of the record",
+              "serves": [
+                "save_the_nephew",
+                "hear_gregors_ledger"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_guild_named",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "mag_verdict_given",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "the_merchant_alone",
+              "label": "Judge the merchant alone and keep the Guild for another court",
+              "serves": [
+                "hear_gregors_ledger"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_verdict_given",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mag_corwin_reads_the_names",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The merchant's ledger names five autumns and five neighbours: Corin Ashby, Davin, Hesk Marlow, Willa Brand, and this year's. A crown court has never written down that a village was made to sell its own.",
+          "options": [
+            {
+              "id": "into_the_record",
+              "label": "Read every name into the court's record before any verdict",
+              "serves": [
+                "law_applied_evenly",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_taken_on_the_record",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger the names of the Tithe's taken are in the crown's record now, and that a record outlives a judge with two winters left."
+                }
+              ]
+            },
+            {
+              "id": "the_merchant_first",
+              "label": "Try the merchant first and leave the names for when the court knows where they went",
+              "serves": [
+                "hear_gregors_ledger"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Ask the stranger whether anyone knows where the Tithe's carts go, and whether anyone the lot took is still alive to say so."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing yet; the gallery is not ready to hear it",
+              "serves": [
+                "save_the_nephew"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_corwin_hears_the_tally_book",
+          "type": "reveal",
+          "trigger": "on_flag:pit_tally_book_found",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "A tally book has come out of a seam beyond the smugglers' ridge: columns of white salt and the names of the people who dug it, kept in a neat, practised hand. It answers where the ledger's names went.",
+          "options": [
+            {
+              "id": "enter_it",
+              "label": "Enter the tally book beside the ledger and read where the salt went",
+              "serves": [
+                "law_applied_evenly",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_taken_on_the_record",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "mag_cure_traced_to_the_pit",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "seal_it",
+              "label": "Seal it until he can learn whose hand kept it",
+              "serves": [
+                "hear_gregors_ledger"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Ask the stranger whose neat hand kept the Pit's tally book; a court that names the hand names the Boss."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mag_corwin_hears_the_taken",
+          "type": "reveal",
+          "trigger": "on_flag:tn_taken_freed",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The people the Tithe took have come down from the Pit alive, with chain-marks on their ankles. A witness who dug the salt is worth more to this court than any ledger.",
+          "options": [
+            {
+              "id": "send_for_them",
+              "label": "Send for one of the taken to swear to the Pit before the court",
+              "serves": [
+                "law_applied_evenly",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_taken_on_the_record",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "mag_cure_traced_to_the_pit",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Ask the stranger to bring one of the freed diggers east to swear to the Pit; he will pay the road and post a guard on the inn."
+                }
+              ]
+            },
+            {
+              "id": "spare_them",
+              "label": "Spare them the road; the merchant's word will have to do",
+              "serves": [
+                "hear_gregors_ledger"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "corwin",
+                  "dimension": "respect",
+                  "delta": 5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mag_corwin_reads_the_fence_ledger",
+          "type": "reveal",
+          "trigger": "on_flag:fence_ledger_taken",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The Guild's own patron ledger is out of Hollis Marrow's counting room. Its pages match the merchant's deliveries to the Hollow, and its salt bought from Greystone's carters, entry for entry.",
+          "options": [
+            {
+              "id": "enter_it",
+              "label": "Enter the Guild's ledger beside the merchant's and read the matches aloud",
+              "serves": [
+                "law_applied_evenly",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_guild_named",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "hollis"
+              ]
+            },
+            {
+              "id": "seal_it",
+              "label": "Seal it for the verdict; a judge who speaks first loses his court",
+              "serves": [
+                "hear_gregors_ledger"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger he holds the Guild's own ledger now, and that it will be read in its turn and not before."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mag_hollis_sells_the_lady",
+          "type": "betray",
+          "trigger": "on_flag:mag_gregor_testified",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The merchant read his ledger aloud, and the Hollow's deliveries lead to the Guild's warehouses. Somebody has to be worse than the Guild, and you hold a page that says who.",
+          "options": [
+            {
+              "id": "give_up_ashdown",
+              "label": "Send the court Lady Ashdown's page: she paid for the Hollow's 'protection'",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_ashdown_tied_to_hollow",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "seraphine"
+              ]
+            },
+            {
+              "id": "blame_the_clerk",
+              "label": "Let the court have Tobias Vane's pay-book and nothing else",
+              "serves": [
+                "keep_the_guild_clean",
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger the Guild was robbed by a dishonest clerk, and that the Guild is cooperating fully with the court."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep every page; the patrons are worth more alive and owing",
+              "serves": [
+                "hold_every_patron"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_edric_hears_the_salt",
+          "type": "scheme",
+          "trigger": "on_flag:mag_cure_traced_to_the_pit",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "The court has heard that the Cathedral's rationed fever cure is dug by the Tithe's taken, on crown land the Guild leases. That is the crown's mercy, and it was dug in chains.",
+          "options": [
+            {
+              "id": "own_it",
+              "label": "Let the court have the Guild and the Cathedral, and come out against them first",
+              "serves": [
+                "curb_the_great_houses",
+                "win_a_victory"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Tell the stranger the crown knew nothing of what was dug on its land, and that the Guild's lease is ended as of tonight."
+                },
+                {
+                  "type": "shift_want",
+                  "npc": "edric",
+                  "want": "keep_the_magistry_quiet",
+                  "delta": -1
+                }
+              ]
+            },
+            {
+              "id": "close_the_gallery",
+              "label": "Ask that the rest be heard in chambers, for the peace of the city",
+              "serves": [
+                "keep_the_magistry_quiet",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger to say nothing in the market of where the fever cure comes from; a city that hears it riots in the Cathedral."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Sit in the royal box and work out what the salt is worth",
+              "serves": [
+                "stay_indispensable"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_closed_chamber",
+      "act": 3,
+      "title": "The Closed Chamber",
+      "summary": "Act III. The valley's ledger of rigged draws is heard in a palace chamber with no gallery and no record. The merchant is there, and so is the Lord Protector. The High Magistrate is only a guest. The chamber ends one of two ways: the stranger keeps the regent's purse and their silence, or swears to what they found.",
+      "location": "capitol_palace",
+      "requires": [
+        "mag_quiet_hearing_set",
+        "mag_gregor_rode_east",
+        "!mag_witness_lost",
+        "!mag_trial_called",
+        "!mag_verdict_given"
+      ],
+      "resolves_on": [
+        "mag_player_took_regents_coin",
+        "mag_player_testified"
+      ],
+      "hooks": [
+        {
+          "id": "mag_edric_ends_it_quietly",
+          "type": "scheme",
+          "trigger": "on_flag:mag_player_took_regents_coin",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "The merchant is in a palace chamber with his ledger of Tithe names and no gallery, and the stranger has taken your purse and will say nothing. You can end the valley's trouble by dawn, and nobody need ever ask what Greystone's crown land is used for.",
+          "options": [
+            {
+              "id": "quiet_rope",
+              "label": "Hang the merchant in the yard at dawn and keep the ledger and its names in the palace",
+              "serves": [
+                "keep_the_magistry_quiet",
+                "win_a_victory"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_gregor_hanged_quietly",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "mag_verdict_given",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "quiet_exile",
+              "label": "Send the merchant home with his life and a warning, and keep the ledger as a leash",
+              "serves": [
+                "use_the_hollow",
+                "keep_the_magistry_quiet"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_verdict_given",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep him in the chamber while the regent decides what he is worth",
+              "serves": [
+                "stay_indispensable"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_corwin_will_not_sit_quiet",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "You are a guest in a palace chamber hearing a matter that belongs in your court: five villagers sold to a gang, and nobody asking where. The merchant keeps looking at you.",
+          "options": [
+            {
+              "id": "break_the_seal",
+              "label": "Walk out, post the trial on the Magistry door and summon the merchant there",
+              "serves": [
+                "law_applied_evenly",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_trial_called",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "sit_quiet",
+              "label": "Stay, and keep Tobias's name out of the room",
+              "serves": [
+                "save_the_nephew"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_corwin_hears_the_oath",
+          "type": "intercept",
+          "trigger": "on_flag:mag_player_testified",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The stranger has sworn, in a palace chamber with no record, to what they found in Thornhaven. An oath like that belongs in a court with a gallery.",
+          "options": [
+            {
+              "id": "to_open_court",
+              "label": "Take the oath and the merchant out of the chamber and call the trial open in the High Magistry",
+              "serves": [
+                "law_applied_evenly",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_trial_called",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "to_open_court_tonight",
+              "label": "Call the trial open tonight, before the regent can find a reason it should wait",
+              "serves": [
+                "check_the_regent",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_trial_called",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger their oath will be heard again tomorrow in open court, and ask them to stand by every word of it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mag_corwin_hears_the_crown_bought",
+          "type": "intercept",
+          "trigger": "on_flag:reg_crown_buys_hollow",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The crown has struck a quiet bargain with whoever runs Iron Hollow and its Tithe. The man asking you to keep the valley's trial quiet is the man who signed it.",
+          "options": [
+            {
+              "id": "open_it",
+              "label": "Call the trial open in the High Magistry, today",
+              "serves": [
+                "check_the_regent",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_trial_called",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Wait until he can prove who signed it",
+              "serves": [
+                "law_applied_evenly"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mag_elena_in_the_chamber",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "They have your father in a palace room with no gallery. You talked your way to the door.",
+          "options": [
+            {
+              "id": "plead",
+              "label": "Push past the guard and ask the Lord Protector for her father's life",
+              "serves": [
+                "protect_father",
+                "never_be_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mag_mercy_pleaded",
+                  "value": true
+                }
+              ],
+              "aids": "gregor"
+            },
+            {
+              "id": "fetch_the_stranger",
+              "label": "Run for the stranger before the chamber decides",
+              "serves": [
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Beg the stranger to come to the palace now; they are hearing her father in a room with no gallery."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "the_names_in_the_record",
+      "title": "The Names in the Record",
+      "requires": [
+        "mag_verdict_given",
+        "mag_taken_on_the_record",
+        "mag_cure_traced_to_the_pit",
+        "mag_player_testified",
+        "!mag_witness_lost"
+      ],
+      "summary": "The High Magistry writes down what no crown court ever has: five names sold up the ridge, and the Capitol's fever cure dug by them in chains. The Guild loses Greystone, the Cathedral's cabinet is opened, and the regent learns the law can reach the crown's own land."
+    },
+    {
+      "id": "the_ledger_read_aloud",
+      "title": "The Ledger Read Aloud",
+      "requires": [
+        "mag_verdict_given",
+        "mag_guild_named",
+        "mag_player_testified",
+        "!mag_witness_lost"
+      ],
+      "summary": "Gregor lives to read his ledger of rigged draws in open court, and the High Magistry names the Guild that washed the Hollow's coin and salt. The regent wanted it quiet; the whole Lantern Market heard it by nightfall."
+    },
+    {
+      "id": "the_quiet_rope",
+      "title": "The Quiet Rope",
+      "requires": [
+        "mag_verdict_given",
+        "mag_gregor_hanged_quietly",
+        "mag_player_took_regents_coin"
+      ],
+      "summary": "The stranger took the regent's purse, and the merchant hanged in the palace yard at dawn with no gallery. The ledger sits in the Lord Protector's desk, and the crown owns every name the Tithe took."
+    },
+    {
+      "id": "a_verdict_on_paper",
+      "title": "A Verdict on Paper",
+      "requires": [
+        "mag_verdict_given",
+        "mag_player_testified"
+      ],
+      "summary": "The court gives its verdict on the stranger's word and whatever pages survived the road. It is law, and it is on the record. It is not everything Corwin Vane wanted, and he does not have two more winters to try again."
+    },
+    {
+      "id": "the_hidden_witness",
+      "title": "The Hidden Witness",
+      "requires": [
+        "mag_player_hid_gregor",
+        "!mag_verdict_given"
+      ],
+      "summary": "The stranger hid Gregor until the Magistry's rider went home. Elena keeps her father, the ledger of rigged draws never reaches a court, and the High Magistrate's trial of the Tithe dies for want of a witness."
+    }
+  ]
+}

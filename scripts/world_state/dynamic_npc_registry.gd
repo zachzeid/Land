@@ -1,7 +1,29 @@
 extends Node
-## DynamicNPCRegistry - Tracks and auto-generates NPCs referenced in dialogue/story
-## When NPCs like "bandits" are mentioned, this system creates entries for them
-## so they can appear later with proper assets
+## DynamicNPCRegistry - Home of the generic NPC system (docs/WORLD_SCHEMA.md §9) and the tracker of
+## NPC types referenced in dialogue/story
+## - `generics` (scripts/generics/generic_manager.gd): archetypes, seeded instances, layers,
+##   relationship decay for every NPC, significance, promotion and demotion
+## - dialogue references ("bandits", "a guard") are still recorded; turning one into an NPC now makes
+##   a generic instance from the matching archetype (seeded name from names.json, reused sprites),
+##   so nothing is queued for per-NPC sprite generation any more
+
+const GenericManagerScript = preload("res://scripts/generics/generic_manager.gd")
+
+## Maps the old template types onto archetype id keywords (first archetype whose id contains one)
+const TYPE_ARCHETYPE_HINTS = {
+	"bandit": ["bandit", "outlaw", "cutthroat", "raider"],
+	"guard": ["guard", "watch", "sentry", "peacekeeper"],
+	"merchant": ["merchant", "trader", "pedlar", "peddler", "hawker"],
+	"villager": ["villager", "farmer", "labourer", "peasant", "cottager"],
+	"soldier": ["soldier", "garrison", "footman", "man_at_arms"],
+	"noble": ["noble", "courtier", "gentry"],
+	"thief": ["thief", "cutpurse", "urchin", "fence"],
+	"bard": ["bard", "minstrel", "player", "singer"],
+	"priest": ["priest", "monk", "acolyte", "pilgrim", "novice"],
+}
+
+## The generic NPC system (GenericManager)
+var generics: Node = null
 
 ## NPC type templates for auto-generation
 const NPC_TEMPLATES = {
@@ -85,8 +107,28 @@ signal dynamic_npc_created(npc_id: String, npc_data: Dictionary)
 var _id_counter: int = 0
 
 func _ready():
+	generics = GenericManagerScript.new()
+	generics.name = "Generics"
+	add_child(generics)
 	# Scan existing world knowledge for referenced NPCs
 	_scan_world_knowledge_for_references()
+
+## Generic NPC system passthroughs (ContextBuilder, BaseNPC, NpcSpawner use these)
+func is_generic(npc_id: String) -> bool:
+	return generics != null and generics.is_generic(npc_id)
+
+func get_generic_prompt_block(npc_id: String, include_soul: bool = true) -> String:
+	return generics.get_prompt_block(npc_id, include_soul) if generics else ""
+
+## The archetype that best fits an old template type ("" when none is loaded)
+func archetype_for_type(npc_type: String) -> String:
+	if generics == null:
+		return ""
+	for hint in TYPE_ARCHETYPE_HINTS.get(npc_type, [npc_type]):
+		for arch_id in generics.archetypes:
+			if hint in str(arch_id):
+				return arch_id
+	return ""
 
 ## Scan WorldKnowledge for NPC references that need generation
 func _scan_world_knowledge_for_references():
@@ -179,6 +221,27 @@ func generate_npc_from_reference(reference_id: String, custom_name: String = "",
 	var npc_type = ref.type
 	var template = NPC_TEMPLATES.get(npc_type, NPC_TEMPLATES.villager)
 
+	# A loaded archetype fits: the referenced NPC becomes a generic instance (seeded, canon name,
+	# reused sprite). Its home is the referencing context's location when known
+	var arch_id = archetype_for_type(npc_type)
+	if arch_id != "" and custom_name.is_empty():
+		var arch = generics.get_archetype(arch_id)
+		var location = str(ref.context.get("location", ""))
+		var n = generics.get_ids().filter(func(id): return generics.get_instance(id).archetype_id == arch_id).size() + 1
+		while generics.get_instance("gen_%s_%d" % [arch_id, n]) != null:
+			n += 1
+		var inst = generics.create_instance(arch, location, n)
+		var generic_data = {"npc_id": inst.id, "name": inst.name, "full_name": inst.name, "type": npc_type,
+			"occupation": arch.title.to_lower(), "archetype": arch_id, "is_hostile": template.default_hostility,
+			"source_reference": reference_id, "context": ref.context, "generated_at": Time.get_unix_time_from_system(),
+			"asset_status": "ready", "sprite": generics.sprite_for(inst.id)}
+		generated_npcs[inst.id] = generic_data
+		ref.npc_data = generic_data
+		ref.asset_status = "generated"
+		print("[DynamicNPCRegistry] Reference %s became generic %s (%s)" % [reference_id, inst.name, inst.id])
+		dynamic_npc_created.emit(inst.id, generic_data)
+		return generic_data
+
 	# Generate unique NPC ID
 	var npc_id = "%s_%d" % [npc_type, _id_counter]
 	_id_counter += 1
@@ -209,6 +272,10 @@ func generate_npc_from_reference(reference_id: String, custom_name: String = "",
 
 	# Store in generated NPCs
 	generated_npcs[npc_id] = npc_data
+	# Its name is canon now, or WorldEvents would reject every memory that mentions it
+	var world_events = get_node_or_null("/root/WorldEvents")
+	if world_events and world_events.has_method("register_npc_name"):
+		world_events.register_npc_name(npc_name, npc_id)
 
 	# Update reference
 	ref.npc_data = npc_data

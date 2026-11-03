@@ -1,0 +1,2017 @@
+{
+  "id": "fence_of_highmarch",
+  "title": "The Fence of Highmarch",
+  "summary": "Where do the Hollow's plunder and its white salt go? Plunder comes off the Ferrisford barges into the Guild's Warehouse Seven and out the back door to Rook's room under the cooper's; the salt the Tithe's taken dig in the Pit comes east in Greystone's ore carts to the same Guild, and on to the Cathedral. Whoever holds the Guildmaster's black ledger, salt page and all, holds half the Capitol.",
+  "prefix": "fence_",
+  "act_span": [
+    1,
+    3
+  ],
+  "flags": {
+    "fence_bales_followed": "The stranger followed the wire-bound western bales from the Guild's Warehouse Seven to a cooper's shop in the Warrens.",
+    "fence_bales_relabelled": "Guild clerks chalked the wire-bound western bales in Warehouse Seven as estate salvage before anyone could read them otherwise.",
+    "fence_warehouse_watched": "Questions began to be asked on the River Quarter wharf about what Warehouse Seven took in off the western barges.",
+    "fence_rook_warned": "A Guild porter told Rook, smiling, that the river runs deep at the Warrens steps.",
+    "fence_rook_struck_a_deal": "Rook made up her mind to sell what she knew of the Guild's back door to whoever could pay her way out of the Warrens.",
+    "fence_ledger_whispered": "Word ran through the Warrens that the Guildmaster kept a small black ledger of every patron he had served off the books.",
+    "fence_ledger_taken": "Hollis Marrow's black ledger of patrons was lifted out of his keeping, and half the Capitol's secrets went with it.",
+    "fence_ledger_back_with_hollis": "Hollis Marrow's black ledger ended in his own keeping, locked where no Warrens hand could reach it.",
+    "fence_rook_sold_to_hollow": "Hollis Marrow let the Hollow's factor know that the Warrens fence called Rook had been nosing at his ledger.",
+    "fence_burn_ordered": "A letter under plain tallow went east from the valley, ordering Warehouse Seven burned with every Hollow bale inside it.",
+    "fence_river_kept": "The Hollow's western barges were moved to a new night and a new wharf, and the river road kept running.",
+    "fence_river_decided": "The Hollow settled what was to become of its river road to the Capitol.",
+    "fence_warehouse_fired": "Warehouse Seven burned on the River Quarter wharf one night, with the Hollow's western bales inside.",
+    "fence_route_burned": "The Hollow's river road to the Capitol was burned out, and no western barge unloaded at the Guild's Warehouse Seven again.",
+    "fence_route_saved": "Warehouse Seven stood, and the Hollow's barges went on unloading at the Guild's wharf by night.",
+    "fence_river_reckoned": "The River Quarter learned what had become of Warehouse Seven and the western barges.",
+    "fence_rook_hunted": "Guild porters went into the Warrens with clubs, asking for the fence called Rook by name.",
+    "fence_hollow_hunts_the_book": "The Hollow sent word into the Warrens that whoever held the Guildmaster's black ledger was to be found.",
+    "fence_ledger_to_magistry": "The stranger carried the Guildmaster's black ledger up Palace Hill and laid it before the High Magistrate.",
+    "fence_ledger_left_with_rook": "The stranger left the Guildmaster's black ledger in Rook's hands, as her price for getting out of the Warrens.",
+    "fence_player_on_the_quay": "The stranger kept watch on the River Quarter wharf outside Warehouse Seven through the night its fate was settled, and saw it with their own eyes.",
+    "fence_ledger_let_go": "The stranger let the Guildmaster's black ledger go back into his keeping, and walked away from what it could have done.",
+    "fence_salt_page_read": "The Guildmaster's black ledger was read to its salt page: white salt bought by the sack from the Hollow's factor, carted east from Greystone among the ore, and sold on to the Cathedral as the fever cure."
+  },
+  "player_flags": [
+    "fence_bales_followed",
+    "fence_ledger_to_magistry",
+    "fence_ledger_left_with_rook",
+    "fence_player_on_the_quay",
+    "fence_ledger_let_go"
+  ],
+  "crossovers": [
+    "ih_supply_line_cut",
+    "hc_varn_ascendant",
+    "ford_tally_given",
+    "ford_crossing_seized",
+    "mag_trial_called",
+    "tn_taken_alive_known",
+    "tn_taken_freed"
+  ],
+  "beats": [
+    {
+      "id": "bales_at_warehouse_seven",
+      "act": 1,
+      "title": "Warehouse Seven",
+      "summary": "The wire-bound bales from the Ferrisford quay come off the night barge at the Guild's River Quarter wharf and go into Warehouse Seven. Some of them come out again by the back door.",
+      "location": "capitol_docks",
+      "requires": [
+        "ferrisford_unmarked_cargo_seen",
+        "!fence_route_burned"
+      ],
+      "resolves_on": [
+        "fence_bales_followed",
+        "fence_bales_relabelled"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "fence_warehouse_watched",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "hollis_chalks_the_bales",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Your factor at Ferrisford writes that a stranger was poking at the western bales on the quay. Those bales come off the barge at your wharf and into Warehouse Seven. Wire-bound. Unstamped. Somebody should have stamped them.",
+          "options": [
+            {
+              "id": "relabel",
+              "label": "Have the clerks chalk the bales as estate salvage before dawn",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_bales_relabelled",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "move_the_hot_ones",
+              "label": "Send the hottest crates on to Rook's back room tonight",
+              "serves": [
+                "keep_rook_useful",
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger, if they come sniffing, that the Guild sends her nothing and Warehouse Seven is just a warehouse."
+                }
+              ]
+            },
+            {
+              "id": "let_them_look",
+              "label": "Let them look. Nobody reads a bale, and the river keeps moving",
+              "serves": [
+                "turn_a_profit",
+                "keep_the_river_moving"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "rook_spots_the_watcher",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "Pip, running errands on the wharf, hears the bargemen grumble about a stranger at Ferrisford who poked at the wire-bound bales. Those bales end in Warehouse Seven, and the hottest of them at your door.",
+          "options": [
+            {
+              "id": "send_pip",
+              "label": "Set Pip to watch for the stranger on the wharf and learn their business",
+              "serves": [
+                "sell_what_i_know",
+                "get_out_rich"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Ask the stranger, grinning, why they care so much about wire-bound bales, and what an answer is worth to them."
+                }
+              ]
+            },
+            {
+              "id": "shift_the_parcel",
+              "label": "Shift the last Hollow parcel out of the back room to the cooper's loft",
+              "serves": [
+                "get_out_alive",
+                "keep_the_fence_open"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger her back room is a cooper's store and always has been, and smile like she means it."
+                }
+              ]
+            },
+            {
+              "id": "do_nothing",
+              "label": "Do nothing. Strangers come and go",
+              "serves": [
+                "never_owe_anyone"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "oskar_hears_from_the_bargemen",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "oskar"
+          ],
+          "situation": "Bargemen coming back up the river say the Guild's people at Warehouse Seven have gone jumpy: clerks rechalking bales, porters watching the quay. For the first time in three years, something is pulling at the other end of the rope.",
+          "options": [
+            {
+              "id": "let_himself_hope",
+              "label": "Let himself hope the tally's day is coming",
+              "serves": [
+                "give_the_tally",
+                "avenge_piet"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "oskar",
+                  "want": "give_the_tally",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "fear_it",
+              "label": "Fear it. Questions downriver mean Hollow eyes upriver",
+              "serves": [
+                "keep_my_family"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "oskar",
+                  "want": "keep_my_family",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mira_hears_the_wharf_is_watched",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The Guild's factor writes, days late and nervous: someone has been watching Warehouse Seven. Your coin goes through that warehouse. Your name never has.",
+          "options": [
+            {
+              "id": "ask_the_stranger",
+              "label": "Ask the stranger, innocently, about the Capitol docks",
+              "serves": [
+                "rule_from_shadow",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, wiping a cup, whether they've ever seen the Capitol, and whether it's true the river docks are full of thieves."
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Say nothing and pour",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rooks_back_room",
+      "act": 1,
+      "title": "The Back Room Under the Cooper's",
+      "summary": "The goods too hot for the Guild's warehouses come to a back room in the old flood-wall, kept by a girl called Rook who knows more than she should about whose money is behind the money.",
+      "location": "capitol_warrens",
+      "requires": [
+        "fence_warehouse_watched"
+      ],
+      "resolves_on": [
+        "rook_buyer_slate_seen",
+        "fence_rook_struck_a_deal"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "fence_ledger_whispered",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "rook_names_her_terms",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "Questions about Warehouse Seven are running down the wharf toward your back room under the cooper's. Whoever is asking will find you soon. What they won't know is what you know: whose money is behind the money.",
+          "options": [
+            {
+              "id": "strike_a_deal",
+              "label": "Decide to sell what she knows of the Guild's back door, for coin and a way out",
+              "serves": [
+                "sell_what_i_know",
+                "get_out_rich",
+                "get_out_alive"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_rook_struck_a_deal",
+                  "value": true
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "rook",
+                  "dimension": "trust",
+                  "delta": 5
+                }
+              ],
+              "harms": [
+                "hollis"
+              ]
+            },
+            {
+              "id": "hint_at_the_ledger",
+              "label": "Let slip that the Guildmaster writes in a black book that never leaves his coat",
+              "serves": [
+                "steal_the_ledger",
+                "sell_what_i_know"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger, as if it costs nothing, that the Guildmaster keeps a black book in his coat, and everyone in the Capitol is in it."
+                }
+              ]
+            },
+            {
+              "id": "play_dumb",
+              "label": "Play the cooper's girl and send anyone asking away",
+              "serves": [
+                "keep_the_fence_open",
+                "never_owe_anyone"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "hollis_reminds_rook",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The stranger who watched Warehouse Seven has been seen going down into the Warrens. The fence called Rook knows a great deal, and her silence is something you pay for. Perhaps it needs a reminder.",
+          "options": [
+            {
+              "id": "send_a_porter",
+              "label": "Send a porter to remind Rook, smiling, how deep the river runs at the Warrens steps",
+              "serves": [
+                "keep_rook_useful",
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_rook_warned",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "rook"
+              ]
+            },
+            {
+              "id": "raise_her_cut",
+              "label": "Raise her cut on the hot parcels, quietly",
+              "serves": [
+                "keep_rook_useful",
+                "keep_the_river_moving"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "rook",
+                  "want": "keep_the_fence_open",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "leave_her_be",
+              "label": "Leave her be. Frightened fences talk",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "varn_hears_of_the_fence",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "A Warrens porter on the Hollow's pay writes that the fence who sells the Boss's hottest goods is entertaining a stranger. The Boss's coin runs through that girl's hands.",
+          "options": [
+            {
+              "id": "lean_on_the_girl",
+              "label": "Have the porter tell Rook the Hollow is listening",
+              "serves": [
+                "be_feared",
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger a Hollow porter warned her off today, and that she doesn't scare. Mostly."
+                }
+              ],
+              "harms": [
+                "rook"
+              ]
+            },
+            {
+              "id": "leave_it_to_the_boss",
+              "label": "Leave it. City fences are the Boss's business",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "rook_answers_the_porter",
+          "type": "react",
+          "trigger": "on_flag:fence_rook_warned",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "The Guild porter smiled when he said it: the river runs deep at the Warrens steps. Hollis has never threatened you before. That means he's frightened, and frightened men keep books.",
+          "options": [
+            {
+              "id": "go_to_the_stranger",
+              "label": "Go to the stranger: the Guildmaster just made himself an enemy",
+              "serves": [
+                "steal_the_ledger",
+                "never_owe_anyone"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger the Guildmaster threatened her today, and she's done keeping his secrets for free."
+                },
+                {
+                  "type": "shift_want",
+                  "npc": "rook",
+                  "want": "steal_the_ledger",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "swallow_it",
+              "label": "Swallow it and keep the parcels moving",
+              "serves": [
+                "get_out_alive",
+                "keep_the_fence_open"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "rook",
+                  "want": "get_out_alive",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "move_the_crew",
+              "label": "Move the crew out of the back room for a while",
+              "serves": [
+                "look_after_the_little_ones",
+                "get_out_alive"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "rook",
+                  "location": "capitol_docks"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_black_ledger",
+      "act": 2,
+      "title": "The Black Ledger",
+      "summary": "Hollis Marrow keeps a small black book of every patron he has served off the books: a lady's money for the valley, a fort's wagons of crown arms, a clerk paid to lose papers, and the Hollow's white salt, bought by the sack and sold on to the Cathedral. It never leaves his coat.",
+      "location": "capitol_guildhall",
+      "requires": [
+        "fence_ledger_whispered"
+      ],
+      "resolves_on": [
+        "fence_ledger_taken",
+        "fence_ledger_back_with_hollis"
+      ],
+      "hooks": [
+        {
+          "id": "rook_plans_the_lift",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "The Guildmaster's black book never leaves his coat, except when he hangs the coat in the counting room to take wine with a patron. You've counted the minutes. Four.",
+          "options": [
+            {
+              "id": "with_the_stranger",
+              "label": "Ask the stranger to keep Hollis talking over wine while she works",
+              "serves": [
+                "steal_the_ledger",
+                "get_out_alive",
+                "never_owe_anyone"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Ask the stranger to take wine with the Guildmaster and keep him talking four minutes. She'll see to the coat."
+                }
+              ]
+            },
+            {
+              "id": "lift_it_alone",
+              "label": "Lift the ledger from the coat herself during the wine",
+              "serves": [
+                "steal_the_ledger",
+                "get_out_rich"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_ledger_taken",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "hollis"
+              ]
+            },
+            {
+              "id": "not_worth_the_river",
+              "label": "Leave it. A book isn't worth the river",
+              "serves": [
+                "get_out_alive"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "hollis_guards_his_coat",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "A rumour in the Warrens says the Guildmaster keeps a black book. That rumour should not exist. Someone down there has been counting your pockets.",
+          "options": [
+            {
+              "id": "buy_rook",
+              "label": "Offer Rook a clerk's stool and a clean name, if she forgets what she's seen",
+              "serves": [
+                "keep_rook_useful",
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger the Guildmaster offered her a clerk's stool and a clean name today, and ask whether a girl can trust that."
+                }
+              ]
+            },
+            {
+              "id": "bait_the_coat",
+              "label": "Hang the coat in plain sight with a false book in it, and watch whose hand reaches",
+              "serves": [
+                "hold_every_patron",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Offer the stranger wine in the counting room, friend, hang his coat where they can see it, and watch their hands."
+                }
+              ]
+            },
+            {
+              "id": "carry_on",
+              "label": "Carry on. A man who hides a book admits it exists",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "rook_sees_her_chance",
+          "type": "scheme",
+          "trigger": "on_flag:hollis_ledger_seen",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "The stranger has been in the counting room and seen inside the black book. Now you know which pocket, and that the Guildmaster hasn't noticed. Yet.",
+          "options": [
+            {
+              "id": "lift_it_now",
+              "label": "Lift it tonight, before he notices",
+              "serves": [
+                "steal_the_ledger",
+                "get_out_alive"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_ledger_taken",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "hollis"
+              ]
+            },
+            {
+              "id": "sell_the_pocket",
+              "label": "Sell the stranger the minutes and the door instead, and let them take the risk",
+              "serves": [
+                "get_out_rich",
+                "never_owe_anyone"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Offer the stranger the counting-room door, the four minutes and the right pocket, for five marks, and wish them luck."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hollis_locks_the_book",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The Warrens are still whispering about a black book. Every day it rides in your coat is a day someone can reach for it.",
+          "options": [
+            {
+              "id": "strongroom",
+              "label": "Take the ledger out of his coat and lock it in the Guildhall strongroom",
+              "serves": [
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_ledger_back_with_hollis",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "blame_rook",
+              "label": "Let the Hollow's factor know the Warrens fence has been nosing at his book",
+              "serves": [
+                "hold_every_patron",
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_rook_sold_to_hollow",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "rook"
+              ]
+            },
+            {
+              "id": "keep_it_close",
+              "label": "Keep it close. A coat is harder to rob than a strongroom",
+              "serves": [
+                "turn_a_profit"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_boss_counts_the_river",
+      "act": 2,
+      "title": "The Boss Counts the River",
+      "summary": "Three years of Hollow coin went down the river to the Guild, and the Pit's salt went east to the same counting room by ore cart. Rivers can be followed upstream. In the back of the Rusty Nail, the Boss decides whether her money road runs on or burns.",
+      "location": "thornhaven_tavern",
+      "requires": [
+        "fence_ledger_whispered"
+      ],
+      "resolves_on": [
+        "fence_burn_ordered",
+        "fence_river_kept"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "fence_river_decided",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "mira_weighs_the_river",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The Guild's factor writes that the Warrens whisper of a black book, and that a stranger has been watching Warehouse Seven. Three years of Hollow coin went down that river. Rivers can be followed upstream.",
+          "options": [
+            {
+              "id": "wait_for_word",
+              "label": "Wait for one more letter before deciding anything",
+              "serves": [
+                "keep_the_mask",
+                "rule_from_shadow"
+              ],
+              "effects": []
+            },
+            {
+              "id": "burn_it",
+              "label": "Write east under plain tallow: burn Warehouse Seven with every Hollow bale in it",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_burn_ordered",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "hollis",
+                "rook"
+              ]
+            },
+            {
+              "id": "keep_it_running",
+              "label": "Write that the barges keep coming, on a new night to a new wharf",
+              "serves": [
+                "keep_the_steel_coming"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_river_kept",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mira_reads_the_tally_news",
+          "type": "scheme",
+          "trigger": "on_flag:ford_tally_given",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Word from Ferrisford: the ferryman gave up a tally of every Hollow barge, dated. Match those dates against Warehouse Seven's intake and the river leads straight back up the Kingsroad.",
+          "options": [
+            {
+              "id": "burn_it",
+              "label": "Order Warehouse Seven burned before anyone matches the dates",
+              "serves": [
+                "rule_from_shadow",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_burn_ordered",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "hollis",
+                "rook"
+              ]
+            },
+            {
+              "id": "new_wharf",
+              "label": "Shift the barges to a new night and a new wharf, and keep the coin coming",
+              "serves": [
+                "keep_the_steel_coming"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_river_kept",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mira_hears_of_the_rangers",
+          "type": "scheme",
+          "trigger": "on_flag:ford_crossing_seized",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Rangers sit on the Ferrisford rope. The river road is shut either way. All Warehouse Seven holds now is three years of evidence.",
+          "options": [
+            {
+              "id": "burn_it",
+              "label": "Burn the warehouse so nothing in it leads back",
+              "serves": [
+                "rule_from_shadow",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_burn_ordered",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "hollis",
+                "rook"
+              ]
+            },
+            {
+              "id": "let_it_rot",
+              "label": "Let it rot. Nothing in it bears her name",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mira_without_gregor",
+          "type": "scheme",
+          "trigger": "on_flag:ih_supply_line_cut",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Gregor's line is cut: no more Thornhaven steel or grain by that road. The river and the salt carts out of Greystone are the purses the Hollow has left, and Varn's men eat from them.",
+          "options": [
+            {
+              "id": "keep_the_river",
+              "label": "Keep the river running, whatever the risk",
+              "serves": [
+                "keep_the_steel_coming",
+                "keep_varn_leashed"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_river_kept",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "burn_anyway",
+              "label": "Burn the warehouse anyway; a starving Hollow is better than a hanged Boss",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_burn_ordered",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "hollis",
+                "rook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hollis_keeps_the_barges",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The Hollow's factor has gone quiet since the stranger came to Warehouse Seven. A nervous partner burns things. You would rather move a wharf than lose one.",
+          "options": [
+            {
+              "id": "quiet_season",
+              "label": "Write that the Guild needs a quiet season: no western barges till spring",
+              "serves": [
+                "keep_the_guild_clean",
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger, friend, that the Guild is cutting western trade this season. Bad roads, bad debts, nothing more."
+                }
+              ]
+            },
+            {
+              "id": "new_wharf",
+              "label": "Move the western barges to a new night and the old salt wharf, and write that all is well",
+              "serves": [
+                "keep_the_river_moving"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_river_kept",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Say nothing. The factor will write when he's frightened enough",
+              "serves": [
+                "turn_a_profit"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "varn_takes_the_river",
+          "type": "scheme",
+          "trigger": "on_flag:hc_varn_ascendant",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Iron Hollow answers to you now, and so do its barges. The Capitol coin the widow banked through the Guild is yours to keep, or to burn.",
+          "options": [
+            {
+              "id": "keep_it",
+              "label": "Keep the barges coming; the river is his purse now",
+              "serves": [
+                "take_the_hollow",
+                "arm_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_river_kept",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "burn_her_road",
+              "label": "Burn Warehouse Seven; whatever she banked there dies with her road",
+              "serves": [
+                "be_feared",
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_burn_ordered",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "hollis",
+                "rook",
+                "mira"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mira_after_the_pit",
+          "type": "scheme",
+          "trigger": "on_flag:tn_taken_freed",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The Pit is empty. Corin Ashby and the others walked down the ridge alive, and every one of them can say what they dug and where it went. Warehouse Seven and the Guild's books are the only roads left that lead from that salt back to you.",
+          "options": [
+            {
+              "id": "burn_it",
+              "label": "Order Warehouse Seven burned before anyone follows the salt to the Guild",
+              "serves": [
+                "rule_from_shadow",
+                "keep_the_mask"
+              ],
+              "harms": [
+                "hollis",
+                "rook"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_burn_ordered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "keep_the_river",
+              "label": "Keep the river running; the barges never carried salt, and coin is coin",
+              "serves": [
+                "keep_the_steel_coming",
+                "keep_varn_leashed"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_river_kept",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "sit_still",
+              "label": "Sit still and pour. Nobody in the Pit ever saw her face",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fire_at_warehouse_seven",
+      "act": 3,
+      "title": "Fire on the Wharf",
+      "summary": "Whatever the Boss decided, Warehouse Seven stands at the end of the river road. Hollow men with oil, a Guildmaster with a night-watch, a ferryman upriver and a fence two streets away decide whether it burns. Until the stranger has stood on the wharf and seen it, the River Quarter has only rumours of how the night went.",
+      "location": "capitol_docks",
+      "requires": [
+        "fence_river_decided"
+      ],
+      "resolves_on": [
+        "fence_player_on_the_quay"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "fence_river_reckoned",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "hollis_saves_his_warehouse",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The Hollow's factor has stopped answering, and a porter swears he saw oil jars carried off a western barge. Warehouse Seven is half your river trade.",
+          "options": [
+            {
+              "id": "empty_it_quietly",
+              "label": "Empty the Guild's own goods out and let the Hollow's bales take their chances",
+              "serves": [
+                "keep_the_guild_clean",
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Mention to the stranger, friend, that the Guild has moved its stores off the wharf for the damp season. Nothing more."
+                }
+              ]
+            },
+            {
+              "id": "double_the_watch",
+              "label": "Double the night-watch on Warehouse Seven and keep the western barges coming",
+              "serves": [
+                "keep_the_river_moving"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_route_saved",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "do_nothing",
+              "label": "Do nothing. Porters see oil in every jar",
+              "serves": [
+                "turn_a_profit"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "varn_carries_the_torch",
+          "type": "scheme",
+          "trigger": "on_flag:fence_burn_ordered",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The Boss's order came up the forest path under tallow seal: Warehouse Seven burns, every Hollow bale inside. Your men can be on the River Quarter wharf in three nights.",
+          "options": [
+            {
+              "id": "burn_it",
+              "label": "Send three men down the river with oil and a lantern",
+              "serves": [
+                "keep_the_boss_secret",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_warehouse_fired",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "fence_route_burned",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "hollis",
+                "rook"
+              ]
+            },
+            {
+              "id": "strip_then_burn",
+              "label": "Strip the best crates for the Hollow first, then burn the rest",
+              "serves": [
+                "arm_the_hollow",
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_warehouse_fired",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "fence_route_burned",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the Capitol had a fire on its wharf, and grin as if he lit it."
+                }
+              ],
+              "harms": [
+                "hollis",
+                "rook"
+              ]
+            },
+            {
+              "id": "keep_it_standing",
+              "label": "Don't burn it. Tell her it burned, and keep the river for himself",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_route_saved",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "mira"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "rook_smells_the_oil",
+          "type": "intercept",
+          "trigger": "on_flag:fence_burn_ordered",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "Pip saw Hollow bargemen carry oil jars off a western barge and stack them behind Warehouse Seven. Your crew sleeps two streets away.",
+          "options": [
+            {
+              "id": "warn_the_watch",
+              "label": "Warn the Guild's night-watch and save the warehouse",
+              "serves": [
+                "keep_the_fence_open",
+                "look_after_the_little_ones"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_route_saved",
+                  "value": true
+                }
+              ],
+              "aids": "hollis"
+            },
+            {
+              "id": "tell_the_stranger",
+              "label": "Tell the stranger, and let them decide",
+              "serves": [
+                "never_owe_anyone",
+                "sell_what_i_know"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger Hollow men stacked oil jars behind Warehouse Seven tonight, and ask whether they want it burned or saved."
+                }
+              ]
+            },
+            {
+              "id": "let_it_burn",
+              "label": "Let it burn and keep the crew indoors",
+              "serves": [
+                "get_out_alive",
+                "look_after_the_little_ones"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "rook_burns_her_bridges",
+          "type": "scheme",
+          "trigger": "on_flag:fence_ledger_taken",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "You have the Guildmaster's book, and the Guildmaster knows someone does. Warehouse Seven is where every thread starts. A fire there and nobody can say what came through your back room.",
+          "options": [
+            {
+              "id": "fire_it",
+              "label": "Fire Warehouse Seven herself, and be gone before the bells",
+              "serves": [
+                "get_out_alive",
+                "never_owe_anyone"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_warehouse_fired",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "fence_route_burned",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "hollis"
+              ]
+            },
+            {
+              "id": "keep_it_open",
+              "label": "Keep the river running; she'll need the money to get out",
+              "serves": [
+                "get_out_rich",
+                "keep_the_fence_open"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "oskar_shuts_the_river",
+          "type": "scheme",
+          "trigger": "on_flag:ford_tally_given",
+          "eligible": [
+            "oskar"
+          ],
+          "situation": "Your tally is in other hands now. The Hollow will know soon. You can keep carrying their barges and pretend, or let the rope go slack under every one of them from tonight.",
+          "options": [
+            {
+              "id": "refuse_the_barges",
+              "label": "Refuse every Hollow barge from tonight, and let the river road die at his rope",
+              "serves": [
+                "avenge_piet",
+                "give_the_tally"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_route_burned",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "carry_and_pretend",
+              "label": "Keep carrying them, and let the crown do the rest",
+              "serves": [
+                "keep_the_toll",
+                "keep_my_family"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "hollis_takes_the_barges_back",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Weeks pass and Warehouse Seven still stands. No oil, no fire, only the damp. Every night it sits empty is a night of river trade you are not paid for.",
+          "options": [
+            {
+              "id": "open_the_wharf",
+              "label": "Declare the wharf safe and take the western barges again",
+              "serves": [
+                "keep_the_river_moving",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_route_saved",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "keep_waiting",
+              "label": "Keep it shut a little longer",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mira_reads_the_ash",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "News comes along the Kingsroad, days late, of Warehouse Seven and the western barges. Whatever happened on that wharf, the stranger was in the Capitol when it did.",
+          "options": [
+            {
+              "id": "ask_the_stranger",
+              "label": "Ask the stranger, wide-eyed, about trouble on the Capitol docks",
+              "serves": [
+                "keep_the_mask",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, wide-eyed, whether it's true there was trouble on the Capitol docks, and whether they saw it."
+                }
+              ]
+            },
+            {
+              "id": "tighten_the_leash",
+              "label": "Remind Varn whose word moves Hollow men",
+              "serves": [
+                "keep_varn_leashed"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "varn",
+                  "want": "take_the_hollow",
+                  "delta": -1
+                }
+              ]
+            },
+            {
+              "id": "let_it_lie",
+              "label": "Let it lie",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "who_holds_the_ledger",
+      "act": 3,
+      "title": "Whoever Holds the Book",
+      "summary": "The Guildmaster's black book is out of his coat. Whoever holds it holds half the Capitol: the Magistry wants it on the record, a lady on the hill wants one page of it, the Guild wants it back, and one page of it prices the Cathedral's fever cure by the sack. Rook may sell it back before anyone stops her; where the book finally rests is the stranger's to say.",
+      "location": "capitol_warrens",
+      "requires": [
+        "fence_ledger_taken"
+      ],
+      "resolves_on": [
+        "fence_ledger_to_magistry",
+        "fence_ledger_left_with_rook",
+        "fence_ledger_let_go"
+      ],
+      "hooks": [
+        {
+          "id": "hollis_wants_his_book",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Your black book is gone. Every patron in it will know soon, and every one of them needs you alive only so long as the book stays shut. Get it back. Quietly.",
+          "options": [
+            {
+              "id": "offer_coin",
+              "label": "Send word into the Warrens: a hundred crowns for the book, no questions",
+              "serves": [
+                "hold_every_patron",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger the Guildmaster offered a hundred crowns for his book back, no questions, and ask what they'd offer."
+                }
+              ]
+            },
+            {
+              "id": "send_porters",
+              "label": "Send porters with clubs into the Warrens after the fence",
+              "serves": [
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_rook_hunted",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "rook"
+              ]
+            },
+            {
+              "id": "wait",
+              "label": "Wait. Paper that frightened does not go far",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "rook_and_the_porters",
+          "type": "betray",
+          "trigger": "on_flag:fence_rook_hunted",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "Guild porters are in the Warrens with clubs, asking for you by name. The book in your coat is worth a hundred crowns to Hollis, or your life to anyone else who wants it.",
+          "options": [
+            {
+              "id": "sell_it_back",
+              "label": "Sell the book back to Hollis for a hundred crowns and a boat downriver",
+              "serves": [
+                "get_out_rich",
+                "get_out_alive"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_ledger_back_with_hollis",
+                  "value": true
+                }
+              ],
+              "aids": "hollis"
+            },
+            {
+              "id": "run_for_the_gate",
+              "label": "Run for the Dawn Gate with the book and the crew",
+              "serves": [
+                "get_out_alive",
+                "look_after_the_little_ones"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "rook",
+                  "location": "capitol_gate"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Find the stranger at the Dawn Gate: she's out, with the book, and needs to know whose hands it goes into."
+                }
+              ]
+            },
+            {
+              "id": "hide_and_hold",
+              "label": "Go to ground and hold the book for the stranger",
+              "serves": [
+                "steal_the_ledger",
+                "never_owe_anyone"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger she has the book and the Guild's porters are hunting her. Decide fast whose hands it goes to."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "rook_and_the_hollow_knives",
+          "type": "betray",
+          "trigger": "on_flag:fence_hollow_hunts_the_book",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "A Hollow porter at the Warrens steps is asking who holds the Guildmaster's book. The Hollow doesn't send porters with clubs. It sends the river.",
+          "options": [
+            {
+              "id": "sell_it_back",
+              "label": "Sell the book back to Hollis tonight and let the Guild deal with the Hollow",
+              "serves": [
+                "get_out_alive",
+                "get_out_rich"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_ledger_back_with_hollis",
+                  "value": true
+                }
+              ],
+              "aids": "hollis"
+            },
+            {
+              "id": "run_for_the_gate",
+              "label": "Run for the Dawn Gate with the book and the crew",
+              "serves": [
+                "get_out_alive",
+                "look_after_the_little_ones"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "rook",
+                  "location": "capitol_gate"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Find the stranger at the Dawn Gate: the Hollow is hunting the book, and she needs to know whose hands it goes into, today."
+                }
+              ]
+            },
+            {
+              "id": "hold_for_the_stranger",
+              "label": "Go to ground and hold the book for the stranger",
+              "serves": [
+                "steal_the_ledger",
+                "never_owe_anyone"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger the Hollow is asking who holds the Guildmaster's book. She's done waiting: whose hands does it go into?"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "rook_weighs_the_book",
+          "type": "reveal",
+          "trigger": "idle",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "The Guildmaster's black book is in your coat. You've read enough to know it is either your way out of the Warrens or your way into the river.",
+          "options": [
+            {
+              "id": "show_the_stranger",
+              "label": "Show the stranger what's in it and ask who should have it",
+              "serves": [
+                "sell_what_i_know",
+                "never_owe_anyone"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_salt_page_read",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Show the stranger three pages of the black book, the Ashdown page and the salt page first, and ask who in this city can be trusted with it."
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "rook",
+                  "dimension": "trust",
+                  "delta": 6
+                }
+              ]
+            },
+            {
+              "id": "sell_it_back",
+              "label": "Sell it back to the Guildmaster before it gets her killed",
+              "serves": [
+                "get_out_rich"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_ledger_back_with_hollis",
+                  "value": true
+                }
+              ],
+              "aids": "hollis"
+            },
+            {
+              "id": "keep_it_close",
+              "label": "Keep it close and say nothing",
+              "serves": [
+                "get_out_alive"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "corwin_hears_of_a_book",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "A Warrens rumour reaches the Magistry: the Guildmaster's private book of patrons is loose. If it is real, it may explain three years of lost petitions. It may also name your nephew.",
+          "options": [
+            {
+              "id": "open_the_door",
+              "label": "Let it be known the Magistry will receive the book and protect whoever brings it",
+              "serves": [
+                "find_the_lost_reports",
+                "law_applied_evenly"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger the High Magistry will take any patron book into the record and guard whoever carries it, under his own name and seal."
+                }
+              ]
+            },
+            {
+              "id": "ask_after_tobias",
+              "label": "Ask first whether Tobias Vane's name is in it",
+              "serves": [
+                "save_the_nephew"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Ask the stranger, quietly, whether a book of the Guildmaster's patrons names a registry clerk called Tobias Vane."
+                }
+              ]
+            },
+            {
+              "id": "wait_for_it",
+              "label": "Wait. Evidence brought by fear must come on its own feet",
+              "serves": [
+                "law_applied_evenly"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "seraphine_wants_her_page",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "Your father's debts and your money for the valley are written in the Guildmaster's black book, and the book is loose in the Warrens. Whoever holds it holds Ashdown House.",
+          "options": [
+            {
+              "id": "buy_the_page",
+              "label": "Send her land agent to offer double the Guildmaster's price for a single page",
+              "serves": [
+                "keep_her_hands_clean",
+                "clear_fathers_debts"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Offer the stranger, without quite saying why, two hundred crowns for any loose pages of the Guildmaster's accounts."
+                }
+              ]
+            },
+            {
+              "id": "let_hollis_drown",
+              "label": "Let Hollis drown in his own book; her debt notes may drown with him",
+              "serves": [
+                "clear_fathers_debts"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mira_hunts_the_book",
+          "type": "betray",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The Guild's factor writes in a panic: the Guildmaster's black book is loose. Your letters went to that factor under plain tallow. If the book names the factor, the factor can name the road.",
+          "options": [
+            {
+              "id": "hunt_the_book",
+              "label": "Send word that whoever holds the Guildmaster's book is to be found",
+              "serves": [
+                "rule_from_shadow",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_hollow_hunts_the_book",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "rook"
+              ]
+            },
+            {
+              "id": "spread_the_panic",
+              "label": "Let the Kingsroad hear the Guildmaster's book is loose, and watch who runs",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "spread_rumor",
+                  "flag": "fence_ledger_taken",
+                  "to": [
+                    "*"
+                  ],
+                  "via": "a Guild factor's frightened letter, read aloud in the wrong alehouse"
+                }
+              ],
+              "harms": [
+                "hollis"
+              ]
+            },
+            {
+              "id": "sit_still",
+              "label": "Sit still. Nothing in that book is in her hand",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "hollis_and_the_trial",
+          "type": "react",
+          "trigger": "on_flag:mag_trial_called",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The High Magistry has called a trial. With a court sitting, your black book stops being insurance and becomes a noose.",
+          "options": [
+            {
+              "id": "any_price",
+              "label": "Buy the book back at any price, today",
+              "serves": [
+                "hold_every_patron",
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "hollis",
+                  "want": "hold_every_patron",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Offer the stranger, friend, whatever they name for the Guildmaster's lost book, and a seat at his table besides."
+                }
+              ]
+            },
+            {
+              "id": "look_respectable",
+              "label": "Make a show of the Guild's good works while the court sits",
+              "serves": [
+                "keep_the_guild_clean",
+                "a_seat_on_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger, warmly, about the Guild's new alms-house for River Quarter widows, and ask if they'll put their name to it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "rook_reads_the_salt_page",
+          "type": "reveal",
+          "trigger": "on_flag:tn_taken_alive_known",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "The stranger came back from the west saying the Hollow keeps a village's children in chains, digging white salt under a hill. There's a page in the Guildmaster's book that's all white salt, by the sack, from the Hollow's factor. You're a fence. You never asked who dug it either.",
+          "options": [
+            {
+              "id": "read_it_aloud",
+              "label": "Read the stranger the salt page, sack by sack, and the Cathedral's name at the bottom",
+              "serves": [
+                "sell_what_i_know",
+                "look_after_the_little_ones"
+              ],
+              "harms": [
+                "hollis"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fence_salt_page_read",
+                  "value": true
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "rook",
+                  "dimension": "trust",
+                  "delta": 6
+                }
+              ]
+            },
+            {
+              "id": "price_the_page",
+              "label": "Tell the stranger the page exists, and what it costs to see",
+              "serves": [
+                "get_out_rich",
+                "never_owe_anyone"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger there's a page in the black book that's all white salt from the Hollow, and it costs ten marks to see it."
+                }
+              ]
+            },
+            {
+              "id": "keep_it_shut",
+              "label": "Keep it shut. Knowing that page is how girls end up in the river",
+              "serves": [
+                "get_out_alive"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "hollis_hears_who_dug_it",
+          "type": "react",
+          "trigger": "on_flag:fence_salt_page_read",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Someone has read your salt page. You bought white salt from the Hollow's factor and sold it to the Cathedral and never asked who dug it. The Warrens say now it was dug by children in chains, taken from a western village by lot. That is not a patron's secret. That is a rope.",
+          "options": [
+            {
+              "id": "any_price",
+              "label": "Buy the book back at any price before that page reaches the Magistry",
+              "serves": [
+                "hold_every_patron",
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "hollis",
+                  "want": "hold_every_patron",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Offer the stranger, friend, any price for the Guildmaster's book, and swear the Guild bought salt, never people."
+                }
+              ]
+            },
+            {
+              "id": "stop_buying",
+              "label": "Write the Hollow's factor that the Guild buys no more salt, and hope it is enough",
+              "serves": [
+                "keep_the_guild_clean",
+                "a_seat_on_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "hollis",
+                  "want": "turn_a_profit",
+                  "delta": -2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger, too quickly, that the Guild has never dealt in salt and has no intention of starting."
+                }
+              ]
+            },
+            {
+              "id": "salt_is_salt",
+              "label": "Tell himself he bought salt, not children, and keep the ledger shut",
+              "serves": [
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "hollis",
+                  "want": "keep_the_guild_clean",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "the_open_book",
+      "title": "The Open Book",
+      "requires": [
+        "fence_ledger_to_magistry",
+        "fence_route_burned"
+      ],
+      "summary": "The river road is ash and the Guildmaster's black book lies open before the High Magistrate, its salt page with it: the Cathedral's fever cure, bought from the Hollow by the sack. Half the Capitol is in it, and the other half is finding out which page."
+    },
+    {
+      "id": "the_book_in_court",
+      "title": "The Book in Court",
+      "requires": [
+        "fence_ledger_to_magistry",
+        "fence_route_saved"
+      ],
+      "summary": "The black book is on the Magistry's record, salt page and all, but Warehouse Seven still takes in western barges by night. The Capitol learns who paid for what; the Hollow learns to use a new factor."
+    },
+    {
+      "id": "rook_gets_out",
+      "title": "Rook Gets Out",
+      "requires": [
+        "fence_ledger_left_with_rook",
+        "fence_river_reckoned"
+      ],
+      "summary": "The stranger left the black book with the girl who stole it, and Rook bought her way out of the Warrens with it, crew and all. Somewhere a lady on the hill and a Guildmaster are both paying her, and neither knows about the other."
+    },
+    {
+      "id": "the_guildmaster_endures",
+      "title": "The Guildmaster Endures",
+      "requires": [
+        "fence_ledger_back_with_hollis",
+        "fence_river_reckoned",
+        "fence_ledger_let_go"
+      ],
+      "summary": "The stranger let the black book go, and it ended back in Hollis Marrow's keeping. The Guild's name is spotless, every patron still needs him, and he has the stranger's name written down now too."
+    }
+  ]
+}

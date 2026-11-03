@@ -1,0 +1,3163 @@
+{
+  "id": "smiths_oath",
+  "title": "The Smith's Oath",
+  "summary": "Bjorn cast Thornhaven's lot tiles and knows one has been recut. The duplicates were poured in his own forge by his apprentice Davin, paid by Gregor, and the rigged lot then sent Davin to the Pit. The boy is alive at Old Maud's. Bjorn must decide what his forge is for on Collection Night.",
+  "prefix": "oath_",
+  "act_span": [
+    1,
+    3
+  ],
+  "flags": {
+    "oath_light_tile_weighed": "Bjorn weighed the lot tiles in his palm after the drawing and said aloud that Elena's tile was light: it had been filed and recut.",
+    "oath_tiles_from_my_forge": "Bjorn knew the second set of lot tiles at a glance: poured from his own leftover iron, in his own mould, while he was away at market.",
+    "oath_gregor_faced": "Bjorn stood in Gregor's shop and asked him, man to man, who had paid for a second set of lot tiles to be poured at his forge.",
+    "oath_hammer_at_the_door": "Bjorn walked out to Old Maud's hut with Davin's small hammer and stood in the doorway, waiting for his apprentice to come to him.",
+    "oath_door_stayed_shut": "Davin kept Old Maud's door barred while Bjorn stood outside it, and would not let the smith see his hand.",
+    "oath_davin_reunited": "Davin opened the door to Bjorn, and the smith held his apprentice for the first time since the second Tithe cart took him.",
+    "oath_order_placed": "Gregor ordered a dozen blades from Bjorn's forge for the week of Collection Night, to be carted out by the old mill road.",
+    "oath_order_on_the_anvil": "Bjorn took Gregor's order for a dozen blades and began forging them, as he had every Hollow order before it without knowing.",
+    "oath_order_filled": "A dozen of Bjorn's blades went out by the old mill road to arm the Hollow's men for Collection Night.",
+    "oath_orders_refused": "Bjorn told Gregor to his face that his forge would not make another blade for the Hollow, and let the order go cold.",
+    "oath_blades_sabotaged": "Bjorn quenched the Hollow's Collection Night blades wrong on purpose, so that they left his forge brittle enough to snap on the first hard blow.",
+    "oath_varn_at_the_forge": "Varn came to the smithy after dark and told Bjorn that the order would be filled or the forge would burn.",
+    "oath_resistance_armed": "Bjorn forged steel for the people who meant to hold Thornhaven's gate on Collection Night, took no coin for it, and carried it down himself.",
+    "oath_smith_walked_away": "Bjorn banked his forge fire, hung up his hammer and walked out of Thornhaven carrying nothing but his father's last bar of steel.",
+    "oath_cart_axle_broken": "Bjorn broke the Hollow's cart axle at the village gate with his father's hammer, and the Tithe cart could not roll.",
+    "oath_showed_bjorn_the_tiles": "The player laid the second set of lot tiles from Gregor's strongbox on Bjorn's anvil.",
+    "oath_told_bjorn_of_davin": "The player told Bjorn that Gregor paid Davin a silver mark to pour the second set of tiles, and that the lot rigged with them took Davin.",
+    "oath_vouched_for_bjorn": "The player sat by Old Maud's fire and promised Davin that Bjorn would not look away from his hand.",
+    "oath_asked_for_glass": "The player asked Bjorn to temper the Hollow's Collection Night blades to snap on the first hard blow.",
+    "oath_asked_bjorn_to_arm": "The player asked Bjorn, to his face, to forge for the gate on Collection Night and to take no coin for it.",
+    "oath_let_bjorn_go": "The player sat with Bjorn at his cold forge and told him a man could leave Thornhaven with his honour.",
+    "oath_called_bjorn_back": "The player stood in Bjorn's cold forge and asked him to light it once more for the gate.",
+    "oath_stood_with_the_smith": "The player stood beside Bjorn at the village gate on Collection Night when the Hollow's cart came."
+  },
+  "player_flags": [
+    "oath_showed_bjorn_the_tiles",
+    "oath_told_bjorn_of_davin",
+    "oath_vouched_for_bjorn",
+    "oath_asked_for_glass",
+    "oath_asked_bjorn_to_arm",
+    "oath_let_bjorn_go",
+    "oath_called_bjorn_back",
+    "oath_stood_with_the_smith"
+  ],
+  "crossovers": [
+    "tn_elena_swap_known",
+    "tn_taken_alive_known",
+    "tn_plan_fight",
+    "tn_plan_follow_cart",
+    "tn_elena_taken",
+    "cou_martial_law",
+    "cou_council_bargains",
+    "cou_village_rises",
+    "ih_supply_line_cut",
+    "hc_varn_dead",
+    "vein_iron_to_the_valley",
+    "vein_ore_road_closed"
+  ],
+  "beats": [
+    {
+      "id": "the_light_tile",
+      "act": 1,
+      "title": "The Light Tile",
+      "summary": "After the drawing Bjorn picks Elena's tile out of the urn. He cast every tile from the forge's own iron and knows their weight in his palm. This one is light.",
+      "location": "thornhaven_chapel",
+      "requires": [],
+      "resolves_on": [
+        "oath_light_tile_weighed"
+      ],
+      "hooks": [
+        {
+          "id": "oath_mathias_and_the_urn",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The smith is at the altar with the urn in his hands, weighing the tiles one by one. The lot is holy. Is it?",
+          "options": [
+            {
+              "id": "let_him_weigh",
+              "label": "Let him weigh them in front of you; iron cannot lie",
+              "serves": [
+                "prove_before_acting",
+                "the_lot_is_holy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger to watch the smith weigh the tiles, so there is a witness."
+                }
+              ]
+            },
+            {
+              "id": "close_the_urn",
+              "label": "Take the urn from him; the drawing is done",
+              "serves": [
+                "the_lot_is_holy",
+                "keep_the_peace_paid"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the drawing is done and the gods' business is closed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_weighs",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Elena's tile sits in your palm. You poured it. It is lighter than the day you poured it, and the name is cut by a hand that is careful and has never held a graver.",
+          "options": [
+            {
+              "id": "say_it_aloud",
+              "label": "Say it aloud, there at the altar: this tile was recut",
+              "serves": [
+                "read_the_tiles",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_light_tile_weighed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger Elena's tile is light: someone filed it and cut her name in."
+                }
+              ]
+            },
+            {
+              "id": "pocket_the_doubt",
+              "label": "Put it back and say nothing until you can prove it at the forge",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger whether they saw anyone at the urn before the drawing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_mira_in_the_back_pew",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "From the back pew you watched the girl swap her own tile in. Now the smith is weighing them.",
+          "options": [
+            {
+              "id": "soothe_the_smith",
+              "label": "Tell the smith gently to let the dead rest and the living grieve",
+              "serves": [
+                "see_who_fights",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger the widow asked you to let the tiles be."
+                }
+              ]
+            },
+            {
+              "id": "point_at_gregor",
+              "label": "Wonder aloud whose house the lot has always missed",
+              "serves": [
+                "burn_gregor_first",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger why the lot has never once fallen on Gregor's house."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_elena_hears_light",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Bjorn said it aloud: your tile is light. He shod your pony when you were six. He will not stop until he finds the hand.",
+          "options": [
+            {
+              "id": "beg_him",
+              "label": "Ask Bjorn to let the lot stand, without telling him why",
+              "serves": [
+                "make_the_lot_stand",
+                "keep_the_swap_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger Elena begged you to let the lot stand, and wouldn't say why."
+                }
+              ]
+            },
+            {
+              "id": "hold_your_face",
+              "label": "Hold your face still and say nothing",
+              "serves": [
+                "keep_the_swap_secret"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "elena",
+                  "want": "keep_the_swap_secret",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_gregor_hears_light",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The smith says Elena's tile was recut. You palmed Ada Fenn's tile. Someone changed it in your coat.",
+          "options": [
+            {
+              "id": "find_the_hand",
+              "label": "Turn the house over for whoever touched your coat",
+              "serves": [
+                "find_who_swapped",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "find_who_swapped",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "hush_the_smith",
+              "label": "Go to the forge and ask the smith to let it lie",
+              "serves": [
+                "keep_the_secret"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "thornhaven_blacksmith"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger to tell Bjorn grief makes a man see things in iron."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_mould_and_the_iron",
+      "act": 2,
+      "title": "The Mould and the Iron",
+      "summary": "The second set of tiles from Gregor's strongbox comes to Bjorn's anvil. He knows his own iron and his own mould. They were poured at his forge, while he was away at market.",
+      "location": "thornhaven_blacksmith",
+      "requires": [
+        "oath_light_tile_weighed",
+        "duplicate_tiles_found"
+      ],
+      "resolves_on": [
+        "oath_tiles_from_my_forge",
+        "oath_showed_bjorn_the_tiles"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "oath_tiles_from_my_forge",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "oath_aldric_carries_the_tiles",
+          "type": "aid",
+          "trigger": "on_flag:aldric_has_evidence",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "You hold proof of how the Tithe works, and a second set of lot tiles. Only the man who cast the first can say where these came from.",
+          "options": [
+            {
+              "id": "to_the_forge",
+              "label": "Carry the tiles to the forge and ask the smith",
+              "serves": [
+                "expose_the_traitor",
+                "arm_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_tiles_from_my_forge",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "aldric",
+                  "location": "thornhaven_blacksmith"
+                }
+              ],
+              "aids": "bjorn"
+            },
+            {
+              "id": "keep_them_sealed",
+              "label": "Keep them sealed for the council",
+              "serves": [
+                "win_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the tiles stay sealed until the council sits."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_gregor_before_the_smith",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The stranger has your duplicate tiles. If they reach the forge, Bjorn will know his own iron.",
+          "options": [
+            {
+              "id": "beg_the_stranger",
+              "label": "Beg the stranger not to show Bjorn the tiles",
+              "serves": [
+                "keep_the_secret",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Beg the stranger not to take the tiles to the forge; Bjorn would never forgive it."
+                }
+              ]
+            },
+            {
+              "id": "go_yourself",
+              "label": "Walk to the forge and tell Bjorn yourself, before the stranger can",
+              "serves": [
+                "make_amends",
+                "escape_the_deal"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "thornhaven_blacksmith"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger you are going to the forge to tell Bjorn yourself."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_elena_and_the_tiles",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The duplicate tiles are found. One of them is the one you filed and cut your own name into.",
+          "options": [
+            {
+              "id": "ask_him_not_to_look",
+              "label": "Ask Bjorn not to go looking for the hand that cut yours",
+              "serves": [
+                "keep_the_swap_secret",
+                "make_the_lot_stand"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger Elena asked you not to look for the hand that cut her tile."
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Say nothing; let him find what he finds",
+              "serves": [
+                "learn_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger what Bjorn will do when he knows whose tiles those are."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_mira_fans_it",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The smith is about to learn whose silver poured a second set of tiles at his forge. Better he blames Gregor than wonders who sent the names.",
+          "options": [
+            {
+              "id": "point_him_at_gregor",
+              "label": "Make sure the smith's first thought is Gregor",
+              "serves": [
+                "burn_gregor_first"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger what Gregor's silver bought at your forge while you were at market."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "keep_the_smith_sweet",
+              "label": "Keep the smith calm; his steel is half the salt's price",
+              "serves": [
+                "keep_the_steel_coming"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger Bjorn must be kept calm until the order is filled."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_knows_the_mould",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Your mould. Your leftover iron. Poured while you were at market. Only one other pair of hands had the forge that week.",
+          "options": [
+            {
+              "id": "ask_gregor",
+              "label": "Go to Gregor and hear it from his own mouth",
+              "serves": [
+                "face_gregor"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "bjorn",
+                  "want": "face_gregor",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "think_of_the_boy",
+              "label": "Think of who kept the forge that week: the boy",
+              "serves": [
+                "bring_davin_home"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "bjorn",
+                  "want": "bring_davin_home",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger whether Davin ever spoke of silver he should not have had."
+                }
+              ]
+            },
+            {
+              "id": "tell_the_elder",
+              "label": "Take the tiles to the Elder, plainly",
+              "serves": [
+                "read_the_tiles",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger you will lay the second set before the Elder yourself."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "davins_silver_mark",
+      "act": 2,
+      "title": "Davin's Silver Mark",
+      "summary": "Gregor paid Bjorn's apprentice a silver mark to pour the spare tiles. A year later the lot Gregor rigged with them took Davin himself. Bjorn will learn it from Gregor, from the boy, or from the stranger.",
+      "location": "thornhaven_gregor_shop",
+      "requires": [
+        "oath_tiles_from_my_forge"
+      ],
+      "resolves_on": [
+        "bjorn_truth_revealed",
+        "oath_told_bjorn_of_davin"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "bjorn_truth_revealed",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "oath_bjorn_goes_to_the_shop",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The tiles came from your forge. Gregor ordered every blade you sold the Hollow. You want it from his mouth, man to man.",
+          "options": [
+            {
+              "id": "face_him",
+              "label": "Walk into his shop and ask him, man to man",
+              "serves": [
+                "face_gregor",
+                "read_the_tiles"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_gregor_faced",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "wait_for_proof",
+              "label": "Go back to the anvil until you know more",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger what they know of Gregor's silver and your forge."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_gregor_answers_the_smith",
+          "type": "reveal",
+          "trigger": "on_flag:oath_gregor_faced",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Bjorn is standing in your shop with his hammer hand open. He asked who paid for a second set of tiles.",
+          "options": [
+            {
+              "id": "whole_truth",
+              "label": "Tell him all of it: the silver mark, the palmed draws, and the lot that took Davin",
+              "serves": [
+                "make_amends",
+                "escape_the_deal"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "bjorn_truth_revealed",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "blame_the_boy",
+              "label": "Tell him the boy poured them for his own reasons",
+              "serves": [
+                "keep_the_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger Davin poured those tiles for his own reasons."
+                }
+              ],
+              "harms": [
+                "davin"
+              ]
+            },
+            {
+              "id": "shut_the_door",
+              "label": "Say nothing, and shut the door on him",
+              "serves": [
+                "protect_elena",
+                "keep_the_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Beg the stranger to keep Bjorn away from the shop until the cart has gone."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_davin_tells_the_stranger",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "The smith is asking who poured the second set of tiles. You did, for a silver mark from Gregor, while Bjorn was at market. A year later the cart came for you.",
+          "options": [
+            {
+              "id": "tell_the_stranger",
+              "label": "Tell the stranger the truth, so they can tell him",
+              "serves": [
+                "atone_for_running",
+                "see_bjorn"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Tell the stranger Gregor paid you a silver mark to pour the tiles, and the lot took you a year later."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "keep_it",
+              "label": "Keep it; Bjorn will hate the hands that poured them",
+              "serves": [
+                "stay_hidden",
+                "guard_the_way"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Beg the stranger not to tell Bjorn you poured anything."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_mira_on_the_confrontation",
+          "type": "intercept",
+          "trigger": "on_flag:oath_gregor_faced",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The smith has walked into Gregor's shop. If Gregor talks, the trail runs through the salt to the messenger.",
+          "options": [
+            {
+              "id": "stop_it_at_gregor",
+              "label": "Make sure whatever Gregor says, the trail stops with him",
+              "serves": [
+                "burn_gregor_first",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger it was you alone who rigged the lot; there was no one else."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "keep_the_steel",
+              "label": "Coax Gregor to keep the smith sweet",
+              "serves": [
+                "keep_the_steel_coming"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger Bjorn must finish the order, whatever else he knows."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_taken_alive",
+          "type": "reveal",
+          "trigger": "on_flag:tn_taken_alive_known",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The taken are alive somewhere. Davin went up the ridge in the second cart.",
+          "options": [
+            {
+              "id": "ask_after_the_boy",
+              "label": "Ask the stranger where they go",
+              "serves": [
+                "bring_davin_home"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger where the taken are carried, and whether Davin is among the living."
+                }
+              ]
+            },
+            {
+              "id": "back_to_the_iron",
+              "label": "Go back to the tiles; one truth at a time",
+              "serves": [
+                "read_the_tiles"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger you will finish weighing the tiles first."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_hears_it",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Gregor rigged your tiles for five years. Your boy poured the spares for a silver mark, and the lot rigged with them sent him up the ridge.",
+          "options": [
+            {
+              "id": "to_gregor",
+              "label": "Go to Gregor's door with the truth in your fist",
+              "serves": [
+                "face_gregor",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger you will say to Gregor's face what his silver bought."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "for_the_boy",
+              "label": "Take Davin's hammer down from its peg",
+              "serves": [
+                "bring_davin_home"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "bjorn",
+                  "want": "bring_davin_home",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "to_the_anvil",
+              "label": "Go back to the anvil and think on what your steel has done",
+              "serves": [
+                "atone_for_the_steel",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "bjorn",
+                  "want": "atone_for_the_steel",
+                  "delta": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_gregor_after",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Bjorn knows. The one honest man in Thornhaven knows what you did with his tiles and his boy.",
+          "options": [
+            {
+              "id": "toward_amends",
+              "label": "Let it break something open in you",
+              "serves": [
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "make_amends",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "toward_the_wagon",
+              "label": "Go home and ready a wagon",
+              "serves": [
+                "get_elena_away"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "thornhaven_gregor_shop"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Beg the stranger to help you get Elena east tonight."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "old_mauds_door",
+      "act": 2,
+      "title": "Old Maud's Door",
+      "summary": "Davin is alive at Old Maud's hut, fevered and missing two fingers. Bjorn wants him home. Davin wants never to be seen like this, by him least of all. The door opens only when it is earned.",
+      "location": "healer_hut",
+      "requires": [
+        "davin_found",
+        "bjorn_truth_revealed"
+      ],
+      "resolves_on": [
+        "oath_davin_reunited",
+        "oath_vouched_for_bjorn"
+      ],
+      "hooks": [
+        {
+          "id": "oath_bjorn_takes_the_hammer",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The boy is alive, at Old Maud's. His small hammer has hung on its peg by the bellows for three years.",
+          "options": [
+            {
+              "id": "go_to_the_door",
+              "label": "Take the hammer and go stand in Maud's doorway",
+              "serves": [
+                "bring_davin_home",
+                "protect_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_hammer_at_the_door",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "bjorn",
+                  "location": "healer_hut"
+                }
+              ],
+              "aids": "davin"
+            },
+            {
+              "id": "let_him_come",
+              "label": "Let the boy come when he is ready",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger to tell Davin the forge door is open whenever he wants it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_davin_at_the_bar",
+          "type": "intercept",
+          "trigger": "on_flag:oath_hammer_at_the_door",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "Bjorn is outside Maud's door with your hammer in his hand. He will see the hand. He will see a boy who ran.",
+          "options": [
+            {
+              "id": "open_it",
+              "label": "Open the door",
+              "serves": [
+                "see_bjorn",
+                "atone_for_running"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_davin_reunited",
+                  "value": true
+                }
+              ],
+              "aids": "bjorn"
+            },
+            {
+              "id": "keep_it_barred",
+              "label": "Keep the bar down, and listen to him breathe on the other side",
+              "serves": [
+                "never_go_back",
+                "stay_hidden"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_door_stayed_shut",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Ask the stranger whether Bjorn waited long at the door."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_at_the_shut_door",
+          "type": "react",
+          "trigger": "on_flag:oath_door_stayed_shut",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The bar stayed down. You heard him on the other side.",
+          "options": [
+            {
+              "id": "wait_on_the_step",
+              "label": "Sit on the step all night with the hammer across your knees",
+              "serves": [
+                "bring_davin_home"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "davin",
+                  "want": "see_bjorn",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger you'll sit on Maud's step until the boy opens it."
+                }
+              ]
+            },
+            {
+              "id": "bank_the_fire",
+              "label": "Go home and bank the forge",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "bjorn",
+                  "want": "keep_out_of_politics",
+                  "delta": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_davin_hears_the_promise",
+          "type": "intercept",
+          "trigger": "on_flag:oath_vouched_for_bjorn",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "The stranger has sat by Maud's fire and promised you Bjorn will not look away from your hand.",
+          "options": [
+            {
+              "id": "open_to_him",
+              "label": "Let Maud send for him, and open the door when he comes",
+              "serves": [
+                "see_bjorn",
+                "atone_for_running"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_davin_reunited",
+                  "value": true
+                }
+              ],
+              "aids": "bjorn"
+            },
+            {
+              "id": "not_yet",
+              "label": "Not yet. Send him a nail first",
+              "serves": [
+                "never_go_back",
+                "stay_hidden"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_door_stayed_shut",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_davin_hears_bjorn_pledged",
+          "type": "aid",
+          "trigger": "on_flag:bjorn_allied",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "Bjorn has pledged his forge and his hands for the gate. He is not hiding. Maybe you need not either.",
+          "options": [
+            {
+              "id": "to_the_forge",
+              "label": "Walk to the forge's back door after dark",
+              "serves": [
+                "see_bjorn",
+                "atone_for_running"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_davin_reunited",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "davin",
+                  "location": "thornhaven_blacksmith"
+                }
+              ],
+              "aids": "bjorn"
+            },
+            {
+              "id": "stay",
+              "label": "Stay by Maud's fire",
+              "serves": [
+                "never_go_back"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Ask the stranger whether Bjorn truly means to stand at the gate."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_davin_back_door",
+          "type": "aid",
+          "trigger": "on_flag:davin_home_to_the_forge",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "You stood at the forge's back door with your hand in your sleeve, and it opened.",
+          "options": [
+            {
+              "id": "stay_by_the_forge",
+              "label": "Stay, and let him see the hand",
+              "serves": [
+                "see_bjorn",
+                "hold_a_hammer_again"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_davin_reunited",
+                  "value": true
+                }
+              ],
+              "aids": "bjorn"
+            },
+            {
+              "id": "back_before_dawn",
+              "label": "Go back to Maud's before dawn",
+              "serves": [
+                "stay_hidden"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "davin",
+                  "location": "healer_hut"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_davin_the_way",
+          "type": "reveal",
+          "trigger": "on_flag:tn_plan_follow_cart",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "The stranger means to follow the cart up the ridge. You know every turn of it.",
+          "options": [
+            {
+              "id": "tell_the_posts",
+              "label": "Tell the stranger the guard posts on the ridge trail",
+              "serves": [
+                "save_corin_and_willa",
+                "atone_for_running"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Tell the stranger the ridge trail's guard posts, and that Willa is small enough for the air-shaft."
+                }
+              ]
+            },
+            {
+              "id": "guard_it",
+              "label": "Keep the way; the wrong feet on that trail get everyone below killed",
+              "serves": [
+                "guard_the_way",
+                "never_go_back"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Ask the stranger who else knows they mean to follow the cart."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_mira_hunts_the_runaway",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "A digger walked out of the Pit and is loose in your valley, talking. One crack in the wall.",
+          "options": [
+            {
+              "id": "send_a_question",
+              "label": "Send Varn's man along the Darkwood asking after a three-fingered boy",
+              "serves": [
+                "rule_from_shadow",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask along the Darkwood after a boy with three fingers on one hand."
+                }
+              ],
+              "harms": [
+                "davin"
+              ]
+            },
+            {
+              "id": "let_him_be",
+              "label": "Let him be; a frightened boy is the village's problem",
+              "serves": [
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mira",
+                  "want": "see_who_fights",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_gregor_and_the_boy",
+          "type": "react",
+          "trigger": "on_flag:oath_davin_reunited",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Davin is home at the forge. Two fingers gone. Your silver mark. Your lot.",
+          "options": [
+            {
+              "id": "kneel",
+              "label": "Go to the forge and kneel in the door",
+              "serves": [
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "thornhaven_blacksmith"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger you knelt in the forge door, and what Davin said."
+                }
+              ]
+            },
+            {
+              "id": "bar_the_shop",
+              "label": "Bar the shop",
+              "serves": [
+                "keep_the_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Beg the stranger to tell no one Davin is home."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_hollows_order",
+      "act": 2,
+      "title": "The Hollow's Order",
+      "summary": "Gregor's standing order comes in for Collection Night: a dozen blades for the cart's guard. Bjorn can fill it, refuse it to Gregor's face, or temper every one to snap on the first hard blow.",
+      "location": "thornhaven_blacksmith",
+      "requires": [
+        "tn_day_3"
+      ],
+      "resolves_on": [
+        "oath_order_filled",
+        "oath_blades_sabotaged",
+        "oath_orders_refused",
+        "oath_asked_for_glass"
+      ],
+      "hooks": [
+        {
+          "id": "oath_gregor_places_the_order",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The messenger wants a dozen blades for the cart's guard by the sixth day. Steel is the other half of the salt's price.",
+          "options": [
+            {
+              "id": "place_it",
+              "label": "Place the order with Bjorn as you always have",
+              "serves": [
+                "keep_the_supply_flowing",
+                "buy_her_back"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_order_placed",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "let_it_lapse",
+              "label": "Let it lapse, and see what the Hollow does",
+              "serves": [
+                "escape_the_deal",
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger what the Hollow does to a man who stops paying."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_mira_places_it_herself",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Gregor may balk at ordering steel for the cart that takes his own daughter. The order must be placed regardless.",
+          "options": [
+            {
+              "id": "place_it_in_his_name",
+              "label": "Place it in Gregor's name, through his ledger",
+              "serves": [
+                "keep_the_steel_coming",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_order_placed",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "let_him_choose",
+              "label": "Let him choose, and watch what he chooses",
+              "serves": [
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger whether Gregor is still ordering steel this week."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_takes_the_order",
+          "type": "intercept",
+          "trigger": "on_flag:oath_order_placed",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Gregor's order: a dozen blades by the sixth day. It is good pay, and your father's debt was paid with Gregor's orders.",
+          "options": [
+            {
+              "id": "take_it",
+              "label": "Take the order and fire the forge",
+              "serves": [
+                "restore_family_honour",
+                "keep_out_of_politics"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_order_on_the_anvil",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "spoil_them",
+              "label": "Take it, and quench every one wrong",
+              "serves": [
+                "atone_for_the_steel"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_blades_sabotaged",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "refuse_it",
+              "label": "Tell Gregor to his face the forge makes nothing more for him",
+              "serves": [
+                "face_gregor"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_orders_refused",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_at_the_quench",
+          "type": "betray",
+          "trigger": "on_flag:bjorn_truth_revealed",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The Hollow's blades are on your anvil, and now you know whose cart they guard and whose boy that cart took.",
+          "options": [
+            {
+              "id": "quench_wrong",
+              "label": "Quench them wrong, every one, and send them out looking perfect",
+              "serves": [
+                "atone_for_the_steel",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_blades_sabotaged",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "refuse_to_his_face",
+              "label": "Carry them to Gregor's shop and break them on his counter",
+              "serves": [
+                "face_gregor",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_orders_refused",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "finish_the_order",
+              "label": "Finish the work; a smith keeps his word",
+              "serves": [
+                "restore_family_honour"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger a smith keeps his word even when he hates it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_asked_for_glass",
+          "type": "betray",
+          "trigger": "on_flag:oath_asked_for_glass",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The stranger has asked you to temper the Hollow's blades to snap. It is a lie told in steel, and you would have to own it after.",
+          "options": [
+            {
+              "id": "make_glass",
+              "label": "Do it, and own it after",
+              "serves": [
+                "atone_for_the_steel",
+                "protect_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_blades_sabotaged",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "refuse_plainly",
+              "label": "Refuse the order plainly instead; no lies, not even in iron",
+              "serves": [
+                "honest_steel",
+                "face_gregor"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_orders_refused",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_learns_the_swap",
+          "type": "react",
+          "trigger": "on_flag:tn_elena_swap_known",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Elena cut her own tile. The careful, unpractised hand was hers. She meant to go.",
+          "options": [
+            {
+              "id": "go_to_her",
+              "label": "Go to her and tell her you will not let the cart have her",
+              "serves": [
+                "shield_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger you won't let the cart have Elena, whatever she chose."
+                }
+              ]
+            },
+            {
+              "id": "respect_it",
+              "label": "Respect it, and make her boots fit for stone",
+              "serves": [
+                "honest_steel",
+                "protect_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger whether Elena means to walk the ridge, and what she'll need on her feet."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_varn_at_the_forge",
+          "type": "scheme",
+          "trigger": "on_flag:oath_orders_refused",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The smith refused the order. The cart's guard will walk to Thornhaven with old steel.",
+          "options": [
+            {
+              "id": "visit_the_forge",
+              "label": "Visit the forge after dark and explain how forges burn",
+              "serves": [
+                "be_feared",
+                "arm_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_varn_at_the_forge",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "bjorn"
+              ]
+            },
+            {
+              "id": "mark_him",
+              "label": "Mark the smith's name for next autumn",
+              "serves": [
+                "crush_the_resistance"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell anyone who'll listen the smith's name is next year's."
+                }
+              ],
+              "harms": [
+                "bjorn"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_gregor_carts_them",
+          "type": "scheme",
+          "trigger": "on_flag:tn_day_6",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The blades are ready. Tonight they go out by the old mill road, or they do not go at all.",
+          "options": [
+            {
+              "id": "cart_them",
+              "label": "Cart them out by the mill road",
+              "serves": [
+                "keep_the_supply_flowing",
+                "buy_her_back"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_order_filled",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "hold_them_back",
+              "label": "Leave them on the racks",
+              "serves": [
+                "make_amends",
+                "escape_the_deal"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger the blades are still on Bjorn's racks."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_gregor_road_watched",
+          "type": "scheme",
+          "trigger": "on_flag:ih_supply_line_cut",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The road to the Hollow is cut. The order cannot go out by the mill.",
+          "options": [
+            {
+              "id": "other_road",
+              "label": "Find another road for the blades",
+              "serves": [
+                "keep_the_supply_flowing"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger whether the forest path is watched at night."
+                }
+              ]
+            },
+            {
+              "id": "let_them_rust",
+              "label": "Let them rust on the racks",
+              "serves": [
+                "escape_the_deal"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger the Hollow's steel will not reach it this year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_no_iron",
+          "type": "intercept",
+          "trigger": "on_flag:vein_ore_road_closed",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Greystone's ore road has closed. There is little iron left on the floor.",
+          "options": [
+            {
+              "id": "refuse_for_want",
+              "label": "Tell Gregor there is no iron for his order",
+              "serves": [
+                "honest_steel",
+                "protect_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_orders_refused",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "melt_old_stock",
+              "label": "Melt old stock to fill it",
+              "serves": [
+                "restore_family_honour"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger you're melting old stock to fill an order."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_davin_the_guards_steel",
+          "type": "reveal",
+          "trigger": "on_flag:oath_davin_reunited",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "You are back in the forge. The racks hold a dozen blades for the cart's guard. The guards at the seam carried this mark.",
+          "options": [
+            {
+              "id": "tell_him",
+              "label": "Tell Bjorn the guards at the seam carry his hammer and pine",
+              "serves": [
+                "atone_for_running",
+                "save_corin_and_willa"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "bjorn_knows_about_weapons",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Say nothing; he has heard enough tonight",
+              "serves": [
+                "stay_hidden"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Ask the stranger whether Bjorn knows where his blades go."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_aldric_hears_of_glass",
+          "type": "react",
+          "trigger": "on_flag:oath_blades_sabotaged",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The cart's guard will carry blades that snap. If that is true, the gate is not hopeless.",
+          "options": [
+            {
+              "id": "plan_for_it",
+              "label": "Plan the gate around steel that breaks",
+              "serves": [
+                "hold_the_gate",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "aldric",
+                  "want": "hold_the_gate",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "trust_nothing",
+              "label": "Plan as if it were good steel",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger you'll plan the gate as if the Hollow's steel were sound."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "steel_for_the_gate",
+      "act": 3,
+      "title": "Steel for the Gate",
+      "summary": "Aldric has six farmers and whatever steel Bjorn gives him. The smith knows now what his iron has done. Only the stranger can ask him, to his face, to make it for the gate.",
+      "location": "thornhaven_blacksmith",
+      "requires": [
+        "bjorn_truth_revealed"
+      ],
+      "resolves_on": [
+        "oath_asked_bjorn_to_arm"
+      ],
+      "hooks": [
+        {
+          "id": "oath_aldric_asks",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "You need six blades and a day of the smith's hammer.",
+          "options": [
+            {
+              "id": "ask_as_a_friend",
+              "label": "Ask him plainly, smith to soldier, and tell him what they're for",
+              "serves": [
+                "arm_the_village",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger to come with you to the forge and ask Bjorn for the gate's steel."
+                }
+              ],
+              "aids": "bjorn"
+            },
+            {
+              "id": "dont_ask",
+              "label": "Don't ask a man in grief",
+              "serves": [
+                "spare_the_innocent"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger you won't ask Bjorn for anything this week."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_aldric_requisitions",
+          "type": "aid",
+          "trigger": "on_flag:cou_martial_law",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Your proclamation is posted. You could order the forge open.",
+          "options": [
+            {
+              "id": "ask_still",
+              "label": "Ask anyway; a forge forced is a forge that spoils its steel",
+              "serves": [
+                "arm_the_village",
+                "win_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger you'll ask the smith, not order him, paper or no paper."
+                }
+              ]
+            },
+            {
+              "id": "order_it",
+              "label": "Order it open under the proclamation",
+              "serves": [
+                "take_command",
+                "arm_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger the captain sent men to order your forge open."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_aldric_plan_fight",
+          "type": "aid",
+          "trigger": "on_flag:tn_plan_fight",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The stranger has committed to fight at the gate. Now you need the steel.",
+          "options": [
+            {
+              "id": "to_the_forge",
+              "label": "Go to the forge with the stranger's word in your hand",
+              "serves": [
+                "arm_the_village",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "aldric",
+                  "location": "thornhaven_blacksmith"
+                }
+              ]
+            },
+            {
+              "id": "drill_first",
+              "label": "Drill the six one more dawn first",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger to drill with the six at first light."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_answers",
+          "type": "aid",
+          "trigger": "on_flag:oath_asked_bjorn_to_arm",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The stranger asked you to your face to forge for the gate and take no coin. Your steel has armed the Hollow for five years.",
+          "options": [
+            {
+              "id": "arm_the_gate",
+              "label": "Light every fire you have and make steel for every hand at the gate",
+              "serves": [
+                "arm_the_resistance",
+                "protect_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_resistance_armed",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "bjorn_allied",
+                  "value": true
+                }
+              ],
+              "aids": "aldric"
+            },
+            {
+              "id": "six_blades",
+              "label": "Make the captain his six blades, and no more",
+              "serves": [
+                "honest_steel",
+                "keep_out_of_politics"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_resistance_armed",
+                  "value": true
+                }
+              ],
+              "aids": "aldric"
+            },
+            {
+              "id": "not_my_fight",
+              "label": "Tell them it is not a smith's place",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger a smith makes steel, not wars."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_dagnas_iron",
+          "type": "aid",
+          "trigger": "on_flag:vein_iron_to_the_valley",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Greystone's best iron came west to your forge, iron the Hollow never touched.",
+          "options": [
+            {
+              "id": "honest_iron_for_the_gate",
+              "label": "Save it for the gate's steel",
+              "serves": [
+                "honest_steel",
+                "arm_the_resistance"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger Greystone's iron will go to the gate, honest end to end."
+                }
+              ]
+            },
+            {
+              "id": "for_the_tiles",
+              "label": "Save it to recast the lot honest",
+              "serves": [
+                "read_the_tiles"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger you'll recast the lot from iron the Hollow never touched."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_mathias_and_the_steel",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The captain wants the smith's steel for the gate. Steel at the gate brings either freedom or a second cart.",
+          "options": [
+            {
+              "id": "bless_the_steel",
+              "label": "Bless the forge and the steel",
+              "serves": [
+                "leave_a_legacy",
+                "save_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger you blessed the smith's fire for the gate."
+                }
+              ]
+            },
+            {
+              "id": "warn_of_war",
+              "label": "Warn the smith that steel at the gate brings the Hollow's war",
+              "serves": [
+                "avoid_the_hollow_war",
+                "keep_the_peace_paid"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger the Elder fears your steel will bring the Hollow down on the village."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_mathias_bargain_struck",
+          "type": "intercept",
+          "trigger": "on_flag:cou_council_bargains",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The council has bargained. Steel at the gate now could undo the bargain and bring the burning.",
+          "options": [
+            {
+              "id": "ask_the_smith_wait",
+              "label": "Ask the smith to hold his steel until the bargain is answered",
+              "serves": [
+                "keep_the_peace_paid",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger the Elder asked you to hold the steel until the Hollow answers."
+                }
+              ]
+            },
+            {
+              "id": "let_him_forge",
+              "label": "Let him forge; a bargain is not a promise",
+              "serves": [
+                "save_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger a bargain with the Hollow is no reason to leave the gate bare."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_varn_warns_the_forge",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Word is the smith may be making steel for the farmers.",
+          "options": [
+            {
+              "id": "threaten",
+              "label": "Send word the forge burns if it arms the gate",
+              "serves": [
+                "crush_the_resistance",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger the Hollow sent word your forge burns if it arms the gate."
+                }
+              ],
+              "harms": [
+                "bjorn"
+              ]
+            },
+            {
+              "id": "count_it",
+              "label": "Let him; count the blades and bring more men",
+              "serves": [
+                "a_perfect_collection"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell anyone who listens the Hollow counts every blade in Thornhaven."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_davin_at_the_bellows",
+          "type": "aid",
+          "trigger": "on_flag:oath_davin_reunited",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "You are home. The forge is lit for the gate.",
+          "options": [
+            {
+              "id": "work_the_bellows",
+              "label": "Work the bellows with the hand you have",
+              "serves": [
+                "hold_a_hammer_again",
+                "atone_for_running"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Tell the stranger you worked Bjorn's bellows with three fingers."
+                }
+              ],
+              "aids": "bjorn"
+            },
+            {
+              "id": "keep_back",
+              "label": "Keep to the back, out of the light",
+              "serves": [
+                "stay_hidden"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Ask the stranger to keep folk away from the forge's back room."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_elena_at_the_forge",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Bjorn's forge is burning for the gate. You mean to go up the ridge.",
+          "options": [
+            {
+              "id": "boots_for_stone",
+              "label": "Ask Bjorn for boots shod for stone, not a blade",
+              "serves": [
+                "find_the_taken",
+                "see_beyond_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger Elena asked you for boots shod for stone."
+                }
+              ]
+            },
+            {
+              "id": "a_blade",
+              "label": "Ask for a blade for the gate",
+              "serves": [
+                "fight_for_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger whether they will stand at the gate."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_mira_counts_the_blades",
+          "type": "scheme",
+          "trigger": "on_resolve",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The smith has been asked to arm the gate. You will want to know how many blades, and in whose hands.",
+          "options": [
+            {
+              "id": "count_for_varn",
+              "label": "Count them for Varn, and let him know",
+              "serves": [
+                "keep_varn_leashed",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the widow how many blades the smith made for the gate."
+                }
+              ],
+              "harms": [
+                "aldric"
+              ]
+            },
+            {
+              "id": "count_for_yourself",
+              "label": "Count them for yourself, and tell no one yet",
+              "serves": [
+                "see_who_fights",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mira",
+                  "want": "see_who_fights",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_cold_forge",
+      "act": 3,
+      "title": "The Cold Forge",
+      "summary": "Bjorn's tiles chose his neighbours' children and his own boy, and his steel guarded the carts. A man can only carry so much. He may bank the fire and walk away, or light it once more for the gate.",
+      "location": "thornhaven_blacksmith",
+      "requires": [
+        "bjorn_truth_revealed",
+        "!oath_resistance_armed"
+      ],
+      "resolves_on": [
+        "oath_let_bjorn_go",
+        "oath_called_bjorn_back"
+      ],
+      "hooks": [
+        {
+          "id": "oath_bjorn_goes",
+          "type": "react",
+          "trigger": "on_flag:oath_let_bjorn_go",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The stranger says a man can leave Thornhaven with his honour.",
+          "options": [
+            {
+              "id": "walk",
+              "label": "Bank the fire, hang the hammer, and walk out with your father's bar",
+              "serves": [
+                "keep_out_of_politics",
+                "restore_family_honour",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_smith_walked_away",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "stay",
+              "label": "Stay; there is still the boy, and the village",
+              "serves": [
+                "protect_the_village",
+                "bring_davin_home"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger you thought about it, and you're staying."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_relights",
+          "type": "react",
+          "trigger": "on_flag:oath_called_bjorn_back",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The stranger stands in your cold forge and asks you to light it once more, for the gate.",
+          "options": [
+            {
+              "id": "relight",
+              "label": "Relight it, and pledge your hands for Collection Night",
+              "serves": [
+                "protect_the_village",
+                "arm_the_resistance"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "bjorn_allied",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "not_tonight",
+              "label": "Not tonight",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger the fire stays banked tonight."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_cart_took_her",
+          "type": "react",
+          "trigger": "on_flag:tn_elena_taken",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The cart took Elena. You stood at the back again.",
+          "options": [
+            {
+              "id": "go_cold",
+              "label": "Let the fire go out",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "bjorn",
+                  "want": "keep_out_of_politics",
+                  "delta": 3
+                }
+              ]
+            },
+            {
+              "id": "follow",
+              "label": "Think of the ridge trail, and of boots for stone",
+              "serves": [
+                "shield_elena",
+                "bring_davin_home"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "bjorn",
+                  "want": "shield_elena",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger whether anyone means to follow the cart."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_door_shut",
+          "type": "react",
+          "trigger": "on_flag:oath_door_stayed_shut",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The boy kept Maud's door barred against you.",
+          "options": [
+            {
+              "id": "give_up_hope",
+              "label": "Stop hoping",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "bjorn",
+                  "want": "bring_davin_home",
+                  "delta": -2
+                }
+              ]
+            },
+            {
+              "id": "keep_hoping",
+              "label": "Make him a handle for three fingers anyway",
+              "serves": [
+                "bring_davin_home"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger to carry a hammer handle to Old Maud's for you."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_elena_at_the_cold_forge",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The forge is cold. Bjorn sits by it with his hands open on his knees.",
+          "options": [
+            {
+              "id": "forge_is_ours",
+              "label": "Tell him the forge belongs to the village, not to what was done with it",
+              "serves": [
+                "fight_for_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger Elena said the forge belongs to the village, not to what was done with it."
+                }
+              ]
+            },
+            {
+              "id": "ask_for_boots",
+              "label": "Ask him for one last thing: boots shod for stone",
+              "serves": [
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger to ask Bjorn for boots shod for stone."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_mathias_offers_honour",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The smith blames himself for the tiles he cast. You blessed them.",
+          "options": [
+            {
+              "id": "share_the_blame",
+              "label": "Tell him the sin was never in the iron, it was in the hand and the blessing",
+              "serves": [
+                "speak_the_truth",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger the Elder said the sin was in the blessing, not the iron."
+                }
+              ]
+            },
+            {
+              "id": "leave_him",
+              "label": "Leave him to his grief",
+              "serves": [
+                "prove_before_acting"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger to look in on the smith."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_gregor_at_the_cold_forge",
+          "type": "reveal",
+          "trigger": "idle",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The forge is cold because of you.",
+          "options": [
+            {
+              "id": "confess_to_him",
+              "label": "Go and tell him everything, and let him do what he likes",
+              "serves": [
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger you told Bjorn everything at his cold forge."
+                }
+              ]
+            },
+            {
+              "id": "stay_away",
+              "label": "Stay away",
+              "serves": [
+                "keep_the_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Beg the stranger not to send Bjorn to your door."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_mira_cold_forge",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "If the smith walks, the steel stops, and so does the village's best arm.",
+          "options": [
+            {
+              "id": "keep_him_working",
+              "label": "Coax Gregor to order one more thing, anything, to keep the fire lit",
+              "serves": [
+                "keep_the_steel_coming"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask Bjorn for one small order, anything, to keep his fire lit."
+                }
+              ]
+            },
+            {
+              "id": "let_him_go",
+              "label": "Let him go; the village loses its hammer",
+              "serves": [
+                "rule_from_shadow",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger, sadly, that a broken man should be let go."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_davin_sends_the_nail",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "Bjorn's forge has gone cold. Maud says he sits by it all night.",
+          "options": [
+            {
+              "id": "send_the_nail",
+              "label": "Send him the nail with his own twist in the head",
+              "serves": [
+                "see_bjorn",
+                "hold_a_hammer_again"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger someone left a nail with your own twist in the head on the anvil."
+                }
+              ],
+              "aids": "bjorn"
+            },
+            {
+              "id": "stay_away",
+              "label": "Stay away; you would only remind him",
+              "serves": [
+                "stay_hidden"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Ask the stranger whether Bjorn's forge has gone cold because of you."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_hammer_at_the_gate",
+      "act": 3,
+      "title": "The Village's Hammer",
+      "summary": "Collection Night. The Hollow's cart comes to the gate, and Bjorn stands in the road with his father's hammer and the steel he made for his neighbours.",
+      "location": "village_gate",
+      "requires": [
+        "tn_collection_night",
+        "oath_resistance_armed"
+      ],
+      "resolves_on": [
+        "oath_stood_with_the_smith"
+      ],
+      "hooks": [
+        {
+          "id": "oath_aldric_places_the_smith",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The smith is at the gate with the steel he made.",
+          "options": [
+            {
+              "id": "at_the_centre",
+              "label": "Put him at the centre of the line",
+              "serves": [
+                "hold_the_gate",
+                "arm_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger to stand at the smith's shoulder."
+                }
+              ],
+              "aids": "bjorn"
+            },
+            {
+              "id": "behind_the_six",
+              "label": "Put him behind the six; the village needs its smith tomorrow",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the smith stands behind the six."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_varn_and_the_smith",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The smith is in the road with a hammer. Your guards carry his steel.",
+          "options": [
+            {
+              "id": "smith_first",
+              "label": "Go for the smith first",
+              "serves": [
+                "crush_the_resistance",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell your men the smith goes down first."
+                }
+              ],
+              "harms": [
+                "bjorn"
+              ]
+            },
+            {
+              "id": "take_the_girl",
+              "label": "Ignore him; take the girl and break for the ridge",
+              "serves": [
+                "hold_elena_as_leverage",
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell your men: the girl, then the ridge, nothing else."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_bjorn_breaks_the_axle",
+          "type": "aid",
+          "trigger": "on_flag:oath_stood_with_the_smith",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The stranger is beside you. The cart is in the road.",
+          "options": [
+            {
+              "id": "break_the_axle",
+              "label": "Break the cart's axle with your father's hammer",
+              "serves": [
+                "protect_the_village",
+                "shield_elena"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "oath_cart_axle_broken",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "hold_the_line",
+              "label": "Hold the line beside the captain",
+              "serves": [
+                "arm_the_resistance",
+                "protect_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger you held the line beside the captain."
+                }
+              ],
+              "aids": "aldric"
+            }
+          ]
+        },
+        {
+          "id": "oath_davin_comes_to_the_gate",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "Bjorn is in the road. The cart is the cart you walked behind.",
+          "options": [
+            {
+              "id": "stand_by_him",
+              "label": "Stand beside him with three fingers on a hammer",
+              "serves": [
+                "stop_the_cart",
+                "atone_for_running"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "davin",
+                  "location": "village_gate"
+                }
+              ],
+              "aids": "bjorn"
+            },
+            {
+              "id": "watch_from_the_trees",
+              "label": "Watch from the trees",
+              "serves": [
+                "never_go_back",
+                "stay_hidden"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Ask the stranger whether Bjorn came home from the gate."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_gregor_at_the_gate",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The smith you lied to is standing between the cart and your daughter.",
+          "options": [
+            {
+              "id": "stand_with_him",
+              "label": "Stand with him",
+              "serves": [
+                "make_amends",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger you stood beside Bjorn at the gate."
+                }
+              ],
+              "aids": "bjorn"
+            },
+            {
+              "id": "run_with_her",
+              "label": "Use the fight to run with Elena",
+              "serves": [
+                "get_elena_away"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Beg the stranger to cover you while you take Elena out by the east road."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_mira_at_the_gate",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The smith has made himself the village's hammer. You see who fights.",
+          "options": [
+            {
+              "id": "mark_him",
+              "label": "Mark the smith for next autumn",
+              "serves": [
+                "see_who_fights",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger you have never seen Bjorn so brave."
+                }
+              ],
+              "harms": [
+                "bjorn"
+              ]
+            },
+            {
+              "id": "warn_varn_off",
+              "label": "Send word to Varn's men to take the mill road round",
+              "serves": [
+                "keep_varn_leashed",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Take the mill road round the gate, as the widow says."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_elena_and_the_hammer",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Bjorn is standing between you and the cart.",
+          "options": [
+            {
+              "id": "walk_to_the_cart",
+              "label": "Walk past him to the cart, and ask him to let you go",
+              "serves": [
+                "make_the_lot_stand",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger Elena asked you to let her walk to the cart."
+                }
+              ]
+            },
+            {
+              "id": "stand_with_him",
+              "label": "Stand with him",
+              "serves": [
+                "fight_for_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger you stood with the smith at the gate."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_aldric_village_rose",
+          "type": "aid",
+          "trigger": "on_flag:cou_village_rises",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The village rose behind you. The smith's steel is in their hands.",
+          "options": [
+            {
+              "id": "forward",
+              "label": "Step forward with the smith and the village",
+              "serves": [
+                "break_iron_hollow",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the village stepped forward behind the smith."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Hold the gate and no more",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger you held the gate and did not chase."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oath_davin_varn_dead",
+          "type": "react",
+          "trigger": "on_flag:hc_varn_dead",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "Varn is dead. The man who counted you at the seam every morning.",
+          "options": [
+            {
+              "id": "breathe",
+              "label": "Breathe, for the first time in three years",
+              "serves": [
+                "save_corin_and_willa"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "davin",
+                  "want": "save_corin_and_willa",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "still_afraid",
+              "label": "Stay afraid; someone gave Varn his orders",
+              "serves": [
+                "stay_hidden"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Ask the stranger who gave Varn his orders."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "oath_both_edges",
+      "title": "Both Edges",
+      "requires": [
+        "oath_stood_with_the_smith",
+        "oath_blades_sabotaged"
+      ],
+      "summary": "Bjorn armed the gate and stood in the road with his father's hammer, and the Hollow's guards found their steel snapping in their hands. Both edges of his work cut the same way at last."
+    },
+    {
+      "id": "oath_the_villages_hammer",
+      "title": "The Village's Hammer",
+      "requires": [
+        "oath_stood_with_the_smith",
+        "!oath_blades_sabotaged"
+      ],
+      "summary": "Bjorn stood at the gate on Collection Night with the stranger beside him, his steel in his neighbours' hands and in the Hollow's both. The honest smith became Thornhaven's hammer."
+    },
+    {
+      "id": "oath_glass_and_a_homecoming",
+      "title": "Glass and a Homecoming",
+      "requires": [
+        "oath_blades_sabotaged",
+        "oath_davin_reunited",
+        "oath_vouched_for_bjorn",
+        "tn_collection_night",
+        "!oath_smith_walked_away"
+      ],
+      "summary": "Bjorn never stood at the gate, but the Hollow's blades broke on Collection Night, and his apprentice was home at the forge, learning to hold a hammer with three fingers."
+    },
+    {
+      "id": "oath_the_cold_forge",
+      "title": "The Cold Forge",
+      "requires": [
+        "oath_smith_walked_away",
+        "oath_let_bjorn_go"
+      ],
+      "summary": "Bjorn banked his fire, hung up his hammer and walked out of Thornhaven with his father's last bar of steel. The forge that cast the lot went cold."
+    }
+  ]
+}

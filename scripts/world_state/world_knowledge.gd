@@ -172,6 +172,9 @@ var world_facts = {
 
 ## Determine what knowledge scope an NPC has for a given location
 func get_knowledge_scope_for_location(npc_id: String, target_location: String) -> KnowledgeScope:
+	var registry_scope = _registry_scope(npc_id, target_location)
+	if registry_scope >= 0:
+		return registry_scope as KnowledgeScope
 	var npc_home = npc_locations.get(npc_id, "")
 	if npc_home.is_empty():
 		return KnowledgeScope.LOCAL  # Default to local knowledge if not specified
@@ -203,6 +206,68 @@ func get_knowledge_scope_for_location(npc_id: String, target_location: String) -
 	# UNKNOWN: Not in our world data
 	return KnowledgeScope.UNKNOWN
 
+## Scope from world.json when both the NPC and the place are on it (-1 otherwise)
+## Own home: INTIMATE; same area (or same settlement, e.g. Thornhaven Village/Outskirts): LOCAL;
+## same region: REGIONAL; elsewhere in the realm: DISTANT
+func _registry_scope(npc_id: String, target_location: String) -> int:
+	var registry = _registry()
+	if registry == null:
+		return -1
+	var key = registry.get_npc_key(npc_id)
+	if key == "" or not registry.has_location(target_location):
+		return -1
+	var home = registry.get_npc_home(key)
+	var world_state = get_node_or_null("/root/WorldState")
+	if world_state and world_state.has_method("get_npc_location"):
+		home = world_state.get_npc_location(registry.get_npc_id(key))
+	if target_location == home or target_location == registry.get_npc_home(key):
+		return KnowledgeScope.INTIMATE
+	var area_a = registry.get_area(home)
+	var area_b = registry.get_area(target_location)
+	if area_a != "" and (area_a == area_b or area_a.split(" ")[0] == area_b.split(" ")[0]):
+		return KnowledgeScope.LOCAL
+	if registry.get_region(home) != "" and registry.get_region(home) == registry.get_region(target_location):
+		return KnowledgeScope.REGIONAL
+	return KnowledgeScope.DISTANT
+
+func _registry() -> Node:
+	return get_node_or_null("/root/WorldRegistry")
+
+## World facts from world.json for roster NPCs WorldKnowledge has no hand-written entry for
+## (everyone outside Thornhaven's original four): who they are, their region, its places and people
+func _get_registry_facts_for_npc(key: String) -> String:
+	var registry = _registry()
+	var home = registry.get_npc_home(key)
+	var region = registry.get_region(home)
+	var facts = "## ⚠️ STRICT WORLD KNOWLEDGE RULES ⚠️\n\n"
+	facts += "1. **ONLY use names/places listed below** - if a place isn't listed, you DON'T KNOW IT\n"
+	facts += "2. **NEVER invent establishment or person names**\n"
+	facts += "3. **Far places are rumour to you** - say 'I've heard...' or 'I don't know that place'\n\n"
+	facts += "## YOUR IDENTITY (You know this perfectly)\n\n"
+	facts += "- **Your Name:** %s\n- **Who You Are:** %s\n" % [registry.get_npc_name(key), registry.get_npc_role(key)]
+	facts += "- **Where You Live:** %s (%s, %s)\n\n" % [registry.get_location_name(home), registry.get_area(home), registry.get_region_name(region)]
+	facts += _registry_region_block(key, region)
+	return facts + "---\n\n"
+
+## The NPC's region (places and people) and the rest of the realm by name only
+func _registry_region_block(key: String, region: String) -> String:
+	var registry = _registry()
+	var block = "## %s (You know this well)\n" % registry.get_region_name(region).to_upper()
+	block += "%s\n" % str(registry.get_region_info(region).get("summary", ""))
+	var places = registry.get_locations_in_region(region).map(func(id): return registry.get_location_name(id))
+	block += "Places: %s\n" % ", ".join(places)
+	var people: Array = []
+	for other in registry.get_npcs_in_region(region):
+		if other != key:
+			people.append("%s (%s)" % [registry.get_npc_name(other), registry.get_npc_role(other)])
+	if not people.is_empty():
+		block += "People: %s\n" % "; ".join(people)
+	block += "\n## FARTHER AWAY (rumour and reputation only)\n"
+	for other_region in registry.get_region_ids():
+		if other_region != region:
+			block += "- %s: %s\n" % [registry.get_region_name(other_region), str(registry.get_region_info(other_region).get("summary", ""))]
+	return block + "\n"
+
 ## Get root location (e.g., thornhaven_gregor_shop -> thornhaven)
 func _get_root_location(location_id: String) -> String:
 	var current = location_id
@@ -216,6 +281,10 @@ func _get_root_location(location_id: String) -> String:
 ## Get all world facts relevant to an NPC's context with GEOGRAPHIC SCOPING
 ## Returns formatted string for injection into system prompt
 func get_world_facts_for_npc(npc_id: String) -> String:
+	var registry = _registry()
+	var roster_key = registry.get_npc_key(npc_id) if registry else ""
+	if roster_key != "" and not world_facts.npcs.has(npc_id):
+		return _get_registry_facts_for_npc(roster_key)
 	var facts = ""
 
 	# ==========================================================================
@@ -288,6 +357,15 @@ func get_world_facts_for_npc(npc_id: String) -> String:
 			facts += "- **%s** the %s - %s\n" % [other.name, other.occupation, other.known_for]
 	facts += "\n"
 
+	# Roster villagers without a hand-written entry above (Aldric, Mathias, Varn...)
+	if registry:
+		var home_region = registry.get_region(registry.get_npc_home(roster_key)) if roster_key != "" else "western_valley"
+		for other in registry.get_npcs_in_region(home_region):
+			var other_id = registry.get_npc_id(other)
+			if other_id != npc_id and not world_facts.npcs.has(other_id):
+				facts += "- **%s** - %s\n" % [registry.get_npc_name(other), registry.get_npc_role(other)]
+		facts += "\n"
+
 	# Recent events (local knowledge)
 	facts += "### RECENT LOCAL NEWS\n\n"
 	for event in world_facts.history.recent_events:
@@ -298,7 +376,13 @@ func get_world_facts_for_npc(npc_id: String) -> String:
 	# KNOWLEDGE BOUNDARIES: What the NPC does NOT know
 	# ==========================================================================
 	facts += "## WHAT YOU DON'T KNOW (Be honest about this!)\n\n"
-	facts += "- You have NEVER been to the King's castle or the capital\n"
+	if registry and registry.is_loaded():
+		facts += "- The wider realm, by name and rumour only:\n"
+		var own_region = registry.get_region(registry.get_npc_home(roster_key)) if roster_key != "" else ""
+		for region in registry.get_region_ids():
+			if region != own_region:
+				facts += "  - %s: %s\n" % [registry.get_region_name(region), str(registry.get_region_info(region).get("summary", ""))]
+	facts += "- You have NEVER been to the King's castle or the Capitol unless your memories say so\n"
 	facts += "- You don't know the layout of places outside Thornhaven\n"
 	facts += "- Distant places are only RUMORS to you - preface with uncertainty\n"
 	facts += "- If asked about unknown places, say: \"I've never been there\" or \"I've only heard stories\"\n\n"

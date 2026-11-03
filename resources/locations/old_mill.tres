@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="LocationData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/location_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+location_id = "old_mill"
+display_name = "The Old Mill"
+region = "Western Valley"
+area = "Thornhaven Outskirts"
+scene_path = "res://scenes/exterior/old_mill.tscn"
+is_interior = false
+spawn_points = {
+	"default": "On the mill track",
+	"from_village_gate": "Where the track comes in from Thornhaven",
+	"from_forest_path": "Where the forest track meets the yard"
+}

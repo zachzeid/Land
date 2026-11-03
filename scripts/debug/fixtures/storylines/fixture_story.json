@@ -1,0 +1,209 @@
+{
+  "id": "fx_story",
+  "title": "The Fixture",
+  "summary": "Test-only storyline for scripts/debug/test_storyline_director.gd.",
+  "prefix": "fx_",
+  "act_span": [1, 1],
+  "flags": {
+    "fx_begin": "A stranger arrived in the fixture village",
+    "fx_signal": "A lantern was lit in the mill window",
+    "fx_done": "The first meeting at the inn ended",
+    "fx_after": "Word of the inn meeting reached the square",
+    "fx_choice_power": "Mira tightened her grip on the village",
+    "fx_choice_coin": "Mira counted the week's coin twice",
+    "fx_mira_exposed": "Mira was seen counting bandit coin",
+    "fx_secret": "A secret meeting at the old mill was arranged",
+    "fx_met": "The meeting at the old mill took place",
+    "fx_gregor": "Gregor was cornered in his shop",
+    "fx_free": "The village went quiet for the night",
+    "fx_drift": "The camp's coffers ran dry",
+    "fx_end_a": "The stranger left the village in peace",
+    "fx_end_b": "The stranger burned the mill"
+  },
+  "crossovers": [],
+  "beats": [
+    {
+      "id": "arrival",
+      "title": "Arrival",
+      "act": 2,
+      "summary": "A stranger arrives.",
+      "location": "thornhaven_tavern",
+      "requires": ["fx_begin"],
+      "resolves_on": ["fx_done"],
+      "on_resolve": [ {"type": "set_flag", "flag": "fx_after", "value": true} ],
+      "hooks": [
+        {
+          "id": "greet", "type": "scheme", "trigger": "on_open", "eligible": ["mira", "gregor"],
+          "situation": "A stranger walks into the tavern.",
+          "options": [
+            {"id": "plot", "label": "Size the stranger up", "serves": ["power"],
+             "effects": [ {"type": "agenda", "npc": "mira", "text": "Ask the stranger where they came from."} ]},
+            {"id": "wait", "label": "Do nothing", "serves": [], "effects": []}
+          ]
+        },
+        {
+          "id": "rally", "type": "aid", "trigger": "on_open", "eligible": ["mira", "gregor"], "stack": true,
+          "situation": "The stranger needs a room.",
+          "options": [
+            {"id": "help", "label": "Help them settle in", "serves": ["power", "safety"], "effects": []}
+          ]
+        },
+        {
+          "id": "lantern", "type": "react", "trigger": "on_flag:fx_signal", "eligible": ["mira"],
+          "situation": "A lantern is lit at the mill.",
+          "options": [
+            {"id": "note", "label": "Note it", "serves": ["power"],
+             "effects": [ {"type": "set_flag", "flag": "fx_choice_power", "value": true} ]},
+            {"id": "ignore", "label": "Ignore it", "serves": [], "effects": []}
+          ]
+        },
+        {
+          "id": "last_word", "type": "react", "trigger": "on_flag:fx_done", "eligible": ["mira"],
+          "situation": "The meeting is ending.",
+          "options": [ {"id": "close", "label": "Have the last word", "serves": ["power"],
+             "effects": [ {"type": "set_flag", "flag": "fx_choice_coin", "value": true} ]} ]
+        },
+        {
+          "id": "aftermath", "type": "react", "trigger": "on_resolve", "eligible": ["gregor"],
+          "situation": "The meeting is over.",
+          "options": [
+            {"id": "hide", "label": "Slip away to the mill", "serves": ["safety"],
+             "effects": [
+               {"type": "move_npc", "npc": "gregor", "location": "old_mill"},
+               {"type": "agenda", "npc": "elena", "text": "Ask the stranger whether they have seen your father."}
+             ]},
+            {"id": "stay", "label": "Stay", "serves": [], "effects": []}
+          ]
+        },
+        {
+          "id": "brood", "type": "scheme", "trigger": "idle", "eligible": ["gregor"], "once": false,
+          "situation": "The hours drag on.",
+          "options": [
+            {"id": "think", "label": "Worry", "serves": ["safety"], "effects": []}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "choice",
+      "title": "A Choice",
+      "summary": "Mira weighs her options.",
+      "location": "thornhaven_tavern",
+      "requires": ["fx_after"],
+      "resolves_on": [],
+      "hooks": [
+        {
+          "id": "weigh", "type": "intercept", "trigger": "on_open", "eligible": ["mira"],
+          "situation": "The stranger asks too many questions.",
+          "allow_freeform": true, "freeform_effects": ["agenda", "set_flag"],
+          "options": [
+            {"id": "for_power", "label": "Lean on the village", "serves": ["power"],
+             "effects": [ {"type": "set_flag", "flag": "fx_choice_power", "value": true} ]},
+            {"id": "for_coin", "label": "Count the coin", "serves": ["coin", "safety"],
+             "effects": [ {"type": "set_flag", "flag": "fx_choice_coin", "value": true} ]},
+            {"id": "expose_self", "label": "Confess everything", "serves": ["power", "coin", "safety"],
+             "effects": [ {"type": "set_flag", "flag": "fx_mira_exposed", "value": true} ]},
+            {"id": "help_gregor", "label": "Cover for Gregor", "serves": ["power", "coin"], "aids": "gregor", "effects": []}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "meeting",
+      "title": "The Mill Meeting",
+      "summary": "A meeting at the mill.",
+      "location": "old_mill",
+      "requires": ["fx_secret"],
+      "resolves_on": ["fx_met"],
+      "hooks": [
+        {
+          "id": "warn", "type": "intercept", "trigger": "on_open", "eligible": ["mira"],
+          "situation": "You know the stranger is watching the mill.",
+          "options": [
+            {"id": "warn", "label": "Call the meeting off", "serves": ["power"],
+             "effects": [
+               {"type": "block_beat", "storyline": "fx_story", "beat": "meeting"},
+               {"type": "agenda", "npc": "mira", "text": "Steer the stranger away from the old mill tonight."}
+             ]},
+            {"id": "ignore", "label": "Let it happen", "serves": [], "effects": []}
+          ]
+        },
+        {
+          "id": "late_open", "type": "scheme", "trigger": "on_open", "eligible": ["gregor"],
+          "situation": "The mill meeting is on.",
+          "options": [ {"id": "note", "label": "Make a note", "serves": ["safety"],
+             "effects": [ {"type": "agenda", "npc": "gregor", "text": "Mention the mill."} ]} ]
+        },
+        {
+          "id": "mill_gossip", "type": "react", "trigger": "on_flag:fx_signal", "eligible": ["mira"],
+          "situation": "A lantern at the mill.",
+          "options": [ {"id": "count", "label": "Count coin", "serves": ["coin"],
+             "effects": [ {"type": "set_flag", "flag": "fx_choice_coin", "value": true} ]} ]
+        },
+        {
+          "id": "free_it", "type": "aid", "trigger": "on_flag:fx_signal", "eligible": ["gregor"],
+          "situation": "The lantern means the meeting must happen after all.",
+          "options": [
+            {"id": "open", "label": "Send word that the meeting is on", "serves": ["safety"],
+             "effects": [ {"type": "unlock_beat", "storyline": "fx_story", "beat": "meeting"} ]},
+            {"id": "leave", "label": "Leave it", "serves": [], "effects": []}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "night",
+      "title": "Night",
+      "summary": "The village sleeps.",
+      "location": "thornhaven_tavern",
+      "requires": ["fx_free"],
+      "resolves_on": [],
+      "hooks": [
+        {
+          "id": "whisper", "type": "scheme", "trigger": "on_open", "eligible": ["mira"],
+          "situation": "You could start a story about the stranger.",
+          "options": [ {"id": "frame", "label": "Say the stranger burned the mill", "serves": ["power"],
+             "effects": [ {"type": "spread_rumor", "flag": "fx_end_b", "to": ["*"], "via": "talk at the bar"} ]} ]
+        }
+      ]
+    },
+    {
+      "id": "cornered",
+      "title": "Cornered",
+      "summary": "Gregor is cornered.",
+      "location": "thornhaven_gregor_shop",
+      "requires": ["fx_gregor"],
+      "resolves_on": [],
+      "hooks": [
+        {
+          "id": "gregor_reveal", "type": "reveal", "trigger": "on_open", "eligible": ["gregor"],
+          "situation": "The stranger asks what you know.",
+          "options": [ {"id": "tell", "label": "Tell", "serves": ["safety"], "effects": []} ]
+        },
+        {
+          "id": "gregor_betray", "type": "betray", "trigger": "on_open", "eligible": ["gregor"],
+          "situation": "You could sell out the bandits.",
+          "options": [ {"id": "sell", "label": "Sell them out", "serves": ["safety"],
+             "effects": [ {"type": "set_flag", "flag": "fx_choice_coin", "value": true} ]} ]
+        },
+        {
+          "id": "gregor_rumor", "type": "scheme", "trigger": "on_open", "eligible": ["gregor"],
+          "situation": "You could shift suspicion.",
+          "options": [
+            {"id": "gossip", "label": "Spread talk", "serves": ["safety", "coin"],
+             "effects": [ {"type": "spread_rumor", "flag": "fx_secret", "to": ["*"]} ]},
+            {"id": "harm_elena", "label": "Blame Elena", "serves": ["safety", "coin"], "harms": ["elena"],
+             "effects": [ {"type": "set_flag", "flag": "elena_shown_proof", "value": true} ]},
+            {"id": "quiet", "label": "Talk prices", "serves": ["safety"],
+             "effects": [ {"type": "agenda", "npc": "gregor", "text": "Keep the stranger busy with talk of prices."} ]}
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {"id": "end_a", "title": "Peace", "requires": ["fx_end_a", "!fx_end_b"], "summary": "The stranger left in peace."},
+    {"id": "end_b", "title": "Fire", "requires": ["fx_end_b"], "summary": "The mill burned."},
+    {"id": "end_c", "title": "Ash", "requires": ["fx_end_b"], "summary": "Only ash was left."}
+  ]
+}

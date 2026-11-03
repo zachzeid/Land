@@ -1,0 +1,1977 @@
+{
+  "id": "ferrisford_toll",
+  "title": "The Ferrisford Toll",
+  "summary": "The crossing where the Hollow's barges go east. Oskar's double toll, his drowned brother Piet, his hidden tally sticks with their marks for the white sacks nobody let him lift, a river boy in the Warrens, and the rangers who want the rope.",
+  "prefix": "ford_",
+  "act_span": [
+    1,
+    3
+  ],
+  "flags": {
+    "ford_barge_held": "Oskar held a Hollow night barge at the Ferrisford quay until dawn and would not carry it across in the dark.",
+    "ford_barge_carried": "Oskar took the Hollow's double toll and carried a night barge of wire-bound bales across the Ferris without looking at them.",
+    "ford_hollow_watcher_posted": "A Hollow man took a bench in the Ferrisford alehouse to watch whom the ferryman talked to.",
+    "ford_river_road_watched": "Word went along the river that someone at Ferrisford had begun asking what the Hollow's night barges carried.",
+    "ford_piet_story_told": "Oskar told the stranger how his brother Piet refused a Hollow barge and drowned two nights later, when the ferry's second rope was cut under him.",
+    "ford_rope_warning_cut": "Someone sawed half through the Ferrisford ferry rope in the night and tied a Hollow knot above the cut.",
+    "ford_pip_named": "Rook let it be known that Pip, the smallest of her crew, came up the river from Ferrisford the spring a bargeman drowned.",
+    "ford_boy_marked": "Word went into the Warrens from the Hollow to keep watch on a boy of nine who came up the river from Ferrisford.",
+    "ford_boy_kept_in_warrens": "Rook kept the boy Pip in her crew in the Warrens and would not send him down the river.",
+    "ford_boy_brought_home": "The stranger brought the boy Pip down the river to Ferrisford, and Oskar knew his brother's son on sight.",
+    "ford_tollhouse_searched": "Hollow bargemen turned out the Ferrisford toll-house in the night, pulling down the thatch as if looking for something the ferryman kept.",
+    "ford_tally_sunk": "Oskar took his tally sticks out of the toll-house roof and sank them in a weighted sack under the ferry landing.",
+    "ford_family_sheltered": "The stranger swore to Oskar that his wife, his daughters and Piet's widow would be kept safe if the Hollow came for the tally.",
+    "ford_tally_demanded": "Captain Renna Thorne came to Ferrisford and told Oskar the crown knew he kept a tally of the Hollow's barges.",
+    "ford_tally_given": "Oskar dug out his tally sticks and handed over three years of Hollow barges, every date, load and head of men, and the double-wrapped white sacks among them, to hands that would use them.",
+    "ford_crossing_seized": "The King's Rangers seized Ferrisford crossing, and the Hollow's barges no longer passed the rope.",
+    "ford_crossing_left_to_oskar": "The King's Rangers left Ferrisford crossing in Oskar's family's hands, with two riders posted at the toll-house.",
+    "ford_crossing_decided": "Captain Thorne's rangers settled what would become of Ferrisford crossing, and the whole river heard of it.",
+    "ford_reprisal_ordered": "Varn sent Hollow men east to Ferrisford to make an example of the ferryman who talked.",
+    "ford_reprisal_called_off": "Word came to Iron Hollow from the Boss that the Ferrisford ferryman was not to be touched, and no Hollow man went east.",
+    "ford_reprisal_broken": "King's Rangers met the Hollow men on the Ferrisford landing and sent the survivors back west.",
+    "ford_ferry_burned": "Hollow men burned the Ferrisford ferry at its landing and cut the great rope, and the crossing went dark.",
+    "ford_stood_at_the_rope": "The stranger stood watch on the Ferrisford landing beside Oskar through the nights the Hollow was expected, and no Hollow man took the crossing.",
+    "ford_varn_named_for_piet": "Oskar stood on the Ferrisford quay and said aloud, for the whole crossing to hear, that Varn ordered the rope cut under his brother Piet.",
+    "ford_reckoning_done": "Ferrisford's long wait for the Hollow's answer to the ferryman who talked came to an end.",
+    "ford_spoke_on_the_quay": "The stranger stood on the Ferrisford quay beside Oskar when Captain Thorne came to settle the crossing, and said their piece to her face.",
+    "ford_kept_the_door": "The stranger spent the night the Hollow was expected behind a barred door with Oskar's family, and left the landing to whoever stood on it.",
+    "ford_white_sacks_named": "Oskar told the stranger that double-wrapped sacks of white salt had ridden the Hollow's night barges east whenever Greystone's ore road ran slow, and that the bargemen never let him lift one."
+  },
+  "player_flags": [
+    "ford_boy_brought_home",
+    "ford_family_sheltered",
+    "ford_stood_at_the_rope",
+    "ford_spoke_on_the_quay",
+    "ford_kept_the_door"
+  ],
+  "crossovers": [
+    "ih_supply_line_cut",
+    "hc_varn_ascendant",
+    "hc_varn_dead",
+    "tithe_rangers_arrive",
+    "des_varn_warrant_served",
+    "fence_ledger_taken",
+    "fence_route_burned",
+    "tn_taken_alive_known"
+  ],
+  "beats": [
+    {
+      "id": "night_barge",
+      "act": 1,
+      "title": "The Night Barge",
+      "summary": "Wire-bound bales wait on the Ferrisford quay for the Hollow's night barge. Oskar has carried them for three years without looking. Tonight someone else is looking.",
+      "location": "ferrisford",
+      "requires": [
+        "ferrisford_unmarked_cargo_seen",
+        "!ford_crossing_seized"
+      ],
+      "resolves_on": [
+        "ford_barge_held",
+        "ford_barge_carried"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "ford_river_road_watched",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "oskar_and_the_night_barge",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "oskar"
+          ],
+          "situation": "Wire-bound bales sit on your quay waiting for the Hollow's night barge, and the stranger has seen them. The bargemen will pay double to cross before light, and not to be looked at.",
+          "options": [
+            {
+              "id": "carry_blind",
+              "label": "Take the double toll and carry the barge across in the dark",
+              "serves": [
+                "keep_the_toll",
+                "keep_my_family"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_barge_carried",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "carry_and_notch",
+              "label": "Carry it, and cut tonight's notch on the tally stick in the roof",
+              "serves": [
+                "keep_the_toll",
+                "give_the_tally"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_barge_carried",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Mutter to the stranger that the night barge carried eight bales and four men, then look at the water as if he had said nothing."
+                }
+              ]
+            },
+            {
+              "id": "hold_till_dawn",
+              "label": "Hold the barge at the quay till dawn, where anyone can see what it carries",
+              "serves": [
+                "avenge_piet",
+                "give_the_tally"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_barge_held",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Tell the stranger, low, that he is holding the western bales on the quay till light, the way Piet once did."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "varn_hears_of_the_quay",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "A Hollow bargeman brings word up the river road that a stranger has been staring at the bales on the Ferrisford quay. The ferryman has been quiet three years. Quiet men can be reminded.",
+          "options": [
+            {
+              "id": "post_a_watcher",
+              "label": "Put a Hollow man on a bench in the Ferrisford alehouse to watch the ferryman",
+              "serves": [
+                "be_feared",
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_hollow_watcher_posted",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger, smiling, how they found the river at Ferrisford, and whether the ferryman still has both his daughters."
+                }
+              ],
+              "harms": [
+                "oskar"
+              ]
+            },
+            {
+              "id": "remind_the_ferryman",
+              "label": "Have the bargemen tell the ferryman the rope remembers Piet",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Tell the stranger a bargeman whispered tonight that the rope remembers Piet, then refuse to say another word."
+                }
+              ],
+              "harms": [
+                "oskar"
+              ]
+            },
+            {
+              "id": "leave_it",
+              "label": "Leave it. The Boss wants the river quiet",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "varn_needs_the_river",
+          "type": "scheme",
+          "trigger": "on_flag:ih_supply_line_cut",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The merchant's line through Thornhaven is cut: no more grain or steel by that road. The river barges are the Hollow's purse now, and the ferryman is the knot in it.",
+          "options": [
+            {
+              "id": "fatten_the_toll",
+              "label": "Send two barges a week and a fatter purse to keep the ferryman sweet",
+              "serves": [
+                "arm_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "oskar",
+                  "want": "keep_the_toll",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the Hollow is done with Thornhaven merchants. The river pays better, and the river doesn't confess."
+                }
+              ]
+            },
+            {
+              "id": "knife_on_every_barge",
+              "label": "Put a man with a bare knife on every barge that crosses",
+              "serves": [
+                "be_feared",
+                "arm_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_hollow_watcher_posted",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "oskar"
+              ]
+            },
+            {
+              "id": "wait_for_the_boss",
+              "label": "Do nothing yet; let the Boss choose the new road",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mira_hears_of_the_held_barge",
+          "type": "react",
+          "trigger": "on_flag:ford_barge_held",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "A letter comes back along the Kingsroad, days late: the ferryman held a barge at Ferrisford till dawn with a stranger watching. Three years he never lifted his eyes. Something has changed at the river.",
+          "options": [
+            {
+              "id": "feed_varns_temper",
+              "label": "Let Varn hear that the ferryman shamed the Hollow in front of the whole crossing",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "varn",
+                  "want": "be_feared",
+                  "delta": 2
+                }
+              ],
+              "harms": [
+                "oskar"
+              ]
+            },
+            {
+              "id": "ask_the_stranger",
+              "label": "Ask the stranger, over a warm bowl, what they saw on the river road",
+              "serves": [
+                "keep_the_mask",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, pouring, whether the river roads are as dangerous as travellers say, and whether anyone at Ferrisford talks too much."
+                }
+              ]
+            },
+            {
+              "id": "let_it_pass",
+              "label": "Let it pass. One held barge is weather, not a storm",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "rook_misses_the_bales",
+          "type": "react",
+          "trigger": "on_flag:ford_barge_held",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "The wire-bound bales due through your back room never came off the night barge. Pip says the ferryman at Ferrisford held them. Either the river is turning, or someone is watching it.",
+          "options": [
+            {
+              "id": "go_look",
+              "label": "Go down to the River Quarter wharf and see who's asking",
+              "serves": [
+                "keep_the_fence_open",
+                "sell_what_i_know"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "rook",
+                  "location": "capitol_docks"
+                }
+              ]
+            },
+            {
+              "id": "price_the_news",
+              "label": "Put a price on any news from Ferrisford",
+              "serves": [
+                "sell_what_i_know",
+                "get_out_rich"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Ask the stranger, if they've come from the west, what's wrong at Ferrisford, and what knowing it costs."
+                }
+              ]
+            },
+            {
+              "id": "lie_low",
+              "label": "Lie low until the river settles",
+              "serves": [
+                "get_out_alive"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "piets_marker",
+      "act": 1,
+      "title": "He Would Not Carry Theirs",
+      "summary": "A marker on the Ferrisford bank remembers Oskar's brother Piet, who refused a Hollow barge and drowned two nights later. The Hollow remembers him too.",
+      "location": "ferrisford",
+      "requires": [
+        "ford_river_road_watched"
+      ],
+      "resolves_on": [
+        "ford_piet_story_told"
+      ],
+      "hooks": [
+        {
+          "id": "oskar_at_the_marker",
+          "type": "reveal",
+          "trigger": "on_flag:oskar_brother_marker_seen",
+          "eligible": [
+            "oskar"
+          ],
+          "situation": "The stranger has read Piet's marker: 'He would not carry theirs.' They are looking at you the way Piet's widow does.",
+          "options": [
+            {
+              "id": "tell_it_all",
+              "label": "Tell how Piet refused the barge, and how the second rope was cut two nights later",
+              "serves": [
+                "avenge_piet",
+                "give_the_tally"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_piet_story_told",
+                  "value": true
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "oskar",
+                  "dimension": "trust",
+                  "delta": 8
+                }
+              ]
+            },
+            {
+              "id": "tell_of_the_boy",
+              "label": "Tell it, and ask the stranger to look for Piet's lost boy downriver",
+              "serves": [
+                "keep_my_family",
+                "avenge_piet"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_piet_story_told",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Ask the stranger, if they go down to the Capitol, to look for a boy of nine or ten with Piet's ears and a bargeman's knots."
+                }
+              ]
+            },
+            {
+              "id": "the_river_took_him",
+              "label": "Say the river took him, and go back to the rope",
+              "serves": [
+                "keep_my_family",
+                "keep_the_toll"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "oskar_tells_it_at_last",
+          "type": "reveal",
+          "trigger": "idle",
+          "eligible": [
+            "oskar"
+          ],
+          "situation": "The stranger keeps coming back to the crossing and asking the questions Piet asked. You have carried the story alone for three years.",
+          "options": [
+            {
+              "id": "tell_it",
+              "label": "Make up his mind to tell the stranger about Piet the next time they come",
+              "serves": [
+                "avenge_piet"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Sit the stranger down by the rope and tell them, slowly, about his brother Piet, the barge he refused and the rope that was cut."
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "oskar",
+                  "dimension": "trust",
+                  "delta": 5
+                }
+              ]
+            },
+            {
+              "id": "not_yet",
+              "label": "Not yet. Not while the Hollow man drinks in the alehouse",
+              "serves": [
+                "keep_my_family"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "varn_saws_the_rope",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The ferryman has started looking at your cargo, and folk on the river are talking about it. His brother was taught one lesson. He may need the same one, gentler.",
+          "options": [
+            {
+              "id": "saw_the_rope",
+              "label": "Have a bargeman saw half through the ferry rope and tie a Hollow knot above the cut",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_rope_warning_cut",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "oskar"
+              ]
+            },
+            {
+              "id": "fatten_the_purse",
+              "label": "Send the ferryman a fatter toll purse with the next barge",
+              "serves": [
+                "arm_the_hollow",
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "oskar",
+                  "want": "keep_the_toll",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "leave_him",
+              "label": "Leave him. A dead ferryman closes the river",
+              "serves": [
+                "arm_the_hollow"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "oskar_finds_the_cut",
+          "type": "react",
+          "trigger": "on_flag:ford_rope_warning_cut",
+          "eligible": [
+            "oskar"
+          ],
+          "situation": "At first light you find the ferry rope sawn half through and a Hollow knot tied above the cut. The same knot they left on Piet's rope.",
+          "options": [
+            {
+              "id": "show_the_stranger",
+              "label": "Show the stranger the cut and the knot, and say whose knot it is",
+              "serves": [
+                "avenge_piet"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Take the stranger down to the landing, show them the sawn rope and the Hollow knot above it, and say only: same as Piet's."
+                },
+                {
+                  "type": "shift_want",
+                  "npc": "oskar",
+                  "want": "avenge_piet",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "splice_and_pay",
+              "label": "Splice it, take the toll and keep his head down",
+              "serves": [
+                "keep_my_family",
+                "keep_the_toll"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "oskar",
+                  "want": "keep_my_family",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_boy_in_the_warrens",
+      "act": 2,
+      "title": "The River Boy",
+      "summary": "Piet's son went into the river a year ago and was given up for drowned. In the Warrens, a fence called Rook keeps a boy of nine who wakes screaming about ropes.",
+      "location": "capitol_warrens",
+      "requires": [
+        "ford_piet_story_told"
+      ],
+      "resolves_on": [
+        "ford_boy_brought_home",
+        "ford_boy_kept_in_warrens"
+      ],
+      "hooks": [
+        {
+          "id": "rook_and_the_river_boy",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "Bargemen's talk reaches the Warrens: the Ferrisford ferryman wants word of his drowned brother's boy, lost in the river a year ago. You know a boy like that. He sleeps by your door and wakes screaming about ropes.",
+          "options": [
+            {
+              "id": "name_pip",
+              "label": "Send word down the river that a boy called Pip is alive and with her",
+              "serves": [
+                "look_after_the_little_ones"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_pip_named",
+                  "value": true
+                }
+              ],
+              "aids": "oskar"
+            },
+            {
+              "id": "sell_the_name",
+              "label": "Let it be known, for a price: two marks to whoever wants the boy found",
+              "serves": [
+                "get_out_rich",
+                "look_after_the_little_ones"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_pip_named",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Ask the stranger two marks before she says another word about the river boy, and take one if they haggle hard."
+                }
+              ]
+            },
+            {
+              "id": "never_heard_of_him",
+              "label": "Say nothing to anyone. Crew is crew",
+              "serves": [
+                "look_after_the_little_ones",
+                "never_owe_anyone"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "rook_lets_him_go",
+          "type": "scheme",
+          "trigger": "on_flag:ford_pip_named",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "Pip has heard there's an uncle at Ferrisford with a rope and a roof. He's pretending he hasn't. You could let him go, or keep him where you can feed him.",
+          "options": [
+            {
+              "id": "go_with_the_stranger",
+              "label": "Let Pip go home, if the stranger takes him down the river themselves",
+              "serves": [
+                "look_after_the_little_ones",
+                "never_owe_anyone"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Tell the stranger Pip can go down the river to his uncle, but only with them, on a paid barge, and they swear it."
+                }
+              ],
+              "aids": "oskar"
+            },
+            {
+              "id": "keep_him",
+              "label": "Keep him. He knows the Hollow barges by sight, and the river is a Hollow road",
+              "serves": [
+                "keep_the_fence_open",
+                "get_out_alive"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_boy_kept_in_warrens",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "let_pip_choose",
+              "label": "Let Pip decide, in his own time",
+              "serves": [
+                "look_after_the_little_ones"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "varn_hears_of_a_river_boy",
+          "type": "scheme",
+          "trigger": "on_flag:ford_pip_named",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "A Warrens porter on the Hollow's pay sends word west: the drowned bargeman's boy is alive, running with the fence called Rook. A boy is a better leash on a ferryman than a sawn rope.",
+          "options": [
+            {
+              "id": "mark_the_boy",
+              "label": "Send word into the Warrens to keep the boy where Hollow men can find him",
+              "serves": [
+                "be_feared",
+                "arm_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_boy_marked",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "rook",
+                "oskar"
+              ]
+            },
+            {
+              "id": "tell_the_ferryman",
+              "label": "Let the ferryman learn the Hollow knows where his nephew sleeps",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Tell the stranger, grey in the face, that a Hollow bargeman asked him tonight how his nephew likes the Capitol."
+                }
+              ],
+              "harms": [
+                "oskar"
+              ]
+            },
+            {
+              "id": "leave_the_boy",
+              "label": "Leave the boy be. Frightened children make brave men",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "rook_hides_pip",
+          "type": "intercept",
+          "trigger": "on_flag:ford_boy_marked",
+          "eligible": [
+            "rook"
+          ],
+          "situation": "One of your crew saw a Hollow porter at the Warrens steps asking after Pip by name. The river is right there.",
+          "options": [
+            {
+              "id": "send_him_now",
+              "label": "Beg the stranger to take Pip down the river today",
+              "serves": [
+                "look_after_the_little_ones",
+                "get_out_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "rook",
+                  "text": "Grab the stranger's sleeve: the Hollow is asking after Pip by name. Take him down the river today; she'll pay the barge herself."
+                }
+              ],
+              "aids": "oskar"
+            },
+            {
+              "id": "hide_him",
+              "label": "Hide Pip in the cooper's loft and keep him in the Warrens",
+              "serves": [
+                "look_after_the_little_ones",
+                "get_out_alive"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_boy_kept_in_warrens",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "move_the_crew",
+              "label": "Move the whole crew down to the River Quarter wharf for a night",
+              "serves": [
+                "get_out_alive"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "rook",
+                  "location": "capitol_docks"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_ferrymans_price",
+      "act": 2,
+      "title": "The Ferryman's Price",
+      "summary": "The stranger has seen the tally sticks in the toll-house roof: three years of Hollow barges in notches. Oskar will not give them up while his family sits on the Hollow's road.",
+      "location": "ferrisford",
+      "requires": [
+        "ford_piet_story_told",
+        "oskar_tally_seen"
+      ],
+      "resolves_on": [
+        "ford_family_sheltered",
+        "ford_tally_sunk"
+      ],
+      "hooks": [
+        {
+          "id": "oskar_names_his_price",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "oskar"
+          ],
+          "situation": "The stranger has seen the tally sticks in your roof. Three years of Hollow barges in notches. They're worth something to somebody. They're worth your daughters' lives to the Hollow.",
+          "options": [
+            {
+              "id": "name_the_price",
+              "label": "Tell the stranger the sticks are theirs the day his family is safe",
+              "serves": [
+                "keep_my_family",
+                "give_the_tally"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Tell the stranger plainly: the tally is theirs the day his wife, his girls and Piet's widow are somewhere no Hollow man can reach."
+                }
+              ]
+            },
+            {
+              "id": "sink_the_sticks",
+              "label": "Take the sticks down and sink them under the landing, where nobody will look",
+              "serves": [
+                "keep_my_family"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_tally_sunk",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "show_one_stick",
+              "label": "Show the stranger one stick, and say nothing of the rest",
+              "serves": [
+                "give_the_tally"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Hand the stranger one notched stick, last spring's, and say: eight barges, thirty men. Then take it back."
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "oskar",
+                  "dimension": "trust",
+                  "delta": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mira_turns_out_the_tollhouse",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Word from the river: the ferryman has been seen talking long with the stranger, and a Hollow bargeman swears he once saw him cutting notches in a stick. A man who counts is a man who means to tell.",
+          "options": [
+            {
+              "id": "search_the_tollhouse",
+              "label": "Have the bargemen turn out the toll-house and find what he keeps",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_tollhouse_searched",
+                  "value": true
+                },
+                {
+                  "type": "block_beat",
+                  "storyline": "ferrisford_toll",
+                  "beat": "the_tally_given"
+                }
+              ],
+              "harms": [
+                "oskar"
+              ]
+            },
+            {
+              "id": "point_at_gregor",
+              "label": "Point the stranger at Gregor as the man who ships the Hollow's goods",
+              "serves": [
+                "burn_gregor_first",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Sigh to the stranger that if anyone in the valley knows what goes east on the river, it's whoever fills the Hollow's orders from Gregor's back room."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "watch_and_wait",
+              "label": "Watch. Counting is not telling",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "renna_offers_a_guard",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "River gossip says a ferryman at Ferrisford keeps a tally of the Hollow's barges. He'll not give it up while his family sits on the Hollow's road.",
+          "options": [
+            {
+              "id": "offer_riders",
+              "label": "Promise two rangers and a cart to carry his family east the hour he asks",
+              "serves": [
+                "prove_the_rangers",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger she'll put two riders and a cart at the ferryman's door, for his family, the hour he asks for it."
+                }
+              ],
+              "aids": "oskar"
+            },
+            {
+              "id": "ride_and_demand",
+              "label": "Ride to Ferrisford and tell him the crown knows about the tally",
+              "serves": [
+                "obey_the_crown",
+                "seize_the_crossing"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_tally_demanded",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "renna",
+                  "location": "ferrisford"
+                }
+              ]
+            },
+            {
+              "id": "leave_it",
+              "label": "Leave it. A frightened witness is no witness",
+              "serves": [
+                "refuse_a_scapegoat"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "oskar_and_the_white_sacks",
+          "type": "reveal",
+          "trigger": "on_flag:tn_taken_alive_known",
+          "eligible": [
+            "oskar"
+          ],
+          "situation": "The stranger says the Hollow takes a Thornhaven child every autumn and keeps them in chains, digging white salt under the ridge. You have carried white sacks across in the dark, double-wrapped, whenever the ore road ran slow. The bargemen never let you lift one. Now you know why.",
+          "options": [
+            {
+              "id": "show_the_notches",
+              "label": "Show the stranger the little salt marks on his sticks, every white sack he carried",
+              "serves": [
+                "give_the_tally",
+                "avenge_piet"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_white_sacks_named",
+                  "value": true
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "oskar",
+                  "dimension": "trust",
+                  "delta": 6
+                }
+              ]
+            },
+            {
+              "id": "tell_it_low",
+              "label": "Tell the stranger about the white sacks, low, and nothing about any sticks",
+              "serves": [
+                "avenge_piet",
+                "keep_my_family"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_white_sacks_named",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Tell the stranger, low, that white sacks rode his ferry east, double-wrapped, and that Piet would have asked who filled them."
+                }
+              ]
+            },
+            {
+              "id": "not_his_river",
+              "label": "Say it's a valley matter and go back to the rope",
+              "serves": [
+                "keep_my_family",
+                "keep_the_toll"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_tally_given",
+      "act": 2,
+      "title": "Three Years of Notches",
+      "summary": "Whether for his family, for Piet's boy, or because the crown is standing in his toll-house, Oskar must decide whose hands his tally goes into.",
+      "location": "ferrisford",
+      "requires": [
+        "ford_piet_story_told"
+      ],
+      "resolves_on": [
+        "ford_tally_given"
+      ],
+      "hooks": [
+        {
+          "id": "oskar_gives_for_his_family",
+          "type": "aid",
+          "trigger": "on_flag:ford_family_sheltered",
+          "eligible": [
+            "oskar"
+          ],
+          "situation": "The stranger swore your family would be kept safe. You have heard men swear before. You have never heard one swear it like that.",
+          "options": [
+            {
+              "id": "give_the_tally",
+              "label": "Dig the sticks out and put them in the stranger's hands",
+              "serves": [
+                "give_the_tally",
+                "avenge_piet"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "ferrisford_toll",
+                  "beat": "the_tally_given"
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "ford_tally_given",
+                  "value": true
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "oskar",
+                  "dimension": "trust",
+                  "delta": 10
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "family_first",
+              "label": "Send his family east first, and give the sticks once they are over the far bank",
+              "serves": [
+                "keep_my_family",
+                "give_the_tally"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Tell the stranger his family goes east on tomorrow's barge. When Piet's widow is through the Dawn Gate, the tally is theirs."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oskar_gives_for_the_boy",
+          "type": "aid",
+          "trigger": "on_flag:ford_boy_brought_home",
+          "eligible": [
+            "oskar"
+          ],
+          "situation": "Piet's boy is standing on your landing, thinner, taller, alive. The stranger brought him down the river. Piet would not carry theirs. Neither will you.",
+          "options": [
+            {
+              "id": "give_the_tally",
+              "label": "Give the stranger the tally, all of it",
+              "serves": [
+                "give_the_tally",
+                "avenge_piet",
+                "keep_my_family"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "ferrisford_toll",
+                  "beat": "the_tally_given"
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "ford_tally_given",
+                  "value": true
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "oskar",
+                  "dimension": "affection",
+                  "delta": 15
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "hold_the_boy_first",
+              "label": "Hold the boy first. The tally can wait a little longer",
+              "serves": [
+                "keep_my_family"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "oskar",
+                  "dimension": "affection",
+                  "delta": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "renna_demands_the_tally",
+          "type": "intercept",
+          "trigger": "on_flag:tithe_rangers_arrive",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Forty rangers ride west on the regent's orders, and a ferryman at Ferrisford is said to keep a tally of every Hollow barge. Evidence like that wins a valley.",
+          "options": [
+            {
+              "id": "demand_it",
+              "label": "Ride to Ferrisford and demand the tally in the King's name",
+              "serves": [
+                "obey_the_crown",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_tally_demanded",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "renna",
+                  "location": "ferrisford"
+                }
+              ]
+            },
+            {
+              "id": "ask_for_it",
+              "label": "Send word that the Rangers will guard whoever brings the tally in",
+              "serves": [
+                "prove_the_rangers",
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger: whoever brings her the ferryman's tally, the Rangers will guard their kin like their own."
+                }
+              ]
+            },
+            {
+              "id": "valley_first",
+              "label": "Leave it; the valley needs her riders more",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "oskar_and_the_ranger",
+          "type": "aid",
+          "trigger": "on_flag:ford_tally_demanded",
+          "eligible": [
+            "oskar"
+          ],
+          "situation": "The ranger captain stands in your toll-house and says the crown knows. If the Hollow hears a ranger came here, they'll think you sold them whether you did or not.",
+          "options": [
+            {
+              "id": "hand_it_over",
+              "label": "Give the ranger the tally. Let it be the crown's weight now",
+              "serves": [
+                "avenge_piet",
+                "give_the_tally"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "ferrisford_toll",
+                  "beat": "the_tally_given"
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "ford_tally_given",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "varn"
+              ],
+              "aids": "renna"
+            },
+            {
+              "id": "deny_it",
+              "label": "Say there's no tally, only an old man's kindling",
+              "serves": [
+                "keep_my_family",
+                "keep_the_crown_off_the_ford"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Tell the stranger the ranger captain came asking after tally sticks, and he told her they were kindling. Ask if he lied well."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oskar_raises_the_sticks",
+          "type": "aid",
+          "trigger": "on_flag:ford_tollhouse_searched",
+          "eligible": [
+            "oskar"
+          ],
+          "situation": "Hollow bargemen tore your thatch apart looking for the tally. They didn't find it. You moved the sticks under the landing months ago, and nobody knows but you.",
+          "options": [
+            {
+              "id": "raise_them",
+              "label": "Raise the sack from under the landing and keep it ready for the right hands",
+              "serves": [
+                "give_the_tally",
+                "avenge_piet"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "ferrisford_toll",
+                  "beat": "the_tally_given"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Tell the stranger, quietly, that the Hollow tore up his roof for nothing. What they wanted is safe, and he'll say where when it's time."
+                }
+              ]
+            },
+            {
+              "id": "leave_them_down",
+              "label": "Leave them under the water. Let the Hollow think they burned",
+              "serves": [
+                "keep_my_family"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rangers_at_the_ford",
+      "act": 3,
+      "title": "Rangers on the Quay",
+      "summary": "With the tally in hand, the river road runs through one rope. Captain Thorne must decide whether the crown takes Ferrisford or leaves it to the family that has worked it for four generations. She will not settle it until the stranger has stood on the quay and said their piece.",
+      "location": "ferrisford",
+      "requires": [
+        "ford_tally_given"
+      ],
+      "resolves_on": [
+        "ford_spoke_on_the_quay"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "ford_crossing_decided",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "renna_reads_the_tally",
+          "type": "intercept",
+          "trigger": "on_flag:ford_spoke_on_the_quay",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The ferryman's tally is in your hands: three years of Hollow barges, dated and counted. The river road runs through one rope, and the stranger has just said their piece about it on the quay, to your face.",
+          "options": [
+            {
+              "id": "seize_it",
+              "label": "Take Ferrisford for the crown and put rangers on the rope",
+              "serves": [
+                "seize_the_crossing",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_crossing_seized",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "renna",
+                  "location": "ferrisford"
+                }
+              ],
+              "harms": [
+                "oskar"
+              ]
+            },
+            {
+              "id": "leave_it_with_oskar",
+              "label": "Leave the rope in Oskar's hands, with two riders posted at the toll-house",
+              "serves": [
+                "refuse_a_scapegoat",
+                "bring_my_rangers_home"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_crossing_left_to_oskar",
+                  "value": true
+                }
+              ],
+              "aids": "oskar"
+            }
+          ]
+        },
+        {
+          "id": "renna_weighs_the_rope",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Word comes that the Ferrisford ferryman's tally is out: three years of Hollow barges, dated and counted. Whoever holds the rope holds the road. You want to hear the stranger before you choose.",
+          "options": [
+            {
+              "id": "lean_to_the_crown",
+              "label": "Ride down to the quay meaning to take the rope for the crown",
+              "serves": [
+                "seize_the_crossing",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "renna",
+                  "location": "ferrisford"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger to meet you on the Ferrisford quay; you mean to take the rope for the crown, unless they can tell you why not."
+                }
+              ]
+            },
+            {
+              "id": "ask_the_regent",
+              "label": "Write to the Lord Protector and wait for orders",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger she has written to the Lord Protector about Ferrisford, and that she hates waiting on a man who never rides west."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "renna_brings_the_troop",
+          "type": "scheme",
+          "trigger": "on_flag:tithe_rangers_arrive",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Your riders are on the Kingsroad already. A troop at Ferrisford closes the Hollow's river road in a day, and every barge stopped after that is evidence.",
+          "options": [
+            {
+              "id": "garrison_it",
+              "label": "Ride a troop to Ferrisford to watch the crossing until it is settled",
+              "serves": [
+                "seize_the_crossing",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "renna",
+                  "location": "ferrisford"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger a troop of rangers is watching Ferrisford, and ask whether the ferryman can be trusted with his own rope."
+                }
+              ]
+            },
+            {
+              "id": "valley_road_first",
+              "label": "Keep the riders on the valley road and leave the crossing to its ferryman for now",
+              "serves": [
+                "restore_order_in_the_west",
+                "bring_my_rangers_home"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger the rangers are holding the valley road, and the ferryman keeps his rope until someone gives you cause."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "renna_hears_of_the_ledger",
+          "type": "react",
+          "trigger": "on_flag:fence_ledger_taken",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Word from the Capitol: the Guildmaster's black ledger is loose, and the Warrens say a Guild factor meets every Hollow barge at the wharf. Ferrisford is the one place the whole chain touches ground.",
+          "options": [
+            {
+              "id": "take_the_ford",
+              "label": "Resolve to take the ford before the Guild moves its barges elsewhere",
+              "serves": [
+                "seize_the_crossing",
+                "obey_the_crown"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "renna",
+                  "want": "seize_the_crossing",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "watch_the_wharf",
+              "label": "Look to the Guild's wharf instead of the ferryman",
+              "serves": [
+                "prove_the_rangers",
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger what they know of the Guild factor who meets the western barges at the River Quarter wharf."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oskar_pleads_for_the_rope",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "oskar"
+          ],
+          "situation": "The ranger captain is weighing your crossing like a sack of grain. Four generations on this rope. Rangers on the quay make it the first thing the Hollow burns.",
+          "options": [
+            {
+              "id": "ask_the_stranger_to_speak",
+              "label": "Ask the stranger to speak for him to the ranger captain",
+              "serves": [
+                "keep_the_crossing",
+                "keep_the_crown_off_the_ford"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Ask the stranger to speak for him to the ranger captain: four generations on this rope, and rangers on the quay make it a target."
+                }
+              ]
+            },
+            {
+              "id": "offer_to_serve",
+              "label": "Offer to carry the crown's riders free, so long as the rope stays his",
+              "serves": [
+                "keep_the_crossing",
+                "keep_my_family"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Tell the stranger he'll carry the King's riders free for a year if the crown leaves the rope in his family's hands."
+                }
+              ]
+            },
+            {
+              "id": "let_it_go",
+              "label": "Say nothing. The crown takes what it takes",
+              "serves": [
+                "keep_my_family"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "night_of_the_rope",
+      "act": 3,
+      "title": "The Night of the Rope",
+      "summary": "The Hollow knows the ferryman talked. Varn means to answer him the way he answered Piet, unless the Boss, the rangers or the stranger stand in the way. The night is over when the stranger has chosen where to spend it: on the landing beside Oskar, or behind a barred door with his family.",
+      "location": "ferrisford",
+      "requires": [
+        "ford_crossing_decided"
+      ],
+      "resolves_on": [
+        "ford_stood_at_the_rope",
+        "ford_kept_the_door"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "ford_reckoning_done",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "varn_answers_the_ferryman",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The ferryman gave up his tally sticks: three years of your barges, counted. Piet was a lesson nobody learned. This one they will.",
+          "options": [
+            {
+              "id": "send_the_knives",
+              "label": "Send six men east to make an example of the ferryman",
+              "serves": [
+                "be_feared",
+                "crush_the_resistance"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_reprisal_ordered",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "oskar"
+              ]
+            },
+            {
+              "id": "burn_the_ferry",
+              "label": "Burn the ferry and cut the great rope; let the crossing go dark",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_ferry_burned",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "oskar"
+              ]
+            },
+            {
+              "id": "let_him_live",
+              "label": "Let him live. A ferryman hanged under the rangers' noses is a war",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "varn_comes_in_his_own_name",
+          "type": "scheme",
+          "trigger": "on_flag:hc_varn_ascendant",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Iron Hollow is yours now, in your own name. The ferryman who counted your barges is the first debt the new Boss collects, and you mean to collect it yourself.",
+          "options": [
+            {
+              "id": "ride_east",
+              "label": "Ride east to Ferrisford himself, with his best knives",
+              "serves": [
+                "take_the_hollow",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_reprisal_ordered",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "ferrisford"
+                }
+              ],
+              "harms": [
+                "oskar"
+              ]
+            },
+            {
+              "id": "forgive_once",
+              "label": "Send word that the new Boss forgives one debt, once",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Tell the stranger a Hollow rider brought word: the new Boss forgives the ferryman once. Ask what that kind of mercy costs."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "varn_after_the_fire",
+          "type": "scheme",
+          "trigger": "on_flag:fence_route_burned",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The river road to the Capitol is finished, Warehouse Seven with it. Somebody pointed the city at the wharf, and the only man who counted every barge works a rope at Ferrisford.",
+          "options": [
+            {
+              "id": "blame_the_ferryman",
+              "label": "Blame the ferryman and send men east",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_reprisal_ordered",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "oskar"
+              ]
+            },
+            {
+              "id": "let_the_river_die",
+              "label": "Let the river die. There's nothing left there to protect",
+              "serves": [
+                "arm_the_hollow"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mira_holds_the_leash",
+          "type": "scheme",
+          "trigger": "on_flag:ford_reprisal_ordered",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Varn has sent knives east to Ferrisford without asking you. A dead ferryman with rangers on the road brings the crown down the Kingsroad, and men who act without asking become men who rule.",
+          "options": [
+            {
+              "id": "call_it_off",
+              "label": "Send the Boss's word after them: the ferryman is not to be touched",
+              "serves": [
+                "keep_varn_leashed",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_reprisal_called_off",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "let_him_hang_himself",
+              "label": "Let him ride. If the rangers take his men, her lieutenant comes back smaller",
+              "serves": [
+                "keep_varn_leashed",
+                "keep_the_mask"
+              ],
+              "effects": []
+            },
+            {
+              "id": "warn_the_rangers",
+              "label": "Have an unsigned note warn the rangers that the Hollow rides for Ferrisford",
+              "serves": [
+                "keep_varn_leashed"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger an unsigned note reached her riders: Hollow men ride for Ferrisford within the week."
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "renna_rides_for_the_landing",
+          "type": "aid",
+          "trigger": "on_flag:ford_reprisal_ordered",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Word comes that Hollow men are riding for Ferrisford to make an example of the ferryman. Your riders can be there before them, if they go now.",
+          "options": [
+            {
+              "id": "meet_them",
+              "label": "Ride hard and meet them on the landing",
+              "serves": [
+                "prove_the_rangers",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_reprisal_broken",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "renna",
+                  "location": "ferrisford"
+                }
+              ],
+              "harms": [
+                "varn"
+              ],
+              "aids": "oskar"
+            },
+            {
+              "id": "warn_the_family",
+              "label": "Too far. Send word for Oskar to get his family across the river",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "oskar",
+                  "text": "Tell the stranger a ranger rode in to say Hollow men are coming, and beg them to help get his girls across the river."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oskar_names_varn",
+          "type": "betray",
+          "trigger": "on_open",
+          "eligible": [
+            "oskar"
+          ],
+          "situation": "The tally is out of your roof and the Hollow will know it soon. Three years you swallowed it. You could say it now, out loud, on the quay: Varn ordered Piet's rope cut.",
+          "options": [
+            {
+              "id": "name_him",
+              "label": "Say it on the quay for the whole crossing to hear: Varn ordered the rope cut",
+              "serves": [
+                "avenge_piet"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ford_varn_named_for_piet",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "hold_his_tongue",
+              "label": "Hold his tongue. Saying it won't bring Piet back",
+              "serves": [
+                "keep_my_family"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "varn_hears_of_the_rangers",
+          "type": "react",
+          "trigger": "on_flag:ford_crossing_seized",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Rangers sit on the Ferrisford rope. The river road is shut. The ridge trail still runs past the Pit and down to Greystone's back road, where the foreman takes her fee and the salt already goes east among her ore carts.",
+          "options": [
+            {
+              "id": "ride_for_greystone",
+              "label": "Ride up the ridge trail to the Pit and send the river goods down to Greystone's ore carts with the salt",
+              "serves": [
+                "arm_the_hollow",
+                "hold_the_pit"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "the_pit"
+                }
+              ]
+            },
+            {
+              "id": "swear_on_the_ferryman",
+              "label": "Swear at the fire that the ferryman will pay for the rangers",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "varn",
+                  "want": "be_feared",
+                  "delta": 2
+                }
+              ],
+              "harms": [
+                "oskar"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Hold. Let the Boss find the next road",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "the_crossing_kept",
+      "title": "The Ferryman's Rope",
+      "requires": [
+        "ford_reckoning_done",
+        "ford_stood_at_the_rope",
+        "ford_crossing_left_to_oskar"
+      ],
+      "summary": "The tally went east, the rangers left the rope in Oskar's hands, and when the Hollow came the stranger was standing on the landing beside him. Four generations become five; Piet's marker gets a second line."
+    },
+    {
+      "id": "the_kings_ferry",
+      "title": "The King's Ferry",
+      "requires": [
+        "ford_reckoning_done",
+        "ford_stood_at_the_rope",
+        "ford_crossing_seized"
+      ],
+      "summary": "The Hollow's river road is shut under a ranger's banner, and Oskar works the rope he no longer owns. He is alive because the stranger stood with him, and he has not decided whether to forgive the crown for it."
+    },
+    {
+      "id": "the_family_kept",
+      "title": "The Promise Kept",
+      "requires": [
+        "ford_reckoning_done",
+        "ford_family_sheltered"
+      ],
+      "summary": "Oskar gave up his tally on the stranger's word, and his wife, his daughters and Piet's widow lived through the Hollow's answer because that word held. Whatever the river took from the crossing, it did not take them."
+    },
+    {
+      "id": "the_boy_came_home",
+      "title": "Piet's Boy",
+      "requires": [
+        "ford_reckoning_done",
+        "ford_boy_brought_home"
+      ],
+      "summary": "Piet's son came home down the river, and his uncle paid for him with three years of notches. The Hollow's answer came and went; the boy learns the knots his father knew."
+    }
+  ]
+}

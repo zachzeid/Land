@@ -1,0 +1,3100 @@
+{
+  "id": "elenas_fever",
+  "title": "Elena's Fever",
+  "summary": "Elena rigged her own lot. She has the Grey Fever and takes the Hollow's white salt every night, she is secretly readying herself for the ridge, and her father is trying to save her against her will. Root alone quiets the fever; with the Pit's salt it is cured. Her last choice is to ride, run, or let another go.",
+  "prefix": "fev_",
+  "act_span": [
+    1,
+    3
+  ],
+  "flags": {
+    "fev_fever_seen": "Elena was seen shaking with the Grey Fever in Tithe week, her mother's cough, though she blamed the chapel's cold.",
+    "fev_salt_rationed": "The messenger's packet of white salt reached Gregor at half measure in Tithe week, with word that the rest depended on how he behaved.",
+    "fev_salt_hoarded": "Elena set aside a pinch of white salt from every night's dose and sewed it into a fold of linen for the road.",
+    "fev_varn_sold_the_salt": "Varn sold Gregor a sack of the Pit's white salt across his own counter, behind the Boss's back.",
+    "fev_brought_the_salt": "The player brought Elena a full measure of the Pit's white salt, enough to steep with fever-root and break the Grey Fever for good.",
+    "fev_fever_quieted": "Fresh fever-root from under the ash trees on the forest path quieted Elena's fever for a few days, as root alone always had, and cured nothing.",
+    "fev_hem_seen": "The player saw the names of the Tithe's taken, and a tiny map of the ridge, stitched into the hem of Elena's travelling dress.",
+    "fev_gregor_barred_her": "Gregor barred the shop door on Elena and forbade her to leave it before Collection Night, and called it keeping her safe.",
+    "fev_substitute_named": "Gregor sent word to the messenger that the lot had been meant for Ada Fenn, and asked that Ada go in Elena's place.",
+    "fev_father_offered_himself": "Gregor wrote everything he owned over to Elena and sent word to the Hollow to take him in his daughter's place.",
+    "fev_door_stayed_barred": "Gregor kept the shop door barred on Elena through Tithe week and turned away everyone who knocked, nurse and neighbour alike.",
+    "fev_bar_lifted": "The bar came off Gregor's shop door, and Elena was free to walk out of it again.",
+    "fev_unbarred_the_door": "The player stood at Gregor's barred door until he lifted the bar and let Elena choose for herself.",
+    "fev_elena_confessed": "Elena confessed that she cut her own name into the lot tile and swapped it for Ada Fenn's, so that no one else's child would go in her place.",
+    "fev_caught_her_at_the_well": "The player drew Ada Fenn's lot tile up out of the chapel well, where Elena had thrown it the evening before the drawing.",
+    "fev_cure_found": "Fever-root steeped with a full measure of the Pit's white salt broke Elena's Grey Fever for good, the cure that came too late for her mother.",
+    "fev_cure_carried_up": "Elena sewed the full measure of white salt into her hem, meaning to carry the cure up the ridge to the sick in the Pit.",
+    "fev_swore_to_follow": "The player swore to Elena that they would follow the Hollow's cart up the ridge and read the names in her hem.",
+    "fev_found_her_a_road": "The player promised Elena a road out of Thornhaven before the cart came, and meant it.",
+    "fev_begged_her_to_stay": "The player begged Elena to let the cart take someone else, and to live.",
+    "fev_rode_as_she_chose": "Elena chose to ride the Hollow's cart on her own feet, as her name had been drawn, with the names of the taken in her hem.",
+    "fev_ran_the_ridge": "Elena slipped out of Thornhaven before the Hollow's cart came, on a road of her own and not the Tithe's.",
+    "fev_let_another_go": "Elena stood aside and let another take the place in the Hollow's cart that her own cut tile had won.",
+    "fev_elena_left_home": "Elena walked out of her father's house for the last time, on a road of her own choosing."
+  },
+  "player_flags": [
+    "fev_brought_the_salt",
+    "fev_hem_seen",
+    "fev_unbarred_the_door",
+    "fev_caught_her_at_the_well",
+    "fev_swore_to_follow",
+    "fev_found_her_a_road",
+    "fev_begged_her_to_stay"
+  ],
+  "crossovers": [
+    "tn_lot_rigged_known",
+    "tn_elena_swap_known",
+    "tn_taken_alive_known",
+    "tn_substitute_sent",
+    "tn_plan_follow_cart",
+    "ih_gregor_fled",
+    "hc_varn_named_his_price",
+    "hc_varn_ascendant",
+    "grey_salt_in_hand",
+    "grey_cure_recipe_known",
+    "vein_ridge_trail_closed"
+  ],
+  "beats": [
+    {
+      "id": "the_chapel_cough",
+      "title": "A Cough in the Chapel",
+      "act": 1,
+      "summary": "On the night of the drawing Elena stands under her own name and coughs her mother's cough. She blames the cold. Not everyone believes her.",
+      "location": "thornhaven_chapel",
+      "requires": [],
+      "resolves_on": [
+        "fev_fever_seen"
+      ],
+      "hooks": [
+        {
+          "id": "fev_elena_hides_the_cough",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Your name has just been read out, and the cough has picked this moment to come. Half the village is looking at you. A sick digger is a dead one.",
+          "options": [
+            {
+              "id": "blame_the_cold",
+              "label": "Blame the chapel's cold, and ask the stranger a bright, fast question about the ridge",
+              "serves": [
+                "keep_the_fever_hidden",
+                "keep_the_swap_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Brush off the cough as the chapel's cold, and ask the stranger how cold the ridge gets at night."
+                }
+              ]
+            },
+            {
+              "id": "let_it_show",
+              "label": "Let it shake her; there is no hiding it tonight, and she will not lie in a chapel",
+              "serves": [
+                "choose_my_own_life",
+                "learn_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_fever_seen",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Admit to the stranger that the fever is back, and that it changes nothing about the cart."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_gregor_hurries_her_home",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Elena is coughing in the aisle with her name still ringing off the rafters. Every eye that turns to her cough is an eye that might turn to your strongbox.",
+          "options": [
+            {
+              "id": "blame_the_cold_aloud",
+              "label": "Say loudly that the chapel was always cold, and laugh a beat too late",
+              "serves": [
+                "keep_the_secret",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger the girl caught a chill at the drawing and quote them a price for a good wool cloak."
+                }
+              ]
+            },
+            {
+              "id": "hurry_her_home",
+              "label": "Hurry her home and stir a double pinch of salt into tonight's tea",
+              "serves": [
+                "cure_elena",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "thornhaven_gregor_shop"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the messenger, quietly, whether the men in the forest could spare a little more salt this week."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_bjorn_hears_the_breath",
+          "type": "reveal",
+          "trigger": "idle",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Elena came to the forge with her boots and stood at the bellows too long, short of breath. You heard that sound once before, five winters ago, in Lysa.",
+          "options": [
+            {
+              "id": "tell_gregor",
+              "label": "Go round to the shop and tell Gregor plainly what he heard",
+              "serves": [
+                "shield_elena",
+                "protect_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_fever_seen",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger Elena is breathing the way her mother breathed, and ask if the Capitol has anything for it."
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "It is the merchant's house and the merchant's girl; keep to the anvil",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Mention to the stranger that Elena looked pale at the forge, and leave it there."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_mathias_marks_the_cough",
+          "type": "reveal",
+          "trigger": "idle",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "You read her name and heard her cough before the echo died. You buried her mother in the plague winter with that same sound in your ears.",
+          "options": [
+            {
+              "id": "speak_of_it",
+              "label": "Speak of it to the stranger, and look up the old fever remedies in the chapel books",
+              "serves": [
+                "tend_the_sick",
+                "save_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_fever_seen",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger whether they have seen Elena's cough, and say the old root once grew past the forest path."
+                }
+              ]
+            },
+            {
+              "id": "hold_your_tongue",
+              "label": "The gods drew her; a cough is no business of the lot",
+              "serves": [
+                "the_lot_is_holy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the lot is a sorrow and not a sickness, and that Elena must be left in peace this week."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_aldric_sees_her_steady",
+          "type": "reveal",
+          "trigger": "idle",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "You watched Elena on the chapel steps. She held herself like a soldier with a wound she will not report. You know that look.",
+          "options": [
+            {
+              "id": "name_it",
+              "label": "Tell the stranger what he saw, in four words",
+              "serves": [
+                "spare_the_innocent"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_fever_seen",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger: the girl is sick. Then ask what they mean to do about Collection Night."
+                }
+              ]
+            },
+            {
+              "id": "not_his_to_say",
+              "label": "A sick girl is not a tactical fact; keep counting the gate",
+              "serves": [
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger to walk the gate with him and count how many could stand there on the seventh night."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_white_salt",
+      "title": "The White Salt",
+      "act": 1,
+      "summary": "Every night for five years Gregor has stirred a pinch of white salt into Elena's tea. This week the messenger's packet is lighter, and the salt itself is a clue to where the taken go.",
+      "location": "thornhaven_gregor_shop",
+      "requires": [
+        "fev_fever_seen"
+      ],
+      "resolves_on": [
+        "fev_salt_rationed",
+        "white_salt_found",
+        "fev_brought_the_salt"
+      ],
+      "hooks": [
+        {
+          "id": "fev_mira_halves_the_packet",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The girl's fever is back, and Gregor will do anything this week. The salt is your leash on him. A leash is felt when it is shortened.",
+          "options": [
+            {
+              "id": "half_measure",
+              "label": "Send this week's packet at half measure, with word that the rest depends on him",
+              "serves": [
+                "control_the_cure",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_salt_rationed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger the salt came short this week and ask, too casually, where a man might buy white salt."
+                }
+              ]
+            },
+            {
+              "id": "full_measure",
+              "label": "Send the full measure, weeping, and let him be grateful to the poor messenger",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger, wringing the rag, that she carries Gregor's packets for the men and wishes she never had."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_gregor_begs_for_salt",
+          "type": "react",
+          "trigger": "on_flag:fev_salt_rationed",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The packet came half full. Elena's cough is worse every night, and the men in the forest are telling you exactly what she is worth to them.",
+          "options": [
+            {
+              "id": "beg_the_messenger",
+              "label": "Go to the tavern and beg the messenger to carry an offer: the strongbox for the rest",
+              "serves": [
+                "cure_elena",
+                "buy_her_back"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Gregor begged her for the rest of the salt and offered his strongbox. Tell the stranger, softly, that he is coming apart."
+                },
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "buy_her_back",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "go_to_varn",
+              "label": "Send word to Varn instead; the lieutenant might sell what the Boss withholds",
+              "serves": [
+                "back_the_winning_master",
+                "cure_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger to carry a sealed note to Iron Hollow for him, and do not say who it is for."
+                },
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "back_the_winning_master",
+                  "delta": 2
+                }
+              ],
+              "aids": "varn"
+            }
+          ]
+        },
+        {
+          "id": "fev_varn_sells_a_sack",
+          "type": "intercept",
+          "trigger": "on_flag:fev_salt_rationed",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The widow has shortened the merchant's salt to make him dance. You have two years of skimmed sacks under the old mill that she never counted.",
+          "options": [
+            {
+              "id": "sell_it",
+              "label": "Sell Gregor a sack across his own counter, and let him owe the lieutenant instead of the Boss",
+              "serves": [
+                "keep_gregor_on_the_hook",
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_varn_sold_the_salt",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the merchant buys his salt from a new hand now. Smile while you say it."
+                }
+              ]
+            },
+            {
+              "id": "let_her_squeeze",
+              "label": "Let the widow squeeze him; a frightened merchant is a useful one",
+              "serves": [
+                "a_perfect_collection",
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger whether the merchant has been to the tavern lately, and how he looked coming out."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_hoards_a_pinch",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Every night Father stirs the salt in and watches you drink. Somewhere up the ridge there is no one to stir it. You need to be on your feet in the dark.",
+          "options": [
+            {
+              "id": "hoard_it",
+              "label": "Set aside a pinch from every dose and sew it into a fold of linen for the road",
+              "serves": [
+                "survive_the_fever",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_salt_hoarded",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger whether they know what the white salt is, and where in all the valley it could be dug."
+                }
+              ]
+            },
+            {
+              "id": "drink_it_all",
+              "label": "Drink it all as he watches; stay strong this week and trust the dark later",
+              "serves": [
+                "keep_the_fever_hidden"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger she is feeling much better, thank you, and change the subject to the Kingsroad."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_and_the_found_salt",
+          "type": "react",
+          "trigger": "on_flag:white_salt_found",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The stranger has found the packet of white salt among your medicines. They are holding it the way you held it on the storeroom floor this summer.",
+          "options": [
+            {
+              "id": "ask_what_they_know",
+              "label": "Ask what they know of white stone that no apothecary sells",
+              "serves": [
+                "learn_the_truth",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger, low and fast, whether white stone like this is dug anywhere they know of."
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "elena",
+                  "dimension": "trust",
+                  "delta": 5
+                }
+              ]
+            },
+            {
+              "id": "a_capitol_remedy",
+              "label": "Call it a Capitol remedy her father paid dearly for, and take it back",
+              "serves": [
+                "keep_the_fever_hidden",
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger the salt is a Capitol remedy and ask them, brightly, about the road east."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_mira_hears_of_deep_salt",
+          "type": "react",
+          "trigger": "on_flag:grey_salt_in_hand",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Word has come that the stranger carries a lump of Greystone's deep-vein salt: the same stone your Pit digs. Enough for one true cure.",
+          "options": [
+            {
+              "id": "steer_it_away",
+              "label": "Tell the stranger, weeping, that salt like that killed a man she knew",
+              "serves": [
+                "control_the_cure",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Warn the stranger, as if afraid, that the white stone is poison unless the men in the forest steep it."
+                }
+              ]
+            },
+            {
+              "id": "watch_who_it_goes_to",
+              "label": "Say nothing; watch whose hand it ends up in",
+              "serves": [
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, kindly, whether anyone in Thornhaven is sick this week."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_mathias_reads_the_receipt",
+          "type": "reveal",
+          "trigger": "on_flag:grey_cure_recipe_known",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Brackenmoor's old receipt has come out: fever-root steeped with Greystone's deep-vein salt cures the Grey Fever. A white salt. Gregor's girl drinks a white salt every night.",
+          "options": [
+            {
+              "id": "say_it",
+              "label": "Say aloud to the stranger what the receipt means for Elena, and where such salt is dug",
+              "serves": [
+                "tend_the_sick",
+                "speak_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger whether the salt in Elena's tea could be deep-vein salt, and who in the valley digs it."
+                }
+              ]
+            },
+            {
+              "id": "prove_it_first",
+              "label": "Say nothing until he has seen the salt with his own eyes",
+              "serves": [
+                "prove_before_acting"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger to bring him a pinch of whatever Gregor stirs into Elena's tea."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_ridge_by_night",
+      "title": "Counting the Forest Path",
+      "act": 2,
+      "summary": "From the second day Elena slips out at night: she counts her steps up the forest path to where the cart ruts climb, stitches what she learns into her hem, and digs fever-root under the ash trees.",
+      "location": "forest_path",
+      "requires": [
+        "fev_fever_seen",
+        "tn_day_2"
+      ],
+      "resolves_on": [
+        "fev_fever_quieted",
+        "fev_hem_seen"
+      ],
+      "hooks": [
+        {
+          "id": "fev_elena_digs_the_root",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The ruts turn uphill at the burnt pine. Under the ash trees just short of it the old fever-root grows, the kind Mother used. It will not cure you. It might keep you walking.",
+          "options": [
+            {
+              "id": "dig_it",
+              "label": "Dig a bundle of root by moonlight and steep it strong when she gets home",
+              "serves": [
+                "survive_the_fever",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_fever_quieted",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "forest_path"
+                }
+              ]
+            },
+            {
+              "id": "only_count",
+              "label": "Leave the root; count the steps and get home before Father wakes",
+              "serves": [
+                "find_the_taken",
+                "keep_the_fever_hidden"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger whether the ridge trail bends left or right after the burnt pine."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_mathias_tells_of_the_root",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Elena asked to copy the chapel's roll of the taken. She also asked, too casually, where the old fever-root grew. You know what both questions mean.",
+          "options": [
+            {
+              "id": "dig_it_himself",
+              "label": "Walk out under the ash trees on his old legs and dig it for her himself",
+              "serves": [
+                "tend_the_sick",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_fever_quieted",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger he dug fever-root for the merchant's girl, and that root alone has never been enough."
+                }
+              ]
+            },
+            {
+              "id": "tell_her_where",
+              "label": "Tell her where it grows and that it only ever eased her mother",
+              "serves": [
+                "tend_the_sick",
+                "prove_before_acting"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Mathias told you where the old root grows. Ask the stranger whether they would walk out under the ash trees with you."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_varns_man_sees_her",
+          "type": "intercept",
+          "trigger": "on_flag:elena_learn_the_ridge_count_the_forest_path",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Your man on the forest path says the merchant's girl walks up the trail at night, counting under her breath. She is learning the road to you.",
+          "options": [
+            {
+              "id": "let_her_learn",
+              "label": "Let her learn it; a hostage who walks quietly is worth more than one dragged",
+              "serves": [
+                "hold_elena_as_leverage",
+                "a_perfect_collection"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the forest path is no place to walk at night this week, and that he would know."
+                }
+              ]
+            },
+            {
+              "id": "tell_her_father",
+              "label": "Send the merchant a note: his daughter walks the Hollow's road at night",
+              "serves": [
+                "keep_gregor_on_the_hook",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "A note under the door said Elena walks the forest path at night. Ask the stranger whether they have seen her go."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_gregor_finds_the_mud",
+          "type": "intercept",
+          "trigger": "on_flag:elena_learn_the_ridge_count_the_forest_path",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "There is forest mud on Elena's boots at dawn, and pine needles in the hem of a dress she has no reason to wear. She has been walking toward the cart.",
+          "options": [
+            {
+              "id": "bar_the_door",
+              "label": "Bar the shop door tonight; she can hate him alive",
+              "serves": [
+                "protect_elena",
+                "get_elena_away"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_gregor_barred_her",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger, smoothly, that Elena is resting and receives no callers this week."
+                }
+              ]
+            },
+            {
+              "id": "the_wagon",
+              "label": "Say nothing; count the strongbox and see to the wagon east",
+              "serves": [
+                "get_elena_away"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger, between you and me, what a Kingsroad carter charges for one passenger and no questions."
+                }
+              ]
+            },
+            {
+              "id": "let_her_walk",
+              "label": "Let her walk; he has taken enough choices from that girl",
+              "serves": [
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger to keep an eye on Elena on the forest path, and not to tell her he asked."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_davin_and_the_carters",
+          "type": "aid",
+          "trigger": "on_flag:elena_learn_the_ridge_the_carters_memory",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "Maud says the merchant's girl stood at the gate asking carters about the ridge trail. The trail you walked tied behind a cart. She means to go up it.",
+          "options": [
+            {
+              "id": "send_the_turns",
+              "label": "Send word by Maud: the trail bends at the dead pine, and there is water at the shepherd's hut",
+              "serves": [
+                "save_corin_and_willa",
+                "atone_for_running"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Old Maud brought word: the ridge bends at the dead pine, water at a shepherd's hut. Ask the stranger who could know that."
+                }
+              ]
+            },
+            {
+              "id": "stay_in_the_loft",
+              "label": "Stay in the loft; every word that leaves this hut is a thread to the Hollow",
+              "serves": [
+                "stay_hidden",
+                "guard_the_way"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Ask the stranger whether anyone has been asking about the ridge trail at the gate."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_bjorn_and_the_boots",
+          "type": "reveal",
+          "trigger": "on_flag:elena_learn_the_ridge_boots_from_bjorn",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Elena asked you to shod her boots for stone and not to tell her father. A girl does not need hobnails to sit in a cart.",
+          "options": [
+            {
+              "id": "tell_gregor",
+              "label": "Tell Gregor what his daughter asked for, to his face",
+              "serves": [
+                "shield_elena",
+                "face_gregor"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Bjorn told you Elena asked for boots shod for stone. Ask the stranger what she means to do with them."
+                }
+              ]
+            },
+            {
+              "id": "keep_her_word",
+              "label": "Shoe them true and keep her word; she asked him honest",
+              "serves": [
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger Elena's boots are shod for a stone trail, and ask if they know which one."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_hears_they_live",
+          "type": "react",
+          "trigger": "on_flag:tn_taken_alive_known",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "It is known now: the taken are alive somewhere up the ridge, digging. Everything you guessed from the salt was true.",
+          "options": [
+            {
+              "id": "stitch_faster",
+              "label": "Stitch faster; there are names to carry up and names to bring down",
+              "serves": [
+                "get_word_out",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "elena",
+                  "want": "get_word_out",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger to tell her every name and every turn they have heard of, for the hem."
+                }
+              ]
+            },
+            {
+              "id": "ask_who_knows",
+              "label": "Ask the stranger who told them, and whether that person would talk to her",
+              "serves": [
+                "learn_the_truth",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger, urgently, who told them the taken live, and whether she could meet them."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_shuts_the_ridge",
+          "type": "react",
+          "trigger": "on_flag:vein_ridge_trail_closed",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Word has come that Fort Ashguard has put a picket on the smugglers' ridge trail over Greystone. The far half of the road you have been learning.",
+          "options": [
+            {
+              "id": "learn_another_bend",
+              "label": "Ask the carters about the back road round the picket, and stitch it in",
+              "serves": [
+                "find_the_taken",
+                "get_word_out"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger whether a soldiers' picket on the ridge stops carts, or only pedlars."
+                }
+              ]
+            },
+            {
+              "id": "take_heart",
+              "label": "Take heart: soldiers on the ridge means someone outside is watching it",
+              "serves": [
+                "get_word_out"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "elena",
+                  "want": "get_word_out",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_fathers_doors",
+      "title": "Every Door at Once",
+      "act": 2,
+      "summary": "From the third day Gregor tries every door to save a daughter who does not want saving: Ada Fenn's name again, his strongbox, a wagon east, and at last himself.",
+      "location": "thornhaven_gregor_shop",
+      "requires": [
+        "fev_fever_seen",
+        "tn_day_3"
+      ],
+      "resolves_on": [
+        "fev_gregor_barred_her",
+        "fev_father_offered_himself"
+      ],
+      "hooks": [
+        {
+          "id": "fev_gregor_tries_the_doors",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Four days. You have the strongbox, a wagon, a carter who owes you, and the name your own hand palmed: Ada Fenn. Everything is for sale this week.",
+          "options": [
+            {
+              "id": "ada_again",
+              "label": "Send word to the messenger that the lot was meant for Ada Fenn, and ask that Ada go instead",
+              "serves": [
+                "find_a_substitute",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_substitute_named",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger, too smoothly, that the Hollow may yet accept a different name this year."
+                }
+              ]
+            },
+            {
+              "id": "the_strongbox",
+              "label": "Offer the men everything: the strongbox, the shop, the steel",
+              "serves": [
+                "buy_her_back",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Gregor offered the strongbox, the shop and the steel for his girl. Ask the stranger what they think a daughter is worth."
+                }
+              ]
+            },
+            {
+              "id": "the_wagon_east",
+              "label": "Lay the road east before her at their own table and beg her to take it",
+              "serves": [
+                "get_elena_away"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Father laid a wagon east before you and begged. Ask the stranger how to tell a man no when he is crying."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_gregor_as_days_run_out",
+          "type": "intercept",
+          "trigger": "on_flag:tn_day_5",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Two days left. The men have not answered. Elena coughs in the night and stitches in the day, and she looks at you as if she already knows something.",
+          "options": [
+            {
+              "id": "bar_her_in",
+              "label": "Bar the door and keep her in until the cart has come and gone",
+              "serves": [
+                "protect_elena",
+                "get_elena_away"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_gregor_barred_her",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger Elena is too sick to go anywhere, and that is final."
+                }
+              ]
+            },
+            {
+              "id": "himself",
+              "label": "Write the shop over to her and send word: take the father",
+              "serves": [
+                "go_in_her_place",
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_father_offered_himself",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger to look after the shop's accounts for Elena, and do not explain why."
+                }
+              ]
+            },
+            {
+              "id": "one_more_bargain",
+              "label": "Keep bargaining; there is always one more price",
+              "serves": [
+                "buy_her_back"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Name it, he tells the stranger: coin, a horse, a debt forgiven. Ask what would buy a name out of the cart."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_hears_ada",
+          "type": "intercept",
+          "trigger": "on_flag:fev_substitute_named",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Father has sent Ada Fenn's name to the messenger. Fourteen. The tile you threw down the well. He is trying to undo what you did.",
+          "options": [
+            {
+              "id": "to_his_face",
+              "label": "Tell him to his face: if Ada's name is spoken, she climbs in beside her",
+              "serves": [
+                "make_the_lot_stand",
+                "never_be_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Elena told you that if Ada Fenn's name is spoken she will climb into the cart beside her. Ask the stranger what that means."
+                }
+              ]
+            },
+            {
+              "id": "warn_the_fenns",
+              "label": "Go to the Fenns' door at dawn and tell Ada's mother to keep her close on the seventh night",
+              "serves": [
+                "make_the_lot_stand",
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "thornhaven_town_square"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger to keep watch on the Fenns' house on Collection Night, and not to ask her why."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_hides_his_boots",
+          "type": "intercept",
+          "trigger": "on_flag:fev_father_offered_himself",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Father has written the shop over to you and sent word to the Hollow to take him. He has laced his old boots. He means it.",
+          "options": [
+            {
+              "id": "tell_him_she_knows",
+              "label": "Hide his boots and tell him she knows the five years, and that the choice was hers",
+              "serves": [
+                "protect_father",
+                "make_the_lot_stand"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "elena_knows_about_father",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Elena said she knows the five years. Ask the stranger, broken, how long she has known."
+                }
+              ]
+            },
+            {
+              "id": "let_him_think_it",
+              "label": "Let him think it; go and wait at the chapel where her name was read",
+              "serves": [
+                "choose_my_own_life",
+                "make_the_lot_stand"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "thornhaven_chapel"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_mira_and_adas_name",
+          "type": "scheme",
+          "trigger": "on_flag:fev_substitute_named",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Gregor has sent Ada Fenn's name back to you, weeping, as if the messenger could change the Boss's mind. He forgets that you chose it.",
+          "options": [
+            {
+              "id": "the_girl_and_no_other",
+              "label": "Send back word: the men want the merchant's girl and no other",
+              "serves": [
+                "harvest_the_tithe",
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "The messenger says the men want Elena and no other. Ask the stranger whether there is anything they will not do."
+                }
+              ]
+            },
+            {
+              "id": "dangle_it",
+              "label": "Let him believe Ada might go yet, and watch what else he will sell",
+              "serves": [
+                "burn_gregor_first",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger, as if frightened, that Gregor asked her to put a fourteen-year-old's name in the cart."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_mathias_and_the_deed",
+          "type": "aid",
+          "trigger": "on_flag:fev_father_offered_himself",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Gregor wants you to witness the shop, the strongbox and every debt written over to Elena. A man does not write his will in Tithe week for nothing.",
+          "options": [
+            {
+              "id": "witness_it",
+              "label": "Witness it, and sit with him an hour after",
+              "serves": [
+                "mercy_for_gregor",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger whether a father can take his daughter's place in the cart, and whether the gods would count it."
+                }
+              ]
+            },
+            {
+              "id": "refuse_it",
+              "label": "Refuse: the lot is holy, and the name it drew was hers",
+              "serves": [
+                "the_lot_is_holy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Mathias would not witness it. Tell the stranger the Elder says the gods chose Elena, and ask if they believe that."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_hears_varns_price",
+          "type": "react",
+          "trigger": "on_flag:hc_varn_named_his_price",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Through the storeroom door you heard Varn tell Father what your safety costs: every delivery to him, and nobody above him. You are a price again.",
+          "options": [
+            {
+              "id": "not_a_price",
+              "label": "Tell her father she will never be his bargain, nor Varn's",
+              "serves": [
+                "never_be_leverage",
+                "choose_my_own_life"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Elena said she will never be your bargain, nor Varn's. Ask the stranger what she meant by nor Varn's."
+                }
+              ]
+            },
+            {
+              "id": "tell_the_stranger",
+              "label": "Tell the stranger what Varn means to do with the cart",
+              "serves": [
+                "get_word_out",
+                "never_be_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger Varn wants her for himself, as a hostage, and that the cart may not go where everyone thinks."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_gregor_and_the_new_master",
+          "type": "react",
+          "trigger": "on_flag:hc_varn_ascendant",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Varn holds Iron Hollow now, in his own name. The man who sells a thing is the man who can sell it back.",
+          "options": [
+            {
+              "id": "buy_from_varn",
+              "label": "Go to Varn with the strongbox and buy his daughter off the cart",
+              "serves": [
+                "back_the_winning_master",
+                "buy_her_back"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger to carry an offer to Varn: everything he has, for Elena's name."
+                },
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "buy_her_back",
+                  "delta": 1
+                }
+              ],
+              "aids": "varn"
+            },
+            {
+              "id": "no_more_masters",
+              "label": "No more masters; it ends with him",
+              "serves": [
+                "escape_the_deal",
+                "go_in_her_place"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "go_in_her_place",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_bjorn_and_the_rims",
+          "type": "aid",
+          "trigger": "on_flag:gregor_the_wagon_east_rims_from_bjorn",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Gregor paid double for new rims on his old wagon tonight, with no questions either way. A merchant does not need a road wagon in Tithe week.",
+          "options": [
+            {
+              "id": "ask_him_straight",
+              "label": "Ask Gregor straight out what the wagon is for",
+              "serves": [
+                "face_gregor",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger Gregor had his wagon re-rimmed for a long road, and ask if they know where."
+                }
+              ]
+            },
+            {
+              "id": "tell_elena",
+              "label": "Tell Elena, quietly, that her father has a wagon ready",
+              "serves": [
+                "shield_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Bjorn says Father's wagon is rimmed for the Kingsroad. Ask the stranger to help you stop him before he tries."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_barred_door",
+      "title": "The Barred Door",
+      "act": 2,
+      "summary": "Gregor has barred Elena in. He turns away the Elder, the smith and the widow's honey. The bar holds until someone lifts it, or until the cart comes.",
+      "location": "thornhaven_gregor_shop",
+      "requires": [
+        "fev_gregor_barred_her"
+      ],
+      "resolves_on": [
+        "fev_door_stayed_barred",
+        "fev_bar_lifted",
+        "fev_unbarred_the_door"
+      ],
+      "hooks": [
+        {
+          "id": "fev_gregor_keeps_the_bar",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Someone is knocking again. Elena is behind the storeroom door, stitching. If you lift the bar she walks to the cart. If you keep it, she never forgives you.",
+          "options": [
+            {
+              "id": "keep_it",
+              "label": "Keep the bar through every knock, neighbour or nurse",
+              "serves": [
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger through the door that the shop is shut this week, and to go away."
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Gregor turned you away at his own door. Ask the stranger whether a father may lock up a grown daughter."
+                }
+              ]
+            },
+            {
+              "id": "lift_it",
+              "label": "Lift it; she must choose, and he must live with it",
+              "serves": [
+                "make_amends",
+                "go_in_her_place"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_bar_lifted",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger to sit with him; he has just unbarred his own door and does not know what comes next."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_gregor_last_night_bar",
+          "type": "intercept",
+          "trigger": "on_flag:tn_day_6",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The cart comes tomorrow night. The bar is still across the door. Elena has stopped speaking to you.",
+          "options": [
+            {
+              "id": "hold_to_the_end",
+              "label": "Hold the bar through the last night, whatever comes to the door",
+              "serves": [
+                "protect_elena",
+                "get_elena_away"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_door_stayed_barred",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger through the door that nobody comes in and nobody goes out until the cart has gone."
+                }
+              ]
+            },
+            {
+              "id": "open_it",
+              "label": "Open the door, and ask her to let him go in her place",
+              "serves": [
+                "go_in_her_place",
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_bar_lifted",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Father opened the door and asked to go in your place. Ask the stranger how to answer him."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_at_the_shutters",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The storeroom shutter has a loose hinge. Father sleeps sitting up by the bar. The forest path is a quarter of an hour away.",
+          "options": [
+            {
+              "id": "out_the_shutter",
+              "label": "Out through the storeroom shutter by night, and leave the bar for him to guard",
+              "serves": [
+                "choose_my_own_life",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_bar_lifted",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "forest_path"
+                }
+              ]
+            },
+            {
+              "id": "stitch_and_wait",
+              "label": "Stitch and wait; let him keep his bar one more night",
+              "serves": [
+                "get_word_out",
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger through the shutter to tell Bjorn she needs her boots, and nothing else."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_bjorn_in_the_doorway",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Gregor has barred his daughter in. You want her out of that cart too. You also know what a bar across a door says about the man holding it.",
+          "options": [
+            {
+              "id": "open_it",
+              "label": "Stand in the shop doorway and tell Gregor, man to man, to lift it",
+              "serves": [
+                "face_gregor",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_bar_lifted",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Bjorn stood in your doorway and told you to lift the bar. Ask the stranger whether he was right."
+                }
+              ]
+            },
+            {
+              "id": "help_hold_it",
+              "label": "Fit him a stouter bar and say nothing; better a locked door than the ridge",
+              "serves": [
+                "shield_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger he fitted Gregor a new bar, and that he is not sure he did right."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_mathias_through_the_door",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Gregor will not open even to you. Elena is behind that door with her mother's cough and no one to tend it but a frightened man.",
+          "options": [
+            {
+              "id": "reason_with_him",
+              "label": "Sit on the step and reason with him through the door",
+              "serves": [
+                "mercy_for_gregor",
+                "tend_the_sick"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "The Elder sat on your step for an hour. Ask the stranger whether keeping her in is mercy or theft."
+                }
+              ]
+            },
+            {
+              "id": "leave_it",
+              "label": "Leave it; no proof that she is harmed, and the council has enough",
+              "serves": [
+                "prove_before_acting",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger that what a father does behind his own door is not the council's business. Yet."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_mira_knocks_with_honey",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Gregor has barred the girl in. If she is not at the gate on the seventh night the men will come for her, and the Tithe you built will look like it can be dodged.",
+          "options": [
+            {
+              "id": "a_burned_shop",
+              "label": "Knock with honey and a whisper: a barred door means a burned shop",
+              "serves": [
+                "harvest_the_tithe",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_bar_lifted",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "The widow whispered that a barred door means a burned shop. Ask the stranger if the Hollow would really burn it."
+                }
+              ]
+            },
+            {
+              "id": "let_him_break",
+              "label": "Leave him to it; let Gregor break himself on his own door",
+              "serves": [
+                "see_who_fights",
+                "control_the_cure"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger, sadly, that Gregor will not even open for her honey, poor man."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_aldric_at_the_bar",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The merchant has barred his daughter in for her own good. You have seen commanders do the same to whole towns.",
+          "options": [
+            {
+              "id": "tell_him_plainly",
+              "label": "Tell Gregor plainly that a bar never stopped the Hollow and never will",
+              "serves": [
+                "spare_the_innocent",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Aldric told you a bar never stopped the Hollow. Ask the stranger what would."
+                }
+              ]
+            },
+            {
+              "id": "post_a_man",
+              "label": "Post one of his six across the square to watch the shop, and say nothing",
+              "serves": [
+                "keep_my_men_alive",
+                "spare_the_innocent"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "aldric",
+                  "location": "thornhaven_town_square"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_varn_watches_the_shop",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The merchant has barred his girl in, as if oak could keep the Tithe out. Whoever holds her on the seventh night holds him.",
+          "options": [
+            {
+              "id": "post_a_man",
+              "label": "Post a man across the square to watch the shop door",
+              "serves": [
+                "hold_elena_as_leverage",
+                "a_perfect_collection"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger he has a man watching the merchant's door, and that the man is very patient."
+                }
+              ]
+            },
+            {
+              "id": "let_the_bar_be",
+              "label": "Let the bar be; a locked girl is a girl who is still there",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the merchant has done his work for him. The girl will be exactly where he left her."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_father_gone",
+          "type": "react",
+          "trigger": "on_flag:ih_gregor_fled",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Father has gone in the night, and the bar is still across a door that nobody is guarding.",
+          "options": [
+            {
+              "id": "lift_it_herself",
+              "label": "Lift the bar herself and stand in the doorway in the morning light",
+              "serves": [
+                "choose_my_own_life",
+                "make_the_lot_stand"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger Father ran. Ask them to help her keep the shop until the cart comes."
+                }
+              ]
+            },
+            {
+              "id": "go_after_him",
+              "label": "Go to the gate and ask which road he took",
+              "serves": [
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "village_gate"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_girl_who_cut_her_name",
+      "title": "The Girl Who Cut Her Name",
+      "act": 2,
+      "summary": "Once the lot is known to be rigged, the question is whose hand cut Elena's tile. The answer is hers. She tells it when someone has earned it, or when they catch her.",
+      "location": "thornhaven_chapel",
+      "requires": [
+        "tn_lot_rigged_known"
+      ],
+      "resolves_on": [
+        "fev_elena_confessed",
+        "fev_caught_her_at_the_well",
+        "tn_elena_swap_known"
+      ],
+      "hooks": [
+        {
+          "id": "fev_elena_caught",
+          "type": "reveal",
+          "trigger": "on_flag:fev_caught_her_at_the_well",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The stranger has drawn Ada Fenn's tile up out of the chapel well and is holding it out to you, dripping.",
+          "options": [
+            {
+              "id": "all_of_it",
+              "label": "Tell all of it: the strongbox, the five years, the vestry, the well",
+              "serves": [
+                "find_the_taken",
+                "get_word_out",
+                "learn_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_elena_confessed",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "elena_knows_about_father",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger to keep the swap secret until the cart is past the gate, and to read her hem after."
+                }
+              ]
+            },
+            {
+              "id": "only_her_part",
+              "label": "Confess the swap and nothing of her father's hand",
+              "serves": [
+                "protect_father",
+                "make_the_lot_stand",
+                "get_word_out"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_elena_confessed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Beg the stranger not to undo the swap, and not to ask whose duplicate tile she used."
+                }
+              ]
+            },
+            {
+              "id": "a_bright_question",
+              "label": "Ask a bright, fast question and find something to do with her hands",
+              "serves": [
+                "keep_the_swap_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger where they learned to fish in wells, and talk about anything but tiles."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_seen_through",
+          "type": "reveal",
+          "trigger": "on_flag:recut_tile_seen",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The stranger has seen that your tile was recut by a careful, unpractised hand. They are looking at your hands now.",
+          "options": [
+            {
+              "id": "tell_them",
+              "label": "Tell them it was her hand, and why, before they guess wrong and hurt someone",
+              "serves": [
+                "get_word_out",
+                "protect_father",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_elena_confessed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger to leave the urn alone: the tile is hers, and so is the going."
+                }
+              ]
+            },
+            {
+              "id": "hold_it",
+              "label": "Hold it a day longer; the cart is not past the gate",
+              "serves": [
+                "keep_the_swap_secret",
+                "make_the_lot_stand"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger to promise not to touch the urn before Collection Night, and do not say why."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_earned_it",
+          "type": "reveal",
+          "trigger": "on_flag:elena_romance_started",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "You care for the stranger, and they for you. You cannot go up the ridge with this between you.",
+          "options": [
+            {
+              "id": "tell_them_all",
+              "label": "Tell them all of it, the swap and the scream in the chapel that made her do it",
+              "serves": [
+                "get_word_out",
+                "learn_the_truth",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_elena_confessed",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "elena_knows_about_father",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger whether they still look at her the same, now that they know."
+                }
+              ]
+            },
+            {
+              "id": "not_yet",
+              "label": "Not yet; she will not make them carry it",
+              "serves": [
+                "keep_the_swap_secret",
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger there is one thing she cannot tell them until the cart has gone, and ask them to trust her."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_when_known",
+          "type": "reveal",
+          "trigger": "on_flag:tn_elena_swap_known",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The stranger knows it was your hand that put your name in the urn. There is no hiding it now. There is only how you tell it.",
+          "options": [
+            {
+              "id": "say_why",
+              "label": "Say why: Willa's mother screaming, and no more names in her place",
+              "serves": [
+                "make_the_lot_stand",
+                "get_word_out",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_elena_confessed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger whether they will help the lot stand, or whether they mean to undo it."
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Look at them and say nothing at all",
+              "serves": [
+                "keep_the_swap_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger, very quietly, to leave the shop."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_mira_from_the_back_pew",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Everyone wants to know who cut the girl's tile. You watched her do it from the back pew. Every crumb you drop this week must point somewhere useful.",
+          "options": [
+            {
+              "id": "point_at_the_strongbox",
+              "label": "Tell Aldric, frightened, that Gregor keeps something heavy in his strongbox",
+              "serves": [
+                "burn_gregor_first",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "The widow says Gregor keeps something heavy in his strongbox. Ask the stranger to help you look."
+                }
+              ]
+            },
+            {
+              "id": "point_at_the_urn",
+              "label": "Wonder aloud who holds the key to the urn",
+              "serves": [
+                "keep_the_mask",
+                "own_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, wringing the rag, who keeps the chapel urn's key, and whether he ever lets it out of his sight."
+                }
+              ]
+            },
+            {
+              "id": "let_it_play",
+              "label": "Say nothing; watch who digs, and who stops",
+              "serves": [
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger the whole village is whispering about tiles, and she cannot bear it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_bjorn_reads_the_cut",
+          "type": "reveal",
+          "trigger": "on_flag:recut_tile_seen",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The stranger has seen the recut tile too. Careful, unpractised, a fine file. A hand that has filed a shop lock or two, not a forge hand.",
+          "options": [
+            {
+              "id": "say_whose_hand",
+              "label": "Say what the cut tells him: a small file and a steady, unpractised hand",
+              "serves": [
+                "read_the_tiles"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger the tile was cut with a shopkeeper's fine file, by someone who had never cut iron before."
+                }
+              ]
+            },
+            {
+              "id": "weigh_in_silence",
+              "label": "Weigh the rest of the urn in silence before he says a word",
+              "serves": [
+                "read_the_tiles",
+                "keep_out_of_politics"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger to bring him every tile in the urn, and to say nothing until he has weighed them."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_gregor_learns_whose_hand",
+          "type": "react",
+          "trigger": "on_flag:tn_elena_swap_known",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "It was Elena. Your own daughter took Ada Fenn's tile out of your coat and cut her own name in. She knew. All this time she knew.",
+          "options": [
+            {
+              "id": "then_himself",
+              "label": "Then nothing is left to sell but himself",
+              "serves": [
+                "go_in_her_place",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "go_in_her_place",
+                  "delta": 3
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger, in pieces, how long Elena has known what he did."
+                }
+              ]
+            },
+            {
+              "id": "blame_the_hollow",
+              "label": "Tell himself the Hollow put her up to it",
+              "serves": [
+                "keep_the_secret",
+                "find_who_swapped"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Insist to the stranger that the Hollow must have frightened Elena into it. A father knows."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_full_measure",
+      "title": "The Full Measure",
+      "act": 3,
+      "summary": "The player has brought a full measure of the Pit's white salt. Steeped with fever-root it would break the Grey Fever for good. Elena, her father and the widow each want it used differently.",
+      "location": "thornhaven_gregor_shop",
+      "requires": [
+        "fev_brought_the_salt"
+      ],
+      "resolves_on": [
+        "fev_cure_found",
+        "fev_cure_carried_up"
+      ],
+      "hooks": [
+        {
+          "id": "fev_elena_and_the_measure",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The stranger has put a full measure of the white salt in your hands. Steeped with root it would cure you. Up the ridge, people dig it in chains and cough.",
+          "options": [
+            {
+              "id": "drink_it",
+              "label": "Steep it and drink it all; a cured girl walks the ridge and digs",
+              "serves": [
+                "survive_the_fever",
+                "find_the_taken",
+                "choose_my_own_life"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_cure_found",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger she can breathe all the way down for the first time in five years, and that she is still going."
+                }
+              ]
+            },
+            {
+              "id": "carry_it_up",
+              "label": "Sew it into her hem for the sick in the Pit",
+              "serves": [
+                "find_the_taken",
+                "get_word_out",
+                "make_the_lot_stand"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_cure_carried_up",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger the cure is in her hem, for Willa Brand or whoever coughs worst in the Pit."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_gregor_steeps_it",
+          "type": "intercept",
+          "trigger": "on_flag:fev_cure_carried_up",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Elena means to carry the cure up the ridge for strangers. Five years you have stirred her tea. You could stir it once more tonight, and she would never taste it.",
+          "options": [
+            {
+              "id": "steep_it_behind_her_back",
+              "label": "Steep it into tonight's tea while she sleeps",
+              "serves": [
+                "cure_elena",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_cure_found",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger he did one honest thing for his daughter tonight, and she will hate him for it."
+                }
+              ]
+            },
+            {
+              "id": "let_her_carry_it",
+              "label": "Let her carry it; it is the first thing in five years that was hers to give",
+              "serves": [
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger Elena means to carry the cure to the Pit, and that he let her."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_mira_and_the_leash",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The stranger has brought the girl a full measure of salt. Cured, she is no leash on Gregor and no debt to you. The salt is the one thread you cannot afford to lose.",
+          "options": [
+            {
+              "id": "call_it_poison",
+              "label": "Tell Gregor, weeping, that salt not steeped by the men is poison",
+              "serves": [
+                "control_the_cure",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "The widow says salt not steeped by the men kills. Ask the stranger where theirs came from."
+                }
+              ]
+            },
+            {
+              "id": "let_it_go",
+              "label": "Let it go; a cured girl still rides the cart",
+              "serves": [
+                "harvest_the_tithe",
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger it was kind, what they did for the girl, and ask what they mean to do next."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_mathias_and_the_rest",
+          "type": "react",
+          "trigger": "on_flag:fev_cure_found",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Elena's fever has broken, root and white salt together, as the old books said. You could not do this in the plague winter.",
+          "options": [
+            {
+              "id": "for_the_village",
+              "label": "Ask the stranger where the salt comes from, for every other cough in the valley",
+              "serves": [
+                "tend_the_sick",
+                "save_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger where the white salt is dug, and whether there is enough for every fever in the valley."
+                }
+              ]
+            },
+            {
+              "id": "give_thanks",
+              "label": "Give thanks at the altar and say nothing of the source",
+              "serves": [
+                "the_lot_is_holy"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mathias",
+                  "want": "tend_the_sick",
+                  "delta": -1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_last_night",
+      "title": "The Last Night",
+      "act": 3,
+      "summary": "From the sixth morning Elena must choose how she meets Collection Night: ride the cart as she chose, run, or let someone else go. What the player promises her decides which door she opens.",
+      "location": "village_gate",
+      "requires": [
+        "tn_day_6",
+        "fev_elena_confessed"
+      ],
+      "resolves_on": [
+        "fev_swore_to_follow",
+        "fev_found_her_a_road",
+        "fev_begged_her_to_stay"
+      ],
+      "hooks": [
+        {
+          "id": "fev_elena_with_eyes_outside",
+          "type": "intercept",
+          "trigger": "on_flag:fev_swore_to_follow",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The stranger has sworn to follow the cart and read the names in your hem. Someone outside will know where you went.",
+          "options": [
+            {
+              "id": "ride",
+              "label": "Leave the shop tonight, wait at the chapel, and climb into the cart on her own feet",
+              "serves": [
+                "make_the_lot_stand",
+                "find_the_taken",
+                "get_word_out"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_rode_as_she_chose",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "fev_elena_left_home",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "thornhaven_chapel"
+                }
+              ]
+            },
+            {
+              "id": "ahead_of_the_cart",
+              "label": "Go up the ridge tonight ahead of the cart, with the stranger behind her",
+              "serves": [
+                "find_the_taken",
+                "choose_my_own_life"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_ran_the_ridge",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "fev_elena_left_home",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "forest_path"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_and_the_road",
+          "type": "intercept",
+          "trigger": "on_flag:fev_found_her_a_road",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The stranger has found you a road out before the cart comes, and means it. A road. You have never walked one.",
+          "options": [
+            {
+              "id": "take_it",
+              "label": "Take the road tonight; her life is hers to choose",
+              "serves": [
+                "choose_my_own_life",
+                "see_beyond_thornhaven",
+                "survive_the_fever"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_ran_the_ridge",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "fev_elena_left_home",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "forest_path"
+                }
+              ]
+            },
+            {
+              "id": "her_name_goes",
+              "label": "Thank them and refuse; her name was drawn and her name goes",
+              "serves": [
+                "make_the_lot_stand",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_rode_as_she_chose",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "fev_elena_left_home",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "thornhaven_chapel"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_begged_to_live",
+          "type": "intercept",
+          "trigger": "on_flag:fev_begged_her_to_stay",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The stranger has begged you to let the cart take someone else and live. Someone is always willing: Father, the stranger themselves, another name.",
+          "options": [
+            {
+              "id": "stand_aside",
+              "label": "Stand aside, and give whoever goes the hem of names to carry",
+              "serves": [
+                "survive_the_fever",
+                "get_word_out",
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_let_another_go",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Give the stranger her travelling dress and teach them to read the hem, for whoever rides in her place."
+                }
+              ]
+            },
+            {
+              "id": "no",
+              "label": "No. Her name was drawn and her name goes",
+              "serves": [
+                "make_the_lot_stand",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_rode_as_she_chose",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "fev_elena_left_home",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "thornhaven_chapel"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_gregor_laces_his_boots",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The sixth morning. The cart comes tomorrow night. There is one door you have not tried, and it is the only one that does not cost a neighbour.",
+          "options": [
+            {
+              "id": "lace_the_boots",
+              "label": "Lace his old boots and send word to the men: take the father",
+              "serves": [
+                "go_in_her_place",
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_father_offered_himself",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger, steadily for once, that he is going up the ridge and Elena is not."
+                }
+              ]
+            },
+            {
+              "id": "the_wagon_once_more",
+              "label": "Bring the wagon to the gate in the dark one last time",
+              "serves": [
+                "get_elena_away",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Father has a wagon at the gate in the dark. Ask the stranger to tell him, kindly, that you will not get in."
+                }
+              ]
+            },
+            {
+              "id": "sit_up_with_her",
+              "label": "Sit up with her by the fire, and talk about anything but the Tithe",
+              "serves": [
+                "make_amends",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger what Elena likes to talk about, because he finds he does not know."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_gregor_hears_the_plea",
+          "type": "intercept",
+          "trigger": "on_flag:fev_begged_her_to_stay",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The stranger begged Elena to live and let another go. Somebody has to be the other.",
+          "options": [
+            {
+              "id": "give_her_the_reason",
+              "label": "Give her the reason to live: climb in himself",
+              "serves": [
+                "go_in_her_place",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_father_offered_himself",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Thank the stranger for asking her to live, and tell them who is going instead."
+                }
+              ]
+            },
+            {
+              "id": "another_name",
+              "label": "Find another name for the cart, one more time",
+              "serves": [
+                "find_a_substitute",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "fev_substitute_named",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger, between you and me, whether they know a drifter nobody would miss."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_mira_the_shawl",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The last night. The girl has to be in the cart, or Gregor broken, or the village fighting; any of the three tells you something. You prefer the cart.",
+          "options": [
+            {
+              "id": "marcus_shawl",
+              "label": "Wrap her in Marcus's shawl and whisper that the men will take no other",
+              "serves": [
+                "harvest_the_tithe",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Aunt Mira wrapped you in Marcus's shawl and said the men will take no other. Ask the stranger whether that is true."
+                }
+              ]
+            },
+            {
+              "id": "watch_the_path",
+              "label": "Send word to Varn to watch the forest path tonight, in case the girl runs",
+              "serves": [
+                "keep_varn_leashed",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "The Boss says watch the forest path tonight. Ask the stranger whether they had planned a walk."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_varn_watches_for_a_runner",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The sixth day. A clean collection means the girl at the gate tomorrow night, and a girl who runs into the Darkwood runs to you.",
+          "options": [
+            {
+              "id": "riders_on_the_path",
+              "label": "Put riders on the forest path tonight",
+              "serves": [
+                "hold_elena_as_leverage",
+                "a_perfect_collection"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "forest_path"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the forest path is his tonight, and anyone on it is his too."
+                }
+              ]
+            },
+            {
+              "id": "leave_it_to_the_cart",
+              "label": "Leave it to the cart; nobody runs from the Tithe",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger nobody has ever run from the Tithe, and smile."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_davin_shelters_the_runner",
+          "type": "aid",
+          "trigger": "on_flag:fev_found_her_a_road",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "The merchant's girl is going to run tonight, and every road out of Thornhaven passes Maud's door. She is going where you were, or away from it.",
+          "options": [
+            {
+              "id": "shelter_her",
+              "label": "Keep a light in Maud's window and tell her the turn at the dead pine",
+              "serves": [
+                "stop_the_cart",
+                "save_corin_and_willa"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Davin, the smith's lost boy, kept a light for you at Maud's. Ask the stranger whether to trust him."
+                }
+              ]
+            },
+            {
+              "id": "bar_maud_door",
+              "label": "Bar Maud's door; a runner draws the Hollow's man to the one place he must not look",
+              "serves": [
+                "stay_hidden",
+                "never_go_back"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Beg the stranger to keep anyone running tonight well away from Maud's hut."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_bjorn_boots_for_two",
+          "type": "aid",
+          "trigger": "on_flag:fev_swore_to_follow",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The stranger means to follow the cart up a stone trail. Elena's boots are shod. Theirs are not.",
+          "options": [
+            {
+              "id": "shoe_them",
+              "label": "Shoe the stranger's boots for stone tonight, and take no coin",
+              "serves": [
+                "shield_elena",
+                "protect_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "bjorn",
+                  "dimension": "respect",
+                  "delta": 8
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger their boots are shod for the ridge, and ask them to bring the girl home."
+                }
+              ]
+            },
+            {
+              "id": "not_his_business",
+              "label": "It is not his business who follows what cart",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger he makes boots, not decisions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_aldric_spares_her",
+          "type": "aid",
+          "trigger": "on_flag:fev_begged_her_to_stay",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The stranger begged Elena to live. If she will not be at the gate tomorrow, someone will have to keep her from it.",
+          "options": [
+            {
+              "id": "keep_her_from_the_gate",
+              "label": "Post the miller's boy at the shop door on the seventh night",
+              "serves": [
+                "spare_the_innocent",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger he will keep Elena from the gate on Collection Night, with or without her leave."
+                }
+              ]
+            },
+            {
+              "id": "her_choice",
+              "label": "It is her choice; a soldier does not take that from a volunteer",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger Elena is the only volunteer in Thornhaven, and he will not order her home."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_and_the_substitute",
+          "type": "react",
+          "trigger": "on_flag:tn_substitute_sent",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Someone else is going in the cart in your place. You swore that would never happen again.",
+          "options": [
+            {
+              "id": "to_the_gate",
+              "label": "Go to the gate anyway, to see who it is and say their name",
+              "serves": [
+                "make_the_lot_stand",
+                "get_word_out"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "village_gate"
+                }
+              ]
+            },
+            {
+              "id": "give_them_the_hem",
+              "label": "Give whoever goes the hem of names to carry",
+              "serves": [
+                "get_word_out",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger to carry her travelling dress to whoever rides in her place, and to say it is from her."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fev_elena_and_the_follower",
+          "type": "react",
+          "trigger": "on_flag:tn_plan_follow_cart",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The stranger means to follow the cart up the ridge. Someone outside will need to read the hem.",
+          "options": [
+            {
+              "id": "teach_the_stitch",
+              "label": "Show them how to read the stitching, name by name",
+              "serves": [
+                "get_word_out",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "elena",
+                  "dimension": "trust",
+                  "delta": 8
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Show the stranger how to read the names and the map in her hem, stitch by stitch."
+                }
+              ]
+            },
+            {
+              "id": "tell_them_the_ridge",
+              "label": "Tell them every bend she has counted",
+              "serves": [
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger every turn of the forest path she counted, up to where the cart ruts climb."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "names_in_the_hem",
+      "title": "Names in the Hem",
+      "requires": [
+        "fev_rode_as_she_chose",
+        "fev_swore_to_follow"
+      ],
+      "summary": "Elena rode the Hollow's cart as she chose, the names of the taken in her hem, and the stranger followed to read them. She is the spy inside now, and a rescue has a map."
+    },
+    {
+      "id": "her_own_road",
+      "title": "Her Own Road",
+      "requires": [
+        "fev_ran_the_ridge",
+        "fev_found_her_a_road"
+      ],
+      "summary": "Elena left Thornhaven on a road the stranger found her, before the cart came. The Hollow came to the gate for a name that was not there, and the village must answer for it."
+    },
+    {
+      "id": "the_price_she_let_be_paid",
+      "title": "The Price She Let Be Paid",
+      "requires": [
+        "fev_let_another_go",
+        "fev_begged_her_to_stay"
+      ],
+      "summary": "At the stranger's plea Elena stood aside and let another climb into the cart in her place, with her hem of names. She lives, and she will carry who went for the rest of her life."
+    },
+    {
+      "id": "the_locked_room",
+      "title": "The Locked Room",
+      "requires": [
+        "fev_door_stayed_barred",
+        "tn_collection_night",
+        "!fev_unbarred_the_door",
+        "!fev_bar_lifted",
+        "!fev_swore_to_follow",
+        "!fev_found_her_a_road",
+        "!fev_begged_her_to_stay",
+        "!fev_elena_left_home"
+      ],
+      "summary": "Collection Night came with the shop door still barred and nobody to lift it. The Hollow's men took the door off its hinges, and Elena went to the cart in their hands instead of on her own feet."
+    }
+  ]
+}

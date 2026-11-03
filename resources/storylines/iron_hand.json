@@ -1,0 +1,2784 @@
+{
+  "id": "iron_hand",
+  "title": "The Iron Hand",
+  "summary": "Gregor rigged the Tithe lot for five years so that Elena's name never came up, and this year it did. His frantic week of bribes, roads, substitutes and begging, and what he is when it strips him down: a coward or a father.",
+  "prefix": "ih_",
+  "act_span": [
+    1,
+    3
+  ],
+  "flags": {
+    "ih_trail_opened": "Questions about who rigged the lot began to lead to Gregor's shop, his back room and the strongbox key in his coat pocket",
+    "ih_file_traced": "Bjorn said the recut tile had been worked with a fine file of the kind Gregor's shop sells",
+    "ih_ransom_offered": "Gregor begged the messenger to carry his strongbox, his shop and his steel to the men in the forest as a ransom for Elena",
+    "ih_ransom_dangled": "Mira told Gregor, weeping, that the men in the forest would think on his ransom",
+    "ih_road_laid": "Gregor laid a road east before Elena at their own table: a wagon, a Kingsroad carter and a physician in the Capitol",
+    "ih_elena_refused_the_road": "Elena told her father at their own table that she would take no road east, whatever it cost",
+    "ih_kingsroad_watched": "Varn put a man on the Kingsroad to watch for a merchant's wagon leaving Thornhaven",
+    "ih_drifter_bought": "Gregor pressed coin into the hand of a drifter sleeping rough at the old mill, for a body in the Hollow's cart",
+    "ih_fenn_again": "Gregor stood outside the Fenns' door after dark with a spare lot tile in his hand",
+    "ih_relot_refused": "Elder Mathias refused Gregor's plea to draw the lot again 'to be sure', and kept the urn locked",
+    "ih_messenger_begged": "Gregor begged Mira, as the messenger, to carry word to the men in the forest: take the father, not the daughter",
+    "ih_ledger_begged": "Gregor begged the stranger to give back his ledger of rigged draws, and offered anything for it",
+    "ih_ledger_to_the_council": "Elder Mathias read Gregor's ledger of rigged draws aloud before the council, year by year and name by name",
+    "ih_gregor_offered_bargain": "Gregor offered the stranger his strongbox and the Hollow's delivery nights in exchange for silence until the cart had gone",
+    "ih_varn_ultimatum": "Varn sent word to Gregor that if he talked, his daughter would never see where the cart went",
+    "ih_bargain_accepted": "The stranger took Gregor's bargain: his strongbox and the Hollow's delivery nights, for silence until the cart had gone",
+    "ih_gregor_denounced": "The stranger refused Gregor's bargain and named him before the council as the man who rigged five years of the Tithe lot",
+    "ih_hearing_called": "Elder Mathias called the council to hear Gregor in the hall before anyone touched a rope",
+    "ih_last_order_placed": "Gregor placed the Hollow's autumn order at Bjorn's forge as if nothing had changed",
+    "ih_steel_routed_round": "Mira had the Hollow's steel ordered through a Kingsroad carter, around Gregor's shop",
+    "ih_supply_line_cut": "The Hollow's supply line through Gregor's shop was cut, and no more of Bjorn's steel or Gregor's grain went up to the forest",
+    "ih_rope_brought": "Neighbours brought a rope to the square for Gregor, with the Fenns and the Brands at the front",
+    "ih_shop_door_held": "Captain Aldric stood in Gregor's shop door and told the square there would be no hanging in Tithe week",
+    "ih_elena_before_the_rope": "Elena stood between her father and the square and said the families would have to go through her",
+    "ih_ledger_read_aloud": "Gregor knelt in the square and read his ledger aloud: every year, every tile, every name, and Hesk Marlow's as his own choosing",
+    "ih_stood_before_the_rope": "The stranger stood between Gregor and the village's rope and made Thornhaven hear him instead",
+    "ih_left_him_to_the_village": "The stranger stepped back and left Gregor to the village",
+    "ih_gregor_fled": "Gregor fled Thornhaven by night with his ledger in his coat, leaving his shop dark, his daughter's name still on the lot and the village's rope behind him",
+    "ih_hue_raised": "Captain Aldric rode out along the Kingsroad after the runaway merchant",
+    "ih_kingsroad_hunted": "Varn's men rode the Kingsroad after the runaway merchant",
+    "ih_let_him_run": "The stranger learned which road Gregor had fled by, let him go, and raised no hue and cry behind him",
+    "ih_at_the_tailboard": "Gregor stood at the cart's tailboard on Collection Night in boots shod for stone, waiting for one word to climb in",
+    "ih_ledger_given": "Gregor put his ledger and his strongbox key into the stranger's hand at the gate on Collection Night",
+    "ih_heard_his_last_word": "The stranger heard the last of Gregor's confession at the cart's tailboard on Collection Night"
+  },
+  "player_flags": [
+    "ih_bargain_accepted",
+    "ih_gregor_denounced",
+    "ih_stood_before_the_rope",
+    "ih_left_him_to_the_village",
+    "ih_let_him_run",
+    "ih_heard_his_last_word"
+  ],
+  "crossovers": [
+    "tn_lot_rigged_known",
+    "tn_bjorn_knows_his_boy",
+    "tn_let_father_go",
+    "oath_blades_sabotaged",
+    "cou_martial_law",
+    "fev_elena_left_home",
+    "mag_summons_issued"
+  ],
+  "beats": [
+    {
+      "id": "the_strongbox",
+      "act": 1,
+      "title": "The Strongbox",
+      "summary": "In Gregor's back room sit a strongbox and a ledger. The strongbox holds a second set of the chapel's lot tiles and a packet of white salt; the ledger holds five years of rigged draws.",
+      "location": "thornhaven_gregor_shop",
+      "requires": [
+        "tithe_drawing_witnessed",
+        "!gregor_exposed"
+      ],
+      "resolves_on": [
+        "ih_trail_opened",
+        "duplicate_tiles_found",
+        "ledger_found"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "ih_trail_opened",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "gregor_guards_the_back_room",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The whole village is talking about a recut tile. Your duplicates are in the strongbox and your ledger is on the shelf behind the flour. You have never managed to burn it.",
+          "options": [
+            {
+              "id": "bar_the_room",
+              "label": "Sleep with the strongbox key round his neck and the back room barred",
+              "serves": [
+                "keep_the_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Keep the stranger out of the back room with talk of prices and a hand on their arm."
+                }
+              ]
+            },
+            {
+              "id": "fail_to_burn_it",
+              "label": "Hold the ledger over the stove and fail, again, to burn it",
+              "serves": [
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger, between you and me, that a man keeps some things so that one day someone will make him stop."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "bjorn_names_the_file",
+          "type": "reveal",
+          "trigger": "on_flag:tn_lot_rigged_known",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Everyone knows now the tile was recut. You know more: the cut was made with a fine file, the kind Gregor sells by the dozen.",
+          "options": [
+            {
+              "id": "name_the_file",
+              "label": "Tell the stranger the file was the kind Gregor's shop sells",
+              "serves": [
+                "read_the_tiles",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_file_traced",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "ih_trail_opened",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger the recut was made with a fine file, the kind Gregor's shop sells. He says it to their face."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "a_file_is_a_file",
+              "label": "Keep it to himself; half the valley owns such a file",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mira_crumbs",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "If the rigged lot comes out, the trail must stop at Gregor. But a hanged merchant cannot be your leash this week.",
+          "options": [
+            {
+              "id": "the_coat_pocket",
+              "label": "Let slip that Gregor never takes his coat off in the chapel",
+              "serves": [
+                "burn_gregor_first"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_trail_opened",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Whisper to the stranger, eyes on the door, that Gregor touches his coat pocket every time the urn is mentioned."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "keep_him_useful",
+              "label": "Keep him useful a little longer",
+              "serves": [
+                "harvest_the_tithe",
+                "control_the_cure"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "elena_and_the_strongbox",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "You found the spares in that strongbox this summer. If the stranger finds them, they will know what your father did for five years.",
+          "options": [
+            {
+              "id": "only_coin",
+              "label": "Tell the stranger, if they ask, that the strongbox holds only coin",
+              "serves": [
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "If the stranger asks about her father's strongbox, say it holds coin and receipts. Change the subject."
+                }
+              ]
+            },
+            {
+              "id": "let_them_look",
+              "label": "Say nothing and let the stranger look",
+              "serves": [
+                "learn_the_truth",
+                "fight_for_thornhaven"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "five_doors",
+      "act": 2,
+      "title": "Five Doors",
+      "summary": "Gregor's frantic week. He tries every door at once: a bribe, a road east, a substitute, the messenger, and at last himself. Every door opens onto someone who wants something else.",
+      "location": "thornhaven_gregor_shop",
+      "requires": [
+        "tithe_drawing_witnessed",
+        "tn_day_2"
+      ],
+      "resolves_on": [
+        "ih_gregor_fled",
+        "gregor_exposed",
+        "tn_collection_night"
+      ],
+      "hooks": [
+        {
+          "id": "door_the_bribe",
+          "type": "scheme",
+          "trigger": "on_flag:tn_day_2",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The second morning. Everything you own is for sale. The messenger can carry an offer to the men in the forest.",
+          "options": [
+            {
+              "id": "the_strongbox",
+              "label": "Beg Mira to carry his strongbox, his shop and his steel to the men",
+              "serves": [
+                "buy_her_back",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_ransom_offered",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Gregor begged her to carry his offer to the men: the strongbox, the shop, double steel. Anything for Elena."
+                }
+              ]
+            },
+            {
+              "id": "the_fund",
+              "label": "Press the Elder, behind the council's back, for the undercroft fund",
+              "serves": [
+                "keep_the_council_paying",
+                "buy_her_back"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Gregor came to him privately and begged for the undercroft fund as Elena's ransom. He offered to repay it threefold."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mira_answers_the_bribe",
+          "type": "scheme",
+          "trigger": "on_flag:ih_ransom_offered",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Gregor has offered you everything to carry to 'the men'. You are the men.",
+          "options": [
+            {
+              "id": "think_on_it",
+              "label": "Weep and say the men will think on it",
+              "serves": [
+                "keep_the_mask",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_ransom_dangled",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Mira wept and said the men will think on it. Wait. Do nothing that might anger them."
+                }
+              ]
+            },
+            {
+              "id": "they_want_the_girl",
+              "label": "Say the men want the girl, not coin",
+              "serves": [
+                "harvest_the_tithe",
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Mira said it through tears: the men don't want coin. They want the girl. She's so sorry. She only carries it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "door_the_road",
+          "type": "scheme",
+          "trigger": "on_flag:tn_day_3",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The third day. A wagon, a mule, a Kingsroad carter who owes you, a physician in the Capitol who already has your coin.",
+          "options": [
+            {
+              "id": "lay_the_road",
+              "label": "Lay the road east before Elena at their own table",
+              "serves": [
+                "get_elena_away"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_road_laid",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Her father laid out a road east at supper tonight: a wagon, a carter, a physician. He begged."
+                }
+              ]
+            },
+            {
+              "id": "buy_the_carter",
+              "label": "Buy the carter's silence first and tell her after",
+              "serves": [
+                "get_elena_away",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger whether they know a Kingsroad carter who can keep his mouth shut for good coin."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "elena_refuses_the_road",
+          "type": "intercept",
+          "trigger": "on_flag:ih_road_laid",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Your father has laid a road east before you at your mother's table, with his voice breaking. It is exactly what you were afraid he would do.",
+          "options": [
+            {
+              "id": "no",
+              "label": "Refuse it plainly",
+              "serves": [
+                "choose_my_own_life",
+                "make_the_lot_stand"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_elena_refused_the_road",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger she told her father no at their own table. He wept. She will not take any road east."
+                }
+              ]
+            },
+            {
+              "id": "let_him_hope",
+              "label": "Pretend to consider it, to spare him one night",
+              "serves": [
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Elena said she would think about the road east. She would not meet his eye."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "varn_watches_the_road",
+          "type": "intercept",
+          "trigger": "on_flag:ih_road_laid",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Your man in the village says the merchant is talking to Kingsroad carters.",
+          "options": [
+            {
+              "id": "watch_the_kingsroad",
+              "label": "Post a man on the Kingsroad",
+              "serves": [
+                "a_perfect_collection",
+                "keep_gregor_on_the_hook"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_kingsroad_watched",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "A carter came back pale: there's a Hollow man sitting by the Kingsroad milestone, whittling, watching wagons."
+                }
+              ]
+            },
+            {
+              "id": "let_him_try",
+              "label": "Let him try; it would be a pleasure",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "door_the_substitute",
+          "type": "scheme",
+          "trigger": "on_flag:tn_day_4",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The fourth day. The men want a body in the cart. It need not be hers. You are ashamed of how fast you thought of it.",
+          "options": [
+            {
+              "id": "the_drifter",
+              "label": "Press coin into a drifter's hand at the old mill",
+              "serves": [
+                "find_a_substitute"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_drifter_bought",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "old_mill"
+                }
+              ]
+            },
+            {
+              "id": "the_fenns",
+              "label": "Stand outside the Fenns' door after dark with a spare tile",
+              "serves": [
+                "find_a_substitute",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_fenn_again",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "draw_again",
+              "label": "Beg the Elder to draw the lot again 'to be sure'",
+              "serves": [
+                "find_a_substitute"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Gregor begged him to draw the lot again, to be sure the gods meant it. His hands were shaking."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "elena_at_the_fenns_door",
+          "type": "intercept",
+          "trigger": "on_flag:ih_fenn_again",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "You followed your father into the dark. He is standing outside the Fenns' door with a spare tile in his hand. Ada is fourteen.",
+          "options": [
+            {
+              "id": "take_it_from_him",
+              "label": "Take the tile out of his hand",
+              "serves": [
+                "make_the_lot_stand",
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "thornhaven_town_square"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Elena took the spare out of his hand outside the Fenns' door and said: not her. Not anyone. Never again."
+                }
+              ]
+            },
+            {
+              "id": "tell_the_stranger",
+              "label": "Run for the stranger",
+              "serves": [
+                "make_the_lot_stand",
+                "never_be_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Find the stranger tonight: her father is outside the Fenns' door with a spare tile. Please. Stop him."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mathias_refuses_a_relot",
+          "type": "intercept",
+          "trigger": "on_flag:ih_drifter_bought",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Word has reached you that Gregor is buying a drifter for the cart, and asking about a second draw.",
+          "options": [
+            {
+              "id": "refuse",
+              "label": "Refuse any name but the lot's, and keep the urn locked",
+              "serves": [
+                "the_lot_is_holy",
+                "prove_before_acting"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_relot_refused",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "The Elder sent word: there will be no second draw and no bought name. The lot is the lot."
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Say nothing",
+              "serves": [
+                "avoid_the_hollow_war"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "door_the_messenger",
+          "type": "scheme",
+          "trigger": "on_flag:tn_day_5",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The fifth day. The messenger is the only road to the men. She has always been kind. Beg her.",
+          "options": [
+            {
+              "id": "take_me",
+              "label": "Beg Mira to carry word: take the father, not the daughter",
+              "serves": [
+                "go_in_her_place",
+                "escape_the_deal"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_messenger_begged",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Gregor knelt in her kitchen and begged her to tell the men: take the father, not the daughter."
+                }
+              ]
+            },
+            {
+              "id": "who_swapped",
+              "label": "Beg Mira to ask the men who changed his tile",
+              "serves": [
+                "find_who_swapped"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Gregor begged her to ask the men who changed his tile, and why they put Elena's name in his hand."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mira_and_the_father",
+          "type": "scheme",
+          "trigger": "on_flag:ih_messenger_begged",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Gregor has knelt in your kitchen and offered himself. A father who will do anything.",
+          "options": [
+            {
+              "id": "weep_and_promise",
+              "label": "Weep, promise, and carry nothing",
+              "serves": [
+                "keep_the_mask",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Mira held his hands and promised to carry it. She'll tell him what the men say. She is so sorry."
+                }
+              ]
+            },
+            {
+              "id": "to_varn",
+              "label": "Carry it to Varn, to see what he does with an offered merchant",
+              "serves": [
+                "keep_varn_leashed",
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "The widow passed it on, level: the merchant offers himself for the girl. She wants to hear what you think of that."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "door_himself",
+          "type": "react",
+          "trigger": "on_flag:tn_day_6",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The sixth day. Every door has shut. One is left, and it is in your own boots.",
+          "options": [
+            {
+              "id": "it_will_be_me",
+              "label": "Tell the stranger that if anyone climbs into the cart, it will be him",
+              "serves": [
+                "go_in_her_place"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "go_in_her_place",
+                  "delta": 1
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger: if anyone climbs into that cart, it will be him. He is not sure his legs will do it."
+                }
+              ]
+            },
+            {
+              "id": "the_ledger_page",
+              "label": "Sit with the ledger in the back room and read the names",
+              "serves": [
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "make_amends",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "gregor_summoned_east",
+          "type": "react",
+          "trigger": "on_flag:mag_summons_issued",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The High Magistry has summoned you east to testify, with your ledger. Six days from the Capitol, in Tithe week.",
+          "options": [
+            {
+              "id": "burn_the_summons",
+              "label": "Burn the summons; he cannot leave her this week",
+              "serves": [
+                "protect_elena",
+                "keep_the_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger the Magistry can wait. He is not leaving Thornhaven while that cart is coming."
+                }
+              ]
+            },
+            {
+              "id": "ride_east",
+              "label": "Think of riding east, ledger and all",
+              "serves": [
+                "escape_the_deal"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "escape_the_deal",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "gregor_when_she_is_gone",
+          "type": "react",
+          "trigger": "on_flag:fev_elena_left_home",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Elena has gone from the house of her own accord.",
+          "options": [
+            {
+              "id": "hope",
+              "label": "Hope, for the first time this week",
+              "serves": [
+                "get_elena_away"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "get_elena_away",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "fear",
+              "label": "Fear what the men will do now",
+              "serves": [
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Beg the stranger to find out where Elena went. If the men hear she's gone, they'll want another name."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "whose_names",
+      "act": 2,
+      "title": "Whose Names",
+      "summary": "The ledger in Gregor's hand: each autumn, the tile he palmed and the neighbour it fell to, beside his deliveries to the Hollow. Corin Ashby, Davin, Hesk Marlow, Willa Brand, and this year Ada Fenn.",
+      "location": "thornhaven_gregor_shop",
+      "requires": [
+        "ledger_found",
+        "!gregor_exposed"
+      ],
+      "resolves_on": [
+        "gregor_confronted",
+        "gregor_exposed",
+        "aldric_has_evidence",
+        "mathias_informed"
+      ],
+      "hooks": [
+        {
+          "id": "gregor_begs_for_the_ledger",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Your ledger is gone from the shelf. Somebody has read five names in your hand.",
+          "options": [
+            {
+              "id": "beg_for_it",
+              "label": "Beg the stranger for the ledger back, and offer anything",
+              "serves": [
+                "keep_the_secret",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_ledger_begged",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Beg the stranger for the ledger. Name it. Coin, a horse, a debt forgiven. Not until the cart is gone."
+                }
+              ]
+            },
+            {
+              "id": "let_them_keep_it",
+              "label": "Let them keep it; part of him kept it so that someone would stop him",
+              "serves": [
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger, very quietly, that he is almost glad someone finally read it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mira_at_the_well",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The stranger has Gregor's ledger. If the rigging comes out, Gregor must hang for all five years and the trail must stop at him.",
+          "options": [
+            {
+              "id": "the_well",
+              "label": "Let the well hear that the stranger found Gregor's ledger",
+              "serves": [
+                "burn_gregor_first"
+              ],
+              "effects": [
+                {
+                  "type": "spread_rumor",
+                  "flag": "ledger_found",
+                  "to": [
+                    "*"
+                  ],
+                  "via": "a frightened widow's whisper"
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "hold_it",
+              "label": "Hold it back; a hanged merchant cannot feed the leash",
+              "serves": [
+                "control_the_cure",
+                "harvest_the_tithe"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "aldric_takes_it_to_council",
+          "type": "reveal",
+          "trigger": "on_flag:aldric_has_evidence",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The stranger has given you the ledger. Five years of names in Gregor's hand. You suspected him for a year and could never prove it.",
+          "options": [
+            {
+              "id": "lay_it_before_council",
+              "label": "Lay the ledger before the council, with the stranger as witness",
+              "serves": [
+                "expose_the_traitor",
+                "win_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "gregor_exposed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger he put the ledger before the council. Evidence, not gossip."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "hold_it",
+              "label": "Hold it until after Collection Night; a mob makes a second cart",
+              "serves": [
+                "keep_my_men_alive",
+                "spare_the_innocent"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger he will hold the ledger until the cart is gone. A mob on Tithe week makes a second cart."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mathias_gives_him_a_day",
+          "type": "intercept",
+          "trigger": "on_flag:mathias_informed",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The lot you blessed for five years was rigged, and here is the hand that rigged it: the son of the man who once paid a widow's surety.",
+          "options": [
+            {
+              "id": "one_day",
+              "label": "Give Gregor one day to come to the council of his own will",
+              "serves": [
+                "mercy_for_gregor",
+                "prove_before_acting"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "The Elder sent word: come to the council of your own will by tomorrow's dusk. The door is open until then."
+                }
+              ]
+            },
+            {
+              "id": "read_it_aloud",
+              "label": "Read the ledger aloud before the council, name by name",
+              "serves": [
+                "speak_the_truth",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_ledger_to_the_council",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "gregor_exposed",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "elena_and_the_proof",
+          "type": "react",
+          "trigger": "on_flag:elena_shown_proof",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The stranger has shown you the ledger. Every name that went instead of you, in your father's hand. You knew. Seeing it is different.",
+          "options": [
+            {
+              "id": "give_it_back",
+              "label": "Ask the stranger to let her father answer for it to the families' faces, not the well",
+              "serves": [
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger: if her father must answer for those names, let it be to the families' faces. Not at the well."
+                }
+              ]
+            },
+            {
+              "id": "read_every_name",
+              "label": "Read every name in it, slowly",
+              "serves": [
+                "learn_the_truth",
+                "get_word_out"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "elena",
+                  "want": "get_word_out",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cornered",
+      "act": 2,
+      "title": "Cornered",
+      "summary": "The stranger has confronted Gregor. Under the bargaining are two men: a coward who runs or sells another child, and a father who tells the truth. He does not know yet which one he is.",
+      "location": "thornhaven_gregor_shop",
+      "requires": [
+        "gregor_confronted",
+        "!gregor_exposed",
+        "!ih_gregor_fled"
+      ],
+      "resolves_on": [
+        "gregor_confession_heard",
+        "ih_gregor_offered_bargain",
+        "ih_gregor_fled"
+      ],
+      "hooks": [
+        {
+          "id": "gregor_when_cornered",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The stranger knows. The tiles, the names, the salt. Elena's cart comes on the seventh night. Everything you have is in your hands, and your hands are shaking.",
+          "options": [
+            {
+              "id": "confess",
+              "label": "Confess everything: the spares, the palmed tiles, the four names, and Hesk as his own choosing",
+              "serves": [
+                "make_amends",
+                "escape_the_deal"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "gregor_confession_heard",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger all of it, the way it really was. 'She was thirteen. You didn't hear her breathing.'"
+                }
+              ]
+            },
+            {
+              "id": "bargain",
+              "label": "Offer the stranger his strongbox and the Hollow's delivery nights for silence",
+              "serves": [
+                "keep_the_secret",
+                "buy_her_back"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_gregor_offered_bargain",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Between you and me: the strongbox, and the nights the Hollow's men come for steel. Only silence until the cart is gone."
+                }
+              ]
+            },
+            {
+              "id": "run",
+              "label": "Run tonight, with the ledger in his coat",
+              "serves": [
+                "keep_the_secret",
+                "escape_the_deal"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_gregor_fled",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "gregor_salt_secret",
+          "type": "reveal",
+          "trigger": "on_flag:gregor_confession_heard",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "You have said the names aloud. One thing is left: why. The white salt in the strongbox, every night in her tea.",
+          "options": [
+            {
+              "id": "the_salt",
+              "label": "Tell the stranger about the white salt that keeps her alive",
+              "serves": [
+                "cure_elena"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "gregor_gold_secret_revealed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger about the white salt. Without it the fever takes her within a season. That was the price."
+                }
+              ]
+            },
+            {
+              "id": "not_the_salt",
+              "label": "Keep the salt's source back",
+              "serves": [
+                "keep_the_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "elena_in_the_doorway",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "You are in the back-room doorway and the stranger is facing your father. He is about to lie, or run, or break.",
+          "options": [
+            {
+              "id": "i_know",
+              "label": "Step in, take his hand, and say she has known since summer",
+              "serves": [
+                "protect_father",
+                "learn_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "elena_knows_about_father",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Elena took his hand in front of the stranger and said she has known since the summer, and that she doesn't hate him."
+                }
+              ]
+            },
+            {
+              "id": "stay_hidden",
+              "label": "Stay out of sight",
+              "serves": [
+                "keep_the_swap_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "varn_sends_word",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Your man says the stranger has been in the merchant's back room. A frightened merchant talks.",
+          "options": [
+            {
+              "id": "the_threat",
+              "label": "Send word: talk, and the girl never sees where the cart goes",
+              "serves": [
+                "keep_gregor_on_the_hook",
+                "hold_elena_as_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_varn_ultimatum",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Varn's word came through the back door: talk, and your girl never sees where the cart goes. Never."
+                }
+              ]
+            },
+            {
+              "id": "leave_it",
+              "label": "Leave it to the widow",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mira_after_the_corner",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Gregor has been cornered. Whatever he said, it is on its way to the well, or it is not.",
+          "options": [
+            {
+              "id": "the_well",
+              "label": "Let the well hear his confession",
+              "serves": [
+                "burn_gregor_first"
+              ],
+              "effects": [
+                {
+                  "type": "spread_rumor",
+                  "flag": "gregor_confession_heard",
+                  "to": [
+                    "*"
+                  ],
+                  "via": "a weeping widow at the well"
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "comfort_him",
+              "label": "Comfort him as the messenger, and keep him",
+              "serves": [
+                "keep_the_mask",
+                "control_the_cure"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Mira came with soup and sat with him. She said she knows what it is to be trapped. She only carries messages."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_last_order",
+      "act": 2,
+      "title": "The Last Order",
+      "summary": "Bjorn's steel still goes up to the Hollow through Gregor's orders: the other half of the salt's price. This autumn's order is on the forge peg.",
+      "location": "thornhaven_blacksmith",
+      "requires": [
+        "ih_trail_opened"
+      ],
+      "resolves_on": [
+        "ih_supply_line_cut"
+      ],
+      "hooks": [
+        {
+          "id": "gregor_places_the_order",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The Hollow's autumn order is due at the forge: twice the swords a village could sell. Steel is the other half of the salt's price.",
+          "options": [
+            {
+              "id": "as_always",
+              "label": "Place the order as if nothing had changed; steel is the other half of the salt's price",
+              "serves": [
+                "keep_the_supply_flowing",
+                "cure_elena"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_last_order_placed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Gregor came with the autumn order, smiling too much: forty blades, the usual travellers."
+                }
+              ]
+            },
+            {
+              "id": "cancel_it",
+              "label": "Cancel the order himself",
+              "serves": [
+                "escape_the_deal",
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_supply_line_cut",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "bjorn_refuses_the_order",
+          "type": "betray",
+          "trigger": "on_flag:bjorn_truth_revealed",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "You know now where your steel has been going: up the forest path, to the men who walk children up a ridge.",
+          "options": [
+            {
+              "id": "refuse_to_his_face",
+              "label": "Refuse the order and say why to Gregor's face",
+              "serves": [
+                "honest_steel",
+                "atone_for_the_steel"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_supply_line_cut",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger he refused Gregor's order to his face. Not one more blade goes up that path."
+                }
+              ]
+            },
+            {
+              "id": "forge_and_spoil",
+              "label": "Forge it, and spoil every blade at the anvil",
+              "serves": [
+                "atone_for_the_steel"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger the Hollow will get its blades. They'll snap at the first blow. He'll own it after."
+                }
+              ]
+            },
+            {
+              "id": "forge_it",
+              "label": "Forge it as always; Gregor's orders paid his father's debt",
+              "serves": [
+                "restore_family_honour"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "bjorn_melts_the_order",
+          "type": "betray",
+          "trigger": "on_flag:tn_bjorn_knows_his_boy",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Your boy poured the spare tiles in this forge, for Gregor's silver. The Hollow's order is still on the peg.",
+          "options": [
+            {
+              "id": "melt_it",
+              "label": "Melt the order down in front of the stranger",
+              "serves": [
+                "atone_for_the_steel",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_supply_line_cut",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger he melted the Hollow's order down. Davin poured those spares in this forge."
+                }
+              ]
+            },
+            {
+              "id": "leave_it",
+              "label": "Leave it on the peg; he cannot think yet",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "aldric_seizes_the_steel",
+          "type": "intercept",
+          "trigger": "on_flag:ih_last_order_placed",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Gregor has placed another order at the forge. Forty blades, for 'travellers'. You have suspected him for a year.",
+          "options": [
+            {
+              "id": "seize_it",
+              "label": "Seize the order at the forge door before it leaves",
+              "serves": [
+                "arm_the_village",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_supply_line_cut",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the forty blades are his six's now. Gregor's travellers can whistle for them."
+                }
+              ]
+            },
+            {
+              "id": "follow_it",
+              "label": "Let it go, and follow it to the mill",
+              "serves": [
+                "expose_the_traitor"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "aldric",
+                  "location": "old_mill"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger to come with him to the old mill tonight and watch where Gregor's steel goes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mira_routes_round",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Questions are leading to Gregor's shop. If the steel keeps going through him, it goes down with him.",
+          "options": [
+            {
+              "id": "round_him",
+              "label": "Route the steel through a Kingsroad carter, around Gregor",
+              "serves": [
+                "keep_the_steel_coming",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_steel_routed_round",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "leave_it_on_him",
+              "label": "Let the merchant carry it; the trail stays on him",
+              "serves": [
+                "burn_gregor_first"
+              ],
+              "effects": [],
+              "harms": [
+                "gregor"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "varn_leans_on_the_shop",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The autumn steel is late. You want it for the night the Hollow changes hands.",
+          "options": [
+            {
+              "id": "ask_why",
+              "label": "Send a man to the back door to ask why",
+              "serves": [
+                "arm_the_hollow",
+                "keep_gregor_on_the_hook"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "A Hollow man came to the back door after dark and asked, softly, where the autumn steel was."
+                }
+              ]
+            },
+            {
+              "id": "let_it_slide",
+              "label": "Let it slide; there is other steel",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "bjorn_sabotage_known",
+          "type": "react",
+          "trigger": "on_flag:oath_blades_sabotaged",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The blades that went up the path this autumn will break at the first blow. You made sure of it.",
+          "options": [
+            {
+              "id": "own_it",
+              "label": "Tell the stranger he did it, and will own it",
+              "serves": [
+                "atone_for_the_steel",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger every Hollow blade from his forge this autumn will snap. He did it and he'll own it."
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Say nothing, and hammer",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "his_bargain",
+      "act": 2,
+      "title": "His Bargain",
+      "summary": "Gregor has offered the stranger his strongbox and the Hollow's delivery nights for silence until the cart has gone. The stranger must take it or name him.",
+      "location": "thornhaven_town_square",
+      "requires": [
+        "ih_gregor_offered_bargain",
+        "!gregor_exposed",
+        "!ih_gregor_fled"
+      ],
+      "resolves_on": [
+        "ih_bargain_accepted",
+        "ih_gregor_denounced"
+      ],
+      "hooks": [
+        {
+          "id": "gregor_waits_for_an_answer",
+          "type": "react",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "You have made your offer. The stranger has not answered. You keep glancing toward the chapel.",
+          "options": [
+            {
+              "id": "press",
+              "label": "Press for an answer before the seventh night",
+              "serves": [
+                "keep_the_secret",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Press the stranger for an answer. Quotes prices nobody asked for. 'A father does what he must.'"
+                }
+              ]
+            },
+            {
+              "id": "wait",
+              "label": "Wait, and stroke his beard",
+              "serves": [
+                "keep_the_secret"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "keep_the_secret",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mira_burns_gregor",
+          "type": "betray",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Gregor is trying to buy the stranger's silence. If the rigging comes out on his terms, the trail may not stop at him.",
+          "options": [
+            {
+              "id": "tell_the_council",
+              "label": "Let the council hear, in tears, that Gregor rigged the lot",
+              "serves": [
+                "burn_gregor_first"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "gregor_exposed",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "let_him_bargain",
+              "label": "Let him bargain; a frightened merchant is her best leash",
+              "serves": [
+                "control_the_cure",
+                "harvest_the_tithe"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "aldric_and_the_delivery_nights",
+          "type": "aid",
+          "trigger": "on_flag:ih_bargain_accepted",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The stranger has the Hollow's delivery nights from Gregor. The men come to the old mill for steel.",
+          "options": [
+            {
+              "id": "ambush_the_mill",
+              "label": "Take the six to the old mill on the next delivery night",
+              "serves": [
+                "break_iron_hollow",
+                "arm_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_supply_line_cut",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "aldric",
+                  "location": "old_mill"
+                }
+              ]
+            },
+            {
+              "id": "not_from_him",
+              "label": "Refuse to act on the word of a man who sold children",
+              "serves": [
+                "expose_the_traitor"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger he won't build a plan on Gregor's word. The man sold four children."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mathias_calls_a_hearing",
+          "type": "intercept",
+          "trigger": "on_flag:ih_gregor_denounced",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The stranger has named Gregor before the council. The families will want a rope by nightfall.",
+          "options": [
+            {
+              "id": "a_hearing",
+              "label": "Call the council to hear him in the hall, not the square",
+              "serves": [
+                "prove_before_acting",
+                "mercy_for_gregor"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_hearing_called",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "silence",
+              "label": "Say nothing",
+              "serves": [
+                "avoid_the_hollow_war"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "elena_at_the_naming",
+          "type": "intercept",
+          "trigger": "on_flag:ih_gregor_denounced",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The stranger has named your father before the council.",
+          "options": [
+            {
+              "id": "stand_by_him",
+              "label": "Stand at her father's side before the council",
+              "serves": [
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "council_hall"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger she is standing at her father's side. He answers to the families' faces, with her beside him."
+                }
+              ]
+            },
+            {
+              "id": "her_tile",
+              "label": "Tell the council the last tile was her own hand",
+              "serves": [
+                "protect_father",
+                "choose_my_own_life"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the council and the stranger that this year's tile was her own hand. Her father didn't put her in the cart."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "named_before_the_council",
+      "act": 2,
+      "title": "Named Before the Council",
+      "summary": "The stranger named Gregor before the council. By nightfall all Thornhaven knows whose children went in Elena's place.",
+      "location": "council_hall",
+      "requires": [
+        "ih_gregor_denounced"
+      ],
+      "resolves_on": [
+        "ih_gregor_denounced"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "gregor_exposed",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "gregor_named",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The stranger has named you. The whole village knows.",
+          "options": [
+            {
+              "id": "face_them",
+              "label": "Go to the families' doors before they come to his",
+              "serves": [
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger he is going to the Ashbys', the Marlows' and the Brands' doors tonight, before they come to his."
+                }
+              ]
+            },
+            {
+              "id": "bar_the_shop",
+              "label": "Bar the shop and sit in the dark with the strongbox",
+              "serves": [
+                "keep_the_secret",
+                "protect_elena"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "bjorn_hears_the_name",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Gregor. Your tiles. Your boy.",
+          "options": [
+            {
+              "id": "man_to_man",
+              "label": "Go and hear it from his own mouth",
+              "serves": [
+                "face_gregor"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger he is going to hear it from Gregor's own mouth before anyone puts a rope on him."
+                }
+              ]
+            },
+            {
+              "id": "stand_with_the_families",
+              "label": "Stand with the families",
+              "serves": [
+                "protect_the_village"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_rope",
+      "act": 3,
+      "title": "The Rope",
+      "summary": "Thornhaven knows. The families of the taken stand in the square with a rope, and Gregor stands in his shop door. The stranger must stand between them, or step back.",
+      "location": "thornhaven_town_square",
+      "requires": [
+        "gregor_exposed",
+        "!ih_gregor_fled"
+      ],
+      "resolves_on": [
+        "ih_stood_before_the_rope",
+        "ih_left_him_to_the_village"
+      ],
+      "hooks": [
+        {
+          "id": "mira_urges_the_rope",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The rigged lot is out. Gregor must hang for all five years, and the trail must stop at his neck.",
+          "options": [
+            {
+              "id": "with_the_families",
+              "label": "Stand with the Fenns and the Brands and say it softly: five years",
+              "serves": [
+                "burn_gregor_first"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_rope_brought",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "weep_in_the_doorway",
+              "label": "Weep in her doorway and do nothing",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "gregor_at_the_rope",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The square is full. Corin Ashby's mother is at the front. Willa Brand's father has the rope. Your shop door is at your back.",
+          "options": [
+            {
+              "id": "run",
+              "label": "Run tonight",
+              "serves": [
+                "escape_the_deal"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_gregor_fled",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "kneel_and_read",
+              "label": "Kneel in the square and read his ledger aloud, every name, Hesk as his own",
+              "serves": [
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_ledger_read_aloud",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "gregor_redemption_path",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "beg_a_week",
+              "label": "Beg for one week, until after the cart",
+              "serves": [
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Beg the stranger to ask the square for one week. Let them hang him after the cart, only not before."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mathias_hall_not_square",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "A rope in the square in Tithe week. The lot you blessed was rigged, and now the village wants a second death to answer for it.",
+          "options": [
+            {
+              "id": "a_hearing",
+              "label": "Call the council to hear him first",
+              "serves": [
+                "prove_before_acting",
+                "mercy_for_gregor"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_hearing_called",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "let_them_speak",
+              "label": "Let the families have their say",
+              "serves": [
+                "hold_the_council_together",
+                "speak_the_truth"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "aldric_holds_the_door",
+          "type": "intercept",
+          "trigger": "on_flag:ih_rope_brought",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Someone has brought a rope. A mob on Collection Night does not make justice; it makes a second cart.",
+          "options": [
+            {
+              "id": "hold_the_door",
+              "label": "Stand in Gregor's shop door: no hanging in Tithe week",
+              "serves": [
+                "spare_the_innocent",
+                "win_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_shop_door_held",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "aldric",
+                  "location": "thornhaven_gregor_shop"
+                }
+              ]
+            },
+            {
+              "id": "step_aside",
+              "label": "Step aside; he answers to them",
+              "serves": [
+                "expose_the_traitor"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "aldric_under_martial_law",
+          "type": "react",
+          "trigger": "on_flag:cou_martial_law",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Thornhaven is under your command. Whatever happens to Gregor happens under your law.",
+          "options": [
+            {
+              "id": "my_law",
+              "label": "Tell the square that under his law there is no rope",
+              "serves": [
+                "take_command",
+                "spare_the_innocent"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger there'll be no rope under his command. Gregor answers to a hearing, after the cart."
+                }
+              ]
+            },
+            {
+              "id": "their_grief",
+              "label": "Leave the families their grief",
+              "serves": [
+                "expose_the_traitor"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "elena_before_the_rope",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "They have come for your father. Every name in his ledger is a family in this square.",
+          "options": [
+            {
+              "id": "stand_between",
+              "label": "Stand between her father and the square",
+              "serves": [
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_elena_before_the_rope",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "go_to_their_doors",
+              "label": "Go to the families herself, one by one",
+              "serves": [
+                "protect_father",
+                "fight_for_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger she went to every family's door herself. She'll carry it with him. She told them so."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "bjorn_faces_him",
+          "type": "react",
+          "trigger": "on_open",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Gregor is in his doorway. You cast those tiles. Your boy poured the spares.",
+          "options": [
+            {
+              "id": "first",
+              "label": "Face him first, man to man, before the rope",
+              "serves": [
+                "face_gregor"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger he means to face Gregor before anyone else does. Man to man. Then the village can have what's left."
+                }
+              ]
+            },
+            {
+              "id": "with_the_families",
+              "label": "Stand with the families",
+              "serves": [
+                "protect_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "bjorn",
+                  "want": "protect_the_village",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mathias_at_the_doors",
+          "type": "react",
+          "trigger": "on_flag:gregor_knocked_on_five_doors",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Gregor has stood on every doorstep his draws robbed, and told Hesk Marlow's widow before you that Hesk was his choosing.",
+          "options": [
+            {
+              "id": "say_so",
+              "label": "Tell the square what he did",
+              "serves": [
+                "mercy_for_gregor",
+                "speak_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger Gregor knocked on every door, and said Hesk was his own choosing, before the widow and the Elder both."
+                }
+              ]
+            },
+            {
+              "id": "keep_it",
+              "label": "Keep it for the hearing",
+              "serves": [
+                "prove_before_acting"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_empty_shop",
+      "act": 3,
+      "title": "The Empty Shop",
+      "summary": "Gregor is gone in the night with his ledger in his coat. The shop is dark, Elena's name is still on the lot, and the stranger has to decide whether to let him run.",
+      "location": "thornhaven_gregor_shop",
+      "requires": [
+        "ih_gregor_fled"
+      ],
+      "resolves_on": [
+        "ih_let_him_run"
+      ],
+      "hooks": [
+        {
+          "id": "elena_alone",
+          "type": "react",
+          "trigger": "on_open",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Your father is gone. The shop is dark. Your name is still on the lot.",
+          "options": [
+            {
+              "id": "open_the_shop",
+              "label": "Open the shop herself in the morning",
+              "serves": [
+                "choose_my_own_life",
+                "make_the_lot_stand"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger she opened the shop this morning. Somebody has to sell the valley its candles."
+                }
+              ]
+            },
+            {
+              "id": "let_it_go_dark",
+              "label": "Let it stay dark",
+              "serves": [
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "elena",
+                  "want": "protect_father",
+                  "delta": -1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "aldric_rides_after",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Gregor has fled. Whatever he knows of the Hollow is riding east with him.",
+          "options": [
+            {
+              "id": "ride_after",
+              "label": "Ride after him on the Kingsroad",
+              "serves": [
+                "expose_the_traitor"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_hue_raised",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "aldric",
+                  "location": "village_gate"
+                }
+              ]
+            },
+            {
+              "id": "let_him_go",
+              "label": "Let him go; the six are needed at the gate",
+              "serves": [
+                "keep_my_men_alive",
+                "hold_the_gate"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "varn_hunts_the_merchant",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The merchant ran. The Hollow's salt, its steel and its hand in the urn, all on the Kingsroad.",
+          "options": [
+            {
+              "id": "hunt_him",
+              "label": "Send men along the Kingsroad after him",
+              "serves": [
+                "keep_gregor_on_the_hook"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_kingsroad_hunted",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "the_girl_is_the_leash",
+              "label": "Let him run; the girl is the leash now",
+              "serves": [
+                "hold_elena_as_leverage"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mira_lets_the_trail_end",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Gregor ran. A runaway is the end of every trail.",
+          "options": [
+            {
+              "id": "end_it_at_him",
+              "label": "Let every whisper end at the runaway",
+              "serves": [
+                "burn_gregor_first"
+              ],
+              "effects": [
+                {
+                  "type": "spread_rumor",
+                  "flag": "ih_gregor_fled",
+                  "to": [
+                    "*"
+                  ],
+                  "via": "a widow's sorrowful word"
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "quiet",
+              "label": "Say nothing",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "bjorn_in_the_empty_shop",
+          "type": "react",
+          "trigger": "on_open",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Gregor is gone. His last order is still on your peg.",
+          "options": [
+            {
+              "id": "melt_the_order",
+              "label": "Melt the last order",
+              "serves": [
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger he melted Gregor's last order. That's done, at least."
+                }
+              ]
+            },
+            {
+              "id": "sit",
+              "label": "Sit a while in the dark shop",
+              "serves": [
+                "face_gregor"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_tailboard",
+      "act": 3,
+      "title": "The Tailboard",
+      "summary": "Collection Night. Gregor stands at the cart's tailboard in boots shod for stone. Whatever happens at the gate, he has one last thing to say, and he says it to the stranger.",
+      "location": "village_gate",
+      "requires": [
+        "tn_collection_night",
+        "!ih_gregor_fled"
+      ],
+      "resolves_on": [
+        "ih_heard_his_last_word"
+      ],
+      "hooks": [
+        {
+          "id": "gregor_at_the_tailboard",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The cart is at the gate. Your daughter is somewhere behind you. Every door you knocked on this week has shut. Except one.",
+          "options": [
+            {
+              "id": "wait_for_the_word",
+              "label": "Stand at the tailboard in ridge boots, waiting for one word to climb in",
+              "serves": [
+                "go_in_her_place"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_at_the_tailboard",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "give_the_ledger",
+              "label": "Put his ledger and his strongbox key into the stranger's hand",
+              "serves": [
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "ih_ledger_given",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "gregor_redemption_path",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "beg_varn",
+              "label": "Beg Varn one last time",
+              "serves": [
+                "buy_her_back",
+                "back_the_winning_master"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "The merchant came to the tailboard with his strongbox key held out. Name it, he said. Anything."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "gregor_laced_for_the_ridge",
+          "type": "react",
+          "trigger": "on_flag:gregor_ready_to_take_her_place",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The shop is written over to Elena. The messenger has carried your word. The boots are laced.",
+          "options": [
+            {
+              "id": "steady",
+              "label": "Stand steady",
+              "serves": [
+                "go_in_her_place"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "go_in_her_place",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "shake",
+              "label": "Shake, and hate himself for it",
+              "serves": [
+                "protect_elena"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "elena_at_the_tailboard",
+          "type": "intercept",
+          "trigger": "on_flag:ih_at_the_tailboard",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Your father is at the cart's tailboard in ridge boots. It is the thing you were most afraid he would do.",
+          "options": [
+            {
+              "id": "pull_him_down",
+              "label": "Pull him down by his coat",
+              "serves": [
+                "protect_father",
+                "make_the_lot_stand"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Elena pulled him down off the tailboard by his coat and said: it's my name. It was always my name."
+                }
+              ]
+            },
+            {
+              "id": "let_him_choose",
+              "label": "Let him choose, as she chose",
+              "serves": [
+                "choose_my_own_life"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger she let her father choose, the way she chose. She could not take that from him too."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "varn_at_the_tailboard",
+          "type": "react",
+          "trigger": "on_flag:ih_at_the_tailboard",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The merchant is at your tailboard offering himself.",
+          "options": [
+            {
+              "id": "poor_digger",
+              "label": "Laugh: an old merchant is a poor digger and a poorer hostage",
+              "serves": [
+                "hold_elena_as_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger an old merchant is a poor digger and a poorer hostage. The girl is worth ten of him."
+                }
+              ]
+            },
+            {
+              "id": "one_is_one",
+              "label": "Shrug: one is one",
+              "serves": [
+                "a_perfect_collection"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the Hollow isn't particular. One is one."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mira_at_the_tailboard",
+          "type": "react",
+          "trigger": "on_flag:ih_at_the_tailboard",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Gregor is at the tailboard. You wrote 'choose' on a slip once, to see how deep he would go. Now you know.",
+          "options": [
+            {
+              "id": "the_men_will_take_him",
+              "label": "Whisper that the men will take him",
+              "serves": [
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Mira whispered at his shoulder, weeping: the men will take you. I asked. I'm so sorry."
+                }
+              ]
+            },
+            {
+              "id": "watch",
+              "label": "Watch",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "mathias_and_the_ledger",
+          "type": "react",
+          "trigger": "on_flag:ih_ledger_given",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Gregor has put his ledger in the stranger's hand at the gate.",
+          "options": [
+            {
+              "id": "read_it_after",
+              "label": "Ask to read it to the council after the cart",
+              "serves": [
+                "speak_the_truth",
+                "prove_before_acting"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger to bring Gregor's ledger to the council after tonight. Every name read aloud."
+                }
+              ]
+            },
+            {
+              "id": "pray",
+              "label": "Pray for the man",
+              "serves": [
+                "mercy_for_gregor"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "ih_the_fathers_climb",
+      "title": "The Father's Climb",
+      "requires": [
+        "ih_heard_his_last_word",
+        "tn_let_father_go"
+      ],
+      "summary": "Gregor told the stranger the last of it at the tailboard and climbed into the cart in his daughter's place. Of the two men he might have been, he was the father."
+    },
+    {
+      "id": "ih_the_runaway",
+      "title": "The Runaway",
+      "requires": [
+        "ih_gregor_fled",
+        "ih_let_him_run"
+      ],
+      "summary": "Gregor ran with his ledger in his coat, and the stranger let him. Of the two men he might have been, he was the coward."
+    },
+    {
+      "id": "ih_the_honest_hour",
+      "title": "The Honest Hour",
+      "requires": [
+        "ih_stood_before_the_rope",
+        "!ih_gregor_fled"
+      ],
+      "summary": "The stranger stood between Gregor and the rope, and he answered for the five rigged draws to the families' faces, alive."
+    },
+    {
+      "id": "ih_the_rope",
+      "title": "The Rope",
+      "requires": [
+        "ih_left_him_to_the_village",
+        "!ih_gregor_fled"
+      ],
+      "summary": "The stranger stepped back and Thornhaven took Gregor for what his rigged lot had cost it."
+    }
+  ]
+}

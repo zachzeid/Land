@@ -1,0 +1,832 @@
+[gd_scene load_steps=20 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="3_story_item"]
+[ext_resource type="Script" path="res://scripts/world/travel_point.gd" id="4_travel_point"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="5_dialogue_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="6_debug_interaction_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="7_debug_console"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1024x40"]
+size = Vector2(1024, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40x944"]
+size = Vector2(40, 944)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_seam"]
+size = Vector2(420, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tally"]
+size = Vector2(60, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_chains"]
+size = Vector2(120, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sacks"]
+size = Vector2(150, 90)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sacks_item"]
+size = Vector2(170, 110)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_seal"]
+size = Vector2(60, 220)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_straw"]
+size = Vector2(150, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_crate"]
+size = Vector2(80, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_post"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mouth"]
+size = Vector2(140, 60)
+
+[node name="ThePit" type="Node2D"]
+
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+color = Color(0.16, 0.15, 0.14, 1)
+
+[node name="Spoil" type="ColorRect" parent="Floor"]
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 984.0
+offset_bottom = 984.0
+color = Color(0.27, 0.25, 0.23, 1)
+
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, -492)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/North"]
+shape = SubResource("RectangleShape2D_1024x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/North"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+color = Color(0.2, 0.19, 0.18, 1)
+
+
+[node name="South" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, 492)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/South"]
+shape = SubResource("RectangleShape2D_1024x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/South"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+color = Color(0.2, 0.19, 0.18, 1)
+
+
+[node name="West" type="StaticBody2D" parent="Walls"]
+position = Vector2(-492, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/West"]
+shape = SubResource("RectangleShape2D_40x944")
+
+[node name="Visual" type="ColorRect" parent="Walls/West"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+color = Color(0.2, 0.19, 0.18, 1)
+
+
+[node name="East" type="StaticBody2D" parent="Walls"]
+position = Vector2(492, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/East"]
+shape = SubResource("RectangleShape2D_40x944")
+
+[node name="Visual" type="ColorRect" parent="Walls/East"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+color = Color(0.2, 0.19, 0.18, 1)
+
+
+[node name="Rooms" type="Node2D" parent="."]
+z_index = -9
+
+[node name="SeamFace" type="ColorRect" parent="Rooms"]
+offset_left = -300.0
+offset_top = -472.0
+offset_right = 300.0
+offset_bottom = -400.0
+color = Color(0.5, 0.48, 0.44, 1)
+
+
+[node name="SaltVein" type="ColorRect" parent="Rooms"]
+offset_left = -280.0
+offset_top = -452.0
+offset_right = 280.0
+offset_bottom = -436.0
+color = Color(0.88, 0.86, 0.8, 1)
+
+
+[node name="SaltDust" type="ColorRect" parent="Rooms"]
+offset_left = -320.0
+offset_top = -400.0
+offset_right = 320.0
+offset_bottom = -330.0
+color = Color(0.6, 0.58, 0.54, 0.45)
+
+
+[node name="ShaftFloor" type="ColorRect" parent="Rooms"]
+offset_left = -90.0
+offset_top = 330.0
+offset_right = 90.0
+offset_bottom = 472.0
+color = Color(0.12, 0.11, 0.1, 1)
+
+
+[node name="SealedGallery" type="ColorRect" parent="Rooms"]
+offset_left = -472.0
+offset_top = -140.0
+offset_right = -420.0
+offset_bottom = 140.0
+color = Color(0.1, 0.1, 0.1, 1)
+
+
+[node name="SeamSign" type="Label" parent="Rooms"]
+z_index = 5
+offset_left = -100.0
+offset_top = -396.0
+offset_right = 100.0
+offset_bottom = -372.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "The seam"
+horizontal_alignment = 1
+
+
+[node name="ShaftSign" type="Label" parent="Rooms"]
+z_index = 5
+offset_left = -100.0
+offset_top = 300.0
+offset_right = 100.0
+offset_bottom = 324.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "Shaft to the ridge"
+horizontal_alignment = 1
+
+
+[node name="Lamp1" type="ColorRect" parent="Rooms"]
+offset_left = -385.0
+offset_top = -330.0
+offset_right = -375.0
+offset_bottom = -320.0
+color = Color(1.0, 0.75, 0.35, 1)
+
+
+[node name="Lamp2" type="ColorRect" parent="Rooms"]
+offset_left = -125.0
+offset_top = -330.0
+offset_right = -115.0
+offset_bottom = -320.0
+color = Color(1.0, 0.75, 0.35, 1)
+
+
+[node name="Lamp3" type="ColorRect" parent="Rooms"]
+offset_left = 115.0
+offset_top = -330.0
+offset_right = 125.0
+offset_bottom = -320.0
+color = Color(1.0, 0.75, 0.35, 1)
+
+
+[node name="Lamp4" type="ColorRect" parent="Rooms"]
+offset_left = 375.0
+offset_top = -330.0
+offset_right = 385.0
+offset_bottom = -320.0
+color = Color(1.0, 0.75, 0.35, 1)
+
+
+[node name="Furniture" type="Node2D" parent="."]
+z_index = 5
+
+[node name="ChainPost1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-300, -250)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/ChainPost1"]
+shape = SubResource("RectangleShape2D_post")
+
+[node name="Visual" type="ColorRect" parent="Furniture/ChainPost1"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.3, 0.3, 0.32, 1)
+
+[node name="Chain" type="ColorRect" parent="Furniture/ChainPost1"]
+offset_left = -2.0
+offset_top = 8.0
+offset_right = 2.0
+offset_bottom = 60.0
+color = Color(0.45, 0.45, 0.48, 1)
+
+
+[node name="ChainPost2" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-220, -250)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/ChainPost2"]
+shape = SubResource("RectangleShape2D_post")
+
+[node name="Visual" type="ColorRect" parent="Furniture/ChainPost2"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.3, 0.3, 0.32, 1)
+
+[node name="Chain" type="ColorRect" parent="Furniture/ChainPost2"]
+offset_left = -2.0
+offset_top = 8.0
+offset_right = 2.0
+offset_bottom = 60.0
+color = Color(0.45, 0.45, 0.48, 1)
+
+
+[node name="ChainPost3" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-140, -250)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/ChainPost3"]
+shape = SubResource("RectangleShape2D_post")
+
+[node name="Visual" type="ColorRect" parent="Furniture/ChainPost3"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.3, 0.3, 0.32, 1)
+
+[node name="Chain" type="ColorRect" parent="Furniture/ChainPost3"]
+offset_left = -2.0
+offset_top = 8.0
+offset_right = 2.0
+offset_bottom = 60.0
+color = Color(0.45, 0.45, 0.48, 1)
+
+
+[node name="ChainPost4" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-60, -250)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/ChainPost4"]
+shape = SubResource("RectangleShape2D_post")
+
+[node name="Visual" type="ColorRect" parent="Furniture/ChainPost4"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.3, 0.3, 0.32, 1)
+
+[node name="Chain" type="ColorRect" parent="Furniture/ChainPost4"]
+offset_left = -2.0
+offset_top = 8.0
+offset_right = 2.0
+offset_bottom = 60.0
+color = Color(0.45, 0.45, 0.48, 1)
+
+
+[node name="SaltSacks" type="StaticBody2D" parent="Furniture"]
+position = Vector2(330, -200)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/SaltSacks"]
+shape = SubResource("RectangleShape2D_sacks")
+
+[node name="Visual" type="ColorRect" parent="Furniture/SaltSacks"]
+offset_left = -75.0
+offset_top = -45.0
+offset_right = 75.0
+offset_bottom = 45.0
+color = Color(0.82, 0.8, 0.74, 1)
+
+[node name="Stitching" type="ColorRect" parent="Furniture/SaltSacks"]
+offset_left = -70.0
+offset_top = -4.0
+offset_right = 70.0
+offset_bottom = 0.0
+color = Color(0.6, 0.55, 0.45, 1)
+
+[node name="Sign" type="Label" parent="Furniture/SaltSacks"]
+z_index = 5
+offset_left = -60.0
+offset_top = -70.0
+offset_right = 60.0
+offset_bottom = -48.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "Salt sacks"
+horizontal_alignment = 1
+
+
+[node name="TallyCrate" type="StaticBody2D" parent="Furniture"]
+position = Vector2(300, 180)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/TallyCrate"]
+shape = SubResource("RectangleShape2D_crate")
+
+[node name="Visual" type="ColorRect" parent="Furniture/TallyCrate"]
+offset_left = -40.0
+offset_top = -25.0
+offset_right = 40.0
+offset_bottom = 25.0
+color = Color(0.36, 0.26, 0.16, 1)
+
+[node name="Sign" type="Label" parent="Furniture/TallyCrate"]
+z_index = 5
+offset_left = -60.0
+offset_top = -52.0
+offset_right = 60.0
+offset_bottom = -30.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "Guard post"
+horizontal_alignment = 1
+
+
+[node name="Brazier" type="StaticBody2D" parent="Furniture"]
+position = Vector2(360, 260)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Brazier"]
+shape = SubResource("RectangleShape2D_post")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Brazier"]
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+color = Color(0.3, 0.22, 0.18, 1)
+
+[node name="Coals" type="ColorRect" parent="Furniture/Brazier"]
+offset_left = -7.0
+offset_top = -7.0
+offset_right = 7.0
+offset_bottom = 7.0
+color = Color(0.95, 0.45, 0.15, 1)
+
+
+[node name="StrawBeds" type="ColorRect" parent="Furniture"]
+offset_left = -380.0
+offset_top = 200.0
+offset_right = -200.0
+offset_bottom = 300.0
+color = Color(0.62, 0.55, 0.3, 1)
+
+
+[node name="Windlass" type="ColorRect" parent="Furniture"]
+offset_left = -40.0
+offset_top = 420.0
+offset_right = 40.0
+offset_bottom = 440.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+
+[node name="StoryItems" type="Node2D" parent="."]
+
+[node name="SeamWall" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(0, -360)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("3_story_item")
+interaction_name = "Read the names on the seam"
+flag_to_set = "pit_seam_names_seen"
+discovery_text = "[b]Names in the seam[/b]
+
+Where the white vein runs out of the rock, the wall is cut with names. Not chalked: cut, with pick-points and nails, by people who meant them to outlast them.
+
+CORIN ASHBY, deep and square, with a tally of days beside it that runs on for years. DAVIN, with a line struck clean through it and, under the line, one word: RAN. WILLA, small and low on the wall, where a child could reach. And HESK MARLOW, with the sun of the Dawn scratched round it, the way the valley marks its dead.
+
+Above them all, in letters as tall as a hand: THORNHAVEN."
+reexamine_text = "Corin, Davin, Willa, Hesk Marlow. Thornhaven, cut into the white stone."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/SeamWall"]
+shape = SubResource("RectangleShape2D_seam")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/SeamWall"]
+offset_left = -200.0
+offset_top = -20.0
+offset_right = 200.0
+offset_bottom = 20.0
+color = Color(0.42, 0.4, 0.37, 1)
+
+[node name="Cuts" type="ColorRect" parent="StoryItems/SeamWall"]
+offset_left = -180.0
+offset_top = -6.0
+offset_right = 180.0
+offset_bottom = 6.0
+color = Color(0.75, 0.72, 0.66, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/SeamWall"]
+z_index = 10
+visible = false
+offset_left = -150.0
+offset_top = -44.0
+offset_right = 150.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Read the names on the seam"
+horizontal_alignment = 1
+
+
+[node name="TallyBook" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(300, 140)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("3_story_item")
+interaction_name = "Read the tally book"
+flag_to_set = "pit_tally_book_found"
+discovery_text = "[b]The tally book[/b]
+
+A ledger in oilcloth, kept dry on the guard's crate. Every page is ruled the same way: the day, the sacks of white salt raised, and where they went. A small packet, every month, to 'G.' The rest, by the cartload, over the ridge to Greystone's back road, and from there 'east'.
+
+A second column keeps the diggers, like stock: Corin, Hesk, Willa, Davin. Hesk's line ends in a cross. Davin's ends in a blot and the word 'loose', underlined.
+
+The hand is neat and practised, a woman's, with sevens barred through the middle. You have the feeling you have seen it chalked up somewhere in Thornhaven. The newest line is already written, ahead of the cart: 'Year five. E., the merchant's girl. Keep her whole.'"
+reexamine_text = "Salt by the cartload, 'G.' by the packet, and the diggers kept like stock. 'Keep her whole.'"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/TallyBook"]
+shape = SubResource("RectangleShape2D_tally")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/TallyBook"]
+offset_left = -14.0
+offset_top = -10.0
+offset_right = 14.0
+offset_bottom = 10.0
+color = Color(0.25, 0.2, 0.14, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/TallyBook"]
+z_index = 10
+visible = false
+offset_left = -115.0
+offset_top = -44.0
+offset_right = 115.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Read the tally book"
+horizontal_alignment = 1
+
+
+[node name="Chains" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(-180, -190)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("3_story_item")
+interaction_name = "Look at the chains"
+flag_to_set = ""
+discovery_text = "[b]The chains[/b]
+
+Four iron posts sunk into the floor, a chain on each, long enough to reach the seam and no further. The links are new, good iron, evenly drawn. The shackles at the ends are worn bright on the inside.
+
+One shackle is smaller than the rest, cut down for a narrow wrist."
+reexamine_text = "Four chains that reach the seam and no further. One shackle cut down small."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/Chains"]
+shape = SubResource("RectangleShape2D_chains")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/Chains"]
+offset_left = -50.0
+offset_top = -6.0
+offset_right = 50.0
+offset_bottom = 6.0
+color = Color(0.45, 0.45, 0.48, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/Chains"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -44.0
+offset_right = 110.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Look at the chains"
+horizontal_alignment = 1
+
+
+[node name="SaltSackTags" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(330, -130)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("3_story_item")
+interaction_name = "Read the sack tags"
+flag_to_set = ""
+discovery_text = "[b]Sacks of white salt[/b]
+
+The sacks are stacked to the roof, each sewn shut and tagged in the same neat hand: a weight, a date, and a mark. Most are marked with a cart. A few carry a small cross in a circle, the sign the Cathedral's almoners paint on their fever-boxes.
+
+The salt has worked into the sacking. It is fine as flour, it bites the tongue, and it is in every crack of your hands before you step away."
+reexamine_text = "Salt for the carts, and salt with the Cathedral's mark. It gets into every crack of your hands."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/SaltSackTags"]
+shape = SubResource("RectangleShape2D_crate")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/SaltSackTags"]
+offset_left = -20.0
+offset_top = -8.0
+offset_right = 20.0
+offset_bottom = 8.0
+color = Color(0.7, 0.66, 0.58, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/SaltSackTags"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -44.0
+offset_right = 110.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Read the sack tags"
+horizontal_alignment = 1
+
+
+[node name="DagnaSeal" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(-430, 0)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("3_story_item")
+interaction_name = "Look at the bricked gallery"
+flag_to_set = ""
+discovery_text = "[b]A bricked-up gallery[/b]
+
+The west gallery ends in a wall of mortared stone, newer than the rock around it. Scratched into the mortar while it was wet: 'SEALED. D. Greystone. Never again.' Beyond it, faint as breath, you can hear water dripping in Greystone's own galleries.
+
+On this side, someone has started to chip at the mortar near the floor, and given up, or been stopped."
+reexamine_text = "Dagna's seal: 'Never again.' Someone on this side tried to chip through it."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/DagnaSeal"]
+shape = SubResource("RectangleShape2D_seal")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/DagnaSeal"]
+offset_left = -20.0
+offset_top = -100.0
+offset_right = 20.0
+offset_bottom = 100.0
+color = Color(0.38, 0.36, 0.33, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/DagnaSeal"]
+z_index = 10
+visible = false
+offset_left = -155.0
+offset_top = -44.0
+offset_right = 155.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Look at the bricked gallery"
+horizontal_alignment = 1
+
+
+[node name="SleepingStraw" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(-290, 250)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("3_story_item")
+interaction_name = "Look at the straw"
+flag_to_set = ""
+discovery_text = "[b]Where they sleep[/b]
+
+Straw pallets in a row, too few blankets. Under one, a little wooden fox carved with something blunt, its ears worn smooth by a thumb. Under another, a pebble scratched with a hammer over a pine tree, the way a smith's boy might copy his master's mark."
+reexamine_text = "A carved fox, and a pebble scratched with Bjorn's hammer and pine."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/SleepingStraw"]
+shape = SubResource("RectangleShape2D_straw")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/SleepingStraw"]
+offset_left = -30.0
+offset_top = -10.0
+offset_right = 30.0
+offset_bottom = 10.0
+color = Color(0.55, 0.48, 0.26, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/SleepingStraw"]
+z_index = 10
+visible = false
+offset_left = -105.0
+offset_top = -44.0
+offset_right = 105.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Look at the straw"
+horizontal_alignment = 1
+
+
+[node name="PitMouth" type="Area2D" parent="."]
+z_index = 6
+position = Vector2(0, 440)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("4_travel_point")
+interaction_name = "Climb to the ridge trail"
+from_location = "the_pit"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PitMouth"]
+shape = SubResource("RectangleShape2D_mouth")
+
+
+[node name="Visual" type="ColorRect" parent="PitMouth"]
+offset_left = -70.0
+offset_top = -20.0
+offset_right = 70.0
+offset_bottom = 20.0
+color = Color(0.3, 0.24, 0.18, 1)
+
+
+[node name="Ladder" type="ColorRect" parent="PitMouth"]
+offset_left = -12.0
+offset_top = -30.0
+offset_right = 12.0
+offset_bottom = 20.0
+color = Color(0.48, 0.36, 0.22, 1)
+
+
+[node name="RoadSign" type="Label" parent="PitMouth"]
+z_index = 5
+offset_left = -120.0
+offset_top = -64.0
+offset_right = 120.0
+offset_bottom = -40.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "Climb to the ridge trail"
+horizontal_alignment = 1
+
+
+[node name="InteractionPrompt" type="Label" parent="PitMouth"]
+z_index = 10
+visible = false
+offset_left = -120.0
+offset_top = -90.0
+offset_right = 120.0
+offset_bottom = -66.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Climb to the ridge trail"
+horizontal_alignment = 1
+
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 320)
+
+[node name="from_travel" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 370)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.9, 0.9)
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("5_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[node name="DebugInteractionPanel" parent="DialogueUI" instance=ExtResource("6_debug_interaction_panel")]
+visible = false
+
+[node name="DebugConsole" parent="." instance=ExtResource("7_debug_console")]
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

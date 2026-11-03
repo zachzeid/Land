@@ -1,0 +1,828 @@
+{
+  "realm": "Kingdom of Hallowmere",
+  "era": "Late-medieval low fantasy. Steel, sail, horse and candle. Magic is rare, quiet and distrusted; most 'miracles' are herbcraft, faith or fraud.",
+  "world_rules": [
+    "There are no engines, firearms, gunpowder, electricity, printing presses or clocks small enough to carry. Light is fire; power is muscle, water and wind.",
+    "Travel is on foot, by horse, by cart or wagon, or by river barge. Nobody can be in two places at once, and every journey takes the time listed in the travel graph.",
+    "News moves at the speed of a rider, a barge or a raven: hours within the valley, a day or more to the Capitol.",
+    "An NPC can only act on what they could plausibly know, carry, afford or reach. A blacksmith cannot conjure an army; a widow cannot vanish mid-sentence; nobody teleports.",
+    "Coin is crowns (gold), marks (silver) and pennies (copper). A season's wage for a labourer is about 3 crowns.",
+    "The crown's law is real but slow and far away. In the Western Valley, power is whoever can protect you."
+  ],
+  "forbidden_concepts": [
+    "car",
+    "truck",
+    "automobile",
+    "motor",
+    "gun",
+    "pistol",
+    "rifle",
+    "bullet",
+    "gunpowder",
+    "phone",
+    "telephone",
+    "radio",
+    "television",
+    "computer",
+    "internet",
+    "email",
+    "electricity",
+    "electric",
+    "battery",
+    "plane",
+    "airplane",
+    "helicopter",
+    "railway",
+    "photograph",
+    "camera",
+    "plastic",
+    "factory",
+    "police",
+    "cop",
+    "okay"
+  ],
+  "regions": [
+    {
+      "id": "western_valley",
+      "name": "Western Valley",
+      "summary": "Farmland, forest and the village of Thornhaven, three days' ride west of the Capitol. Bandit country."
+    },
+    {
+      "id": "kingsroad",
+      "name": "The Kingsroad",
+      "summary": "The old paved road east to the Capitol, its waystations and the Ferrisford river crossing."
+    },
+    {
+      "id": "eastern_march",
+      "name": "The Eastern March",
+      "summary": "Hill country between the valley and the Capitol: Greystone Mines, Fort Ashguard and Brackenmoor Abbey."
+    },
+    {
+      "id": "the_capitol",
+      "name": "The Capitol",
+      "summary": "Highmarch, called simply the Capitol: seat of the crown, the High Magistry, the Cathedral of the Dawn and the Merchants' Guild."
+    }
+  ],
+  "locations": [
+    {
+      "id": "thornhaven_town_square",
+      "name": "Thornhaven Square",
+      "region": "western_valley",
+      "area": "Thornhaven Village",
+      "kind": "exterior",
+      "scene": "res://scenes/game_world.tscn",
+      "built": true
+    },
+    {
+      "id": "thornhaven_gregor_shop",
+      "name": "Gregor's General Goods",
+      "region": "western_valley",
+      "area": "Thornhaven Village",
+      "kind": "interior",
+      "scene": "res://scenes/interiors/gregor_shop_interior.tscn",
+      "built": true
+    },
+    {
+      "id": "thornhaven_tavern",
+      "name": "The Rusty Nail",
+      "region": "western_valley",
+      "area": "Thornhaven Village",
+      "kind": "interior",
+      "scene": "res://scenes/interiors/tavern_interior.tscn",
+      "built": true
+    },
+    {
+      "id": "thornhaven_blacksmith",
+      "name": "The Smithy",
+      "region": "western_valley",
+      "area": "Thornhaven Village",
+      "kind": "interior",
+      "scene": "res://scenes/interiors/blacksmith_interior.tscn",
+      "built": true
+    },
+    {
+      "id": "council_hall",
+      "name": "Council Hall",
+      "region": "western_valley",
+      "area": "Thornhaven Village",
+      "kind": "interior",
+      "scene": "res://scenes/interiors/council_hall.tscn",
+      "built": true
+    },
+    {
+      "id": "thornhaven_chapel",
+      "name": "Chapel of the Dawn",
+      "region": "western_valley",
+      "area": "Thornhaven Village",
+      "kind": "interior",
+      "scene": "res://scenes/interiors/thornhaven_chapel.tscn",
+      "built": true
+    },
+    {
+      "id": "healer_hut",
+      "name": "Old Maud's Hut",
+      "region": "western_valley",
+      "area": "Thornhaven Outskirts",
+      "kind": "interior",
+      "scene": "res://scenes/interiors/healer_hut.tscn",
+      "built": true
+    },
+    {
+      "id": "village_gate",
+      "name": "Thornhaven Gate",
+      "region": "western_valley",
+      "area": "Thornhaven Village",
+      "kind": "exterior",
+      "scene": "res://scenes/exterior/village_gate.tscn",
+      "built": true,
+      "travel_point": true
+    },
+    {
+      "id": "old_mill",
+      "name": "The Old Mill",
+      "region": "western_valley",
+      "area": "Thornhaven Outskirts",
+      "kind": "exterior",
+      "scene": "res://scenes/exterior/old_mill.tscn",
+      "built": true
+    },
+    {
+      "id": "forest_path",
+      "name": "The Forest Path",
+      "region": "western_valley",
+      "area": "Darkwood",
+      "kind": "exterior",
+      "scene": "res://scenes/exterior/forest_path.tscn",
+      "built": true
+    },
+    {
+      "id": "iron_hollow_camp",
+      "name": "Iron Hollow",
+      "region": "western_valley",
+      "area": "Darkwood",
+      "kind": "exterior",
+      "scene": "res://scenes/exterior/iron_hollow.tscn",
+      "built": true,
+      "travel_point": true
+    },
+    {
+      "id": "kingsroad_waystation",
+      "name": "The Halfway House",
+      "region": "kingsroad",
+      "area": "The Kingsroad",
+      "kind": "interior",
+      "scene": "res://scenes/interiors/kingsroad_waystation.tscn",
+      "built": true,
+      "travel_point": true
+    },
+    {
+      "id": "ferrisford",
+      "name": "Ferrisford Crossing",
+      "region": "kingsroad",
+      "area": "River Ferris",
+      "kind": "exterior",
+      "scene": "res://scenes/exterior/ferrisford.tscn",
+      "built": true,
+      "travel_point": true
+    },
+    {
+      "id": "greystone_mines",
+      "name": "Greystone Mines",
+      "region": "eastern_march",
+      "area": "Greystone",
+      "kind": "exterior",
+      "scene": "res://scenes/exterior/greystone_mines.tscn",
+      "built": true,
+      "travel_point": true
+    },
+    {
+      "id": "fort_ashguard",
+      "name": "Fort Ashguard",
+      "region": "eastern_march",
+      "area": "Ashguard",
+      "kind": "exterior",
+      "scene": "res://scenes/exterior/fort_ashguard.tscn",
+      "built": true,
+      "travel_point": true
+    },
+    {
+      "id": "brackenmoor_abbey",
+      "name": "Brackenmoor Abbey",
+      "region": "eastern_march",
+      "area": "Brackenmoor",
+      "kind": "interior",
+      "scene": "res://scenes/interiors/brackenmoor_abbey.tscn",
+      "built": true,
+      "travel_point": true
+    },
+    {
+      "id": "capitol_gate",
+      "name": "The Dawn Gate",
+      "region": "the_capitol",
+      "area": "Highmarch Walls",
+      "kind": "exterior",
+      "scene": "res://scenes/capitol/capitol_gate.tscn",
+      "built": true,
+      "travel_point": true
+    },
+    {
+      "id": "capitol_market",
+      "name": "The Lantern Market",
+      "region": "the_capitol",
+      "area": "Highmarch",
+      "kind": "exterior",
+      "scene": "res://scenes/capitol/capitol_market.tscn",
+      "built": true
+    },
+    {
+      "id": "capitol_palace",
+      "name": "The Crown Court",
+      "region": "the_capitol",
+      "area": "Palace Hill",
+      "kind": "interior",
+      "scene": "res://scenes/capitol/capitol_palace.tscn",
+      "built": true
+    },
+    {
+      "id": "capitol_magistry",
+      "name": "The High Magistry",
+      "region": "the_capitol",
+      "area": "Palace Hill",
+      "kind": "interior",
+      "scene": "res://scenes/capitol/capitol_magistry.tscn",
+      "built": true
+    },
+    {
+      "id": "capitol_cathedral",
+      "name": "Cathedral of the Dawn",
+      "region": "the_capitol",
+      "area": "Highmarch",
+      "kind": "interior",
+      "scene": "res://scenes/capitol/capitol_cathedral.tscn",
+      "built": true
+    },
+    {
+      "id": "capitol_guildhall",
+      "name": "The Merchants' Guildhall",
+      "region": "the_capitol",
+      "area": "Highmarch",
+      "kind": "interior",
+      "scene": "res://scenes/capitol/capitol_guildhall.tscn",
+      "built": true
+    },
+    {
+      "id": "capitol_docks",
+      "name": "The River Quarter",
+      "region": "the_capitol",
+      "area": "Riverside",
+      "kind": "exterior",
+      "scene": "res://scenes/capitol/capitol_docks.tscn",
+      "built": true,
+      "travel_point": true
+    },
+    {
+      "id": "capitol_warrens",
+      "name": "The Warrens",
+      "region": "the_capitol",
+      "area": "Riverside",
+      "kind": "exterior",
+      "scene": "res://scenes/capitol/capitol_warrens.tscn",
+      "built": true
+    },
+    {
+      "id": "ashdown_manor",
+      "name": "Ashdown House",
+      "region": "the_capitol",
+      "area": "Palace Hill",
+      "kind": "interior",
+      "scene": "res://scenes/capitol/ashdown_manor.tscn",
+      "built": true
+    },
+    {
+      "id": "the_pit",
+      "name": "The Pit",
+      "region": "eastern_march",
+      "area": "The Ridge",
+      "kind": "interior",
+      "scene": "res://scenes/interiors/the_pit.tscn",
+      "built": true,
+      "travel_point": true
+    }
+  ],
+  "routes": [
+    {
+      "a": "thornhaven_town_square",
+      "b": "thornhaven_gregor_shop",
+      "minutes": 1,
+      "modes": [
+        "foot"
+      ]
+    },
+    {
+      "a": "thornhaven_town_square",
+      "b": "thornhaven_tavern",
+      "minutes": 1,
+      "modes": [
+        "foot"
+      ]
+    },
+    {
+      "a": "thornhaven_town_square",
+      "b": "thornhaven_blacksmith",
+      "minutes": 1,
+      "modes": [
+        "foot"
+      ]
+    },
+    {
+      "a": "thornhaven_town_square",
+      "b": "council_hall",
+      "minutes": 2,
+      "modes": [
+        "foot"
+      ]
+    },
+    {
+      "a": "thornhaven_town_square",
+      "b": "thornhaven_chapel",
+      "minutes": 2,
+      "modes": [
+        "foot"
+      ]
+    },
+    {
+      "a": "thornhaven_town_square",
+      "b": "village_gate",
+      "minutes": 3,
+      "modes": [
+        "foot",
+        "horse",
+        "cart"
+      ]
+    },
+    {
+      "a": "village_gate",
+      "b": "healer_hut",
+      "minutes": 15,
+      "modes": [
+        "foot",
+        "horse"
+      ]
+    },
+    {
+      "a": "village_gate",
+      "b": "old_mill",
+      "minutes": 20,
+      "modes": [
+        "foot",
+        "horse",
+        "cart"
+      ]
+    },
+    {
+      "a": "village_gate",
+      "b": "forest_path",
+      "minutes": 30,
+      "modes": [
+        "foot",
+        "horse"
+      ]
+    },
+    {
+      "a": "forest_path",
+      "b": "iron_hollow_camp",
+      "minutes": 90,
+      "modes": [
+        "foot",
+        "horse"
+      ]
+    },
+    {
+      "a": "old_mill",
+      "b": "forest_path",
+      "minutes": 25,
+      "modes": [
+        "foot",
+        "horse"
+      ]
+    },
+    {
+      "a": "village_gate",
+      "b": "kingsroad_waystation",
+      "minutes": 720,
+      "modes": [
+        "foot",
+        "horse",
+        "cart"
+      ]
+    },
+    {
+      "a": "kingsroad_waystation",
+      "b": "ferrisford",
+      "minutes": 480,
+      "modes": [
+        "foot",
+        "horse",
+        "cart"
+      ]
+    },
+    {
+      "a": "ferrisford",
+      "b": "capitol_docks",
+      "minutes": 600,
+      "modes": [
+        "barge"
+      ]
+    },
+    {
+      "a": "ferrisford",
+      "b": "capitol_gate",
+      "minutes": 720,
+      "modes": [
+        "foot",
+        "horse",
+        "cart"
+      ]
+    },
+    {
+      "a": "kingsroad_waystation",
+      "b": "greystone_mines",
+      "minutes": 360,
+      "modes": [
+        "foot",
+        "horse",
+        "cart"
+      ]
+    },
+    {
+      "a": "kingsroad_waystation",
+      "b": "fort_ashguard",
+      "minutes": 480,
+      "modes": [
+        "foot",
+        "horse"
+      ]
+    },
+    {
+      "a": "fort_ashguard",
+      "b": "brackenmoor_abbey",
+      "minutes": 240,
+      "modes": [
+        "foot",
+        "horse"
+      ]
+    },
+    {
+      "a": "brackenmoor_abbey",
+      "b": "capitol_gate",
+      "minutes": 600,
+      "modes": [
+        "foot",
+        "horse",
+        "cart"
+      ]
+    },
+    {
+      "a": "capitol_gate",
+      "b": "capitol_market",
+      "minutes": 10,
+      "modes": [
+        "foot",
+        "horse",
+        "cart"
+      ]
+    },
+    {
+      "a": "capitol_market",
+      "b": "capitol_cathedral",
+      "minutes": 5,
+      "modes": [
+        "foot"
+      ]
+    },
+    {
+      "a": "capitol_market",
+      "b": "capitol_guildhall",
+      "minutes": 5,
+      "modes": [
+        "foot"
+      ]
+    },
+    {
+      "a": "capitol_market",
+      "b": "capitol_docks",
+      "minutes": 15,
+      "modes": [
+        "foot",
+        "cart"
+      ]
+    },
+    {
+      "a": "capitol_market",
+      "b": "capitol_palace",
+      "minutes": 20,
+      "modes": [
+        "foot",
+        "horse"
+      ]
+    },
+    {
+      "a": "capitol_palace",
+      "b": "capitol_magistry",
+      "minutes": 5,
+      "modes": [
+        "foot"
+      ]
+    },
+    {
+      "a": "capitol_palace",
+      "b": "ashdown_manor",
+      "minutes": 10,
+      "modes": [
+        "foot",
+        "horse"
+      ]
+    },
+    {
+      "a": "capitol_docks",
+      "b": "capitol_warrens",
+      "minutes": 5,
+      "modes": [
+        "foot"
+      ]
+    },
+    {
+      "a": "iron_hollow_camp",
+      "b": "the_pit",
+      "minutes": 300,
+      "modes": [
+        "foot",
+        "horse"
+      ],
+      "note": "The smugglers' ridge trail. The Tithe carts walk it."
+    },
+    {
+      "a": "the_pit",
+      "b": "greystone_mines",
+      "minutes": 300,
+      "modes": [
+        "foot",
+        "horse"
+      ],
+      "note": "The far half of the ridge trail, down to Greystone's back road. Dagna's seal stands between the Pit and her galleries."
+    }
+  ],
+  "npcs": [
+    {
+      "key": "gregor",
+      "npc_id": "gregor_merchant_001",
+      "name": "Gregor Stoneheart",
+      "home": "thornhaven_gregor_shop",
+      "role": "Merchant of Thornhaven",
+      "scene": "res://scenes/npcs/gregor_merchant.tscn"
+    },
+    {
+      "key": "elena",
+      "npc_id": "elena_daughter_001",
+      "name": "Elena",
+      "home": "thornhaven_town_square",
+      "role": "Gregor's daughter",
+      "scene": "res://scenes/npcs/elena_daughter.tscn"
+    },
+    {
+      "key": "mira",
+      "npc_id": "mira_tavern_keeper_001",
+      "name": "Mira",
+      "home": "thornhaven_tavern",
+      "role": "Widowed keeper of the Rusty Nail (secretly the Boss of Iron Hollow)",
+      "scene": "res://scenes/npcs/tavern_keeper.tscn"
+    },
+    {
+      "key": "bjorn",
+      "npc_id": "bjorn_blacksmith_001",
+      "name": "Bjorn",
+      "home": "thornhaven_blacksmith",
+      "role": "Blacksmith of Thornhaven",
+      "scene": "res://scenes/npcs/blacksmith.tscn"
+    },
+    {
+      "key": "aldric",
+      "npc_id": "aldric_peacekeeper_001",
+      "name": "Captain Aldric",
+      "home": "thornhaven_town_square",
+      "role": "Captain of Thornhaven's peacekeepers",
+      "scene": "res://scenes/npcs/aldric_peacekeeper.tscn"
+    },
+    {
+      "key": "mathias",
+      "npc_id": "elder_mathias_001",
+      "name": "Elder Mathias",
+      "home": "thornhaven_town_square",
+      "role": "Head of Thornhaven's council",
+      "scene": "res://scenes/npcs/elder_mathias.tscn"
+    },
+    {
+      "key": "varn",
+      "npc_id": "varn_bandit_001",
+      "name": "Varn",
+      "home": "iron_hollow_camp",
+      "role": "Enforcer of Iron Hollow",
+      "scene": "res://scenes/npcs/varn_bandit.tscn"
+    },
+    {
+      "key": "edric",
+      "npc_id": "edric_protector_001",
+      "name": "Lord Protector Edric Hale",
+      "home": "capitol_palace",
+      "role": "Regent ruling for the nine-year-old King Aubren",
+      "scene": "res://scenes/npcs/edric.tscn"
+    },
+    {
+      "key": "corwin",
+      "npc_id": "corwin_magistrate_001",
+      "name": "High Magistrate Corwin Vane",
+      "home": "capitol_magistry",
+      "role": "The crown's chief judge and investigator",
+      "scene": "res://scenes/npcs/corwin.tscn"
+    },
+    {
+      "key": "seraphine",
+      "npc_id": "seraphine_ashdown_001",
+      "name": "Lady Seraphine Ashdown",
+      "home": "ashdown_manor",
+      "role": "Noblewoman whose house holds the deed to the Western Valley",
+      "scene": "res://scenes/npcs/seraphine.tscn"
+    },
+    {
+      "key": "hollis",
+      "npc_id": "hollis_guildmaster_001",
+      "name": "Guildmaster Hollis Marrow",
+      "home": "capitol_guildhall",
+      "role": "Master of the Merchants' Guild",
+      "scene": "res://scenes/npcs/hollis.tscn"
+    },
+    {
+      "key": "ysolde",
+      "npc_id": "ysolde_sister_001",
+      "name": "Sister Ysolde",
+      "home": "capitol_cathedral",
+      "role": "Infirmarian of the Cathedral of the Dawn",
+      "scene": "res://scenes/npcs/ysolde.tscn"
+    },
+    {
+      "key": "renna",
+      "npc_id": "renna_captain_001",
+      "name": "Captain Renna Thorne",
+      "home": "capitol_gate",
+      "role": "Captain of the King's Rangers",
+      "scene": "res://scenes/npcs/renna.tscn"
+    },
+    {
+      "key": "rook",
+      "npc_id": "rook_broker_001",
+      "name": "Rook",
+      "home": "capitol_warrens",
+      "role": "Information broker and fence of the Warrens",
+      "scene": "res://scenes/npcs/rook.tscn"
+    },
+    {
+      "key": "wren",
+      "npc_id": "wren_innkeeper_001",
+      "name": "Old Wren",
+      "home": "kingsroad_waystation",
+      "role": "Keeper of the Halfway House, retired crown spy",
+      "scene": "res://scenes/npcs/wren.tscn"
+    },
+    {
+      "key": "oskar",
+      "npc_id": "oskar_ferryman_001",
+      "name": "Oskar",
+      "home": "ferrisford",
+      "role": "Ferryman and toll-keeper at Ferrisford",
+      "scene": "res://scenes/npcs/oskar.tscn"
+    },
+    {
+      "key": "dagna",
+      "npc_id": "dagna_foreman_001",
+      "name": "Foreman Dagna Holt",
+      "home": "greystone_mines",
+      "role": "Foreman of Greystone Mines",
+      "scene": "res://scenes/npcs/dagna.tscn"
+    },
+    {
+      "key": "lucan",
+      "npc_id": "lucan_commander_001",
+      "name": "Commander Lucan Ferrow",
+      "home": "fort_ashguard",
+      "role": "Commander of Fort Ashguard",
+      "scene": "res://scenes/npcs/lucan.tscn"
+    },
+    {
+      "key": "anselm",
+      "npc_id": "anselm_archivist_001",
+      "name": "Brother Anselm",
+      "home": "brackenmoor_abbey",
+      "role": "Archivist of Brackenmoor Abbey",
+      "scene": "res://scenes/npcs/anselm.tscn"
+    },
+    {
+      "key": "davin",
+      "npc_id": "davin_apprentice_001",
+      "name": "Davin",
+      "home": "healer_hut",
+      "role": "Bjorn's former apprentice, taken in the second Tithe; escaped the Pit, hiding at Old Maud's hut",
+      "scene": "res://scenes/npcs/davin.tscn"
+    }
+  ],
+  "forbidden_concepts_note": "Matched as whole words, case-insensitive, in NPC dialogue and action text.",
+  "discovery_flags": {
+    "wren_letter_rack_seen": "The player saw letters on Old Wren's rack whose seals had been lifted and pressed again, among them a Thornhaven letter to the Guildhall 'for the lady's attention'",
+    "wren_seal_kit_seen": "The player found a seal-maker's kit at the Halfway House that can copy the crown's lion seal",
+    "waystation_courier_log_read": "The player read the Halfway House courier book, where a Guild rider rides east every new moon after a Thornhaven rider comes in",
+    "oskar_tally_seen": "The player saw Oskar's tally sticks at Ferrisford, a notch for every barge he has carried across",
+    "oskar_brother_marker_seen": "The player read the marker for Oskar's drowned brother: 'He would not carry theirs'",
+    "ferrisford_unmarked_cargo_seen": "The player saw unstamped bales tied with iron wire waiting on the Ferrisford quay",
+    "dagna_payment_box_found": "The player found Foreman Dagna's strongbox marked ROAD, with three years of new-moon payments scored inside",
+    "deep_vein_salt_seen": "The player saw white mineral salt scraped from the boarded-up deep vein at Greystone",
+    "smugglers_trail_found": "The player found the smugglers' trail over the ridge from Greystone toward the Darkwood and Iron Hollow",
+    "ashguard_ledger_read": "The player read Fort Ashguard's armoury ledger: four wagons of crown arms blamed on the deserter Varn, though three were signed out to a Guild factor days before he ran",
+    "varn_warrant_seen": "The player saw Fort Ashguard's warrant for the deserter Varn: ALIVE underlined twice, and beneath it in a smaller hand, that his death resisting would answer it in full",
+    "abbey_fever_records_read": "The player read Brackenmoor's Grey Fever records: fever-root and deep-vein salt together cure it, and this spring someone wrote 'It begins again'",
+    "abbey_ashdown_record_found": "The player found Brackenmoor's purchasers' roll naming House Ashdown among those who profited from the last fever",
+    "hollis_ledger_seen": "The player found Hollis Marrow's private patron ledger in the Guildhall counting room, with an entry for 'S.A. — the valley venture'",
+    "ashdown_debt_letters_read": "The player read the Guild's letters on Lady Ashdown's desk: each season of trouble in the valley lowers the price of an acre",
+    "cathedral_cabinet_seen": "The player looked into the Cathedral infirmary's locked cabinet of Grey Fever cures, priced for the houses of Palace Hill",
+    "writ_archive_gap_found": "The player found three years of the valley's tithe returns missing from the Magistry archive, signed out by the clerk T. Vane",
+    "rook_buyer_slate_seen": "The player found Rook's chalked buyer slate naming 'the lady on the hill' who wants valley deeds",
+    "tithe_drawing_witnessed": "The player stood in the chapel when Elder Mathias drew Elena's name for the Tithe",
+    "duplicate_tiles_found": "The player found a second set of lot tiles in Gregor's strongbox, cast in the same iron as the chapel's",
+    "white_salt_found": "The player found a packet of white mineral salt among Elena's medicines, the kind no apothecary in the valley sells",
+    "recut_tile_seen": "The player saw that Elena's lot tile had been recut by a careful, unpractised hand",
+    "davin_found": "The player found Davin, Bjorn's apprentice taken in the second Tithe, alive and hiding at Old Maud's hut",
+    "pit_seam_names_seen": "The player saw names cut into the Pit's seam wall, Hesk Marlow's among them, by the people the Tithe took",
+    "pit_tally_book_found": "The player found the Pit's tally book, its columns of salt and names kept in a neat, practised hand"
+  },
+  "relationship_decay": {
+    "note": "Points per game day without contact, moving toward baseline 0 (familiarity floor 5 once met).",
+    "familiarity": 2.0,
+    "fear": 1.0,
+    "affection": 0.75,
+    "respect": 0.5,
+    "trust": 0.25,
+    "familiarity_floor_once_met": 5
+  },
+  "tiers": {
+    "promote_at": 60,
+    "promote_rounds": 3,
+    "demote_at": 30,
+    "demote_days_apart": 7,
+    "repromote_bonus": 10,
+    "repromote_floor": 40,
+    "personal_decisions_per_round": 4
+  },
+  "calendar": {
+    "note": "World fixed points. The engine sets each flag true when the game clock reaches it. A new game starts at start.",
+    "start": {
+      "day": 1,
+      "hour": 20,
+      "minute": 0
+    },
+    "flags": {
+      "tn_day_2": {
+        "day": 2,
+        "hour": 6,
+        "description": "Morning came on the second day after Elena's name was drawn for the Tithe"
+      },
+      "tn_day_3": {
+        "day": 3,
+        "hour": 6,
+        "description": "Morning came on the third day after the Tithe drawing; four days remained"
+      },
+      "tn_day_4": {
+        "day": 4,
+        "hour": 6,
+        "description": "Morning came on the fourth day after the Tithe drawing; three days remained"
+      },
+      "tn_day_5": {
+        "day": 5,
+        "hour": 6,
+        "description": "Morning came on the fifth day after the Tithe drawing; two days remained"
+      },
+      "tn_day_6": {
+        "day": 6,
+        "hour": 6,
+        "description": "Morning came on the sixth day; the Hollow's cart would come tomorrow night"
+      },
+      "tn_day_7": {
+        "day": 7,
+        "hour": 6,
+        "description": "The morning of Collection Night came to Thornhaven"
+      },
+      "tn_collection_night": {
+        "day": 7,
+        "hour": 22,
+        "description": "Night fell on Collection Night, and the Hollow's cart came to Thornhaven's gate"
+      }
+    }
+  }
+}

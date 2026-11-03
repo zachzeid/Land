@@ -1,0 +1,66 @@
+{
+  "id": "cv_story",
+  "title": "The Talking Fixture",
+  "summary": "Test-only storyline for scripts/debug/test_conversation_agency.gd.",
+  "prefix": "cv_",
+  "act_span": [1, 1],
+  "flags": {
+    "cv_begin": "A stranger sat down at the bar",
+    "cv_resolve": "The stranger's question was answered at the bar",
+    "cv_second": "A second matter at the bar was settled",
+    "cv_offer": "Mira signalled to someone across the room",
+    "cv_exposed": "Mira was seen counting bandit coin",
+    "cv_far": "A runner reached the camp in the woods",
+    "cv_future": "The answer changed the village forever",
+    "cv_over": "An old quarrel at the bar was settled",
+    "cv_pledge": "The player swore to keep Mira's secret",
+    "cv_old_pledge": "The player swore an oath that no longer matters",
+    "cv_secret": "Bandit coin was counted in the tavern cellar",
+    "cv_lie": "Gregor poisoned the well"
+  },
+  "player_flags": ["cv_pledge", "cv_old_pledge"],
+  "crossovers": [],
+  "beats": [
+    {
+      "id": "talk", "title": "Talk at the Bar", "summary": "The stranger asks questions at the bar.",
+      "location": "thornhaven_tavern", "requires": ["cv_begin"], "resolves_on": ["cv_resolve", "cv_pledge"],
+      "hooks": [
+        {
+          "id": "plot", "type": "scheme", "trigger": "idle", "eligible": ["mira"], "once": false,
+          "situation": "The stranger keeps asking questions.",
+          "options": [
+            {"id": "signal", "label": "Signal a friend across the room", "serves": ["power"],
+             "effects": [ {"type": "set_flag", "flag": "cv_offer", "value": true} ]},
+            {"id": "help_gregor", "label": "Cover for Gregor", "serves": ["coin"], "aids": "gregor",
+             "effects": [ {"type": "agenda", "npc": "gregor", "text": "Tell the stranger the shop was shut all night."} ]},
+            {"id": "wait", "label": "Do nothing", "serves": [], "effects": []}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "side", "title": "A Side Matter", "summary": "Something else needs settling.",
+      "location": "thornhaven_tavern", "requires": ["cv_begin"], "resolves_on": ["cv_second"], "hooks": []
+    },
+    {
+      "id": "far", "title": "Word to the Camp", "summary": "The camp is waiting for news.",
+      "location": "iron_hollow_camp", "requires": ["cv_begin"], "resolves_on": ["cv_far"],
+      "hooks": [
+        {
+          "id": "send_runner", "type": "scheme", "trigger": "idle", "eligible": ["mira"], "once": false,
+          "situation": "The camp needs word.",
+          "options": [ {"id": "send", "label": "Send a runner", "serves": ["power"], "effects": [ {"type": "set_flag", "flag": "cv_far", "value": true} ]} ]
+        }
+      ]
+    },
+    {
+      "id": "later", "title": "What Comes After", "summary": "Not yet.",
+      "location": "thornhaven_tavern", "requires": ["cv_resolve"], "resolves_on": ["cv_future"], "hooks": []
+    },
+    {
+      "id": "over", "title": "An Old Quarrel", "summary": "Long settled.",
+      "location": "thornhaven_tavern", "requires": ["cv_begin"], "resolves_on": ["cv_over", "cv_old_pledge"], "hooks": []
+    }
+  ],
+  "endings": []
+}

@@ -1404,7 +1404,14 @@ func store_with_conflict_check(memory_text: String, importance: int, memory_data
 		await _mark_superseded(superseded_type)
 
 	# Store normally
-	return await store(MemoryData.new(memory_text, importance, memory_data))
+	return await store(_build_memory_record(memory_text, importance, memory_data))
+
+## Merge text and importance into the metadata dictionary store() expects
+func _build_memory_record(memory_text: String, importance: int, memory_data: Dictionary) -> Dictionary:
+	var record = memory_data.duplicate()
+	record["text"] = memory_text
+	record["importance"] = importance
+	return record
 
 ## Check if a slot_type requires complete replacement
 func _is_slot_type(slot_type: String) -> bool:
@@ -1442,7 +1449,7 @@ func _store_slot_update(slot_type: String, memory_text: String, importance: int,
 
 	# Store the new value
 	memory_data["slot_type"] = slot_type
-	return await store(MemoryData.new(memory_text, importance, memory_data))
+	return await store(_build_memory_record(memory_text, importance, memory_data))
 
 ## Mark all memories of a given event_type as superseded
 ## Superseded memories get a 0.1x score multiplier but aren't deleted
@@ -1490,6 +1497,27 @@ func _get_memories_by_event_type(event_type: String) -> Array:
 	elif query_result.has("memories"):
 		return query_result.memories
 	return []
+
+## Whether any stored memory's metadata matches every key/value in where
+## e.g. {"source_flag": "ledger_found", "event_type": "witnessed_event"} (EventPropagator dedup)
+func has_memory_with(where: Dictionary) -> bool:
+	if where.is_empty():
+		return false
+	if not use_chromadb:
+		for mem in memory_cache:
+			var metadata: Dictionary = mem.get("metadata", {})
+			var matches = true
+			for key in where:
+				if str(metadata.get(key, "")) != str(where[key]):
+					matches = false
+					break
+			if matches:
+				return true
+		return false
+	if chroma_client == null or not chroma_client.has_method("get_where"):
+		return false
+	var found = await chroma_client.get_where(collection_name, where, 1)
+	return not found.is_empty()
 
 ## Delete a memory by ID
 func _delete_memory(memory_id: String) -> bool:

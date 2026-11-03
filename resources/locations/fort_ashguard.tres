@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="LocationData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/location_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+location_id = "fort_ashguard"
+display_name = "Fort Ashguard"
+region = "The Eastern March"
+area = "Ashguard"
+scene_path = "res://scenes/exterior/fort_ashguard.tscn"
+is_interior = false
+spawn_points = {
+"default": "Courtyard",
+"from_travel": "Inside the gate, off the March road"
+}

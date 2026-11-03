@@ -1,0 +1,733 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/shop_shelves.png" id="2_shop_shelves"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="3_story_item"]
+[ext_resource type="Script" path="res://scripts/world/travel_point.gd" id="4_travel_point"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="5_dialogue_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="6_debug_interaction_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="7_debug_console"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1536x40"]
+size = Vector2(1536, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40x1456"]
+size = Vector2(40, 1456)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_120x60"]
+size = Vector2(120, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_110x50"]
+size = Vector2(110, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_50x40"]
+size = Vector2(50, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_200x60"]
+size = Vector2(200, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40x40"]
+size = Vector2(40, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_90x76"]
+size = Vector2(90, 76)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80x70"]
+size = Vector2(80, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_140x60"]
+size = Vector2(140, 60)
+
+[node name="BrackenmoorAbbey" type="Node2D"]
+
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -768.0
+offset_top = -768.0
+offset_right = 768.0
+offset_bottom = 768.0
+color = Color(0.25, 0.25, 0.28, 1)
+
+[node name="FloorBoards" type="ColorRect" parent="Floor"]
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 1496.0
+offset_bottom = 1496.0
+color = Color(0.35, 0.35, 0.38, 1)
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, -748)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/North"]
+shape = SubResource("RectangleShape2D_1536x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/North"]
+offset_left = -768.0
+offset_top = -20.0
+offset_right = 768.0
+offset_bottom = 20.0
+color = Color(0.4, 0.38, 0.42, 1)
+
+[node name="South" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, 748)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/South"]
+shape = SubResource("RectangleShape2D_1536x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/South"]
+offset_left = -768.0
+offset_top = -20.0
+offset_right = 768.0
+offset_bottom = 20.0
+color = Color(0.4, 0.38, 0.42, 1)
+
+[node name="West" type="StaticBody2D" parent="Walls"]
+position = Vector2(-748, 0)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/West"]
+shape = SubResource("RectangleShape2D_40x1456")
+
+[node name="Visual" type="ColorRect" parent="Walls/West"]
+offset_left = -20.0
+offset_top = -728.0
+offset_right = 20.0
+offset_bottom = 728.0
+color = Color(0.4, 0.38, 0.42, 1)
+
+[node name="East" type="StaticBody2D" parent="Walls"]
+position = Vector2(748, 0)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/East"]
+shape = SubResource("RectangleShape2D_40x1456")
+
+[node name="Visual" type="ColorRect" parent="Walls/East"]
+offset_left = -20.0
+offset_top = -728.0
+offset_right = 20.0
+offset_bottom = 728.0
+color = Color(0.4, 0.38, 0.42, 1)
+
+[node name="Rooms" type="Node2D" parent="."]
+z_index = -9
+
+[node name="ArchiveFloor" type="ColorRect" parent="Rooms"]
+offset_left = -710.0
+offset_top = -680.0
+offset_right = -50.0
+offset_bottom = 560.0
+color = Color(0.3, 0.29, 0.31, 1)
+
+[node name="ScriptoriumFloor" type="ColorRect" parent="Rooms"]
+offset_left = 10.0
+offset_top = -680.0
+offset_right = 710.0
+offset_bottom = 560.0
+color = Color(0.38, 0.37, 0.4, 1)
+
+[node name="Cloister" type="ColorRect" parent="Rooms"]
+offset_left = -700.0
+offset_top = 520.0
+offset_right = 700.0
+offset_bottom = 640.0
+color = Color(0.33, 0.33, 0.35, 1)
+
+[node name="ArchiveSign" type="Label" parent="Rooms"]
+z_index = 5
+offset_left = -480.0
+offset_top = -670.0
+offset_right = -280.0
+offset_bottom = -650.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 14
+text = "The Archive"
+horizontal_alignment = 1
+
+[node name="ScriptoriumSign" type="Label" parent="Rooms"]
+z_index = 5
+offset_left = 260.0
+offset_top = -670.0
+offset_right = 460.0
+offset_bottom = -650.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 14
+text = "The Scriptorium"
+horizontal_alignment = 1
+
+[node name="Furniture" type="Node2D" parent="."]
+z_index = 5
+
+[node name="Shelves1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-560, -460)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Shelves1"]
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("2_shop_shelves")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelves1"]
+shape = SubResource("RectangleShape2D_120x60")
+
+[node name="ShelvesB1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-260, -460)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/ShelvesB1"]
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("2_shop_shelves")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/ShelvesB1"]
+shape = SubResource("RectangleShape2D_120x60")
+
+[node name="Shelves2" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-560, -200)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Shelves2"]
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("2_shop_shelves")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelves2"]
+shape = SubResource("RectangleShape2D_120x60")
+
+[node name="ShelvesB2" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-260, -200)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/ShelvesB2"]
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("2_shop_shelves")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/ShelvesB2"]
+shape = SubResource("RectangleShape2D_120x60")
+
+[node name="Shelves3" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-560, 60)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Shelves3"]
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("2_shop_shelves")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelves3"]
+shape = SubResource("RectangleShape2D_120x60")
+
+[node name="ShelvesB3" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-260, 60)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/ShelvesB3"]
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("2_shop_shelves")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/ShelvesB3"]
+shape = SubResource("RectangleShape2D_120x60")
+
+[node name="Shelves4" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-560, 320)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Shelves4"]
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("2_shop_shelves")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Shelves4"]
+shape = SubResource("RectangleShape2D_120x60")
+
+[node name="ShelvesB4" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-260, 320)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/ShelvesB4"]
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("2_shop_shelves")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/ShelvesB4"]
+shape = SubResource("RectangleShape2D_120x60")
+
+[node name="Desk11" type="StaticBody2D" parent="Furniture"]
+position = Vector2(180, -420)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Desk11"]
+shape = SubResource("RectangleShape2D_110x50")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Desk11"]
+offset_left = -55.0
+offset_top = -25.0
+offset_right = 55.0
+offset_bottom = 25.0
+color = Color(0.45, 0.33, 0.2, 1)
+
+[node name="Desk12" type="StaticBody2D" parent="Furniture"]
+position = Vector2(360, -420)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Desk12"]
+shape = SubResource("RectangleShape2D_110x50")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Desk12"]
+offset_left = -55.0
+offset_top = -25.0
+offset_right = 55.0
+offset_bottom = 25.0
+color = Color(0.45, 0.33, 0.2, 1)
+
+[node name="Desk13" type="StaticBody2D" parent="Furniture"]
+position = Vector2(540, -420)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Desk13"]
+shape = SubResource("RectangleShape2D_110x50")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Desk13"]
+offset_left = -55.0
+offset_top = -25.0
+offset_right = 55.0
+offset_bottom = 25.0
+color = Color(0.45, 0.33, 0.2, 1)
+
+[node name="Desk21" type="StaticBody2D" parent="Furniture"]
+position = Vector2(180, -200)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Desk21"]
+shape = SubResource("RectangleShape2D_110x50")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Desk21"]
+offset_left = -55.0
+offset_top = -25.0
+offset_right = 55.0
+offset_bottom = 25.0
+color = Color(0.45, 0.33, 0.2, 1)
+
+[node name="Desk22" type="StaticBody2D" parent="Furniture"]
+position = Vector2(360, -200)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Desk22"]
+shape = SubResource("RectangleShape2D_110x50")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Desk22"]
+offset_left = -55.0
+offset_top = -25.0
+offset_right = 55.0
+offset_bottom = 25.0
+color = Color(0.45, 0.33, 0.2, 1)
+
+[node name="Desk23" type="StaticBody2D" parent="Furniture"]
+position = Vector2(540, -200)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Desk23"]
+shape = SubResource("RectangleShape2D_110x50")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Desk23"]
+offset_left = -55.0
+offset_top = -25.0
+offset_right = 55.0
+offset_bottom = 25.0
+color = Color(0.45, 0.33, 0.2, 1)
+
+[node name="Desk31" type="StaticBody2D" parent="Furniture"]
+position = Vector2(180, 20)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Desk31"]
+shape = SubResource("RectangleShape2D_110x50")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Desk31"]
+offset_left = -55.0
+offset_top = -25.0
+offset_right = 55.0
+offset_bottom = 25.0
+color = Color(0.45, 0.33, 0.2, 1)
+
+[node name="Desk32" type="StaticBody2D" parent="Furniture"]
+position = Vector2(360, 20)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Desk32"]
+shape = SubResource("RectangleShape2D_110x50")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Desk32"]
+offset_left = -55.0
+offset_top = -25.0
+offset_right = 55.0
+offset_bottom = 25.0
+color = Color(0.45, 0.33, 0.2, 1)
+
+[node name="Desk33" type="StaticBody2D" parent="Furniture"]
+position = Vector2(540, 20)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Desk33"]
+shape = SubResource("RectangleShape2D_110x50")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Desk33"]
+offset_left = -55.0
+offset_top = -25.0
+offset_right = 55.0
+offset_bottom = 25.0
+color = Color(0.45, 0.33, 0.2, 1)
+
+[node name="Lectern" type="StaticBody2D" parent="Furniture"]
+position = Vector2(360, 280)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Lectern"]
+shape = SubResource("RectangleShape2D_50x40")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Lectern"]
+offset_left = -25.0
+offset_top = -20.0
+offset_right = 25.0
+offset_bottom = 20.0
+color = Color(0.28, 0.2, 0.12, 1)
+
+[node name="Sign" type="Label" parent="Furniture/Lectern"]
+z_index = 5
+offset_left = -80.0
+offset_top = -10.0
+offset_right = 80.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Lectern"
+horizontal_alignment = 1
+
+[node name="Altar" type="StaticBody2D" parent="Furniture"]
+position = Vector2(0, -660)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Altar"]
+shape = SubResource("RectangleShape2D_200x60")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Altar"]
+offset_left = -100.0
+offset_top = -30.0
+offset_right = 100.0
+offset_bottom = 30.0
+color = Color(0.6, 0.58, 0.55, 1)
+
+[node name="Sign" type="Label" parent="Furniture/Altar"]
+z_index = 5
+offset_left = -100.0
+offset_top = -10.0
+offset_right = 100.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Altar of the Dawn"
+horizontal_alignment = 1
+
+[node name="Pillar1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-40, -200)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Pillar1"]
+shape = SubResource("RectangleShape2D_40x40")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Pillar1"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.42, 0.42, 0.44, 1)
+
+[node name="Pillar2" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-40, 200)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Pillar2"]
+shape = SubResource("RectangleShape2D_40x40")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Pillar2"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.42, 0.42, 0.44, 1)
+
+[node name="InfirmaryCot" type="StaticBody2D" parent="Furniture"]
+position = Vector2(620, 380)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/InfirmaryCot"]
+shape = SubResource("RectangleShape2D_120x60")
+
+[node name="Visual" type="ColorRect" parent="Furniture/InfirmaryCot"]
+offset_left = -60.0
+offset_top = -30.0
+offset_right = 60.0
+offset_bottom = 30.0
+color = Color(0.7, 0.68, 0.6, 1)
+
+[node name="Sign" type="Label" parent="Furniture/InfirmaryCot"]
+z_index = 5
+offset_left = -80.0
+offset_top = -10.0
+offset_right = 80.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Infirmary cot"
+horizontal_alignment = 1
+
+[node name="StoryItems" type="Node2D" parent="."]
+
+[node name="FeverRecords" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(-410, -330)
+script = ExtResource("3_story_item")
+interaction_name = "Read the fever books"
+flag_to_set = "abbey_fever_records_read"
+discovery_text = "[b]The fever books[/b]
+
+Brother Anselm's shelf of the Grey Fever, twenty years old and carefully kept: the dead by parish, the bells rung, the remedies tried and failed. The last book records the one that worked: fever-root, steeped long, with a pinch of white salt 'from the deep vein at Greystone, and from nowhere else.' In a younger Anselm's hand: 'The salt is the cure. The root alone is only comfort.'
+
+The newest page is from this spring: 'Two drovers from the western valley, grey at the lips. It begins again.'"
+reexamine_text = "Fever-root and Greystone salt. And this spring: 'It begins again.'"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/FeverRecords"]
+shape = SubResource("RectangleShape2D_90x76")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/FeverRecords"]
+offset_left = -25.0
+offset_top = -18.0
+offset_right = 25.0
+offset_bottom = 18.0
+color = Color(0.55, 0.42, 0.25, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/FeverRecords"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Read the fever books"
+horizontal_alignment = 1
+
+[node name="PurchasersRoll" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(-260, -70)
+script = ExtResource("3_story_item")
+interaction_name = "Look behind the fever books"
+flag_to_set = "abbey_ashdown_record_found"
+discovery_text = "[b]A purchasers' roll[/b]
+
+Tucked behind the fever books is a roll of who bought Greystone salt in the fever years, and at what price. One house bought nearly all of it, early, and sold it on to the Cathedral and the city at ten times the cost.
+
+House Ashdown.
+
+The roll carries the abbey's seal. It has never been copied."
+reexamine_text = "House Ashdown bought the cure, and sold it at ten times the price."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/PurchasersRoll"]
+shape = SubResource("RectangleShape2D_80x70")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/PurchasersRoll"]
+offset_left = -20.0
+offset_top = -15.0
+offset_right = 20.0
+offset_bottom = 15.0
+color = Color(0.85, 0.78, 0.6, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/PurchasersRoll"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Look behind the fever books"
+horizontal_alignment = 1
+
+[node name="CopyDesk" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(540, -150)
+script = ExtResource("3_story_item")
+interaction_name = "Look at the copy desk"
+flag_to_set = ""
+discovery_text = "[b]A half-finished copy[/b]
+
+A novice has been copying a herbal, page by careful page. The chapter on fever-root stops mid-sentence, and the pen lies across it. Someone told them to stop."
+reexamine_text = "The fever-root chapter is still unfinished."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/CopyDesk"]
+shape = SubResource("RectangleShape2D_80x70")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/CopyDesk"]
+offset_left = -20.0
+offset_top = -15.0
+offset_right = 20.0
+offset_bottom = 15.0
+color = Color(0.85, 0.78, 0.6, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/CopyDesk"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Look at the copy desk"
+horizontal_alignment = 1
+
+[node name="AbbeyDoor" type="Area2D" parent="."]
+z_index = 6
+position = Vector2(0, 700)
+script = ExtResource("4_travel_point")
+interaction_name = "Take the abbey road"
+from_location = "brackenmoor_abbey"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AbbeyDoor"]
+shape = SubResource("RectangleShape2D_140x60")
+
+[node name="Visual" type="ColorRect" parent="AbbeyDoor"]
+offset_left = -70.0
+offset_top = -15.0
+offset_right = 70.0
+offset_bottom = 15.0
+color = Color(0.55, 0.42, 0.22, 1)
+
+[node name="RoadSign" type="Label" parent="AbbeyDoor"]
+z_index = 5
+offset_left = -120.0
+offset_top = 26.0
+offset_right = 120.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0.94, 0.75, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 13
+text = "Take the abbey road"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="AbbeyDoor"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Take the abbey road"
+horizontal_alignment = 1
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 560)
+
+[node name="from_travel" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 600)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.7, 0.7)
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("5_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[node name="DebugInteractionPanel" parent="DialogueUI" instance=ExtResource("6_debug_interaction_panel")]
+visible = false
+
+[node name="DebugConsole" parent="." instance=ExtResource("7_debug_console")]
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

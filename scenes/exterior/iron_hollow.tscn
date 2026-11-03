@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://iron_hollow_camp"]
+[gd_scene load_steps=18 format=3 uid="uid://iron_hollow_camp"]
 
 [ext_resource type="PackedScene" uid="uid://c2kqr5m8vnh1p" path="res://scenes/player/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/npcs/varn_bandit.tscn" id="2_varn"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="7_world_solid"]
 [ext_resource type="Script" path="res://scripts/world/world_obstacle.gd" id="8_world_obstacle"]
 [ext_resource type="Script" path="res://scripts/world/generatable_asset.gd" id="9_generatable_asset"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="10_story_item"]
+[ext_resource type="Script" path="res://scripts/world/travel_point.gd" id="11_travel_point"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tent_large"]
 size = Vector2(128, 96)
@@ -30,6 +32,12 @@ size = Vector2(600, 40)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_boundary_v"]
 size = Vector2(40, 600)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_weapon_crate"]
+size = Vector2(48, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tithe_cart"]
+size = Vector2(72, 40)
 
 [node name="IronHollow" type="Node2D"]
 
@@ -141,6 +149,87 @@ script = ExtResource("9_generatable_asset")
 asset_id = "bandit_tent_2"
 generation_prompt = "isometric 2D game tent, 3/4 view, small bandit sleeping tent, patched canvas, crude wooden stakes, bedroll visible through opening, shadow to bottom-right, dirty brown-green colors"
 asset_type = "building"
+
+[node name="MarkedWeapons" type="Area2D" parent="."]
+z_index = 6
+position = Vector2(-140, 110)
+script = ExtResource("10_story_item")
+interaction_name = "Inspect Weapon Crate"
+flag_to_set = "weapons_traced_to_bjorn"
+discovery_text = "[b]A crate of new blades[/b]
+
+Behind the barracks tent sits an open crate of swords and spearheads, still bright from the forge. Every tang is stamped with the same maker's mark: a hammer over a pine tree.
+
+It is the mark of Bjorn, the blacksmith of Thornhaven."
+reexamine_text = "Bjorn's hammer-and-pine mark is stamped on every blade in the crate."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarkedWeapons"]
+shape = SubResource("RectangleShape2D_weapon_crate")
+
+[node name="Visual" type="ColorRect" parent="MarkedWeapons"]
+offset_left = -24.0
+offset_top = -16.0
+offset_right = 24.0
+offset_bottom = 16.0
+color = Color(0.4, 0.3, 0.18, 1)
+
+[node name="TitheCart" type="Area2D" parent="."]
+z_index = 6
+position = Vector2(150, 112)
+script = ExtResource("10_story_item")
+interaction_name = "Look at the Cart"
+flag_to_set = ""
+discovery_text = "[b]The Tithe cart[/b]
+
+A high-sided cart stands chocked by the barracks tent, its bed fitted with an iron rail and a run of chain. The axle is new and freshly greased. Fresh straw has been forked into the bed, though nothing yet lies on it.
+
+Chalked on the tailboard, in a neat hand: a 7, and beneath it, THORNHAVEN. Ruts run from its wheels to the east edge of the camp, where the ridge trail starts, and nowhere else."
+reexamine_text = "The cart for Thornhaven, greased and strawed. A chalked 7 on the tailboard, and ruts toward the ridge trail."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TitheCart"]
+shape = SubResource("RectangleShape2D_tithe_cart")
+
+[node name="Visual" type="ColorRect" parent="TitheCart"]
+offset_left = -34.0
+offset_top = -18.0
+offset_right = 34.0
+offset_bottom = 18.0
+color = Color(0.38, 0.27, 0.16, 1)
+
+[node name="Rail" type="ColorRect" parent="TitheCart"]
+offset_left = -30.0
+offset_top = -14.0
+offset_right = 30.0
+offset_bottom = -10.0
+color = Color(0.42, 0.42, 0.45, 1)
+
+[node name="WheelL" type="ColorRect" parent="TitheCart"]
+offset_left = -30.0
+offset_top = 14.0
+offset_right = -18.0
+offset_bottom = 24.0
+color = Color(0.25, 0.2, 0.15, 1)
+
+[node name="WheelR" type="ColorRect" parent="TitheCart"]
+offset_left = 18.0
+offset_top = 14.0
+offset_right = 30.0
+offset_bottom = 24.0
+color = Color(0.25, 0.2, 0.15, 1)
+
+[node name="InteractionPrompt" type="Label" parent="TitheCart"]
+z_index = 10
+visible = false
+offset_left = -100.0
+offset_top = -44.0
+offset_right = 100.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Look at the Cart"
+horizontal_alignment = 1
 
 [node name="Campfire" type="StaticBody2D" parent="."]
 position = Vector2(0, 48)
@@ -262,8 +351,8 @@ shape = SubResource("RectangleShape2D_boundary_v")
 [node name="ExitToForest" type="Area2D" parent="."]
 position = Vector2(0, 220)
 script = ExtResource("6_scene_trigger")
-target_location = "thornhaven_exterior"
-target_spawn_point = "from_iron_hollow"
+target_location = "forest_path"
+target_spawn_point = "from_iron_hollow_camp"
 prompt_text = "Leave Camp"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExitToForest"]
@@ -369,6 +458,96 @@ text = "End Conversation"
 visible = false
 
 [node name="DebugConsole" parent="." instance=ExtResource("5_debug_console")]
+
+[node name="ForestPathTrail" type="ColorRect" parent="SceneBackground"]
+offset_left = -210.0
+offset_top = 140.0
+offset_right = -150.0
+offset_bottom = 300.0
+color = Color(0.3, 0.25, 0.18, 1)
+
+[node name="ToForestPath" type="Area2D" parent="."]
+position = Vector2(-180, 240)
+script = ExtResource("6_scene_trigger")
+target_location = "forest_path"
+target_spawn_point = "from_iron_hollow_camp"
+prompt_text = "Take the Forest Path"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ToForestPath"]
+shape = SubResource("RectangleShape2D_exit_trigger")
+
+[node name="InteractionPrompt" type="Label" parent="ToForestPath"]
+z_index = 10
+visible = false
+offset_left = -80.0
+offset_top = -40.0
+offset_right = 80.0
+offset_bottom = -15.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Take the Forest Path"
+horizontal_alignment = 1
+
+[node name="from_forest_path" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-180, 190)
+
+[node name="RidgeTrail" type="Area2D" parent="."]
+z_index = 6
+position = Vector2(240, -40)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("11_travel_point")
+interaction_name = "Take the ridge trail toward the Pit"
+from_location = "iron_hollow_camp"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RidgeTrail"]
+shape = SubResource("RectangleShape2D_tent_small")
+
+[node name="TrailMarker" type="ColorRect" parent="RidgeTrail"]
+offset_left = -10.0
+offset_top = -24.0
+offset_right = 10.0
+offset_bottom = 24.0
+color = Color(0.42, 0.4, 0.36, 1)
+
+[node name="Cairn" type="ColorRect" parent="RidgeTrail"]
+offset_left = -16.0
+offset_top = 16.0
+offset_right = 16.0
+offset_bottom = 28.0
+color = Color(0.5, 0.48, 0.44, 1)
+
+[node name="TrailSign" type="Label" parent="RidgeTrail"]
+z_index = 5
+offset_left = -150.0
+offset_top = 30.0
+offset_right = 150.0
+offset_bottom = 52.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 12
+text = "East, over the ridge: the carts' road"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="RidgeTrail"]
+z_index = 10
+visible = false
+offset_left = -150.0
+offset_top = -50.0
+offset_right = 150.0
+offset_bottom = -25.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Take the ridge trail toward the Pit"
+horizontal_alignment = 1
+
+[node name="from_travel" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(220, -110)
 
 [connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
 [connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]

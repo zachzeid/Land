@@ -1,0 +1,4073 @@
+{
+  "id": "regents_gambit",
+  "title": "The Regent's Gambit",
+  "summary": "The Act III hinge between valley and throne. The Lord Protector must choose: crush Iron Hollow for a public victory, or make its Boss his secret instrument. If he learns that the Cathedral's fever cure is dug in chains on crown land by Thornhaven's stolen children, the choice is also whether the chains come off. Lady Ashdown, the Guildmaster and the High Magistry choose too, and whatever the crown does, someone will try to read it aloud.",
+  "prefix": "reg_",
+  "act_span": [
+    1,
+    3
+  ],
+  "flags": {
+    "reg_west_in_question": "The regency council put the question of the Western Valley to the Lord Protector, and he took it away to think on alone.",
+    "reg_terms_drafted": "The Lord Protector drafted, for the third time, terms by which the crown would pardon whoever ruled Iron Hollow in return for the tithe and a quiet valley, and this time he did not burn them.",
+    "reg_victory_promised": "The Lord Protector promised the regency council a victory in the west before the winter levy.",
+    "reg_guild_loan_offered": "Guildmaster Hollis Marrow offered the crown a Guild loan to pay Fort Ashguard through the winter, and asked for a seat on the regency council in return.",
+    "reg_magistry_claims_the_valley": "The High Magistrate entered the Western Valley's troubles on the Magistry's rolls, so that no settlement of them could be made without the court's knowledge.",
+    "reg_ashdown_offer_made": "Lady Seraphine Ashdown offered the regent the valley's tithe paid in full by her house, in return for a seat on the regency council.",
+    "reg_ashdown_bargain_struck": "The Lord Protector and Lady Seraphine Ashdown agreed over supper that her house would back whatever the crown did in the west, for a seat at the regency council's table.",
+    "reg_ashdown_refused": "The Lord Protector rose from Lady Seraphine Ashdown's supper table without giving her the seat she asked for.",
+    "reg_ashdown_hollow_tie_known": "The Lord Protector learned that House Ashdown's money had paid Iron Hollow, through the Guild, for two years, to keep the valley afraid enough to sell.",
+    "reg_boss_known_to_regent": "The Lord Protector learned that Iron Hollow was ruled by Mira, the widow who kept the Rusty Nail in Thornhaven.",
+    "reg_boss_wrote_to_regent": "A letter in a woman's hand, sealed with tavern tallow, reached the Lord Protector offering a full tithe and a quiet valley in return for a pardon.",
+    "reg_varn_offered_terms": "A letter went east to the Lord Protector under Varn's name, offering a quiet valley and the crown's tithe in return for a pardon and Iron Hollow.",
+    "reg_regent_summoned": "The High Magistrate summoned the Lord Protector to answer before the High Magistry for the crown's dealings in the Western Valley.",
+    "reg_writ_shelved": "The High Magistrate set his writ against the regent aside in open court until the valley's own trial was done, and said why on the record.",
+    "reg_sealed_orders_shown": "Captain Renna Thorne laid the regent's private instructions about the Western Valley before the High Magistrate.",
+    "reg_strike_ordered": "The Lord Protector sealed an order for the King's Rangers to break Iron Hollow under the crown's banner.",
+    "reg_bargain_offered": "The Lord Protector sent secret terms west: a pardon and a quiet title for whoever ruled Iron Hollow, in return for the crown's tithe and a quiet valley, with not a word of the Hollow's own Tithe.",
+    "reg_player_counselled_the_regent": "The player gave the Lord Protector their counsel on Iron Hollow in the Crown Court, and he heard it to the end.",
+    "reg_hollow_warned_from_hill": "Word that the crown might strike Iron Hollow went west from Palace Hill on the Guild's riders.",
+    "reg_crown_strikes_hollow": "The King's Rangers struck Iron Hollow under the crown's banner and burned its camp in the Darkwood.",
+    "reg_strike_broken": "The King's Rangers were met in the Darkwood by Iron Hollow's knives and fell back to Thornhaven carrying their dead.",
+    "reg_player_warned_the_boss": "The player warned Iron Hollow's Boss that the crown's rangers were coming.",
+    "reg_player_stood_at_the_banner": "The player stood under the crown's banner at the edge of the Darkwood when the King's Rangers rode on Iron Hollow.",
+    "reg_hollow_scattered": "Iron Hollow struck its camp in a single night and scattered into the Darkwood and up the ridge trail toward the Pit before the crown's banner arrived.",
+    "reg_varn_given_to_crown": "Iron Hollow gave the King's Rangers the deserter Varn, bound at the wrists, so that the crown's victory would have a face.",
+    "reg_terms_copied": "Old Wren copied the crown's secret terms to Iron Hollow by candlelight before she pressed the seal again.",
+    "reg_crown_buys_hollow": "Iron Hollow took the crown's secret terms: a pardon and a quiet title, in return for the crown's tithe paid in full and a quiet valley.",
+    "reg_terms_name_varn": "The answer Iron Hollow sent the crown was signed with the deserter Varn's name, and the widow at the Rusty Nail was nowhere in it.",
+    "reg_terms_refused": "Iron Hollow sent the crown's secret terms back unanswered, wrapped around a ranger's arrowhead.",
+    "reg_terms_exposed": "The crown's secret bargain with Iron Hollow was read aloud in the High Magistry, with the Lord Protector's seal on it.",
+    "reg_terms_buried": "The crown's bargain with Iron Hollow was never written in any record the High Magistry could read.",
+    "reg_player_gave_terms_to_magistry": "The player laid proof of the crown's secret bargain with Iron Hollow before the High Magistrate.",
+    "reg_player_carried_the_answer": "The player carried Iron Hollow's answer to the crown's secret terms east along the Kingsroad and put it in the Lord Protector's hand.",
+    "reg_salt_truth_known": "The Lord Protector learned that the Cathedral's rationed Grey Fever cure was white salt dug in chains, on crown land at Greystone, by the people Iron Hollow's Tithe took from Thornhaven.",
+    "reg_salt_kept_flowing": "The Lord Protector resolved that the Greystone salt would go on reaching the Cathedral, and that no record of the crown's would say who dug it.",
+    "reg_seam_to_be_opened": "The Lord Protector resolved that whatever the crown did in the west, the chains in Greystone's seam would come off under the crown's banner."
+  },
+  "player_flags": [
+    "reg_player_counselled_the_regent",
+    "reg_player_warned_the_boss",
+    "reg_player_gave_terms_to_magistry",
+    "reg_player_stood_at_the_banner",
+    "reg_player_carried_the_answer"
+  ],
+  "crossovers": [
+    "tithe_rangers_arrive",
+    "tithe_valley_pardoned",
+    "fence_ledger_taken",
+    "fence_route_burned",
+    "inh_deed_challenged",
+    "inh_valley_sold",
+    "grey_cure_recipe_known",
+    "grey_cathedral_shamed",
+    "des_varn_warrant_served",
+    "des_lucan_disgraced",
+    "vein_ore_road_closed",
+    "vein_miners_rise",
+    "ford_tally_given",
+    "ford_crossing_seized",
+    "mag_trial_called",
+    "mag_verdict_given",
+    "way_letters_read",
+    "way_boss_named_in_capitol",
+    "hc_varn_ascendant",
+    "hc_varn_dead",
+    "cou_martial_law",
+    "ih_supply_line_cut",
+    "oath_blades_sabotaged",
+    "oath_resistance_armed",
+    "tithe_player_named_governor",
+    "tithe_pit_reported",
+    "tn_taken_freed"
+  ],
+  "beats": [
+    {
+      "id": "the_empty_treasury",
+      "act": 1,
+      "title": "The Empty Treasury",
+      "summary": "Act I. The regency council sits over a treasury that cannot pay Fort Ashguard past midwinter. The Lord Protector must decide what the Western Valley is to him: an enemy to break for a victory, or a bandit kingdom that takes a child a year, to make his own. The Guild and the Magistry each move first.",
+      "location": "capitol_palace",
+      "requires": [
+        "!reg_west_in_question"
+      ],
+      "resolves_on": [
+        "reg_terms_drafted",
+        "reg_victory_promised"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "reg_west_in_question",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "reg_edric_counts_the_winter",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "The council wants to know how Ashguard will be paid and when the west will be quiet. You have drafted terms for Iron Hollow twice and burned them twice. A victory would be cheaper to announce and dearer to buy.",
+          "options": [
+            {
+              "id": "keep_the_terms",
+              "label": "Draft the terms a third time, and lock them in your desk instead of the fire",
+              "serves": [
+                "use_the_hollow",
+                "fill_the_treasury"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_terms_drafted",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "promise_victory",
+              "label": "Promise the council a victory in the west before the winter levy",
+              "serves": [
+                "win_a_victory",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_victory_promised",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "wait_for_word",
+              "label": "Say only that the rangers will report, and wait",
+              "serves": [
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger, as if idly, what the valley says of the rangers and whether anyone there fears the crown."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_decides_the_winter",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "The council has asked again. The paymaster from Ashguard has asked twice.",
+          "options": [
+            {
+              "id": "terms",
+              "label": "Keep the terms",
+              "serves": [
+                "use_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_terms_drafted",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "victory",
+              "label": "Promise the victory",
+              "serves": [
+                "win_a_victory"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_victory_promised",
+                  "value": true
+                }
+              ]
+            }
+          ],
+          "once": false
+        },
+        {
+          "id": "reg_edric_hears_martial_law",
+          "type": "scheme",
+          "trigger": "on_flag:cou_martial_law",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "A retired captain has declared martial law in Thornhaven. The west, it seems, is willing to fight for itself.",
+          "options": [
+            {
+              "id": "ride_its_back",
+              "label": "Promise the council a victory the valley will help you win",
+              "serves": [
+                "win_a_victory"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_victory_promised",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "buy_before_they_fight",
+              "label": "Keep your terms; a valley at war pays no tithe",
+              "serves": [
+                "fill_the_treasury",
+                "use_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_terms_drafted",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_hollis_offers_a_loan",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The crown cannot pay its own garrison. The Guild can. A seat on the regency council is worth more than any loan you could ever lose.",
+          "options": [
+            {
+              "id": "loan_for_a_seat",
+              "label": "Offer the crown a winter loan for Ashguard, and ask for a council seat",
+              "serves": [
+                "a_seat_on_the_council",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_guild_loan_offered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "friendly_patience",
+              "label": "Let it be known the Guild helps its friends, and wait to be asked",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger the Guild could carry the crown through the winter, for friends, and ask whom the stranger counts as friends."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing; a desperate regent pays better next month",
+              "serves": [
+                "hold_every_patron"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_corwin_claims_the_valley",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The regent has taken the valley's question away to think on alone. Things a regent thinks about alone have a way of never reaching your court.",
+          "options": [
+            {
+              "id": "enter_the_rolls",
+              "label": "Enter the valley's troubles on the Magistry's rolls, today, in ink",
+              "serves": [
+                "check_the_regent",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_magistry_claims_the_valley",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "ask_openly",
+              "label": "Ask the regent openly, before the council, what he means to do",
+              "serves": [
+                "law_applied_evenly"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger you asked the regent before the whole council what he means to do in the west, and that he smiled."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep your counsel until you have the lost reports",
+              "serves": [
+                "find_the_lost_reports"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_on_the_rolls",
+          "type": "react",
+          "trigger": "on_flag:reg_magistry_claims_the_valley",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Vane has put the valley on his court's rolls. Whatever you do in the west, it will now be done under his eye.",
+          "options": [
+            {
+              "id": "quieter_still",
+              "label": "Resolve that whatever you do will leave nothing for a court to read",
+              "serves": [
+                "keep_the_magistry_quiet"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "edric",
+                  "want": "keep_the_magistry_quiet",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "invite_vane",
+              "label": "Invite the old man to supper and listen",
+              "serves": [
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger what the High Magistrate is really after in the valley, as if it were a small and amusing question."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ashdown_supper",
+      "act": 1,
+      "title": "Supper at Ashdown House",
+      "summary": "Act I. Lady Seraphine Ashdown invites the Lord Protector to supper and offers him the valley's tithe paid by her house, for a seat beside the throne. The Guildmaster, who holds her father's debts and knows where her money has gone, decides how much of her to sell.",
+      "location": "ashdown_manor",
+      "requires": [
+        "reg_west_in_question"
+      ],
+      "resolves_on": [
+        "reg_ashdown_bargain_struck",
+        "reg_ashdown_refused"
+      ],
+      "hooks": [
+        {
+          "id": "reg_seraphine_lays_the_table",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "The regent is coming to supper. He needs the west's coin, and you hold the deed to the west. A seat at his council would put Ashdown back where it belongs, and the Guild's hand off your throat.",
+          "options": [
+            {
+              "id": "offer_the_tithe",
+              "label": "Offer him the valley's tithe paid in full by Ashdown, for a council seat",
+              "serves": [
+                "a_seat_beside_the_throne",
+                "restore_house_ashdown"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_ashdown_offer_made",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Tell the stranger, lightly, that the crown's troubles in the west could end at a supper table, if the crown were grateful."
+                }
+              ]
+            },
+            {
+              "id": "ask_for_a_season",
+              "label": "Ask only that the crown leave the valley's troubles to her agents a season longer",
+              "serves": [
+                "keep_the_valley_afraid",
+                "own_the_valley"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Ask the stranger how frightened Thornhaven really is, and listen to the answer like a buyer."
+                }
+              ]
+            },
+            {
+              "id": "wait_for_him",
+              "label": "Pour the wine and wait for him to raise it",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_at_her_table",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Lady Ashdown's wine is good and her offer is better. A house that pays the crown's tithe is a house the crown owes.",
+          "options": [
+            {
+              "id": "accept",
+              "label": "Accept, and let her house stand behind the crown in the west",
+              "serves": [
+                "fill_the_treasury",
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_ashdown_bargain_struck",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "refuse",
+              "label": "Thank her and rise without giving her the seat",
+              "serves": [
+                "curb_the_great_houses"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_ashdown_refused",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "keep_her_waiting",
+              "label": "Neither yes nor no; let her wonder",
+              "serves": [
+                "curb_the_great_houses",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger whether they know Lady Ashdown, and what her land agent is buying in the valley."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_hollis_sells_the_lady",
+          "type": "betray",
+          "trigger": "idle",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Lady Ashdown wants a council seat. So do you. Your ledger says where her money has gone for two years: to Iron Hollow, through your own warehouses, to keep the valley frightened enough to sell.",
+          "options": [
+            {
+              "id": "tell_the_regent",
+              "label": "Let the regent learn, discreetly, where Ashdown's money goes",
+              "serves": [
+                "a_seat_on_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_ashdown_hollow_tie_known",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "seraphine"
+              ]
+            },
+            {
+              "id": "squeeze_her",
+              "label": "Keep it, and remind her of her father's notes",
+              "serves": [
+                "hold_every_patron",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger Lady Ashdown's debts are a long story, and that the Guild tells it only to friends."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep every patron needing you alive",
+              "serves": [
+                "hold_every_patron"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_learns_the_tie",
+          "type": "intercept",
+          "trigger": "on_flag:reg_ashdown_hollow_tie_known",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Ashdown's money has paid Iron Hollow for two years. The lady at the end of your table has been buying the valley acre by acre with the fear of the Hollow's cart.",
+          "options": [
+            {
+              "id": "rise",
+              "label": "Rise from her table without a word of the seat",
+              "serves": [
+                "curb_the_great_houses",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_ashdown_refused",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "hold_it_over_her",
+              "label": "Accept her offer, and keep what you know in your pocket",
+              "serves": [
+                "curb_the_great_houses",
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_ashdown_bargain_struck",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_fever_stain",
+          "type": "intercept",
+          "trigger": "on_flag:grey_cathedral_shamed",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "The city is talking of the Grey Fever cure the Cathedral sold to the rich, and of the houses that grew fat on it. Ashdown's name is being spoken with it, and so, lower, is the question of where the salt comes from now.",
+          "options": [
+            {
+              "id": "not_this_house",
+              "label": "Decline Ashdown's seat; the boy's council cannot sit beside that name",
+              "serves": [
+                "protect_the_boy",
+                "curb_the_great_houses"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_ashdown_refused",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "cheaper_now",
+              "label": "Take her offer; a shamed house asks less",
+              "serves": [
+                "fill_the_treasury",
+                "curb_the_great_houses"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_ashdown_bargain_struck",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_seraphine_deed_contested",
+          "type": "scheme",
+          "trigger": "on_flag:inh_deed_challenged",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "The High Magistry is testing your deed against the freeholders. A regent's grant would settle what a court only argues.",
+          "options": [
+            {
+              "id": "press_now",
+              "label": "Press the regent tonight, before the court can rule",
+              "serves": [
+                "own_the_valley",
+                "a_seat_beside_the_throne"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_ashdown_offer_made",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "draw_back",
+              "label": "Draw back from the table until the court is done",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Tell the stranger, coolly, that House Ashdown is in no hurry about the west and never has been."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_seraphine_ledger_loose",
+          "type": "intercept",
+          "trigger": "on_flag:fence_ledger_taken",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "The Guildmaster's patron ledger is loose in the city. Your name is in it, beside 'the valley venture'.",
+          "options": [
+            {
+              "id": "postpone",
+              "label": "Send word that you are unwell, and put the supper off indefinitely",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "regents_gambit",
+                  "beat": "ashdown_supper"
+                }
+              ]
+            },
+            {
+              "id": "brazen_it",
+              "label": "Hold the supper as if nothing had happened",
+              "serves": [
+                "a_seat_beside_the_throne"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Ask the stranger whether they've heard any foolish talk about a Guild ledger, and laugh before they answer."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_sends_a_carriage",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Lady Ashdown has gone very quiet. Quiet houses are the ones with something to sell, or something to hide.",
+          "options": [
+            {
+              "id": "send_carriage",
+              "label": "Send a carriage for her anyway, with a note in your own hand",
+              "serves": [
+                "curb_the_great_houses",
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "regents_gambit",
+                  "beat": "ashdown_supper"
+                }
+              ]
+            },
+            {
+              "id": "let_her_hide",
+              "label": "Let her hide; a frightened house is a useful one",
+              "serves": [
+                "curb_the_great_houses"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_valley_sold",
+          "type": "react",
+          "trigger": "on_flag:inh_valley_sold",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "The valley's freeholders have sold. A great house now owns the land your tithe comes from.",
+          "options": [
+            {
+              "id": "mark_it",
+              "label": "Note it, and resolve that no house will hold the west over you",
+              "serves": [
+                "curb_the_great_houses"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "edric",
+                  "want": "curb_the_great_houses",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "ask_the_price",
+              "label": "Ask the stranger what the valley went for",
+              "serves": [
+                "fill_the_treasury"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger what Thornhaven's freeholds went for, acre by acre, and whose agent bought them."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "word_from_the_west",
+      "act": 2,
+      "title": "Word from the West",
+      "summary": "Act II. With the rangers in the valley, the regent's question gets a face. A tallow-sealed letter in a woman's hand, a deserter's offer, a ranger's report, a name whispered in the Lantern Market: someone tells the Lord Protector who really governs Iron Hollow.",
+      "location": "capitol_palace",
+      "requires": [
+        "reg_west_in_question",
+        "tithe_rangers_arrive"
+      ],
+      "resolves_on": [
+        "reg_boss_known_to_regent",
+        "reg_boss_wrote_to_regent",
+        "reg_varn_offered_terms"
+      ],
+      "hooks": [
+        {
+          "id": "reg_mira_writes_east",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Crown riders are in your valley, and a regent with an empty treasury is reading their reports. A regent who needs the west quiet will pay whoever can keep it quiet.",
+          "options": [
+            {
+              "id": "tallow_letter",
+              "label": "Write to the regent yourself, unsigned, under tavern tallow: a full tithe for a pardon",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_boss_wrote_to_regent",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "varns_name",
+              "label": "Have a letter go east under Varn's name, so the crown bargains with a face that isn't yours",
+              "serves": [
+                "keep_the_mask",
+                "keep_varn_leashed"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_varn_offered_terms",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "quiet_forest",
+              "label": "Write nothing, and let the rangers find a quiet forest",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_varn_writes_east",
+          "type": "scheme",
+          "trigger": "on_flag:hc_varn_ascendant",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Iron Hollow is yours in your own name. The crown has an empty purse and forty riders a long way from home. A pardon would make you a lord of the forest in law.",
+          "options": [
+            {
+              "id": "own_name",
+              "label": "Send the regent an offer in your own name: the valley quiet, for a pardon and the Hollow",
+              "serves": [
+                "take_the_hollow",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_varn_offered_terms",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "scorn_the_crown",
+              "label": "Send nothing; let the crown come if it has the stomach",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the crown can come and take the valley back, if it has the stomach for the Darkwood."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_renna_names_the_governor",
+          "type": "reveal",
+          "trigger": "on_flag:tithe_player_named_governor",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The stranger has told you who truly governs the valley. Your orders say report before you strike. Reporting means the regent decides what happens to whoever it is.",
+          "options": [
+            {
+              "id": "report_it",
+              "label": "Send the name east to the regent, as you were ordered",
+              "serves": [
+                "obey_the_crown",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_boss_known_to_regent",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "to_the_magistry",
+              "label": "Send it to the High Magistrate instead; let the law see it first",
+              "serves": [
+                "refuse_a_scapegoat",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you sent the name to the High Magistrate, not the regent, and that you may have ended your career doing it."
+                }
+              ]
+            },
+            {
+              "id": "sit_on_it",
+              "label": "Keep it until you have proof a court would accept",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_hears_the_name",
+          "type": "scheme",
+          "trigger": "on_flag:way_boss_named_in_capitol",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "The Lantern Market is saying the Boss of Iron Hollow is a woman: a tavern widow in Thornhaven. Your sources say the same, and you do not like being the last to know.",
+          "options": [
+            {
+              "id": "believe_it",
+              "label": "Believe it, and begin to think of her as a person you could write to",
+              "serves": [
+                "use_the_hollow",
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_boss_known_to_regent",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "tavern_talk",
+              "label": "Dismiss it as tavern talk; the Boss is a soldier, surely",
+              "serves": [
+                "win_a_victory"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger whether there's any truth in the market's story about a widow in Thornhaven, and smile as if it were absurd."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_reads_the_tallow",
+          "type": "react",
+          "trigger": "on_flag:reg_boss_wrote_to_regent",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "A letter sealed with tavern tallow, in a woman's hand, offering you the valley's tithe and quiet for a pardon. It is the best-written letter you have had all year.",
+          "options": [
+            {
+              "id": "keep_it",
+              "label": "Keep the letter in your desk beside your terms",
+              "serves": [
+                "use_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "edric",
+                  "want": "use_the_hollow",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger whether they know a woman in Thornhaven who writes a fine, careful hand."
+                }
+              ]
+            },
+            {
+              "id": "burn_it",
+              "label": "Burn it; the crown does not answer bandits' letters",
+              "serves": [
+                "win_a_victory"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "edric",
+                  "want": "win_a_victory",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_hollow_starving",
+          "type": "react",
+          "trigger": "on_flag:ih_supply_line_cut",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Word from the west: the Hollow's supply line through Thornhaven has been cut. A starving gang is a cheap one.",
+          "options": [
+            {
+              "id": "cheaper",
+              "label": "Note that a hungry Hollow will take smaller terms",
+              "serves": [
+                "use_the_hollow",
+                "fill_the_treasury"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "edric",
+                  "want": "use_the_hollow",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "weaker",
+              "label": "Note that a hungry Hollow will break more easily",
+              "serves": [
+                "win_a_victory"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "edric",
+                  "want": "win_a_victory",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_seraphine_seeks_the_boss",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "For two years you have paid a partner you have never seen. Now the regent is asking who rules Iron Hollow, and you would very much like to know before he does.",
+          "options": [
+            {
+              "id": "send_the_agent",
+              "label": "Send your land agent west to meet the Boss face to face",
+              "serves": [
+                "meet_the_boss"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Ask the stranger, lightly, whether they have ever met the man who runs the Darkwood, and what he is like."
+                }
+              ]
+            },
+            {
+              "id": "hands_clean",
+              "label": "Know nothing, and be seen to know nothing",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_magistrys_writ",
+      "act": 2,
+      "title": "The Magistry's Writ",
+      "summary": "Act II. High Magistrate Corwin Vane means to make the Lord Protector answer to the law like any man. The regent means the court to be busy elsewhere. A captain with sealed orders and a disgraced commander each hold something the court would like to hear.",
+      "location": "capitol_magistry",
+      "requires": [
+        "reg_west_in_question"
+      ],
+      "resolves_on": [
+        "reg_regent_summoned",
+        "reg_writ_shelved"
+      ],
+      "hooks": [
+        {
+          "id": "reg_corwin_drafts_the_summons",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The valley's tithe vanished, its petitions vanished, and the regent prefers to think about it alone. Your lungs give you two winters. You would like one of them to see a regent answer a summons.",
+          "options": [
+            {
+              "id": "summon",
+              "label": "Summon the Lord Protector to answer for the crown's dealings in the west",
+              "serves": [
+                "check_the_regent",
+                "law_applied_evenly"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_regent_summoned",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "shelve_on_record",
+              "label": "Set the writ aside on the record until the valley's own trial is done",
+              "serves": [
+                "hear_gregors_ledger",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_writ_shelved",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "ask_him_to_come",
+              "label": "Write to the regent asking him to come willingly first",
+              "serves": [
+                "law_applied_evenly"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger you've asked the regent to come before the court willingly, and that you expect a very polite refusal."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_buries_the_writ",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Vane is drafting something. You can smell ink from Palace Hill.",
+          "options": [
+            {
+              "id": "supper_for_vane",
+              "label": "Invite the old man to supper and ask for a season's grace",
+              "serves": [
+                "keep_the_magistry_quiet"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Invite the stranger to supper and ask, warmly, what the High Magistrate has been asking people about the valley."
+                }
+              ]
+            },
+            {
+              "id": "council_first",
+              "label": "Have the regency council sit on the valley first, so the court must wait",
+              "serves": [
+                "keep_the_magistry_quiet",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "regents_gambit",
+                  "beat": "the_magistrys_writ"
+                }
+              ]
+            },
+            {
+              "id": "let_him_write",
+              "label": "Let him write; a summons is not a verdict",
+              "serves": [
+                "stay_indispensable"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_corwin_reads_it_aloud",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The regency council has found reasons to sit on the west before your court can. Papers that are only filed get lost. Papers read aloud do not.",
+          "options": [
+            {
+              "id": "read_it_aloud",
+              "label": "Read the writ aloud in open court, where no council can sit on it",
+              "serves": [
+                "try_it_in_the_open",
+                "check_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "regents_gambit",
+                  "beat": "the_magistrys_writ"
+                }
+              ]
+            },
+            {
+              "id": "wait",
+              "label": "Wait for the council to finish",
+              "serves": [
+                "law_applied_evenly"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_corwin_trial_called",
+          "type": "aid",
+          "trigger": "on_flag:mag_trial_called",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The valley's trial is called in your court. A regent's name is bound to come up in it.",
+          "options": [
+            {
+              "id": "regent_as_witness",
+              "label": "Summon the regent as a witness to the valley's trial",
+              "serves": [
+                "check_the_regent",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_regent_summoned",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "keep_them_apart",
+              "label": "Keep the two matters apart, on the record, and try the valley first",
+              "serves": [
+                "hear_gregors_ledger"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_writ_shelved",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_corwin_verdict_given",
+          "type": "aid",
+          "trigger": "on_flag:mag_verdict_given",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The valley's verdict is given. Every thread in it led east, to Palace Hill.",
+          "options": [
+            {
+              "id": "now_the_regent",
+              "label": "Now summon the regent",
+              "serves": [
+                "check_the_regent",
+                "law_applied_evenly"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_regent_summoned",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "rest",
+              "label": "Rest a day; you cough blood in the mornings now",
+              "serves": [
+                "save_the_nephew"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_corwin_nephew_in_ledger",
+          "type": "reveal",
+          "trigger": "on_flag:fence_ledger_taken",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The Guildmaster's patron ledger is loose. One entry pays T. Vane for lost papers. A judge who sentences others for less must decide what he does with his own sister's son.",
+          "options": [
+            {
+              "id": "summon_anyway",
+              "label": "Summon the regent anyway, and put Tobias's name on the record yourself",
+              "serves": [
+                "law_applied_evenly",
+                "check_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_regent_summoned",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "step_aside",
+              "label": "Ask yourself whether you should sit in this matter at all",
+              "serves": [
+                "save_the_nephew"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger that a page of the Guild's ledger names your nephew, and ask whether a judge in your place should step aside."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_renna_shows_her_orders",
+          "type": "reveal",
+          "trigger": "idle",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The High Magistrate wants to know what the regent sent you west to do. The regent's private instructions are in your saddlebag.",
+          "options": [
+            {
+              "id": "show_them",
+              "label": "Lay the regent's instructions before the High Magistrate",
+              "serves": [
+                "prove_the_rangers",
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_sealed_orders_shown",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you gave the High Magistrate the regent's private orders, and that you'd do it again."
+                }
+              ],
+              "harms": [
+                "edric"
+              ]
+            },
+            {
+              "id": "keep_them",
+              "label": "Keep them; they were sealed for you, not the court",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_lucan_threatens_the_regent",
+          "type": "scheme",
+          "trigger": "on_flag:des_lucan_disgraced",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "The city knows Ashguard sold crown arms. It does not yet know why: two winters without pay from a regent who counts every wagon.",
+          "options": [
+            {
+              "id": "blame_the_purse",
+              "label": "Let it be known Ashguard sold what the regent's empty purse made it sell",
+              "serves": [
+                "restore_ashguards_honour",
+                "keep_ashguard_paid"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger Ashguard sold nothing the regent didn't make it sell, by leaving its men unpaid for two winters."
+                }
+              ],
+              "harms": [
+                "edric"
+              ]
+            },
+            {
+              "id": "silence",
+              "label": "Say nothing, and hope the court tires of soldiers",
+              "serves": [
+                "bury_the_arms_sale"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_salt_on_crown_land",
+      "title": "Salt on Crown Land",
+      "act": 2,
+      "location": "capitol_palace",
+      "summary": "Act II. Word reaches the Crown Court that the Cathedral's Grey Fever cure is white salt dug in chains, in a back-seam of Greystone's deep vein, by the people Iron Hollow's Tithe takes from Thornhaven. Greystone is crown land. Whether the regent believes it, and who tells him, matters.",
+      "requires": [
+        "reg_west_in_question",
+        "!reg_salt_truth_known"
+      ],
+      "resolves_on": [
+        "reg_salt_truth_known"
+      ],
+      "hooks": [
+        {
+          "id": "reg_renna_writes_of_the_pit",
+          "type": "reveal",
+          "trigger": "on_flag:tithe_pit_reported",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "You have written the Pit into your report, but reports wait on Old Wren's rack. The regent should hear today that the taken dig in chains on crown land.",
+          "options": [
+            {
+              "id": "letter_to_the_regent",
+              "label": "Send a ranger with a private letter to the regent: chains at Greystone, on the crown's own lease",
+              "serves": [
+                "obey_the_crown",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_salt_truth_known",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger the regent now knows who digs the Cathedral's salt, and that you will learn what kind of man he is by what he does."
+                }
+              ]
+            },
+            {
+              "id": "letter_to_vane",
+              "label": "Write to the High Magistrate instead",
+              "serves": [
+                "refuse_a_scapegoat",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you wrote of the Pit to the High Magistrate first; the regent would have bargained it away."
+                }
+              ]
+            },
+            {
+              "id": "wait_for_the_report",
+              "label": "Let the report carry it, in its own time",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_hears_the_cathedral",
+          "type": "scheme",
+          "trigger": "on_flag:grey_cathedral_shamed",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "The Cathedral is shamed before the city for selling the fever cure. Your clerks can tell you in an hour where its salt comes from now. You are not sure you want to know.",
+          "options": [
+            {
+              "id": "send_for_the_lease",
+              "label": "Send for the Greystone lease-rolls and the Cathedral's salt receipts",
+              "serves": [
+                "stay_indispensable",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_salt_truth_known",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "not_my_church",
+              "label": "Leave the Cathedral's sins to the bishops",
+              "serves": [
+                "keep_the_magistry_quiet"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_hears_the_taken_came_home",
+          "type": "scheme",
+          "trigger": "on_flag:tn_taken_freed",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Word from the west: children of Thornhaven came down off the ridge trail in broken chains, saying they dug white salt in a seam of Greystone. Greystone is the crown's.",
+          "options": [
+            {
+              "id": "hear_it_out",
+              "label": "Send for the rangers' account and the Greystone lease-rolls",
+              "serves": [
+                "stay_indispensable",
+                "win_a_victory"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_salt_truth_known",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "a_valley_tale",
+              "label": "Call it a valley tale and wait",
+              "serves": [
+                "keep_the_magistry_quiet"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_hollis_salt_receipts",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The salt comes to your wharf among Greystone's ore carts and goes to the Cathedral at a price you set. You have never asked who digs it, and the regent is asking questions about the west.",
+          "options": [
+            {
+              "id": "clean_the_receipts",
+              "label": "Have the Greystone salt receipts rewritten as old stock from the Grey Year",
+              "serves": [
+                "keep_the_guild_clean",
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger the Guild's salt is old stock from the Grey Year, honestly bought, and ask who has been saying otherwise."
+                }
+              ]
+            },
+            {
+              "id": "keep_selling",
+              "label": "Keep selling; mercy is a steady trade",
+              "serves": [
+                "turn_a_profit"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_cure_and_the_chains",
+      "title": "The Cure and the Chains",
+      "act": 2,
+      "location": "capitol_palace",
+      "summary": "Act II. The Lord Protector knows the Cathedral's mercy is dug by Thornhaven's stolen children on his nephew's land. He can keep it out of every record so the salt and the crown's tithe keep coming, or resolve that the chains come off under his banner. The Guildmaster and the High Magistrate each want his ear.",
+      "requires": [
+        "reg_salt_truth_known",
+        "!reg_salt_kept_flowing",
+        "!reg_seam_to_be_opened"
+      ],
+      "resolves_on": [
+        "reg_salt_kept_flowing",
+        "reg_seam_to_be_opened"
+      ],
+      "hooks": [
+        {
+          "id": "reg_edric_weighs_the_salt",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "The Cathedral's fever cure is dug in chains at Greystone, on the boy's land, by children a bandit takes by lot. Stop it and the wards go short and the Guild howls. Keep it quiet and the crown's tithe and the cure both keep coming. Free them and you have a victory no council can argue with.",
+          "options": [
+            {
+              "id": "keep_it_quiet",
+              "label": "Keep it from every record; the salt and the tithe keep coming",
+              "serves": [
+                "use_the_hollow",
+                "fill_the_treasury",
+                "keep_the_magistry_quiet"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_salt_kept_flowing",
+                  "value": true
+                },
+                {
+                  "type": "shift_want",
+                  "npc": "edric",
+                  "want": "use_the_hollow",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "chains_off",
+              "label": "Resolve that the chains come off under the crown's banner",
+              "serves": [
+                "win_a_victory",
+                "protect_the_boy"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_seam_to_be_opened",
+                  "value": true
+                },
+                {
+                  "type": "shift_want",
+                  "npc": "edric",
+                  "want": "win_a_victory",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "ask_the_stranger",
+              "label": "Ask someone who has seen the valley before you choose",
+              "serves": [
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger whether they have seen the seam at Greystone, and what they would do about it if the land were theirs."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_corwin_names_the_crime",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "Men, women and children in chains on crown land, digging a cure the Cathedral sells. The regent knows. Every day he says nothing, the crown is their jailer.",
+          "options": [
+            {
+              "id": "to_the_rolls",
+              "label": "Enter the seam at Greystone on the Magistry's rolls, today",
+              "serves": [
+                "law_applied_evenly",
+                "check_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_magistry_claims_the_valley",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "tell_him",
+              "label": "Tell the regent the court will try whoever keeps them there, crown or Guild",
+              "serves": [
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger the crown is jailer to Thornhaven's children while the regent says nothing, and the court means to say so."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Wait until you have a witness who dug",
+              "serves": [
+                "hear_gregors_ledger"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_hollis_counts_the_wards",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The regent knows where the salt comes from. A strike shuts the cure, the wards go short, and the Guild's name goes in the same sentence as chains.",
+          "options": [
+            {
+              "id": "urge_quiet",
+              "label": "Remind the regent, gently, how many in the River Quarter live on that salt",
+              "serves": [
+                "turn_a_profit",
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Ask the stranger whether freeing a few diggers is worth a River Quarter dying of fever, and say it as if it grieves you."
+                }
+              ]
+            },
+            {
+              "id": "disown_it",
+              "label": "Swear the Guild bought honest salt from honest carters",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger the Guild buys from Greystone's carters in good faith and never asked what was under the sacking."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing and see which way he leans",
+              "serves": [
+                "hold_every_patron"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_regents_audience",
+      "act": 2,
+      "title": "An Audience in the Crown Court",
+      "summary": "Act II. Before he chooses what Iron Hollow is to the crown, the Lord Protector wants one voice in the Crown Court that is not a courtier's. Lady Ashdown and the High Magistrate each try to reach his ear first; the stranger who has walked the valley may have it.",
+      "location": "capitol_palace",
+      "requires": [
+        "reg_west_in_question",
+        "tithe_rangers_arrive"
+      ],
+      "resolves_on": [
+        "reg_player_counselled_the_regent"
+      ],
+      "hooks": [
+        {
+          "id": "reg_edric_sends_for_the_stranger",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Rangers in the valley, an empty treasury, a council that wants an answer. Every voice in the Crown Court belongs to someone who profits from what you choose. You want one that has walked the valley.",
+          "options": [
+            {
+              "id": "send_for_them",
+              "label": "Send for the stranger who has walked the valley, and hear them before you choose",
+              "serves": [
+                "stay_indispensable",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger to the Crown Court, and ask them plainly what they would have the crown do with Iron Hollow."
+                }
+              ]
+            },
+            {
+              "id": "lean_to_the_banner",
+              "label": "Let the council hear that you lean toward the banner",
+              "serves": [
+                "win_a_victory"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "edric",
+                  "want": "win_a_victory",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "read_the_terms_again",
+              "label": "Take the third draft of the terms out of your desk and read it again",
+              "serves": [
+                "use_the_hollow",
+                "fill_the_treasury"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "edric",
+                  "want": "use_the_hollow",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_seraphine_whispers_terms",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "The regent is choosing between a strike and a bargain. A strike would burn the Guild's books along with the camp, and your name is in those books. A bought Hollow keeps the valley paying, and selling.",
+          "options": [
+            {
+              "id": "urge_terms",
+              "label": "Tell the regent, gently, that forests are not won, only bought",
+              "serves": [
+                "keep_the_valley_afraid",
+                "a_seat_beside_the_throne"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Tell the stranger the crown will never win a forest war, and ask them to say so where the regent can hear it."
+                }
+              ]
+            },
+            {
+              "id": "warn_the_hollow",
+              "label": "Have the Guild's riders carry word west that the crown may strike",
+              "serves": [
+                "keep_her_hands_clean",
+                "keep_the_valley_afraid"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_hollow_warned_from_hill",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "renna"
+              ]
+            },
+            {
+              "id": "back_the_strike",
+              "label": "Back the strike loudly, and be seen on the winning side",
+              "serves": [
+                "a_seat_beside_the_throne"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Tell the stranger House Ashdown has always stood for the crown's law in the west, and say it as if it were true."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_corwin_warns_the_regent",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "You suspect the regent would rather the valley were settled quietly than lawfully. Quiet settlements with bandits who take a child a year have a word in the law, and it is not 'mercy'.",
+          "options": [
+            {
+              "id": "warn_him",
+              "label": "Tell the regent that any bargain with bandits will be tried, whoever signed it",
+              "serves": [
+                "check_the_regent",
+                "law_applied_evenly"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger that if the crown buys bandits, the High Magistry will try whoever signed for it, regent or not."
+                }
+              ]
+            },
+            {
+              "id": "lawful_strike",
+              "label": "Urge a lawful strike: warrants and prisoners, not terms",
+              "serves": [
+                "law_applied_evenly",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Ask the stranger to urge the regent toward warrants and living prisoners, not bargains and not graves."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing and wait to see which he chooses",
+              "serves": [
+                "try_it_in_the_open"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_regents_choice",
+      "act": 3,
+      "title": "The Regent's Choice",
+      "summary": "Act III, the hinge. The stranger has given the Lord Protector their counsel, and now he must choose: crush Iron Hollow for a public victory, or make whoever rules it his secret instrument. If he knows who digs the Cathedral's salt, a bargain keeps them digging. The Guildmaster leans on the scale, and the west keeps sending him reasons.",
+      "location": "capitol_palace",
+      "requires": [
+        "reg_west_in_question",
+        "tithe_rangers_arrive",
+        "reg_player_counselled_the_regent",
+        "!reg_strike_ordered",
+        "!reg_bargain_offered"
+      ],
+      "resolves_on": [
+        "reg_strike_ordered",
+        "reg_bargain_offered"
+      ],
+      "hooks": [
+        {
+          "id": "reg_edric_the_hinge",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Rangers in the valley, the treasury empty, the council restless. You can break Iron Hollow under the banner and give the city its victory, or buy it and have the west paid and quiet, and whatever the Hollow does on its own side of the ridge written nowhere. You cannot do both.",
+          "options": [
+            {
+              "id": "strike",
+              "label": "Seal an order for the rangers to break Iron Hollow under the crown's banner",
+              "serves": [
+                "win_a_victory",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_strike_ordered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "buy",
+              "label": "Send secret terms west: a pardon and a quiet title for the tithe and the quiet",
+              "serves": [
+                "use_the_hollow",
+                "fill_the_treasury",
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_bargain_offered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "not_yet",
+              "label": "Not yet; let the others show their hands first",
+              "serves": [
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger, plainly for once, what they would do with Iron Hollow if they wore your chain."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_takes_counsel",
+          "type": "scheme",
+          "trigger": "on_flag:reg_player_counselled_the_regent",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "The stranger has given you their counsel on Iron Hollow, and you heard it to the end. Now you choose.",
+          "options": [
+            {
+              "id": "strike_on_counsel",
+              "label": "Order the strike",
+              "serves": [
+                "win_a_victory",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_strike_ordered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "buy_on_counsel",
+              "label": "Send the terms",
+              "serves": [
+                "use_the_hollow",
+                "fill_the_treasury"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_bargain_offered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "weigh_it",
+              "label": "Thank them, and weigh it one night longer",
+              "serves": [
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Tell the stranger you heard every word of their counsel, and ask what they would fear most if you took it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_the_council_presses",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "You have the stranger's counsel. The regency council has stopped asking politely, and Ashguard's paymaster is outside again.",
+          "options": [
+            {
+              "id": "strike_at_last",
+              "label": "Seal the strike order",
+              "serves": [
+                "win_a_victory",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_strike_ordered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "terms_at_last",
+              "label": "Send the terms west",
+              "serves": [
+                "use_the_hollow",
+                "fill_the_treasury"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_bargain_offered",
+                  "value": true
+                }
+              ]
+            }
+          ],
+          "once": false
+        },
+        {
+          "id": "reg_edric_pardon_given",
+          "type": "scheme",
+          "trigger": "on_flag:tithe_valley_pardoned",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "You have pardoned the valley everything it paid the Hollow. A pardoned valley is a grateful one, and gratitude is cheap to collect.",
+          "options": [
+            {
+              "id": "buy_while_grateful",
+              "label": "Send the terms while the valley still thanks you",
+              "serves": [
+                "use_the_hollow",
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_bargain_offered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "strike_while_cheering",
+              "label": "Strike while the valley is cheering the crown",
+              "serves": [
+                "win_a_victory"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_strike_ordered",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_under_summons",
+          "type": "intercept",
+          "trigger": "on_flag:reg_regent_summoned",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Vane has summoned you. Whatever you do in the west, you will be asked about it under oath.",
+          "options": [
+            {
+              "id": "clean_victory",
+              "label": "Strike now, so you walk into his court holding a victory",
+              "serves": [
+                "win_a_victory",
+                "keep_the_magistry_quiet"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_strike_ordered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "terms_unwritten",
+              "label": "Send terms no court could ever find in a ledger",
+              "serves": [
+                "use_the_hollow",
+                "keep_the_magistry_quiet"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_bargain_offered",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_river_closed",
+          "type": "scheme",
+          "trigger": "on_flag:ford_crossing_seized",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "The rangers hold Ferrisford. Iron Hollow's river road east is closed, and its coin is trapped in the west.",
+          "options": [
+            {
+              "id": "trapped",
+              "label": "A trapped gang breaks; order the strike",
+              "serves": [
+                "win_a_victory"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_strike_ordered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "desperate",
+              "label": "A trapped gang takes any terms; send them",
+              "serves": [
+                "use_the_hollow",
+                "fill_the_treasury"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_bargain_offered",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_march_burning",
+          "type": "scheme",
+          "trigger": "on_flag:vein_miners_rise",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Greystone's miners have risen. The March is on fire between you and the valley, and you have one company of rangers.",
+          "options": [
+            {
+              "id": "quiet_the_west",
+              "label": "Buy the valley quiet so you can deal with the March",
+              "serves": [
+                "use_the_hollow",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_bargain_offered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "one_fire_at_a_time",
+              "label": "Break the Hollow first; one fire at a time",
+              "serves": [
+                "win_a_victory"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_strike_ordered",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_hollis_offers_barges",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "A strike burns your warehouses' best supplier. A bargain needs carrying west quietly, and nobody carries quietly like the Guild.",
+          "options": [
+            {
+              "id": "carry_the_terms",
+              "label": "Offer the regent the Guild's barges to carry any terms west unseen",
+              "serves": [
+                "a_seat_on_the_council",
+                "keep_the_river_moving"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger the Guild's barges go everywhere and are never searched, and ask if the crown has anything it needs carried."
+                }
+              ]
+            },
+            {
+              "id": "clear_the_quay",
+              "label": "Quietly move the Guild's goods off the Ferrisford quay before anything burns",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Ask the stranger, as a friend, whether the rangers mean to ride on Ferrisford, and when."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_hollis_tally_counted",
+          "type": "scheme",
+          "trigger": "on_flag:ford_tally_given",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The ferryman's tally sticks are in the rangers' hands. Every Hollow barge across the Ferris is counted, and every one of them came to your warehouses.",
+          "options": [
+            {
+              "id": "back_a_strike",
+              "label": "Back a strike loudly, so the Guild looks like the crown's friend",
+              "serves": [
+                "keep_the_guild_clean",
+                "a_seat_on_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger the Guild has always deplored the Hollow, and would gladly lend the crown barges against it."
+                }
+              ]
+            },
+            {
+              "id": "buy_silence",
+              "label": "Whisper to the regent that a bargain keeps the tally in a drawer",
+              "serves": [
+                "hold_every_patron",
+                "keep_the_river_moving"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Ask the stranger what a ferryman's tally sticks would be worth, to someone who wanted them kept dry."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_salt_or_chains",
+          "type": "scheme",
+          "trigger": "on_flag:reg_salt_kept_flowing",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "You have decided the Greystone salt keeps reaching the Cathedral, and that no record says who digs it. A bargain with the Hollow is the only road that keeps that quiet.",
+          "options": [
+            {
+              "id": "buy_the_quiet",
+              "label": "Send the terms west, and let the seam stay a rumour",
+              "serves": [
+                "use_the_hollow",
+                "keep_the_magistry_quiet"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_bargain_offered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "think_again",
+              "label": "Think again about chains on the boy's own land",
+              "serves": [
+                "protect_the_boy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger what Aubren would say, grown, if he learned his crown's mercy was dug in chains."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_chains_off",
+          "type": "scheme",
+          "trigger": "on_flag:reg_seam_to_be_opened",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "You have resolved that the chains come off under the crown's banner. Freed children on crown land are a victory no council can argue with, and a bargain with their jailers is not.",
+          "options": [
+            {
+              "id": "strike_for_the_seam",
+              "label": "Seal the strike order, and name the Pit in it",
+              "serves": [
+                "win_a_victory",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_strike_ordered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "weigh_the_cost",
+              "label": "Count what a strike costs the Cathedral's wards before you seal it",
+              "serves": [
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger how many sick in the River Quarter live on Greystone salt, and what they would say to its stopping."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "banner_in_the_darkwood",
+      "act": 3,
+      "title": "The Banner in the Darkwood",
+      "summary": "Act III. The crown strikes. Renna's rangers and Aldric's peacekeepers muster under the royal banner, and they ride into the Darkwood when the stranger stands beside it, or not at all if the stranger warns the Boss first. The Boss must decide whether to fight, scatter, or hand the crown a face for its victory; Varn decides whether to be that face or to bleed the rangers on the forest path.",
+      "location": "iron_hollow_camp",
+      "requires": [
+        "reg_strike_ordered",
+        "!reg_crown_strikes_hollow",
+        "!reg_strike_broken"
+      ],
+      "resolves_on": [
+        "reg_player_stood_at_the_banner",
+        "reg_player_warned_the_boss"
+      ],
+      "hooks": [
+        {
+          "id": "reg_renna_leads_the_strike",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The regent's sealed order has come: break Iron Hollow under the banner. Forty riders, Aldric's maps, and a forest that has buried better soldiers than yours.",
+          "options": [
+            {
+              "id": "muster",
+              "label": "Muster at Thornhaven's gate under the banner, and ride when the valley can see whose war it is",
+              "serves": [
+                "prove_the_rangers",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger the strike order has come, and ask them to stand under the crown's banner at the forest's edge when you ride."
+                }
+              ]
+            },
+            {
+              "id": "change_of_watch",
+              "label": "Plan the strike for the change of watch on Aldric's maps, prisoners alive",
+              "serves": [
+                "bring_my_rangers_home",
+                "bring_varn_in"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger to ride with you at the change of watch; you mean to bring the Hollow's men out alive, for a court to hear."
+                }
+              ]
+            },
+            {
+              "id": "warrant_first",
+              "label": "Refuse to ride until the Magistry's warrants name who you are to take",
+              "serves": [
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you'll not burn a camp of men nobody has named in a warrant, and ask who they'd want named."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_renna_at_the_banner",
+          "type": "intercept",
+          "trigger": "on_flag:reg_player_stood_at_the_banner",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The stranger is standing under the crown's banner at the forest's edge, where every ranger can see them. Forty riders are waiting on your word.",
+          "options": [
+            {
+              "id": "ride_in",
+              "label": "Ride into the Darkwood and break the camp",
+              "serves": [
+                "prove_the_rangers",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_crown_strikes_hollow",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "take_them_alive",
+              "label": "Go in at the change of watch on Aldric's maps, and take prisoners alive",
+              "serves": [
+                "bring_my_rangers_home",
+                "bring_varn_in"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_crown_strikes_hollow",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you took the Hollow at the change of watch and brought prisoners out alive, for a court to hear."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_renna_camp_stirs",
+          "type": "intercept",
+          "trigger": "on_flag:reg_player_warned_the_boss",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Your scouts say the Hollow is stirring, as if someone warned it. If you wait until dawn there will be nothing left to strike.",
+          "options": [
+            {
+              "id": "tonight",
+              "label": "Strike tonight, in the dark, before they scatter",
+              "serves": [
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_crown_strikes_hollow",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "let_them_run",
+              "label": "Let them scatter; no rider of yours dies for an empty camp",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger, very quietly, whether they had anything to do with the Hollow knowing you were coming."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_renna_varn_in_irons",
+          "type": "intercept",
+          "trigger": "on_flag:des_varn_warrant_served",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Varn is in irons. Without its knife the Hollow is a camp of frightened men, and the strike order is still in your hand.",
+          "options": [
+            {
+              "id": "strike_headless",
+              "label": "Ready the strike while the Hollow has no one to lead it",
+              "serves": [
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger Varn is in irons and the Hollow has no knife; ask them to stand at the banner at dawn, and you will ride."
+                }
+              ]
+            },
+            {
+              "id": "talk_them_out",
+              "label": "Ride to the camp's edge and offer the rank and file their lives",
+              "serves": [
+                "bring_my_rangers_home",
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you offered the Hollow's rank and file their lives if they walk out, and ask if any will believe you."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_aldric_rides_with_the_banner",
+          "type": "aid",
+          "trigger": "on_flag:reg_player_stood_at_the_banner",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The crown is finally striking the Hollow, three years late, and the stranger is standing under its banner at the forest's edge. You know every patrol route in the Darkwood. Your six are farmers.",
+          "options": [
+            {
+              "id": "ride",
+              "label": "Ride with the rangers and show them the way in",
+              "serves": [
+                "break_iron_hollow",
+                "bring_varn_to_justice"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_crown_strikes_hollow",
+                  "value": true
+                }
+              ],
+              "aids": "renna"
+            },
+            {
+              "id": "guard_the_gate",
+              "label": "Give them the maps and keep your six at the village gate",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger you gave the rangers your maps and kept your six at the gate, and that it was the hardest order you've given."
+                }
+              ],
+              "aids": "renna"
+            }
+          ]
+        },
+        {
+          "id": "reg_aldric_armed_village",
+          "type": "aid",
+          "trigger": "on_flag:oath_resistance_armed",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Bjorn's honest steel is in your peacekeepers' hands, and the crown's banner is riding for the Hollow. There will never be a better day.",
+          "options": [
+            {
+              "id": "armed_ride",
+              "label": "Swear the armed village will ride beside the rangers when the banner goes in",
+              "serves": [
+                "break_iron_hollow",
+                "arm_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger your peacekeepers carry honest steel now, and when the banner rides into the Darkwood the village rides beside it."
+                }
+              ],
+              "aids": "renna"
+            },
+            {
+              "id": "keep_them_home",
+              "label": "Keep the new blades at home to hold the gate",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_mira_feeds_the_banner",
+          "type": "betray",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The crown is striking your camp. A crown that gets its victory goes home. A crown that does not stays and digs, and sooner or later it digs up the ridge trail.",
+          "options": [
+            {
+              "id": "give_them_varn",
+              "label": "Give the crown Varn, bound, so its victory has a face that isn't yours",
+              "serves": [
+                "keep_the_mask",
+                "keep_varn_leashed"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_varn_given_to_crown",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "scatter",
+              "label": "Strike the camp in a night and send the men up the ridge to the Pit",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_hollow_scattered",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "the_pit"
+                }
+              ]
+            },
+            {
+              "id": "let_varn_fight",
+              "label": "Let Varn meet them with steel, and see who is left",
+              "serves": [
+                "keep_varn_leashed"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger, white-faced, that the forest will run red tonight, and beg them to stay inside the tavern."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_mira_warned",
+          "type": "betray",
+          "trigger": "on_flag:reg_player_warned_the_boss",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The stranger came to you and warned you the rangers are coming. They know what you are. They warned you anyway.",
+          "options": [
+            {
+              "id": "scatter_now",
+              "label": "Scatter the camp tonight",
+              "serves": [
+                "rule_from_shadow",
+                "be_known_by_one_person"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_hollow_scattered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "give_varn_now",
+              "label": "Give the rangers Varn and keep the rest",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_varn_given_to_crown",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_mira_no_face_left",
+          "type": "betray",
+          "trigger": "on_flag:hc_varn_dead",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Varn is dead. The crown is coming for a victory, and you have no lieutenant left to hand it.",
+          "options": [
+            {
+              "id": "scatter_headless",
+              "label": "Scatter the men before the banner arrives",
+              "serves": [
+                "rule_from_shadow",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_hollow_scattered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "let_it_burn",
+              "label": "Let them burn an empty camp and call it a victory",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger whether the rangers found anyone in the forest, and hold your breath while they answer."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_varn_meets_the_banner",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Forty rangers and the old captain are coming down the forest path. The men are watching you. This is the day that decides whose Hollow it is.",
+          "options": [
+            {
+              "id": "ambush",
+              "label": "Meet them in the narrows of the forest path with every knife you have",
+              "serves": [
+                "be_feared",
+                "kill_aldric"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_strike_broken",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "renna",
+                "aldric"
+              ]
+            },
+            {
+              "id": "hold_the_camp",
+              "label": "Hold the camp and make them pay for every yard",
+              "serves": [
+                "be_feared",
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the Hollow will make the crown pay for every yard of the Darkwood, and grin."
+                }
+              ]
+            },
+            {
+              "id": "ridge_trail",
+              "label": "Fall back up the ridge trail to the Pit with the men who are yours",
+              "serves": [
+                "take_the_hollow",
+                "hold_the_pit"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "the_pit"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_varn_brittle_steel",
+          "type": "intercept",
+          "trigger": "on_flag:oath_blades_sabotaged",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The smith's last swords snap like kindling. Your men are holding broken steel with the crown's banner in sight.",
+          "options": [
+            {
+              "id": "run",
+              "label": "Run up the ridge trail to the Pit with what men will follow",
+              "serves": [
+                "take_the_hollow",
+                "hold_the_pit"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "the_pit"
+                }
+              ]
+            },
+            {
+              "id": "fight_broken",
+              "label": "Fight with what's left in the narrows",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_strike_broken",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "renna",
+                "aldric"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_varn_river_shut",
+          "type": "intercept",
+          "trigger": "on_flag:ford_crossing_seized",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The rangers hold Ferrisford. The river road east is shut, and the only way out of the valley is through the banner.",
+          "options": [
+            {
+              "id": "through_them",
+              "label": "Go through them, then, at the narrows",
+              "serves": [
+                "be_feared",
+                "crush_the_resistance"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_strike_broken",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "renna"
+              ]
+            },
+            {
+              "id": "over_the_ridge",
+              "label": "Take the ridge trail to the Pit before they think of it",
+              "serves": [
+                "take_the_hollow",
+                "hold_the_pit"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "the_pit"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_varn_given_up",
+          "type": "react",
+          "trigger": "on_flag:reg_varn_given_to_crown",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Your own men tied your wrists and walked you out to the rangers. You know whose word they did it on.",
+          "options": [
+            {
+              "id": "swear_it",
+              "label": "Swear, silently, that she will pay for this",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "varn",
+                  "want": "keep_the_boss_secret",
+                  "delta": -2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger, through split lips, that the Hollow sold him, and that some debts are paid in the dark."
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Say nothing; a man in chains who talks is a man who hangs",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_lucan_claims_the_victory",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "The crown is striking Iron Hollow, and it is the Rangers' victory, not Ashguard's. And if Varn is taken alive, he talks about four wagons.",
+          "options": [
+            {
+              "id": "ride_west",
+              "label": "Ride west with a troop and see Varn killed resisting before the rangers can chain him",
+              "serves": [
+                "silence_varn",
+                "a_victory_of_my_own"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "lucan",
+                  "location": "kingsroad_waystation"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger Ashguard is riding to help the rangers, and ask exactly where in the Darkwood the deserter sleeps."
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "warn_him_off",
+              "label": "Send word over the ridge that the camp should scatter",
+              "serves": [
+                "bury_the_arms_sale"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_hollow_scattered",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "renna"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Stay behind Ashguard's walls",
+              "serves": [
+                "keep_ashguard_paid"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_terms_ride_west",
+      "act": 3,
+      "title": "The Terms Ride West",
+      "summary": "Act III. The crown buys. Secret terms ride west under the regent's seal, past the Halfway House, to the tavern where the Boss pours ale. She must decide whose name goes on the answer, if any; Varn, if the Hollow is his, decides for himself. No crown courier carries a bandit's answer back: whatever it says reaches the regent only in the stranger's hand.",
+      "location": "thornhaven_tavern",
+      "requires": [
+        "reg_bargain_offered",
+        "!reg_crown_buys_hollow",
+        "!reg_terms_refused"
+      ],
+      "resolves_on": [
+        "reg_player_carried_the_answer"
+      ],
+      "hooks": [
+        {
+          "id": "reg_wren_copies_the_terms",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "A courier with the regent's own seal is asleep upstairs, carrying something west to Iron Hollow. The man who retired you is writing to bandits.",
+          "options": [
+            {
+              "id": "copy_them",
+              "label": "Copy every word by candlelight, then press the seal again",
+              "serves": [
+                "read_every_letter",
+                "outplay_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_terms_copied",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "hold_a_day",
+              "label": "Lame his horse and hold him a day while you think",
+              "serves": [
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger the regent's own courier is asleep upstairs, and ask what they'd give to know what he carries."
+                }
+              ]
+            },
+            {
+              "id": "let_it_pass",
+              "label": "Leave the seal alone; some games are not worth winning",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_wren_watched",
+          "type": "intercept",
+          "trigger": "on_flag:way_letters_read",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The road knows now that Old Wren reads the post. The regent's courier is watching you pour his ale.",
+          "options": [
+            {
+              "id": "copy_anyway",
+              "label": "Copy the terms anyway, under his nose",
+              "serves": [
+                "one_last_game",
+                "outplay_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_terms_copied",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "send_him_on",
+              "label": "Send him on with his seal untouched",
+              "serves": [
+                "a_quiet_fire",
+                "keep_the_road_open"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_mira_reads_the_terms",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The regent's terms are on your cellar table: a pardon and a quiet title for whoever rules Iron Hollow, for the crown's tithe and a quiet valley. Not a word of the Tithe, or the Pit. A pardon for the Hollow is a pardon for the seam. The crown does not know who you are.",
+          "options": [
+            {
+              "id": "through_varn",
+              "label": "Accept, and sign the answer with Varn's name",
+              "serves": [
+                "keep_the_mask",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_terms_name_varn",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "reg_crown_buys_hollow",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, too lightly, whether they are riding east, and would carry a sealed letter to the palace for a widow."
+                }
+              ]
+            },
+            {
+              "id": "own_hand",
+              "label": "Accept in your own hand, under tavern tallow, unsigned",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_crown_buys_hollow",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, too lightly, whether they are riding east, and would carry a sealed letter to the palace for a widow."
+                }
+              ]
+            },
+            {
+              "id": "refuse",
+              "label": "Refuse; a crown's pardon is a leash with a seal on it",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_terms_refused",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "wait",
+              "label": "Leave the terms in the cellar and think",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_mira_name_in_the_capitol",
+          "type": "scheme",
+          "trigger": "on_flag:way_boss_named_in_capitol",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The Capitol is saying your name. A pardon would be the only thing standing between you and a rope.",
+          "options": [
+            {
+              "id": "take_the_pardon",
+              "label": "Take the crown's pardon now, in your own hand",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_crown_buys_hollow",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "refuse_and_vanish",
+              "label": "Refuse, and go to the camp until the talk dies",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_terms_refused",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "mira",
+                  "location": "iron_hollow_camp"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_mira_route_burned",
+          "type": "scheme",
+          "trigger": "on_flag:fence_route_burned",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The Hollow's road to the Capitol fences has burned. Plunder that cannot be sold is just weight. The crown's coin, at least, spends.",
+          "options": [
+            {
+              "id": "accept_coin",
+              "label": "Accept the crown's terms; a lawful tithe is better than unsold silver",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_crown_buys_hollow",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "hold_out",
+              "label": "Hold out; burned roads can be rebuilt",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_mira_no_face_to_sign",
+          "type": "scheme",
+          "trigger": "on_flag:des_varn_warrant_served",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Varn is in crown irons. There is no lieutenant left to sign the crown's terms, only you.",
+          "options": [
+            {
+              "id": "sign_unseen",
+              "label": "Sign unsigned, under tallow, and trust the crown not to look",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_crown_buys_hollow",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "refuse_alone",
+              "label": "Refuse; without a face to sign, the terms are a trap",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_terms_refused",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_varn_signs_his_name",
+          "type": "scheme",
+          "trigger": "on_flag:hc_varn_ascendant",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The crown's terms are on your table, in the camp that is yours now. A pardon and a title. Varn of Iron Hollow, in the crown's own ink.",
+          "options": [
+            {
+              "id": "sign",
+              "label": "Sign it in your own name",
+              "serves": [
+                "take_the_hollow",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_crown_buys_hollow",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "tear_it",
+              "label": "Tear it up and send it back with an arrowhead",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_terms_refused",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_varn_sees_his_name",
+          "type": "betray",
+          "trigger": "on_flag:reg_terms_name_varn",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The answer the crown received has your name on it. The Boss signed it for you. A man with a crown pardon in his own name doesn't need a Boss.",
+          "options": [
+            {
+              "id": "pardon_is_mine",
+              "label": "Decide the pardon is yours, and so is the Hollow",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the crown's paper has his name on it now, and that a pardoned man needs no master."
+                }
+              ]
+            },
+            {
+              "id": "keep_her_secret",
+              "label": "Let it stand, and keep her name out of every mouth",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_aldric_hears_the_bargain",
+          "type": "react",
+          "trigger": "on_flag:reg_crown_buys_hollow",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The crown has bought Iron Hollow. The men who killed Marcus and walk the Tithe cart up the ridge will collect the king's tithe with a pardon in their pockets.",
+          "options": [
+            {
+              "id": "strike_anyway",
+              "label": "Resolve to break the Hollow anyway, crown or no crown",
+              "serves": [
+                "break_iron_hollow",
+                "take_command"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "aldric",
+                  "want": "take_command",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the crown has bought the Hollow, and that you didn't retire to Thornhaven to serve its pardoned killers."
+                }
+              ]
+            },
+            {
+              "id": "lay_it_bare",
+              "label": "Lay what you know before the council and the village",
+              "serves": [
+                "win_the_council",
+                "expose_the_traitor"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger to stand with you when you tell the council the crown has bought the bandits."
+                }
+              ]
+            },
+            {
+              "id": "swallow_it",
+              "label": "Swallow it; your six would die for nothing",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_renna_hears_the_bargain",
+          "type": "react",
+          "trigger": "on_flag:reg_crown_buys_hollow",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The regent has bought the bandits you were sent to break. Your rangers will ride escort on the crown's tithe while the Hollow's cart still climbs the ridge every autumn.",
+          "options": [
+            {
+              "id": "to_the_magistrate",
+              "label": "Write to the High Magistrate what you know of it",
+              "serves": [
+                "prove_the_rangers",
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "renna",
+                  "want": "obey_the_crown",
+                  "delta": -1
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger the regent bought the Hollow, and ask if they'll carry what you know to the High Magistrate."
+                }
+              ]
+            },
+            {
+              "id": "resign",
+              "label": "Send back your commission",
+              "serves": [
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you've sent the regent back your commission, and ask what a ranger without a badge does next."
+                }
+              ]
+            },
+            {
+              "id": "obey",
+              "label": "Obey; it is the regent's crown, not yours",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_regent_answers",
+      "act": 3,
+      "title": "The Regent Answers",
+      "summary": "Act III. The bargain is struck, but the law is not finished. In the High Magistry, Corwin Vane tries to put the crown's secret terms on the record before he dies; the Lord Protector tries to make sure there is no record to read.",
+      "location": "capitol_magistry",
+      "requires": [
+        "reg_crown_buys_hollow",
+        "reg_player_carried_the_answer",
+        "!reg_terms_exposed",
+        "!reg_terms_buried"
+      ],
+      "resolves_on": [
+        "reg_terms_exposed",
+        "reg_terms_buried",
+        "reg_player_gave_terms_to_magistry"
+      ],
+      "hooks": [
+        {
+          "id": "reg_corwin_calls_the_regent",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The crown has bought Iron Hollow; you are as sure of it as you are of your own cough. A suspicion is not a record.",
+          "options": [
+            {
+              "id": "into_the_record",
+              "label": "Read whatever proof you have into the record, aloud",
+              "serves": [
+                "check_the_regent",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_terms_exposed",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "under_oath",
+              "label": "Summon the regent and ask him under oath",
+              "serves": [
+                "law_applied_evenly",
+                "check_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger you will ask the regent under oath whether the crown has dealt with bandits, and ask if they have proof."
+                }
+              ]
+            },
+            {
+              "id": "wait_for_proof",
+              "label": "Wait for proof a court can hold",
+              "serves": [
+                "law_applied_evenly"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_corwin_given_proof",
+          "type": "scheme",
+          "trigger": "on_flag:reg_player_gave_terms_to_magistry",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The stranger has laid proof of the crown's bargain on your bench.",
+          "options": [
+            {
+              "id": "read_it",
+              "label": "Read it aloud in open court",
+              "serves": [
+                "try_it_in_the_open",
+                "check_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_terms_exposed",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "closed_hearing",
+              "label": "Hear it in a closed session first, to be sure it is true",
+              "serves": [
+                "law_applied_evenly"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger you will hear their proof behind closed doors first; a false charge against a regent would end the court."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reg_wren_sends_the_copy",
+          "type": "betray",
+          "trigger": "on_open",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The crown's bargain with Iron Hollow passed under your roof on its way west. The man who retired you for knowing too much has given you something worth knowing.",
+          "options": [
+            {
+              "id": "send_to_vane",
+              "label": "Send the High Magistrate what you saw, in your own old cipher",
+              "serves": [
+                "outplay_the_regent",
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_terms_exposed",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "edric"
+              ],
+              "aids": "corwin"
+            },
+            {
+              "id": "tell_the_stranger",
+              "label": "Tell the stranger where a copy might be found, and let them choose",
+              "serves": [
+                "one_last_game",
+                "spare_the_young_ones"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger an old woman keeps copies of letters she shouldn't, and the High Magistrate might like to read one."
+                }
+              ]
+            },
+            {
+              "id": "by_the_fire",
+              "label": "Keep it by the fire; you are retired",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_edric_buries_it",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Vane is asking about the west under oath. If that bargain is ever spoken aloud, it is the end of the regency and very possibly of the boy's peace.",
+          "options": [
+            {
+              "id": "bury_it",
+              "label": "Make sure no record of the terms exists anywhere the court can reach",
+              "serves": [
+                "keep_the_magistry_quiet",
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_terms_buried",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "close_the_court",
+              "label": "Call the regency council into session so the court must adjourn",
+              "serves": [
+                "keep_the_regency",
+                "protect_the_boy"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "regents_gambit",
+                  "beat": "the_regent_answers"
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Wait, and be very reasonable",
+              "serves": [
+                "stay_indispensable"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_corwin_opens_the_doors",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The regency council has found reasons to sit on the day your court should. You have two winters and no patience left.",
+          "options": [
+            {
+              "id": "open_doors",
+              "label": "Open the court's doors at dawn and sit anyway",
+              "serves": [
+                "try_it_in_the_open",
+                "check_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "regents_gambit",
+                  "beat": "the_regent_answers"
+                }
+              ]
+            },
+            {
+              "id": "wait",
+              "label": "Wait for the council to rise",
+              "serves": [
+                "law_applied_evenly"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_seraphine_whispers_bargain",
+          "type": "betray",
+          "trigger": "idle",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "The regent has bought the Hollow, and Vane is closing on him. Regents fall. The next one will remember who stood where.",
+          "options": [
+            {
+              "id": "whisper_to_hollis",
+              "label": "Let the Guildmaster know, quietly, what the crown has done",
+              "serves": [
+                "a_seat_beside_the_throne"
+              ],
+              "effects": [
+                {
+                  "type": "spread_rumor",
+                  "flag": "reg_crown_buys_hollow",
+                  "to": [
+                    "hollis"
+                  ]
+                }
+              ],
+              "harms": [
+                "edric"
+              ]
+            },
+            {
+              "id": "knew_nothing",
+              "label": "Stand beside the regent and swear you knew nothing",
+              "serves": [
+                "keep_her_hands_clean",
+                "a_seat_beside_the_throne"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Tell the stranger House Ashdown knows nothing of any bargain, and ask what exactly they have heard."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Burn every letter that went west under plain wax",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_renna_testifies",
+          "type": "reveal",
+          "trigger": "idle",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The High Magistrate has asked you what the regent's private instructions told you to do in the west.",
+          "options": [
+            {
+              "id": "testify",
+              "label": "Tell the court what the instructions said",
+              "serves": [
+                "prove_the_rangers",
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "reg_sealed_orders_shown",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you told the court what the regent's orders said, and that your rangers will hear of it by nightfall."
+                }
+              ],
+              "harms": [
+                "edric"
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "Say you serve the crown, and say no more",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "reg_mira_hears_the_court",
+          "type": "react",
+          "trigger": "on_flag:reg_terms_exposed",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The Capitol has read the crown's bargain aloud. Everyone knows the crown bought Iron Hollow. The question every tongue asks next is: bought it from whom?",
+          "options": [
+            {
+              "id": "tighten_the_mask",
+              "label": "Weep for Marcus where everyone can see, and be smaller than ever",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mira",
+                  "want": "keep_the_mask",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, frightened, whether the crown's bargain means the Hollow will never leave now."
+                }
+              ]
+            },
+            {
+              "id": "tell_one_person",
+              "label": "Decide that one person, at least, should hear it from you",
+              "serves": [
+                "be_known_by_one_person"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mira",
+                  "want": "be_known_by_one_person",
+                  "delta": 2
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "reg_the_regent_in_the_dock",
+      "title": "The Regent in the Dock",
+      "requires": [
+        "reg_crown_buys_hollow",
+        "reg_terms_exposed",
+        "reg_player_gave_terms_to_magistry"
+      ],
+      "summary": "The crown bought Iron Hollow, and the stranger put the bargain in the High Magistrate's hands. Corwin Vane read it aloud with the regent's seal on it. The Lord Protector answers to the law like any man, and the great houses circle the boy king's chair."
+    },
+    {
+      "id": "reg_the_empty_camp",
+      "title": "The Empty Camp",
+      "requires": [
+        "reg_strike_ordered",
+        "reg_player_warned_the_boss",
+        "!reg_crown_strikes_hollow"
+      ],
+      "summary": "The crown ordered its strike and the stranger warned the Boss. The rangers found cold fires and empty lean-tos in the Darkwood. The regent has no victory, Iron Hollow has scattered to wait, and one person in the valley knows the Boss owes them her life."
+    },
+    {
+      "id": "reg_the_salt_road_kept",
+      "title": "The Salt Road Kept",
+      "requires": [
+        "reg_crown_buys_hollow",
+        "reg_salt_kept_flowing",
+        "reg_player_carried_the_answer",
+        "!reg_terms_exposed",
+        "!tn_taken_freed"
+      ],
+      "summary": "The regent knew who dug the Cathedral's salt, and he bought Iron Hollow anyway, with the stranger's hand carrying the answer. The cure reaches the wards, the crown's tithe reaches the treasury, and in a seam on the boy king's land Thornhaven's children dig on under a pardon nobody can read."
+    },
+    {
+      "id": "reg_the_crowns_instrument",
+      "title": "The Crown's Instrument",
+      "requires": [
+        "reg_crown_buys_hollow",
+        "reg_player_counselled_the_regent",
+        "reg_player_carried_the_answer",
+        "!reg_terms_exposed"
+      ],
+      "summary": "On the stranger's counsel the regent bought Iron Hollow. The tithe comes east in full, the valley is quiet in the way a held breath is quiet, and the crown's instrument in the west pours ale in a Thornhaven tavern under a pardon nobody can read. Every autumn the lot is still drawn."
+    },
+    {
+      "id": "reg_the_open_seam",
+      "title": "The Open Seam",
+      "requires": [
+        "reg_crown_strikes_hollow",
+        "tn_taken_freed",
+        "reg_player_counselled_the_regent"
+      ],
+      "summary": "On the stranger's counsel the regent chose the banner, and the taken came down from the Pit alive. The crown calls it its mercy, the Cathedral's wards go short of salt, and the city learns that its cure was dug in chains on crown land by Thornhaven's stolen children."
+    },
+    {
+      "id": "reg_banner_in_the_darkwood",
+      "title": "The Banner in the Darkwood",
+      "requires": [
+        "reg_crown_strikes_hollow",
+        "reg_player_counselled_the_regent"
+      ],
+      "summary": "On the stranger's counsel the regent chose the banner. The King's Rangers burned Iron Hollow's camp, the city had its victory, and the valley learned that the crown remembers it exists, for good and for ill. The ridge trail beyond the camp is still dark."
+    }
+  ]
+}

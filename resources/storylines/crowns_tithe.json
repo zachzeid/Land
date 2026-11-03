@@ -1,0 +1,2702 @@
+{
+  "id": "crowns_tithe",
+  "title": "The Crown's Tithe",
+  "summary": "The valley's tithe to the crown has been short for three years, because the coin went up the forest path with Iron Hollow's Tithe cart. The Lord Protector sends Captain Renna Thorne's rangers west: to restore order, to find a scapegoat, or to learn who really governs the valley. Renna rides home to the uncle she ran from, and may find the taken alive in a seam on crown land.",
+  "prefix": "tithe_",
+  "act_span": [
+    1,
+    3
+  ],
+  "flags": {
+    "tithe_rangers_dispatched": "The Lord Protector sent Captain Renna Thorne and forty King's Rangers west along the Kingsroad to restore the crown's order in the Western Valley.",
+    "tithe_scapegoat_ordered": "The Lord Protector told Captain Renna, in private, that the crown needed a man of the valley to answer for the missing tithe before midsummer.",
+    "tithe_hollow_forewarned": "Word that the King's Rangers were riding west went over the ridge trail from Fort Ashguard and reached Iron Hollow days before the rangers did.",
+    "tithe_wren_read_the_orders": "Old Wren lifted the regent's seal on Captain Renna's private instructions while she slept at the Halfway House, read them, and pressed the seal again.",
+    "tithe_petitions_told": "Captain Renna Thorne learned that Elder Mathias had written to the Capitol every season for two years, begging the crown's help against a Hollow that took one of Thornhaven's people every autumn, and that not one letter had ever been answered.",
+    "tithe_rangers_arrive": "Captain Renna Thorne and the King's Rangers rode through Thornhaven's gate under the crown's banner, the first crown soldiers the valley had seen in years.",
+    "tithe_uncle_faced": "Captain Renna Thorne stood before her uncle, Elder Mathias, for the first time since she ran from Thornhaven seventeen years ago.",
+    "tithe_hollow_gone_quiet": "Iron Hollow pulled its men back into the Darkwood and gave the King's Rangers nothing to fight.",
+    "tithe_ranger_picket_cut": "Iron Hollow men cut down a ranger picket on the forest road while the King's Rangers were quartered in Thornhaven.",
+    "tithe_aldric_joined_rangers": "Captain Aldric put his six peacekeepers and his patrol maps of the Darkwood at the King's Rangers' disposal.",
+    "tithe_tribute_confessed": "Elder Mathias admitted to the King's Rangers that the coin owed to the crown had gone up the forest path in the Tithe cart, beside the name the lot drew each autumn.",
+    "tithe_gregor_accused": "Thornhaven's merchant Gregor was named to the King's Rangers as the man who had fed Iron Hollow, rigged its Tithe lot and starved the crown's tithe.",
+    "tithe_player_testified": "The player gave the King's Rangers a full and sworn account of what they had seen of Thornhaven and Iron Hollow.",
+    "tithe_report_sent": "Captain Renna Thorne sent her report on the Western Valley east to the Lord Protector by ranger courier.",
+    "tithe_varn_named_governor": "An unsigned note told Captain Renna that the man who truly governed the valley from the Darkwood was the deserter Varn.",
+    "tithe_varn_sought_terms": "Varn rode to the rangers' camp on the forest path under a white rag and offered the valley's quiet in return for a crown pardon.",
+    "tithe_orders_opened": "Captain Renna Thorne broke the regent's seal and read his private instructions: to find whoever truly governed the valley, and to report before she struck.",
+    "tithe_orders_burned": "Captain Renna Thorne burned the regent's sealed instructions unread in her campfire on the forest path.",
+    "tithe_orders_kept_sealed": "Captain Renna Thorne heard who truly governed the valley and still kept the regent's seal unbroken, meaning to weigh it by law before she read his orders.",
+    "tithe_player_named_governor": "The player told Captain Renna Thorne who truly governed the Western Valley.",
+    "tithe_courier_robbed": "A ranger courier was robbed on the Kingsroad near the Halfway House, and his saddlebag was carried off toward the Darkwood.",
+    "tithe_report_amended": "A line in a hand not Captain Renna's was added to her report at the Halfway House: that the valley's true master wrote in a woman's hand.",
+    "tithe_report_delivered": "Captain Renna's report on the Western Valley reached the Lord Protector's hand in the Crown Court.",
+    "tithe_player_carried_report": "The player carried Captain Renna's report east along the Kingsroad and put it in the Lord Protector's own hand.",
+    "tithe_losses_proved": "The High Magistrate showed the Lord Protector that the valley's loss reports had been sent every season and lost inside the Magistry's own registry.",
+    "tithe_ashdown_offered_arrears": "Lady Seraphine Ashdown offered to pay the valley's missing tithe from her own purse, if the crown would confirm her deed to the valley.",
+    "tithe_valley_pardoned": "The Lord Protector pardoned the Western Valley its three years of missing tithe and every coin it had paid Iron Hollow, and struck the debt from the crown's books.",
+    "tithe_valley_fined": "The Lord Protector fined the Western Valley its missing tithe to the crown twice over and ordered the King's Rangers to collect it.",
+    "tithe_hanging_ordered": "The Lord Protector ordered that the man accused of feeding Iron Hollow hang in Thornhaven's square, under the crown's banner, for the missing tithe.",
+    "tithe_pit_reported": "Captain Renna Thorne wrote into her report that the people Iron Hollow's Tithe took were alive, digging white salt in chains in a seam of Greystone's deep vein, on crown land leased to the Guild, and that the salt was the Cathedral's fever cure."
+  },
+  "player_flags": [
+    "tithe_player_testified",
+    "tithe_player_named_governor",
+    "tithe_player_carried_report"
+  ],
+  "crossovers": [
+    "fence_ledger_taken",
+    "fence_route_burned",
+    "inh_deed_challenged",
+    "inh_valley_sold",
+    "grey_cure_recipe_known",
+    "grey_cathedral_shamed",
+    "des_varn_warrant_served",
+    "des_lucan_disgraced",
+    "vein_ore_road_closed",
+    "vein_miners_rise",
+    "ford_tally_given",
+    "ford_crossing_seized",
+    "mag_trial_called",
+    "mag_verdict_given",
+    "way_letters_read",
+    "way_boss_named_in_capitol",
+    "reg_crown_strikes_hollow",
+    "reg_crown_buys_hollow",
+    "cou_martial_law",
+    "cou_council_bargains",
+    "ih_gregor_fled",
+    "hc_varn_ascendant",
+    "tn_taken_alive_known",
+    "tn_taken_freed"
+  ],
+  "beats": [
+    {
+      "id": "regents_writ",
+      "act": 1,
+      "title": "The Regent's Writ",
+      "summary": "Act I. The valley's tithe has been short three years and Fort Ashguard cannot be paid through the winter. In the Crown Court, the Lord Protector decides what his rangers ride west to do.",
+      "location": "capitol_palace",
+      "requires": [
+        "!tithe_rangers_dispatched"
+      ],
+      "resolves_on": [
+        "tithe_rangers_dispatched"
+      ],
+      "hooks": [
+        {
+          "id": "tithe_edric_sends_renna",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Three years of the Western Valley's tithe never came. Without it you cannot pay Ashguard past midwinter, and the regency council is counting your victories. Renna Thorne is the one captain who tells you the truth to your face.",
+          "options": [
+            {
+              "id": "restore_order",
+              "label": "Send Renna and forty rangers west to restore the crown's order and bring the tithe home",
+              "serves": [
+                "fill_the_treasury",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_rangers_dispatched",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger what they know of the Western Valley; the crown's rangers are riding west and want the road ahead of them."
+                }
+              ]
+            },
+            {
+              "id": "want_a_neck",
+              "label": "Send her west, and tell her privately the crown needs a man to hang for the tithe by midsummer",
+              "serves": [
+                "win_a_victory",
+                "fill_the_treasury"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_scapegoat_ordered",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_rangers_dispatched",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "keep_them_close",
+              "label": "Keep the rangers near the palace a season longer and let the valley wait",
+              "serves": [
+                "protect_the_boy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Tell the stranger, dryly, that the crown has many valleys and one king, and ask what the west could possibly need so urgently."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_edric_winter_ledger",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "The Ashguard paymaster is waiting outside again. The winter ledger does not balance however you add it.",
+          "options": [
+            {
+              "id": "dispatch",
+              "label": "Sign Renna's commission and send the rangers west at last",
+              "serves": [
+                "fill_the_treasury",
+                "win_a_victory"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_rangers_dispatched",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "wait",
+              "label": "Send the paymaster away with a promise",
+              "serves": [
+                "keep_the_regency"
+              ],
+              "effects": []
+            }
+          ],
+          "once": false
+        },
+        {
+          "id": "tithe_renna_hears_the_rope",
+          "type": "intercept",
+          "trigger": "on_flag:tithe_scapegoat_ordered",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The regent has just told you, very reasonably, that the crown needs a man of the valley to hang by midsummer. The valley is the one you ran from at sixteen.",
+          "options": [
+            {
+              "id": "say_it_to_his_face",
+              "label": "Take the commission, and tell him to his face she will hang no one without proof",
+              "serves": [
+                "refuse_a_scapegoat",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you ride west under crown law, not the regent's rope, and ask whether they will tell you the truth of the valley."
+                }
+              ]
+            },
+            {
+              "id": "ask_in_writing",
+              "label": "Ask for the order in writing, over his seal",
+              "serves": [
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger the regent gives his worst orders out loud, and ask if they've ever seen a lord put a hanging in ink."
+                }
+              ]
+            },
+            {
+              "id": "yes_my_lord",
+              "label": "Say yes, my lord, and saddle up",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_corwin_asks_for_accounts",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The regent is sending rangers west for a tithe your registry never once received a loss report about. A Ferrisford widow's unsigned complaint is already on your desk.",
+          "options": [
+            {
+              "id": "ask_for_accounts",
+              "label": "Ask that every tithe account the valley still keeps be brought back to the Magistry",
+              "serves": [
+                "find_the_lost_reports"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Ask the stranger, if they ride west, to bring back any tithe account Thornhaven still keeps; the court has seen none in three years."
+                }
+              ]
+            },
+            {
+              "id": "warn_the_captain",
+              "label": "Send Captain Thorne a note: the court will want any accused man alive",
+              "serves": [
+                "law_applied_evenly",
+                "hear_gregors_ledger"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger the High Magistrate wrote to you before you rode: nobody hangs in the west without a trial."
+                }
+              ],
+              "aids": "renna"
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing yet; a judge who speaks first loses his court",
+              "serves": [
+                "try_it_in_the_open"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_halfway_supper",
+      "act": 1,
+      "title": "Supper at the Halfway House",
+      "summary": "Act I. The rangers stop at the Halfway House on the Kingsroad. Old Wren feeds the captain she once fed as a runaway girl, and every letter in the building passes under her eye. At Fort Ashguard, Commander Lucan hears who is on the road.",
+      "location": "kingsroad_waystation",
+      "requires": [
+        "tithe_rangers_dispatched",
+        "!tithe_rangers_arrive"
+      ],
+      "resolves_on": [
+        "tithe_rangers_arrive"
+      ],
+      "hooks": [
+        {
+          "id": "tithe_wren_feeds_the_captain",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The ranger captain at your table is the runaway girl you fed seventeen years ago; she has her uncle's chin. Elder Mathias's letters to the Capitol came through your hands every season, begging the crown to stop a Hollow that takes a child a year by lot, and you read every one before it went on to be lost.",
+          "options": [
+            {
+              "id": "tell_her",
+              "label": "Tell her, over the stew, that her uncle wrote east every season for two years",
+              "serves": [
+                "spare_the_young_ones",
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_petitions_told",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger the captain's uncle begged the crown every season about the Hollow's Tithe, and somebody in the Capitol made sure nobody read it."
+                }
+              ],
+              "aids": "renna"
+            },
+            {
+              "id": "lift_the_seal",
+              "label": "Lift the seal on her private orders while she sleeps, and press it again",
+              "serves": [
+                "read_every_letter",
+                "outplay_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_wren_read_the_orders",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "just_supper",
+              "label": "Give her supper and ask no names, as you did before",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_renna_rides_on",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Twelve hours of road to Thornhaven. Forty riders, tired horses, and an old woman watching you over the stew like she knows you.",
+          "options": [
+            {
+              "id": "ride_hard",
+              "label": "Ride on at first light and reach Thornhaven by dark",
+              "serves": [
+                "restore_order_in_the_west",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_rangers_arrive",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "ask_the_road",
+              "label": "Rest the horses a day and ask the house about the road west",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger whether it's true the Hollow comes to Thornhaven's gate every autumn and takes one of its people by lot."
+                }
+              ]
+            },
+            {
+              "id": "ford_first",
+              "label": "Turn back to look at Ferrisford, where the river road crosses",
+              "serves": [
+                "seize_the_crossing"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "renna",
+                  "location": "ferrisford"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger who really crosses the Ferris at night, and what the ferryman charges them."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_renna_last_stage",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Your riders are fed and the horses rested. Thornhaven is one long day west.",
+          "options": [
+            {
+              "id": "ride",
+              "label": "Ride for Thornhaven",
+              "serves": [
+                "restore_order_in_the_west",
+                "face_uncle_mathias"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_rangers_arrive",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "one_more_day",
+              "label": "Give it one more day",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": []
+            }
+          ],
+          "once": false
+        },
+        {
+          "id": "tithe_lucan_hears_the_rangers",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "A rider from the Halfway House says forty King's Rangers are on the road west, under a captain who asks about deserters. If Varn is taken alive, he talks about four wagons, not one.",
+          "options": [
+            {
+              "id": "warn_the_ridge",
+              "label": "Send a man over the ridge trail to tell the Hollow the rangers are coming",
+              "serves": [
+                "silence_varn",
+                "bury_the_arms_sale"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_hollow_forewarned",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "renna"
+              ]
+            },
+            {
+              "id": "offer_guides",
+              "label": "Ride to the Halfway House and offer Ashguard's guides, so the victory carries Ashguard's name",
+              "serves": [
+                "a_victory_of_my_own",
+                "restore_ashguards_honour"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "lucan",
+                  "location": "kingsroad_waystation"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger Ashguard knows the valley's roads better than any ranger, and ask who they think the crown should thank."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep the garrison behind its walls and let the rangers find their own way",
+              "serves": [
+                "keep_ashguard_paid"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rangers_in_the_square",
+      "act": 1,
+      "title": "The Banner in the Square",
+      "summary": "Act I. Forty crown riders in Thornhaven's square. An elder faces the niece who walked out on him; a captain with six farmers decides whether to trust the crown; the widow at the Rusty Nail decides how the forest will greet them.",
+      "location": "thornhaven_town_square",
+      "requires": [
+        "tithe_rangers_arrive"
+      ],
+      "resolves_on": [
+        "tithe_uncle_faced"
+      ],
+      "hooks": [
+        {
+          "id": "tithe_mathias_meets_his_niece",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The ranger captain riding in under the crown's banner has your sister's face. You wrote to the Capitol every season for two years, begging help against the Tithe, and nobody came. Now somebody has, and it is her, in Tithe week.",
+          "options": [
+            {
+              "id": "show_the_letters",
+              "label": "Meet her at the council hall and show her the copies of every petition",
+              "serves": [
+                "leave_a_legacy",
+                "save_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_petitions_told",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_uncle_faced",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Show the stranger the copies of your petitions to the Capitol, and ask who could lose two years of letters."
+                }
+              ]
+            },
+            {
+              "id": "as_the_elder",
+              "label": "Receive her as Elder, not as uncle, and say nothing of the letters",
+              "serves": [
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_uncle_faced",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "keep_to_the_house",
+              "label": "Plead his heart and keep to his house another day",
+              "serves": [
+                "avoid_the_hollow_war"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger to tell the captain the Elder will receive her tomorrow; say your heart is poor today, and mean more than that."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_renna_at_his_door",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The square looks smaller than you remember. Your uncle's door is forty paces from the well.",
+          "options": [
+            {
+              "id": "knock",
+              "label": "Walk the forty paces and knock",
+              "serves": [
+                "face_uncle_mathias"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_uncle_faced",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "billet_first",
+              "label": "See to the horses and billets first",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger where forty riders can sleep in Thornhaven without the Hollow knowing which barn they're in."
+                }
+              ]
+            },
+            {
+              "id": "send_a_ranger",
+              "label": "Send a ranger to the Elder with the crown's compliments",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger, too casually, whether the Elder is well, then talk about horses."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_mira_greets_the_banner",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Forty crown riders are watering their horses outside your tavern. Rangers ask questions, and they pay for their ale in silver, which loosens tongues.",
+          "options": [
+            {
+              "id": "go_quiet",
+              "label": "Send word to the camp: every man back into the Darkwood, nothing to fight",
+              "serves": [
+                "keep_the_mask",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_hollow_gone_quiet",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger, wide-eyed, that the forest has gone quiet since the soldiers came, and ask if it means the Hollow has fled."
+                }
+              ]
+            },
+            {
+              "id": "rooms_for_rangers",
+              "label": "Offer the rangers your back rooms at half price, and listen",
+              "serves": [
+                "keep_the_mask",
+                "own_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger you've given the captain's riders your back rooms; a widow the Hollow robbed can only be glad of soldiers."
+                }
+              ]
+            },
+            {
+              "id": "let_varn_choose",
+              "label": "Give Varn no order at all, and watch what he does with the rangers",
+              "serves": [
+                "keep_varn_leashed"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_varn_tests_the_banner",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Crown riders in the valley, under a woman captain. The men at the fire are watching to see whether you flinch.",
+          "options": [
+            {
+              "id": "cut_a_picket",
+              "label": "Cut down a ranger picket on the forest road and leave it for the captain to find",
+              "serves": [
+                "be_feared",
+                "crush_the_resistance"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_ranger_picket_cut",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "renna"
+              ]
+            },
+            {
+              "id": "keep_off_the_road",
+              "label": "Pull the men off the roads until the rangers tire",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the Hollow has no quarrel with the crown's riders, so long as they keep to the Kingsroad."
+                }
+              ]
+            },
+            {
+              "id": "count_the_horses",
+              "label": "Lie in the bracken on the forest path and count their horses",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "forest_path"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_aldric_offers_his_six",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "A crown captain with forty riders, and you with six farmers and a map of every Hollow patrol. She is young. So were you.",
+          "options": [
+            {
+              "id": "join",
+              "label": "Put your six and your maps at the rangers' disposal",
+              "serves": [
+                "break_iron_hollow",
+                "arm_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_aldric_joined_rangers",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the rangers have your patrol maps now, and ask them to ride the forest road with you and the captain."
+                }
+              ],
+              "aids": "renna"
+            },
+            {
+              "id": "stay_separate",
+              "label": "Keep your men your own until she proves whose law she brought",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger you'll not hand six farmers to a regent's captain until she shows whose law she carries."
+                }
+              ]
+            },
+            {
+              "id": "ask_about_varn",
+              "label": "Ask her what she means to do about Varn before showing her any map",
+              "serves": [
+                "bring_varn_to_justice"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger whether the ranger captain means to hang Varn for Marcus, or only for the crown's wagons."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_aldric_under_martial_law",
+          "type": "aid",
+          "trigger": "on_flag:cou_martial_law",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "You have just taken command of Thornhaven under your own proclamation, with forty crown riders in the square watching you do it.",
+          "options": [
+            {
+              "id": "crown_and_captain",
+              "label": "Put the village's defence under the rangers' banner beside your own",
+              "serves": [
+                "break_iron_hollow",
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_aldric_joined_rangers",
+                  "value": true
+                }
+              ],
+              "aids": "renna"
+            },
+            {
+              "id": "my_command",
+              "label": "Keep command your own; the crown arrived three years late",
+              "serves": [
+                "take_command"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the crown is welcome in Thornhaven, as a guest, and that the gate answers to you."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_tithe_accounts",
+      "act": 2,
+      "title": "The Tithe Accounts",
+      "summary": "Act II. In the council hall, the captain asks the question the crown sent her to ask: where did three years of the crown's tithe go? The answer is the undercroft, the Tithe cart's coin chest, and whoever the valley decides to blame. Then she hears where the taken went.",
+      "location": "council_hall",
+      "requires": [
+        "tithe_uncle_faced"
+      ],
+      "resolves_on": [
+        "tithe_tribute_confessed",
+        "tithe_gregor_accused",
+        "tithe_player_testified"
+      ],
+      "hooks": [
+        {
+          "id": "tithe_mathias_opens_the_books",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Your niece sits across the council table with the crown's ledger open. For two autumns the council paid both the crown and the Hollow; for three it could not, and the crown's tithe went up the forest path with the Tithe cart, by your vote, to keep the roofs from burning.",
+          "options": [
+            {
+              "id": "confess_the_tribute",
+              "label": "Tell her the truth: the crown's tithe went to the Hollow with the cart, and the council chose it",
+              "serves": [
+                "leave_a_legacy",
+                "save_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_tribute_confessed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger you have told the captain where the tithe went, and that if anyone hangs for it, it should be you."
+                }
+              ]
+            },
+            {
+              "id": "robbed_on_the_road",
+              "label": "Say the tithe carts were robbed on the road; it is true often enough",
+              "serves": [
+                "keep_the_peace_paid",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the tithe carts were robbed on the Kingsroad, and watch whether they believe you."
+                }
+              ]
+            },
+            {
+              "id": "ask_for_time",
+              "label": "Ask for time to gather the council's records properly",
+              "serves": [
+                "prove_before_acting"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_mathias_bargain_bare",
+          "type": "reveal",
+          "trigger": "on_flag:cou_council_bargains",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The council has just struck a private bargain with the Hollow, while a crown captain sits in your own hall. She is your sister's child. She will find out.",
+          "options": [
+            {
+              "id": "tell_her_first",
+              "label": "Tell her yourself, before anyone else can",
+              "serves": [
+                "leave_a_legacy",
+                "prove_before_acting"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_tribute_confessed",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "keep_the_bargain",
+              "label": "Keep the bargain inside the chapel, where it was made",
+              "serves": [
+                "keep_the_peace_paid"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_mira_names_the_merchant",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The captain is asking who fed the Hollow. Someone will hang for this; the only question is who. You have known for five years whose name the trail should stop at, and the lot has passed his house four autumns running.",
+          "options": [
+            {
+              "id": "name_gregor",
+              "label": "Tell the captain, trembling, that you saw Gregor meet Hollow men at the old mill",
+              "serves": [
+                "burn_gregor_first",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_gregor_accused",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger, shaking, that you told the captain about Gregor at the mill, and ask if the rangers will protect a widow who spoke."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "frighten_the_council",
+              "label": "Let the old men know the rangers may hang them all for paying",
+              "serves": [
+                "own_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger the councillors are terrified the rangers will hang them for paying, and ask them to speak for the old men."
+                }
+              ]
+            },
+            {
+              "id": "let_them_dig",
+              "label": "Pour the captain's ale and let her dig",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_mira_blames_the_runaway",
+          "type": "scheme",
+          "trigger": "on_flag:ih_gregor_fled",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Gregor has run in the night. A man who runs from crown riders looks guilty of everything. It would be a waste not to use it.",
+          "options": [
+            {
+              "id": "he_ran",
+              "label": "Let the captain hear, through the tavern, that the merchant ran because he fed the Hollow",
+              "serves": [
+                "burn_gregor_first",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_gregor_accused",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "let_him_go",
+              "label": "Let him go; a trail that ends in an empty shop is trail enough",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_aldric_lays_his_maps",
+          "type": "reveal",
+          "trigger": "idle",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The captain is reading the tithe ledger. The lot has passed Gregor's house four autumns running and his shop does too well while everyone else starves. You have suspected him for a year. You have no proof.",
+          "options": [
+            {
+              "id": "name_him",
+              "label": "Tell the captain what you suspect of the merchant",
+              "serves": [
+                "expose_the_traitor"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_gregor_accused",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "proof_first",
+              "label": "Give her your maps and say nothing of Gregor until you have proof",
+              "serves": [
+                "spare_the_innocent",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger whether they have proof of who feeds the Hollow; you'll not hand the captain a name you can't stand behind."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Stand at the back of the hall and listen",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_renna_hears_a_name",
+          "type": "intercept",
+          "trigger": "on_flag:tithe_gregor_accused",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Someone has just handed you a merchant's name for the missing tithe. The regent wants a man to hang. A name this convenient makes you itch.",
+          "options": [
+            {
+              "id": "demand_proof",
+              "label": "Tell the valley one accusation hangs nobody, and ask for proof",
+              "serves": [
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger one widow's word hangs nobody; ask what they've seen of the merchant with their own eyes."
+                }
+              ]
+            },
+            {
+              "id": "hold_him",
+              "label": "Take the merchant into the council hall under guard",
+              "serves": [
+                "obey_the_crown",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "council_hall"
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "a_witness",
+              "label": "Write to the High Magistrate that the merchant should go east as a witness, not to a rope",
+              "serves": [
+                "refuse_a_scapegoat",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you've written to the High Magistrate: if the merchant knows anything, he says it in court, alive."
+                }
+              ],
+              "aids": "gregor"
+            }
+          ]
+        },
+        {
+          "id": "tithe_renna_reads_the_tally",
+          "type": "react",
+          "trigger": "on_flag:ford_tally_given",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The ferryman's tally sticks are on your table: a notch for every Hollow barge across the Ferris. The crown's tithe didn't vanish. It floated east.",
+          "options": [
+            {
+              "id": "write_it_in",
+              "label": "Write the tally into your report and send it east",
+              "serves": [
+                "prove_the_rangers",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_report_sent",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "ride_for_the_ford",
+              "label": "Keep the tally and look hard at Ferrisford",
+              "serves": [
+                "seize_the_crossing"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger what they know of Ferrisford and the barges; the tally says the valley's tithe went east by river."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_renna_writes_east",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "You know now where at least some of the tithe went, and who the valley wants blamed for it. The regent expects a report.",
+          "options": [
+            {
+              "id": "write_true",
+              "label": "Write it as you found it, every hard word of it",
+              "serves": [
+                "prove_the_rangers",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_report_sent",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "ask_for_mercy",
+              "label": "Write it true, and ask for a pardon for a frightened valley",
+              "serves": [
+                "face_uncle_mathias",
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_report_sent",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you've asked the regent to pardon the valley, and that you've never asked him for anything before."
+                }
+              ]
+            },
+            {
+              "id": "hold_it",
+              "label": "Hold the report until you know who truly governs the valley",
+              "serves": [
+                "restore_order_in_the_west"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_renna_hears_of_the_pit",
+          "type": "react",
+          "trigger": "on_flag:tn_taken_alive_known",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Your uncle's frightened council, and the stranger, say the same thing at last: the people the Tithe took are alive, digging white salt in chains in a seam beyond the ridge. Greystone is crown land, leased to the Guild. The Cathedral's rationed fever cure is that salt.",
+          "options": [
+            {
+              "id": "write_the_pit",
+              "label": "Write the Pit into your report, every name you have, and send it east",
+              "serves": [
+                "prove_the_rangers",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_pit_reported",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_report_sent",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you've written the Pit into the regent's report: chains on crown land, and the Cathedral's cure dug in them."
+                }
+              ]
+            },
+            {
+              "id": "see_it_first",
+              "label": "Ask the stranger the way to the seam, and write nothing until you have seen it",
+              "serves": [
+                "refuse_a_scapegoat",
+                "bring_my_rangers_home"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger how far up the ridge the Pit lies, and how many Hollow men guard its mouth; you'll not report chains you haven't seen."
+                }
+              ]
+            },
+            {
+              "id": "leave_it_out",
+              "label": "Leave it out; the regent asked about coin, not about Thornhaven's children",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_sealed_instructions",
+      "act": 2,
+      "title": "The Sealed Instructions",
+      "summary": "Act II. In the rangers' camp on the forest path, Renna carries the regent's private orders, to be opened only when she finds whoever really governs the valley. The Boss and her lieutenant each try to be the answer, or to give the captain someone else.",
+      "location": "forest_path",
+      "requires": [
+        "tithe_rangers_arrive",
+        "!tithe_orders_opened",
+        "!tithe_orders_burned"
+      ],
+      "resolves_on": [
+        "tithe_orders_opened",
+        "tithe_orders_burned",
+        "tithe_player_named_governor"
+      ],
+      "hooks": [
+        {
+          "id": "tithe_renna_weighs_the_seal",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The regent's sealed letter is in your saddlebag. Open only if you find whoever really governs the valley. You are afraid you already know what it says.",
+          "options": [
+            {
+              "id": "open_it",
+              "label": "Break the seal and read it",
+              "serves": [
+                "obey_the_crown",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_orders_opened",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "burn_it",
+              "label": "Burn it unread; whoever governs here is yours to arrest, not his to bargain with",
+              "serves": [
+                "refuse_a_scapegoat",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_orders_burned",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "keep_it",
+              "label": "Leave it sealed a while longer",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_renna_told_the_governor",
+          "type": "scheme",
+          "trigger": "on_flag:tithe_player_named_governor",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The stranger has just told you who truly governs the valley. The regent's seal is still unbroken in your saddlebag.",
+          "options": [
+            {
+              "id": "open_now",
+              "label": "Break the seal now, as you were ordered",
+              "serves": [
+                "obey_the_crown",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_orders_opened",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "burn_now",
+              "label": "Burn the orders; you will deal with this by law, not by the regent's letter",
+              "serves": [
+                "refuse_a_scapegoat",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_orders_burned",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "keep_it_sealed",
+              "label": "Keep the seal whole a while longer, and weigh what you heard by law first",
+              "serves": [
+                "refuse_a_scapegoat",
+                "bring_varn_in"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_orders_kept_sealed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger how they know who governs the valley, and what they would swear to before a court."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_renna_varn_crowned",
+          "type": "scheme",
+          "trigger": "on_flag:hc_varn_ascendant",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Word from the forest: the deserter Varn has taken Iron Hollow in his own name. Whoever governed the valley before, it is plainly him now.",
+          "options": [
+            {
+              "id": "open_for_varn",
+              "label": "Open the regent's letter; you have found your governor",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_orders_opened",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "warrant_not_letter",
+              "label": "Burn the letter and take the Ashguard warrant to him instead",
+              "serves": [
+                "bring_varn_in",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_orders_burned",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you mean to serve the Ashguard warrant on Varn and bring him east alive, and ask how many knives sit at his fire."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_renna_hears_a_note",
+          "type": "intercept",
+          "trigger": "on_flag:tithe_varn_named_governor",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "An unsigned note under your saddle: the man who governs the valley from the Darkwood is the deserter Varn. Clean handwriting. A woman's, maybe.",
+          "options": [
+            {
+              "id": "take_it",
+              "label": "Take the note at its word and open the regent's letter",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_orders_opened",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "doubt_it",
+              "label": "Wonder who gains by handing you Varn, and keep the seal whole",
+              "serves": [
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Show the stranger the unsigned note naming Varn, and ask who in Thornhaven writes a fine hand and wants him gone."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_renna_warrant_served",
+          "type": "react",
+          "trigger": "on_flag:des_varn_warrant_served",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Varn is in irons. A man in irons talks, and he keeps smiling as if he knows who really runs his camp.",
+          "options": [
+            {
+              "id": "open_after_irons",
+              "label": "Open the regent's letter now that the Hollow's face is in chains",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_orders_opened",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "question_him",
+              "label": "Question him first, alone, before you read a word the regent wrote",
+              "serves": [
+                "bring_varn_in",
+                "refuse_a_scapegoat"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger Varn keeps laughing in his chains, and ask what he knows that makes him so sure he will not hang."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_mira_gives_them_varn",
+          "type": "betray",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The captain carries orders to find whoever governs the valley; her rangers drink in your tavern and talk. Somebody will be named. Better a man who has started counting which knives are his.",
+          "options": [
+            {
+              "id": "give_them_varn",
+              "label": "Leave the captain an unsigned note: the man who governs the valley is Varn",
+              "serves": [
+                "keep_the_mask",
+                "keep_varn_leashed"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_varn_named_governor",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "keep_him",
+              "label": "Keep Varn; a lieutenant on a leash is worth more than one on a rope",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_varn_rides_under_a_rag",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Forty crown riders camped on the forest path. A pardon from the crown would make a man master of the Hollow in his own name, and the Boss could not touch him.",
+          "options": [
+            {
+              "id": "white_rag",
+              "label": "Ride to the rangers' camp under a white rag and offer the valley's quiet for a pardon",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_varn_sought_terms",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "forest_path"
+                }
+              ]
+            },
+            {
+              "id": "gut_a_horse",
+              "label": "Leave a ranger's horse gutted at the camp's edge",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_ranger_picket_cut",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "renna"
+              ]
+            },
+            {
+              "id": "wait",
+              "label": "Wait in the camp and say nothing",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_varn_hears_his_name",
+          "type": "react",
+          "trigger": "on_flag:tithe_varn_named_governor",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "One of your men in the tavern yard heard it: somebody handed the ranger captain your name. Only one person in the valley writes letters that clean.",
+          "options": [
+            {
+              "id": "go_to_ground",
+              "label": "Go back to the camp and double the watch",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "iron_hollow_camp"
+                }
+              ]
+            },
+            {
+              "id": "knife_both_ways",
+              "label": "Decide the Boss has shown weakness at last",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "varn",
+                  "want": "take_the_hollow",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger he knows who sold him to the crown, and that a knife cuts both ways."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_renna_report_after_seal",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The seal is broken or burned, and either way you have to tell the regent something.",
+          "options": [
+            {
+              "id": "send_report",
+              "label": "Send the report east tonight",
+              "serves": [
+                "obey_the_crown",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_report_sent",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "not_yet",
+              "label": "Not yet; you'll write when you can stand behind every word",
+              "serves": [
+                "refuse_a_scapegoat"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_renna_hears_of_the_pit_in_camp",
+          "type": "react",
+          "trigger": "on_flag:tn_taken_alive_known",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "In the rangers' camp on the forest path the stranger tells you what your uncle's council could not say aloud: the Tithe's taken are alive, digging white salt in chains beyond the ridge. Greystone is crown land, leased to the Guild, and the Cathedral's rationed cure is that salt.",
+          "options": [
+            {
+              "id": "write_the_pit",
+              "label": "Write the Pit into your report, every name you have, and send it east",
+              "serves": [
+                "prove_the_rangers",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_pit_reported",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_report_sent",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger you've written the Pit into the regent's report: chains on crown land, and the Cathedral's cure dug in them."
+                }
+              ]
+            },
+            {
+              "id": "see_it_first",
+              "label": "Ask the stranger the way to the seam, and write nothing until you have seen it",
+              "serves": [
+                "refuse_a_scapegoat",
+                "bring_my_rangers_home"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Ask the stranger how far up the ridge the Pit lies, and how many Hollow men guard its mouth; you'll not report chains you haven't seen."
+                }
+              ]
+            },
+            {
+              "id": "leave_it_out",
+              "label": "Leave it out; the regent asked about coin, not about Thornhaven's children",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_courier_sleeps",
+      "act": 3,
+      "title": "The Courier Sleeps",
+      "summary": "Act III. Renna's report rides east and stops at the Halfway House. The regent has sent word ahead that he will hear the west from a witness, not a saddlebag, so it waits on Old Wren's rack for someone who saw the valley to carry it into the Crown Court. Wren reads everything under her roof, and a Hollow runner has seen the courier's saddlebag. The report may arrive as written, altered, or not at all.",
+      "location": "kingsroad_waystation",
+      "requires": [
+        "tithe_report_sent",
+        "!tithe_report_delivered"
+      ],
+      "resolves_on": [
+        "tithe_player_carried_report"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "tithe_report_delivered",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "tithe_wren_reads_the_report",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "A ranger courier sleeps upstairs with Renna's report to the regent in his saddlebag. You can lift a seal and press it again without a hair out of place.",
+          "options": [
+            {
+              "id": "read_and_reseal",
+              "label": "Read it, reseal it and put it back on the rack for whoever carries it east",
+              "serves": [
+                "read_every_letter"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger the captain's report sits on your rack, resealed, and the regent will only believe it from someone who saw the valley."
+                }
+              ]
+            },
+            {
+              "id": "add_a_line",
+              "label": "Add one line in a careful hand: the valley's master writes in a woman's hand",
+              "serves": [
+                "name_the_boss",
+                "outplay_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_report_amended",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "mira"
+              ]
+            },
+            {
+              "id": "lame_horse",
+              "label": "Let his horse throw a shoe, and see who else is riding east",
+              "serves": [
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger the ranger courier's horse threw a shoe; ask whether they're riding east and would carry a sealed letter."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_wren_lets_him_ride",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The courier has gone back west without his report; the regent wants a witness, not a rider. The captain's report sits on your rack with your letters.",
+          "options": [
+            {
+              "id": "find_a_witness",
+              "label": "Look for a traveller the regent might believe, and put the report in their way",
+              "serves": [
+                "keep_the_road_open",
+                "one_last_game"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Ask the stranger whether they are riding east; the captain's report on your rack wants a witness to carry it into the Crown Court."
+                }
+              ]
+            },
+            {
+              "id": "another_night",
+              "label": "Leave it on the rack another night",
+              "serves": [
+                "a_quiet_fire"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_wren_watched",
+          "type": "intercept",
+          "trigger": "on_flag:way_letters_read",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "The road has started saying Old Wren reads the post. Tonight the ranger courier's report sits on your rack.",
+          "options": [
+            {
+              "id": "send_it_clean",
+              "label": "Get it off your rack untouched before anyone asks what you read",
+              "serves": [
+                "a_quiet_fire",
+                "keep_the_road_open"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Tell the stranger, low, to take the captain's report off your rack and carry it east before anyone asks what an old woman reads."
+                }
+              ]
+            },
+            {
+              "id": "one_last_line",
+              "label": "Read it anyway and add your line; one last game",
+              "serves": [
+                "one_last_game",
+                "name_the_boss"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_report_amended",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "mira"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_mira_robs_the_courier",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Your runner on the Kingsroad says a ranger courier is sleeping at the Halfway House with the captain's report. You do not know what the captain wrote, or whose name.",
+          "options": [
+            {
+              "id": "lift_the_bag",
+              "label": "Have the runner lift the saddlebag on the road and bring it into the Darkwood",
+              "serves": [
+                "keep_the_mask",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_courier_robbed",
+                  "value": true
+                },
+                {
+                  "type": "block_beat",
+                  "storyline": "crowns_tithe",
+                  "beat": "the_courier_sleeps"
+                }
+              ]
+            },
+            {
+              "id": "a_widows_letter",
+              "label": "Let it ride, and send your own letter east beside it",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger whether they're going east, and if they'd carry a widow's letter to a cousin; you don't trust the rangers' riders."
+                }
+              ]
+            },
+            {
+              "id": "let_it_ride",
+              "label": "Let it ride; robbing the crown's post brings the crown",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_renna_rides_the_copy",
+          "type": "aid",
+          "trigger": "on_flag:tithe_courier_robbed",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "Your courier came back on foot with a split lip and no saddlebag. You kept a copy. You always keep a copy.",
+          "options": [
+            {
+              "id": "ride_it_herself",
+              "label": "Ride east with the copy yourself as far as the Halfway House",
+              "serves": [
+                "prove_the_rangers",
+                "restore_order_in_the_west"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "crowns_tithe",
+                  "beat": "the_courier_sleeps"
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "renna",
+                  "location": "kingsroad_waystation"
+                }
+              ]
+            },
+            {
+              "id": "three_riders",
+              "label": "Send the copy again with three riders and orders to kill anyone who stops them",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "crowns_tithe",
+                  "beat": "the_courier_sleeps"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger somebody robbed your courier on the Kingsroad, and ask who in the valley knew a report was riding."
+                }
+              ]
+            },
+            {
+              "id": "let_it_lie",
+              "label": "Let the regent wait; you have a valley to hold",
+              "serves": [
+                "bring_my_rangers_home"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_regents_answer",
+      "act": 3,
+      "title": "The Regent's Answer",
+      "summary": "Act III. The stranger has put Renna's report in the Lord Protector's hand, and it lies open in the Crown Court. He chooses what the valley's three missing years will cost it: a pardon, a fine, or a rope. The High Magistrate and Lady Ashdown each want a hand in the answer.",
+      "location": "capitol_palace",
+      "requires": [
+        "tithe_report_delivered",
+        "tithe_player_carried_report"
+      ],
+      "resolves_on": [
+        "tithe_valley_pardoned",
+        "tithe_valley_fined",
+        "tithe_hanging_ordered"
+      ],
+      "hooks": [
+        {
+          "id": "tithe_edric_reads_the_report",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Renna's report is on your desk: a valley that paid Iron Hollow coin and a child every autumn because the crown never came. The treasury needs the coin. The council needs a victory. The valley needs to be grateful to someone.",
+          "options": [
+            {
+              "id": "pardon",
+              "label": "Pardon the valley its tithe and its tribute, and let it be grateful",
+              "serves": [
+                "stay_indispensable",
+                "use_the_hollow",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_valley_pardoned",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Tell the stranger the crown has pardoned the valley, and ask, lightly, who in Thornhaven will be grateful enough to pay next year."
+                }
+              ]
+            },
+            {
+              "id": "fine",
+              "label": "Fine the valley twice over and send the rangers to collect",
+              "serves": [
+                "fill_the_treasury"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_valley_fined",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "rope",
+              "label": "Order the accused man hanged in the square under the crown's banner",
+              "serves": [
+                "win_a_victory"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_hanging_ordered",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "wait",
+              "label": "Read it again, and wait to see what the Magistry says",
+              "serves": [
+                "keep_the_magistry_quiet"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_edric_reads_of_the_pit",
+          "type": "intercept",
+          "trigger": "on_flag:tithe_pit_reported",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "One page of Renna's report is not about coin. The Hollow's taken dig white salt in chains at Greystone, on crown land the Guild leases, and the Cathedral sells it as the fever cure. A pardon would bury that page with the rest. A rope would end the story at one merchant.",
+          "options": [
+            {
+              "id": "pardon_and_bury",
+              "label": "Pardon the valley, and keep that page out of every copy the council sees",
+              "serves": [
+                "keep_the_magistry_quiet",
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_valley_pardoned",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger, as if it were nothing, how many in the valley know where the Hollow's carts go each autumn."
+                }
+              ]
+            },
+            {
+              "id": "rope_for_the_merchant",
+              "label": "Hang the merchant who rigged the lot, and let the story end with him",
+              "serves": [
+                "win_a_victory"
+              ],
+              "harms": [
+                "gregor"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_hanging_ordered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "read_it_twice",
+              "label": "Read the page again, and ask who else has seen it",
+              "serves": [
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger whether they have seen the seam at Greystone with their own eyes, and who else has."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_edric_decides_at_last",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "The report has lain on your desk for three days. The council has started asking what it says.",
+          "options": [
+            {
+              "id": "pardon_now",
+              "label": "Pardon the valley",
+              "serves": [
+                "stay_indispensable",
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_valley_pardoned",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "fine_now",
+              "label": "Fine the valley",
+              "serves": [
+                "fill_the_treasury"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_valley_fined",
+                  "value": true
+                }
+              ]
+            }
+          ],
+          "once": false
+        },
+        {
+          "id": "tithe_edric_hears_the_gap",
+          "type": "intercept",
+          "trigger": "on_flag:tithe_losses_proved",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "Vane has shown you, very politely, that the valley reported its losses every season and your own city lost the papers. Punishing the valley now would be punishing the crown's own clerks' crime.",
+          "options": [
+            {
+              "id": "pardon_it",
+              "label": "Pardon the valley before Vane can make a trial of it",
+              "serves": [
+                "keep_the_magistry_quiet",
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_valley_pardoned",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "fine_anyway",
+              "label": "Fine it anyway; the coin is still missing",
+              "serves": [
+                "fill_the_treasury"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_valley_fined",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_edric_court_watching",
+          "type": "intercept",
+          "trigger": "on_flag:mag_trial_called",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "The High Magistry has called the valley's trial. A hanging ordered now would look exactly like a gag.",
+          "options": [
+            {
+              "id": "quiet_fine",
+              "label": "Fine the valley quietly and leave the rope alone",
+              "serves": [
+                "fill_the_treasury",
+                "keep_the_magistry_quiet"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_valley_fined",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "quiet_pardon",
+              "label": "Pardon the valley and give the court nothing to try",
+              "serves": [
+                "keep_the_magistry_quiet"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_valley_pardoned",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_corwin_shows_the_gap",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The regent has asked you to sit in while he decides the valley's tithe. Three years of the valley's loss returns are missing from your own archive, signed out by a clerk whose name you share.",
+          "options": [
+            {
+              "id": "show_the_gap",
+              "label": "Lay the archive gap before the regent: the reports were sent and lost here",
+              "serves": [
+                "find_the_lost_reports",
+                "law_applied_evenly"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_losses_proved",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "ask_about_tobias",
+              "label": "Say nothing yet, and find out first what Tobias has done",
+              "serves": [
+                "save_the_nephew"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Ask the stranger, quietly, what they know of a Magistry registry clerk named Tobias Vane and his new coat."
+                }
+              ]
+            },
+            {
+              "id": "trial_not_pardon",
+              "label": "Tell the regent the valley deserves a trial, not a pardon or a rope",
+              "serves": [
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger the valley deserves a trial, not a pardon or a rope, and ask them to say so where the regent can hear."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_corwin_reads_the_ledger",
+          "type": "reveal",
+          "trigger": "on_flag:fence_ledger_taken",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The Guildmaster's patron ledger is loose in the city, and someone has shown you a page: a payment to T. Vane, the season the valley's reports vanished.",
+          "options": [
+            {
+              "id": "prove_it",
+              "label": "Take the page to the regent: the losses were lost on purpose",
+              "serves": [
+                "find_the_lost_reports",
+                "law_applied_evenly"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_losses_proved",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "nephew_first",
+              "label": "Go to Tobias first, alone",
+              "serves": [
+                "save_the_nephew"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger you have seen a page of the Guildmaster's ledger, and that one name on it is your sister's son."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_seraphine_offers_arrears",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "The regent is deciding what the valley owes. A valley that owes the crown is a valley that sells. A crown that owes Ashdown is a crown that gives seats.",
+          "options": [
+            {
+              "id": "pay_the_arrears",
+              "label": "Offer to pay the valley's missing tithe yourself, for the deed confirmed",
+              "serves": [
+                "own_the_valley",
+                "a_seat_beside_the_throne"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_ashdown_offered_arrears",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Ask the stranger whether Thornhaven's freeholders would rather owe the crown, or a house that would pay their debts."
+                }
+              ]
+            },
+            {
+              "id": "pity_the_fined",
+              "label": "Say, with pity, that a fined valley would at least learn its lesson",
+              "serves": [
+                "keep_the_valley_afraid"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Tell the stranger, with pity, that a fined valley is a valley that sells, and that someone ought to buy it kindly."
+                }
+              ]
+            },
+            {
+              "id": "stay_away",
+              "label": "Stay away from the Crown Court today",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "tithe_seraphine_deed_in_court",
+          "type": "scheme",
+          "trigger": "on_flag:inh_deed_challenged",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "Your deed to the valley is being tested in the High Magistry. A contested deed is worth nothing at the regent's table.",
+          "options": [
+            {
+              "id": "press_harder",
+              "label": "Press the regent now, before the court rules: the arrears for the deed",
+              "serves": [
+                "own_the_valley",
+                "restore_house_ashdown"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "tithe_ashdown_offered_arrears",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "withdraw",
+              "label": "Withdraw from the question until the court is done",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Tell the stranger, coolly, that House Ashdown has no interest in the valley's tithe and never did."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_mira_hears_the_pardon",
+          "type": "react",
+          "trigger": "on_flag:tithe_valley_pardoned",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The crown has pardoned the valley every coin it paid Iron Hollow. Every coin. Your tavern is in the valley.",
+          "options": [
+            {
+              "id": "pour_a_round",
+              "label": "Pour the village a round and weep a little for Marcus",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Pour the stranger a cup on the house and say, wet-eyed, that Marcus would have wept to see the crown forgive the valley."
+                }
+              ]
+            },
+            {
+              "id": "spread_the_mercy",
+              "label": "Make sure every farm knows the crown forgave them for paying",
+              "serves": [
+                "own_the_council",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "spread_rumor",
+                  "flag": "tithe_valley_pardoned",
+                  "to": [
+                    "*"
+                  ],
+                  "via": "the tavern"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_renna_ordered_to_hang",
+          "type": "react",
+          "trigger": "on_flag:tithe_hanging_ordered",
+          "eligible": [
+            "renna"
+          ],
+          "situation": "The regent's order has come west: the accused man hangs in Thornhaven's square under your banner.",
+          "options": [
+            {
+              "id": "refuse_it",
+              "label": "Refuse to carry it out until a court has heard him",
+              "serves": [
+                "refuse_a_scapegoat",
+                "prove_the_rangers"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "renna",
+                  "want": "obey_the_crown",
+                  "delta": -2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger the regent ordered a hanging and you've refused it until a court hears the man; ask if they'll stand with you."
+                }
+              ]
+            },
+            {
+              "id": "carry_it_out",
+              "label": "Carry it out; a ranger who picks her orders is a bandit with a badge",
+              "serves": [
+                "obey_the_crown"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "renna",
+                  "text": "Tell the stranger, flatly, that the regent ordered a hanging and you will carry it out, and do not look at them while you say it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tithe_mathias_hears_the_bill",
+          "type": "react",
+          "trigger": "on_flag:tithe_valley_fined",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The crown has fined the valley twice the tithe it never paid. The undercroft is half empty already, and the Hollow's cart still comes every autumn.",
+          "options": [
+            {
+              "id": "pay_from_the_undercroft",
+              "label": "Pay what you can from the undercroft and pray it is enough",
+              "serves": [
+                "keep_the_peace_paid",
+                "save_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the crown fined the valley twice over, and ask, very quietly, how a village pays two masters."
+                }
+              ]
+            },
+            {
+              "id": "plead",
+              "label": "Write to your niece and plead",
+              "serves": [
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger to carry a letter to your niece; you are too proud to ask her yourself."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "tithe_the_example",
+      "title": "The Example",
+      "requires": [
+        "tithe_hanging_ordered",
+        "tithe_player_testified"
+      ],
+      "summary": "The stranger told the rangers what they knew, and the regent read it and sent back a rope. A man of the valley hangs under the crown's banner for three years of tithe, and the valley learns what the crown's attention costs."
+    },
+    {
+      "id": "tithe_the_quiet_pardon",
+      "title": "The Quiet Pardon",
+      "requires": [
+        "tithe_valley_pardoned",
+        "tithe_player_named_governor"
+      ],
+      "summary": "The stranger named who truly governs the valley, the captain carried it east, and the regent pardoned the valley anyway: every coin paid to the Hollow forgiven, the tavern's with the rest. The tithe will come in full now, and nobody in the Crown Court asks what else the valley paid each autumn."
+    },
+    {
+      "id": "tithe_the_homecoming",
+      "title": "The Homecoming",
+      "requires": [
+        "tn_taken_freed",
+        "tithe_valley_pardoned",
+        "tithe_player_testified"
+      ],
+      "summary": "The taken came down from the Pit, and the stranger's sworn account and the captain's report went east together. The crown forgave the valley a debt it had paid in children, and an elder and the niece who ran from him stand at the gate to count them home."
+    },
+    {
+      "id": "tithe_mercy_and_kin",
+      "title": "Mercy and Kin",
+      "requires": [
+        "tithe_valley_pardoned",
+        "tithe_player_testified"
+      ],
+      "summary": "On the stranger's word and the captain's report, the crown forgave a frightened valley its missing tithe. The rangers stay through the winter, and an elder and the niece who ran from him sit at the same table again."
+    },
+    {
+      "id": "tithe_twice_taxed",
+      "title": "Twice Taxed",
+      "requires": [
+        "tithe_valley_fined",
+        "tithe_player_testified"
+      ],
+      "summary": "The stranger told the truth and the crown sent a bill: the tithe twice over, collected by rangers. Thornhaven pays the crown in coin and the forest in coin and a child, and wonders which master it hates more."
+    }
+  ]
+}

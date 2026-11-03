@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="LocationData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/location_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+location_id = "kingsroad_waystation"
+display_name = "The Halfway House"
+region = "The Kingsroad"
+area = "The Kingsroad"
+scene_path = "res://scenes/interiors/kingsroad_waystation.tscn"
+is_interior = true
+spawn_points = {
+"default": "Common room, by the road door",
+"from_travel": "Just inside the road door, off the Kingsroad"
+}

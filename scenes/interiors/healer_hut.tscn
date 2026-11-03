@@ -1,0 +1,715 @@
+[gd_scene load_steps=22 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/tavern_fireplace.png" id="2_tavern_fireplace"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/shop_shelves.png" id="3_shop_shelves"]
+[ext_resource type="Texture2D" path="res://assets/generated/props/barrel.png" id="4_barrel"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="5_story_item"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="6_scene_trigger"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="7_dialogue_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="8_debug_interaction_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="9_debug_console"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_512x32"]
+size = Vector2(512, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_32x448"]
+size = Vector2(32, 448)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80x70"]
+size = Vector2(80, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_120x50"]
+size = Vector2(120, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_70x130"]
+size = Vector2(70, 130)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_48x100"]
+size = Vector2(48, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40x48"]
+size = Vector2(40, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_84x58"]
+size = Vector2(84, 58)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_58x48"]
+size = Vector2(58, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_46x38"]
+size = Vector2(46, 38)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_64x32"]
+size = Vector2(64, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_herb_curtain"]
+size = Vector2(48, 96)
+
+[node name="HealerHut" type="Node2D"]
+
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = 256.0
+color = Color(0.33, 0.28, 0.2, 1)
+
+[node name="PackedEarth" type="ColorRect" parent="Floor"]
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 480.0
+offset_bottom = 480.0
+color = Color(0.43, 0.36, 0.26, 1)
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, -240)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/North"]
+shape = SubResource("RectangleShape2D_512x32")
+
+[node name="Visual" type="ColorRect" parent="Walls/North"]
+offset_left = -256.0
+offset_top = -16.0
+offset_right = 256.0
+offset_bottom = 16.0
+color = Color(0.38, 0.3, 0.2, 1)
+
+[node name="South" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, 240)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/South"]
+shape = SubResource("RectangleShape2D_512x32")
+
+[node name="Visual" type="ColorRect" parent="Walls/South"]
+offset_left = -256.0
+offset_top = -16.0
+offset_right = 256.0
+offset_bottom = 16.0
+color = Color(0.38, 0.3, 0.2, 1)
+
+[node name="West" type="StaticBody2D" parent="Walls"]
+position = Vector2(-240, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/West"]
+shape = SubResource("RectangleShape2D_32x448")
+
+[node name="Visual" type="ColorRect" parent="Walls/West"]
+offset_left = -16.0
+offset_top = -224.0
+offset_right = 16.0
+offset_bottom = 224.0
+color = Color(0.38, 0.3, 0.2, 1)
+
+[node name="East" type="StaticBody2D" parent="Walls"]
+position = Vector2(240, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/East"]
+shape = SubResource("RectangleShape2D_32x448")
+
+[node name="Visual" type="ColorRect" parent="Walls/East"]
+offset_left = -16.0
+offset_top = -224.0
+offset_right = 16.0
+offset_bottom = 224.0
+color = Color(0.38, 0.3, 0.2, 1)
+
+[node name="Room" type="Node2D" parent="."]
+z_index = -9
+
+[node name="Rushes" type="ColorRect" parent="Room"]
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = 120.0
+color = Color(0.5, 0.45, 0.28, 1)
+
+[node name="HerbStain" type="ColorRect" parent="Room"]
+offset_left = 40.0
+offset_top = -150.0
+offset_right = 150.0
+offset_bottom = -90.0
+color = Color(0.3, 0.33, 0.18, 0.6)
+
+[node name="Furniture" type="Node2D" parent="."]
+z_index = 5
+
+[node name="DryingRack" type="Node2D" parent="Furniture"]
+z_index = 30
+position = Vector2(0, -196)
+
+[node name="Cord" type="ColorRect" parent="Furniture/DryingRack"]
+offset_left = -200.0
+offset_top = -2.0
+offset_right = 200.0
+offset_bottom = 2.0
+color = Color(0.55, 0.47, 0.33, 1)
+
+[node name="Bundle1" type="ColorRect" parent="Furniture/DryingRack"]
+offset_left = -190.0
+offset_top = 0.0
+offset_right = -176.0
+offset_bottom = 22.0
+color = Color(0.36, 0.48, 0.25, 1)
+
+[node name="Bundle2" type="ColorRect" parent="Furniture/DryingRack"]
+offset_left = -161.0
+offset_top = 0.0
+offset_right = -147.0
+offset_bottom = 28.0
+color = Color(0.48, 0.45, 0.24, 1)
+
+[node name="Bundle3" type="ColorRect" parent="Furniture/DryingRack"]
+offset_left = -132.0
+offset_top = 0.0
+offset_right = -118.0
+offset_bottom = 34.0
+color = Color(0.3, 0.42, 0.3, 1)
+
+[node name="Bundle4" type="ColorRect" parent="Furniture/DryingRack"]
+offset_left = -103.0
+offset_top = 0.0
+offset_right = -89.0
+offset_bottom = 22.0
+color = Color(0.52, 0.38, 0.3, 1)
+
+[node name="Bundle5" type="ColorRect" parent="Furniture/DryingRack"]
+offset_left = -74.0
+offset_top = 0.0
+offset_right = -60.0
+offset_bottom = 28.0
+color = Color(0.4, 0.5, 0.28, 1)
+
+[node name="Bundle6" type="ColorRect" parent="Furniture/DryingRack"]
+offset_left = -45.0
+offset_top = 0.0
+offset_right = -31.0
+offset_bottom = 34.0
+color = Color(0.45, 0.35, 0.42, 1)
+
+[node name="Bundle7" type="ColorRect" parent="Furniture/DryingRack"]
+offset_left = -16.0
+offset_top = 0.0
+offset_right = -2.0
+offset_bottom = 22.0
+color = Color(0.34, 0.44, 0.22, 1)
+
+[node name="Bundle8" type="ColorRect" parent="Furniture/DryingRack"]
+offset_left = 13.0
+offset_top = 0.0
+offset_right = 27.0
+offset_bottom = 28.0
+color = Color(0.36, 0.48, 0.25, 1)
+
+[node name="Bundle9" type="ColorRect" parent="Furniture/DryingRack"]
+offset_left = 42.0
+offset_top = 0.0
+offset_right = 56.0
+offset_bottom = 34.0
+color = Color(0.48, 0.45, 0.24, 1)
+
+[node name="Bundle10" type="ColorRect" parent="Furniture/DryingRack"]
+offset_left = 71.0
+offset_top = 0.0
+offset_right = 85.0
+offset_bottom = 22.0
+color = Color(0.3, 0.42, 0.3, 1)
+
+[node name="Bundle11" type="ColorRect" parent="Furniture/DryingRack"]
+offset_left = 100.0
+offset_top = 0.0
+offset_right = 114.0
+offset_bottom = 28.0
+color = Color(0.52, 0.38, 0.3, 1)
+
+[node name="Bundle12" type="ColorRect" parent="Furniture/DryingRack"]
+offset_left = 129.0
+offset_top = 0.0
+offset_right = 143.0
+offset_bottom = 34.0
+color = Color(0.4, 0.5, 0.28, 1)
+
+[node name="Bundle13" type="ColorRect" parent="Furniture/DryingRack"]
+offset_left = 158.0
+offset_top = 0.0
+offset_right = 172.0
+offset_bottom = 22.0
+color = Color(0.45, 0.35, 0.42, 1)
+
+[node name="Bundle14" type="ColorRect" parent="Furniture/DryingRack"]
+offset_left = 187.0
+offset_top = 0.0
+offset_right = 201.0
+offset_bottom = 28.0
+color = Color(0.34, 0.44, 0.22, 1)
+
+[node name="Hearth" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-170, -150)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Hearth"]
+shape = SubResource("RectangleShape2D_80x70")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Hearth"]
+position = Vector2(0, 0)
+texture = ExtResource("2_tavern_fireplace")
+
+[node name="Kettle" type="ColorRect" parent="Furniture/Hearth"]
+offset_left = -10.0
+offset_top = 12.0
+offset_right = 10.0
+offset_bottom = 28.0
+color = Color(0.2, 0.2, 0.22, 1)
+
+[node name="Worktable" type="StaticBody2D" parent="Furniture"]
+position = Vector2(90, -110)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Worktable"]
+shape = SubResource("RectangleShape2D_120x50")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Worktable"]
+offset_left = -60.0
+offset_top = -25.0
+offset_right = 60.0
+offset_bottom = 25.0
+color = Color(0.4, 0.29, 0.18, 1)
+
+[node name="Mortar" type="ColorRect" parent="Furniture/Worktable"]
+offset_left = -39.0
+offset_top = -9.0
+offset_right = -21.0
+offset_bottom = 9.0
+color = Color(0.6, 0.58, 0.55, 1)
+
+[node name="Jars" type="ColorRect" parent="Furniture/Worktable"]
+offset_left = 5.0
+offset_top = -7.0
+offset_right = 45.0
+offset_bottom = 7.0
+color = Color(0.5, 0.62, 0.55, 1)
+
+[node name="Cot" type="StaticBody2D" parent="Furniture"]
+position = Vector2(160, 70)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Cot"]
+shape = SubResource("RectangleShape2D_70x130")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Cot"]
+offset_left = -35.0
+offset_top = -65.0
+offset_right = 35.0
+offset_bottom = 65.0
+color = Color(0.42, 0.32, 0.22, 1)
+
+[node name="Linen" type="ColorRect" parent="Furniture/Cot"]
+offset_left = -30.0
+offset_top = -55.0
+offset_right = 30.0
+offset_bottom = 55.0
+color = Color(0.82, 0.78, 0.7, 1)
+
+[node name="Pillow" type="ColorRect" parent="Furniture/Cot"]
+offset_left = -22.0
+offset_top = -59.0
+offset_right = 22.0
+offset_bottom = -41.0
+color = Color(0.9, 0.88, 0.82, 1)
+
+[node name="JarShelf" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-190, 60)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/JarShelf"]
+shape = SubResource("RectangleShape2D_48x100")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/JarShelf"]
+position = Vector2(0, 0)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("3_shop_shelves")
+
+[node name="Basket" type="Sprite2D" parent="Furniture"]
+position = Vector2(-60, 170)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("4_barrel")
+
+[node name="Interactables" type="Node2D" parent="."]
+z_index = 6
+
+[node name="EmptyHook" type="Area2D" parent="Interactables"]
+z_index = 31
+position = Vector2(130, -196)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("5_story_item")
+interaction_name = "Look at the Herbs"
+flag_to_set = ""
+discovery_text = "[b]The drying cord[/b]
+
+Yarrow, feverfew, comfrey, willow bark, each bundle tagged with a scrap of bark and a word in Maud's spiky letters.
+
+At the end of the cord one hook hangs empty. Its tag reads: 'fever-root. None since the Hollow took the forest road. Grows wet, under ash.'"
+reexamine_text = "Every hook full but one: fever-root, none since the Hollow took the road."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/EmptyHook"]
+shape = SubResource("RectangleShape2D_40x48")
+
+[node name="Visual" type="ColorRect" parent="Interactables/EmptyHook"]
+offset_left = -8.0
+offset_top = -12.0
+offset_right = 8.0
+offset_bottom = 12.0
+color = Color(0.3, 0.26, 0.2, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Interactables/EmptyHook"]
+z_index = 10
+visible = false
+offset_left = -76.5
+offset_top = -44.0
+offset_right = 76.5
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Look at the Herbs"
+horizontal_alignment = 1
+
+[node name="PriceSlate" type="Area2D" parent="Interactables"]
+z_index = 6
+position = Vector2(-80, -205)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("5_story_item")
+interaction_name = "Read the Slate"
+flag_to_set = ""
+discovery_text = "[b]A slate by the door[/b]
+
+'Setting a bone - 2 crowns.
+A birthing - 3 crowns, or a pig.
+A knife wound, no questions - 5 crowns.
+A fever of the grey kind - FORTY CROWNS. Paid before. I do not work for promises.'
+
+Below, a list of debts long rubbed out, and one fresh: 'G., the merchant. Asked the price. Did not pay.'
+
+And a tally with no name and no price, a stroke for every day since midsummer: 'Dressings. Two fingers gone, left hand. Wash the white dust out of the cuts, every morning, it will not stop coming.'"
+reexamine_text = "Forty crowns for the grey fever. And a nameless tally: two fingers gone, white dust in the cuts."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/PriceSlate"]
+shape = SubResource("RectangleShape2D_84x58")
+
+[node name="Visual" type="ColorRect" parent="Interactables/PriceSlate"]
+offset_left = -30.0
+offset_top = -17.0
+offset_right = 30.0
+offset_bottom = 17.0
+color = Color(0.2, 0.22, 0.24, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Interactables/PriceSlate"]
+z_index = 10
+visible = false
+offset_left = -70.0
+offset_top = -44.0
+offset_right = 70.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Read the Slate"
+horizontal_alignment = 1
+
+[node name="CaseBook" type="Area2D" parent="Interactables"]
+z_index = 6
+position = Vector2(60, -110)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("5_story_item")
+interaction_name = "Read the Case Book"
+flag_to_set = ""
+discovery_text = "[b]Maud's case book[/b]
+
+Years of patients in a cramped hand. One entry, five winters old: 'Merchant's wife. Grey fever. Came to me too late, and with too little coin. Fever-root eased her. Did not save her. The old physicians in the Capitol steeped the root with a white salt from the deep vein in the east. I have never had the salt.'
+
+A newer line, the ink still dark: 'The merchant's girl. Cough at the turn of the season. Same as the mother. And yet she does not worsen. Someone is giving her what I cannot.'
+
+The last entry has no name: 'A boy, sixteen or so, in off the ridge at midsummer, half dead. Two fingers gone from the left hand. White dust in every cut on him, fine as flour, and it bites the tongue like salt. He will say nothing but: we dig the white stone. If the Hollow learns he is here, the village pays. Not a word.'"
+reexamine_text = "'Same as the mother, and yet she does not worsen.' And a nameless boy with two fingers gone: 'we dig the white stone.'"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/CaseBook"]
+shape = SubResource("RectangleShape2D_58x48")
+
+[node name="Visual" type="ColorRect" parent="Interactables/CaseBook"]
+offset_left = -17.0
+offset_top = -12.0
+offset_right = 17.0
+offset_bottom = 12.0
+color = Color(0.35, 0.22, 0.14, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Interactables/CaseBook"]
+z_index = 10
+visible = false
+offset_left = -81.0
+offset_top = -44.0
+offset_right = 81.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Read the Case Book"
+horizontal_alignment = 1
+
+[node name="BloodiedRag" type="Area2D" parent="Interactables"]
+z_index = 6
+position = Vector2(200, 150)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("5_story_item")
+interaction_name = "Look at the Rag"
+flag_to_set = ""
+discovery_text = "[b]A bloodied rag[/b]
+
+Stuffed under the cot: linen stiff with old blood, and wrapped inside it, a silver coin with a notch cut in the edge.
+
+Pinned to it, in Maud's hand: 'Knife cut, left forearm. Would not give his name. Smelled of woodsmoke and horse. Paid well.' A healer on the forest road does not ask whose side her patients are on."
+reexamine_text = "A notched silver coin, paid for a knife wound by a man who would not give his name."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/BloodiedRag"]
+shape = SubResource("RectangleShape2D_46x38")
+
+[node name="Visual" type="ColorRect" parent="Interactables/BloodiedRag"]
+offset_left = -11.0
+offset_top = -7.0
+offset_right = 11.0
+offset_bottom = 7.0
+color = Color(0.55, 0.2, 0.18, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Interactables/BloodiedRag"]
+z_index = 10
+visible = false
+offset_left = -70.0
+offset_top = -44.0
+offset_right = 70.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Look at the Rag"
+horizontal_alignment = 1
+
+[node name="HerbCurtain" type="Area2D" parent="Interactables"]
+z_index = 31
+position = Vector2(205, -40)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("5_story_item")
+interaction_name = "Look behind the Herbs"
+flag_to_set = "davin_found"
+discovery_text = "[b]Behind the herb curtain[/b]
+
+In the corner past the worktable, a curtain of drying herbs hangs floor to rafter, too thick to be only for drying. Behind it is a nook with a straw pallet, a water jug and a bucket of grey wash-water.
+
+A boy is curled on the straw, fevered, watching you over a blanket. Sixteen or so, with a smith's shoulders gone thin. His left hand is bound, and the binding is the wrong shape: two fingers are gone. There is white dust worked into the cuts on his arms.
+
+He knows your face is a stranger's. 'Don't,' he says. 'If they know I'm out, they take two.' Then, as if it were all he has left: 'We dig the white stone.'
+
+Davin. The smith's boy, taken in the second Tithe. Alive."
+reexamine_text = "Davin, Bjorn's apprentice, hiding fevered behind Maud's herbs. Alive."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/HerbCurtain"]
+shape = SubResource("RectangleShape2D_herb_curtain")
+
+[node name="Visual" type="ColorRect" parent="Interactables/HerbCurtain"]
+offset_left = -24.0
+offset_top = -48.0
+offset_right = 24.0
+offset_bottom = 48.0
+color = Color(0.3, 0.34, 0.2, 0.85)
+
+[node name="Strand0" type="ColorRect" parent="Interactables/HerbCurtain"]
+offset_left = -22.0
+offset_top = -48.0
+offset_right = -16.0
+offset_bottom = 40.0
+color = Color(0.36, 0.42, 0.24, 1)
+
+[node name="Strand1" type="ColorRect" parent="Interactables/HerbCurtain"]
+offset_left = -13.0
+offset_top = -48.0
+offset_right = -7.0
+offset_bottom = 46.0
+color = Color(0.36, 0.42, 0.24, 1)
+
+[node name="Strand2" type="ColorRect" parent="Interactables/HerbCurtain"]
+offset_left = -4.0
+offset_top = -48.0
+offset_right = 2.0
+offset_bottom = 52.0
+color = Color(0.36, 0.42, 0.24, 1)
+
+[node name="Strand3" type="ColorRect" parent="Interactables/HerbCurtain"]
+offset_left = 5.0
+offset_top = -48.0
+offset_right = 11.0
+offset_bottom = 40.0
+color = Color(0.36, 0.42, 0.24, 1)
+
+[node name="Strand4" type="ColorRect" parent="Interactables/HerbCurtain"]
+offset_left = 14.0
+offset_top = -48.0
+offset_right = 20.0
+offset_bottom = 46.0
+color = Color(0.36, 0.42, 0.24, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Interactables/HerbCurtain"]
+z_index = 10
+visible = false
+offset_left = -125.0
+offset_top = -44.0
+offset_right = 125.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Look behind the Herbs"
+horizontal_alignment = 1
+
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(0, 216)
+collision_layer = 32
+collision_mask = 1
+script = ExtResource("6_scene_trigger")
+target_location = "village_gate"
+target_spawn_point = "from_healer_hut"
+require_input = false
+prompt_text = "Exit"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+shape = SubResource("RectangleShape2D_64x32")
+
+[node name="DoorVisual" type="ColorRect" parent="Exit"]
+offset_left = -32.0
+offset_top = -10.0
+offset_right = 32.0
+offset_bottom = 30.0
+color = Color(0.3, 0.22, 0.14, 1)
+
+[node name="ExitLabel" type="Label" parent="Exit"]
+offset_left = -70.0
+offset_top = -30.0
+offset_right = 70.0
+offset_bottom = -10.0
+text = "To the Gate Road"
+horizontal_alignment = 1
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 150)
+
+[node name="from_village_gate" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 150)
+
+[node name="from_exterior" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 150)
+
+[node name="npc_davin" type="Marker2D" parent="."]
+position = Vector2(205, -30)
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("7_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[node name="DebugInteractionPanel" parent="DialogueUI" instance=ExtResource("8_debug_interaction_panel")]
+visible = false
+
+[node name="DebugConsole" parent="." instance=ExtResource("9_debug_console")]
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

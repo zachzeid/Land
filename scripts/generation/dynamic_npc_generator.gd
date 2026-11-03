@@ -1,6 +1,7 @@
 extends Node
-## DynamicNPCGenerator - Auto-generates assets for NPCs registered in DynamicNPCRegistry
+## DynamicNPCGenerator - Generates assets for legacy template NPCs registered in DynamicNPCRegistry
 ## Integrates with CharacterGenerator and PixelLab to create sprites for referenced NPCs
+## Generic NPCs (docs/WORLD_SCHEMA.md §9) never come through here: they reuse sprites by archetype
 
 ## Reference to character generator
 var character_generator: Node = null
@@ -19,7 +20,10 @@ signal generation_failed(npc_id: String, error: String)
 signal queue_empty()
 
 ## Settings
-@export var auto_process_queue: bool = true
+## Off by default: generic NPCs (scripts/generics) reuse existing sprites by archetype, so dialogue
+## references no longer trigger paid per-NPC sprite generation. Turn on to generate for the legacy
+## template NPCs that DynamicNPCRegistry still makes when no archetype fits
+@export var auto_process_queue: bool = false
 @export var process_interval: float = 10.0  # Seconds between queue checks
 
 var _process_timer: Timer = null
@@ -70,6 +74,8 @@ func _find_or_create_character_generator() -> Node:
 
 ## Called when a new dynamic NPC is created in the registry
 func _on_dynamic_npc_created(npc_id: String, npc_data: Dictionary):
+	if npc_data.has("archetype"):
+		return  # a generic instance: it reuses its archetype's sprite
 	print("[DynamicNPCGen] New dynamic NPC created: %s - queuing for asset generation" % npc_id)
 	# The NPC is automatically in the registry's queue
 	# Start processing if not already

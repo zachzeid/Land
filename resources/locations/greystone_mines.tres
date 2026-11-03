@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="LocationData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/location_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+location_id = "greystone_mines"
+display_name = "Greystone Mines"
+region = "The Eastern March"
+area = "Greystone"
+scene_path = "res://scenes/exterior/greystone_mines.tscn"
+is_interior = false
+spawn_points = {
+"default": "Foot of the ore road",
+"from_travel": "Where the ore road comes in from the Kingsroad"
+}

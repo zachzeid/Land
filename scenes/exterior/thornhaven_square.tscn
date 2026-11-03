@@ -363,6 +363,219 @@ visible = false
 [node name="NavDebugOverlay" type="Node2D" parent="."]
 script = ExtResource("9_nav_debug")
 
+[node name="GateRoad" type="ColorRect" parent="SceneBackground"]
+offset_left = -48.0
+offset_top = 288.0
+offset_right = 48.0
+offset_bottom = 512.0
+color = Color(0.48, 0.42, 0.34, 1)
+
+[node name="ChapelPath" type="ColorRect" parent="SceneBackground"]
+offset_left = -312.0
+offset_top = 320.0
+offset_right = -264.0
+offset_bottom = 400.0
+color = Color(0.48, 0.42, 0.34, 1)
+
+[node name="CouncilPath" type="ColorRect" parent="SceneBackground"]
+offset_left = -24.0
+offset_top = -288.0
+offset_right = 24.0
+offset_bottom = -200.0
+color = Color(0.48, 0.42, 0.34, 1)
+
+[node name="CouncilHall" type="Node2D" parent="Buildings"]
+position = Vector2(0, -352)
+
+[node name="Walls" type="ColorRect" parent="Buildings/CouncilHall"]
+offset_left = -80.0
+offset_top = -48.0
+offset_right = 80.0
+offset_bottom = 64.0
+color = Color(0.55, 0.5, 0.42, 1)
+
+[node name="Roof" type="ColorRect" parent="Buildings/CouncilHall"]
+offset_left = -88.0
+offset_top = -72.0
+offset_right = 88.0
+offset_bottom = -24.0
+color = Color(0.29, 0.29, 0.29, 1)
+
+[node name="Door" type="ColorRect" parent="Buildings/CouncilHall"]
+offset_left = -16.0
+offset_top = 32.0
+offset_right = 16.0
+offset_bottom = 64.0
+color = Color(0.3, 0.21, 0.14, 1)
+
+[node name="WindowW" type="ColorRect" parent="Buildings/CouncilHall"]
+offset_left = -60.0
+offset_top = 0.0
+offset_right = -36.0
+offset_bottom = 20.0
+color = Color(0.55, 0.62, 0.68, 1)
+
+[node name="WindowE" type="ColorRect" parent="Buildings/CouncilHall"]
+offset_left = 36.0
+offset_top = 0.0
+offset_right = 60.0
+offset_bottom = 20.0
+color = Color(0.55, 0.62, 0.68, 1)
+
+[node name="Sign" type="Label" parent="Buildings/CouncilHall"]
+offset_left = -80.0
+offset_top = -22.0
+offset_right = 80.0
+offset_bottom = -2.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Council Hall"
+horizontal_alignment = 1
+
+[node name="Chapel" type="Node2D" parent="Buildings"]
+position = Vector2(-288, 272)
+
+[node name="Walls" type="ColorRect" parent="Buildings/Chapel"]
+offset_left = -64.0
+offset_top = -40.0
+offset_right = 64.0
+offset_bottom = 48.0
+color = Color(0.62, 0.6, 0.56, 1)
+
+[node name="Roof" type="ColorRect" parent="Buildings/Chapel"]
+offset_left = -70.0
+offset_top = -60.0
+offset_right = 70.0
+offset_bottom = -20.0
+color = Color(0.55, 0.45, 0.33, 1)
+
+[node name="Belfry" type="ColorRect" parent="Buildings/Chapel"]
+offset_left = -12.0
+offset_top = -84.0
+offset_right = 12.0
+offset_bottom = -56.0
+color = Color(0.5, 0.48, 0.45, 1)
+
+[node name="DawnWindow" type="ColorRect" parent="Buildings/Chapel"]
+offset_left = -14.0
+offset_top = -12.0
+offset_right = 14.0
+offset_bottom = 10.0
+color = Color(0.86, 0.6, 0.25, 1)
+
+[node name="Door" type="ColorRect" parent="Buildings/Chapel"]
+offset_left = -14.0
+offset_top = 22.0
+offset_right = 14.0
+offset_bottom = 48.0
+color = Color(0.3, 0.21, 0.14, 1)
+
+[node name="Sign" type="Label" parent="Buildings/Chapel"]
+offset_left = -80.0
+offset_top = -26.0
+offset_right = 80.0
+offset_bottom = -6.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Chapel of the Dawn"
+horizontal_alignment = 1
+
+[node name="CouncilHallCollision" type="StaticBody2D" parent="Collisions"]
+position = Vector2(0, -352)
+script = ExtResource("7_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/CouncilHallCollision"]
+shape = SubResource("RectangleShape2D_building_large")
+
+[node name="ChapelCollision" type="StaticBody2D" parent="Collisions"]
+position = Vector2(-288, 272)
+script = ExtResource("7_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/ChapelCollision"]
+shape = SubResource("RectangleShape2D_building_medium")
+
+[node name="CouncilHallEntry" type="Area2D" parent="EntryPoints"]
+position = Vector2(0, -272)
+script = ExtResource("6_scene_trigger")
+target_location = "council_hall"
+target_spawn_point = "from_thornhaven_town_square"
+prompt_text = "Enter Council Hall"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntryPoints/CouncilHallEntry"]
+shape = SubResource("RectangleShape2D_door_trigger")
+
+[node name="InteractionPrompt" type="Label" parent="EntryPoints/CouncilHallEntry"]
+z_index = 10
+visible = false
+offset_left = -80.0
+offset_top = -40.0
+offset_right = 80.0
+offset_bottom = -15.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Enter Council Hall"
+horizontal_alignment = 1
+
+[node name="ChapelEntry" type="Area2D" parent="EntryPoints"]
+position = Vector2(-288, 336)
+script = ExtResource("6_scene_trigger")
+target_location = "thornhaven_chapel"
+target_spawn_point = "from_thornhaven_town_square"
+prompt_text = "Enter Chapel"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntryPoints/ChapelEntry"]
+shape = SubResource("RectangleShape2D_door_trigger")
+
+[node name="InteractionPrompt" type="Label" parent="EntryPoints/ChapelEntry"]
+z_index = 10
+visible = false
+offset_left = -80.0
+offset_top = -40.0
+offset_right = 80.0
+offset_bottom = -15.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Enter Chapel"
+horizontal_alignment = 1
+
+[node name="VillageGateExit" type="Area2D" parent="EntryPoints"]
+position = Vector2(0, 440)
+script = ExtResource("6_scene_trigger")
+target_location = "village_gate"
+target_spawn_point = "from_thornhaven_town_square"
+prompt_text = "To the Village Gate"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntryPoints/VillageGateExit"]
+shape = SubResource("RectangleShape2D_door_trigger_large")
+
+[node name="InteractionPrompt" type="Label" parent="EntryPoints/VillageGateExit"]
+z_index = 10
+visible = false
+offset_left = -80.0
+offset_top = -40.0
+offset_right = 80.0
+offset_bottom = -15.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] To the Village Gate"
+horizontal_alignment = 1
+
+[node name="from_council_hall" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, -232)
+
+[node name="from_thornhaven_chapel" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-288, 384)
+
 [connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
 [connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
 [connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

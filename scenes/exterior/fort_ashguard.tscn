@@ -1,0 +1,752 @@
+[gd_scene load_steps=21 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="2_story_item"]
+[ext_resource type="Script" path="res://scripts/world/travel_point.gd" id="3_travel_point"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="4_player"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="5_dialogue_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="6_debug_interaction_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="7_debug_console"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_380x200"]
+size = Vector2(380, 200)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_260x160"]
+size = Vector2(260, 160)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_220x140"]
+size = Vector2(220, 140)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_60x60"]
+size = Vector2(60, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_120x120"]
+size = Vector2(120, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_26x26"]
+size = Vector2(26, 26)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_140x20"]
+size = Vector2(140, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_50x50"]
+size = Vector2(50, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80x68"]
+size = Vector2(80, 68)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_90x74"]
+size = Vector2(90, 74)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_140x60"]
+size = Vector2(140, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1680x40"]
+size = Vector2(1680, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40x1200"]
+size = Vector2(40, 1200)
+
+[node name="FortAshguard" type="Node2D"]
+
+[node name="SceneBackground" type="Node2D" parent="."]
+z_index = -10
+
+[node name="Ground" type="ColorRect" parent="SceneBackground"]
+offset_left = -800.0
+offset_top = -600.0
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.3, 0.3, 0.27, 1)
+
+[node name="Courtyard" type="ColorRect" parent="SceneBackground"]
+offset_left = -650.0
+offset_top = -370.0
+offset_right = 650.0
+offset_bottom = 490.0
+color = Color(0.4, 0.38, 0.34, 1)
+
+[node name="TrainingYard" type="ColorRect" parent="SceneBackground"]
+offset_left = -560.0
+offset_top = 130.0
+offset_right = -200.0
+offset_bottom = 350.0
+color = Color(0.45, 0.4, 0.3, 1)
+
+[node name="GateRoad" type="ColorRect" parent="SceneBackground"]
+offset_left = -70.0
+offset_top = 420.0
+offset_right = 70.0
+offset_bottom = 600.0
+color = Color(0.45, 0.4, 0.32, 1)
+
+[node name="YardSign" type="Label" parent="SceneBackground"]
+z_index = 5
+offset_left = -480.0
+offset_top = 110.0
+offset_right = -280.0
+offset_bottom = 130.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 13
+text = "Training yard"
+horizontal_alignment = 1
+
+[node name="Keep" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(0, -400)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Keep"]
+shape = SubResource("RectangleShape2D_380x200")
+
+[node name="Visual" type="ColorRect" parent="Keep"]
+offset_left = -190.0
+offset_top = -100.0
+offset_right = 190.0
+offset_bottom = 100.0
+color = Color(0.36, 0.36, 0.38, 1)
+
+[node name="Roof" type="ColorRect" parent="Keep"]
+offset_left = -196.0
+offset_top = -102.0
+offset_right = 196.0
+offset_bottom = -78.0
+color = Color(0.26, 0.26, 0.28, 1)
+
+[node name="Sign" type="Label" parent="Keep"]
+z_index = 5
+offset_left = -190.0
+offset_top = -10.0
+offset_right = 190.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "The Keep - Commander's Hall"
+horizontal_alignment = 1
+
+[node name="Barracks" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(-500, -150)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barracks"]
+shape = SubResource("RectangleShape2D_260x160")
+
+[node name="Visual" type="ColorRect" parent="Barracks"]
+offset_left = -130.0
+offset_top = -80.0
+offset_right = 130.0
+offset_bottom = 80.0
+color = Color(0.4, 0.38, 0.36, 1)
+
+[node name="Roof" type="ColorRect" parent="Barracks"]
+offset_left = -136.0
+offset_top = -82.0
+offset_right = 136.0
+offset_bottom = -58.0
+color = Color(0.3, 0.28, 0.26, 1)
+
+[node name="Sign" type="Label" parent="Barracks"]
+z_index = 5
+offset_left = -130.0
+offset_top = -10.0
+offset_right = 130.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Barracks (half empty)"
+horizontal_alignment = 1
+
+[node name="Armoury" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(500, -150)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Armoury"]
+shape = SubResource("RectangleShape2D_260x160")
+
+[node name="Visual" type="ColorRect" parent="Armoury"]
+offset_left = -130.0
+offset_top = -80.0
+offset_right = 130.0
+offset_bottom = 80.0
+color = Color(0.38, 0.36, 0.36, 1)
+
+[node name="Roof" type="ColorRect" parent="Armoury"]
+offset_left = -136.0
+offset_top = -82.0
+offset_right = 136.0
+offset_bottom = -58.0
+color = Color(0.28, 0.26, 0.26, 1)
+
+[node name="Sign" type="Label" parent="Armoury"]
+z_index = 5
+offset_left = -130.0
+offset_top = -10.0
+offset_right = 130.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Armoury"
+horizontal_alignment = 1
+
+[node name="Stable" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(520, 230)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stable"]
+shape = SubResource("RectangleShape2D_220x140")
+
+[node name="Visual" type="ColorRect" parent="Stable"]
+offset_left = -110.0
+offset_top = -70.0
+offset_right = 110.0
+offset_bottom = 70.0
+color = Color(0.4, 0.28, 0.16, 1)
+
+[node name="Roof" type="ColorRect" parent="Stable"]
+offset_left = -116.0
+offset_top = -72.0
+offset_right = 116.0
+offset_bottom = -48.0
+color = Color(0.28, 0.2, 0.12, 1)
+
+[node name="Sign" type="Label" parent="Stable"]
+z_index = 5
+offset_left = -110.0
+offset_top = -10.0
+offset_right = 110.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Stables - six stalls, two horses"
+horizontal_alignment = 1
+
+[node name="Well" type="StaticBody2D" parent="."]
+position = Vector2(0, 80)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Well"]
+shape = SubResource("RectangleShape2D_60x60")
+
+[node name="Visual" type="ColorRect" parent="Well"]
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = 30.0
+color = Color(0.42, 0.42, 0.44, 1)
+
+[node name="GatehouseWest" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(-130, 520)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GatehouseWest"]
+shape = SubResource("RectangleShape2D_120x120")
+
+[node name="Visual" type="ColorRect" parent="GatehouseWest"]
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = 60.0
+color = Color(0.34, 0.34, 0.36, 1)
+
+[node name="GatehouseEast" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(130, 520)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GatehouseEast"]
+shape = SubResource("RectangleShape2D_120x120")
+
+[node name="Visual" type="ColorRect" parent="GatehouseEast"]
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = 60.0
+color = Color(0.34, 0.34, 0.36, 1)
+
+[node name="GateSign" type="Label" parent="."]
+z_index = 5
+offset_left = -120.0
+offset_top = 580.0
+offset_right = 120.0
+offset_bottom = 600.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 13
+text = "Gate - the March road"
+horizontal_alignment = 1
+
+[node name="Dummy1" type="StaticBody2D" parent="."]
+position = Vector2(-480, 240)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Dummy1"]
+shape = SubResource("RectangleShape2D_26x26")
+
+[node name="Visual" type="ColorRect" parent="Dummy1"]
+offset_left = -13.0
+offset_top = -13.0
+offset_right = 13.0
+offset_bottom = 13.0
+color = Color(0.55, 0.45, 0.3, 1)
+
+[node name="Dummy2" type="StaticBody2D" parent="."]
+position = Vector2(-380, 240)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Dummy2"]
+shape = SubResource("RectangleShape2D_26x26")
+
+[node name="Visual" type="ColorRect" parent="Dummy2"]
+offset_left = -13.0
+offset_top = -13.0
+offset_right = 13.0
+offset_bottom = 13.0
+color = Color(0.55, 0.45, 0.3, 1)
+
+[node name="Dummy3" type="StaticBody2D" parent="."]
+position = Vector2(-280, 240)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Dummy3"]
+shape = SubResource("RectangleShape2D_26x26")
+
+[node name="Visual" type="ColorRect" parent="Dummy3"]
+offset_left = -13.0
+offset_top = -13.0
+offset_right = 13.0
+offset_bottom = 13.0
+color = Color(0.55, 0.45, 0.3, 1)
+
+[node name="EmptyRack" type="StaticBody2D" parent="."]
+position = Vector2(330, -40)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EmptyRack"]
+shape = SubResource("RectangleShape2D_140x20")
+
+[node name="Visual" type="ColorRect" parent="EmptyRack"]
+offset_left = -70.0
+offset_top = -10.0
+offset_right = 70.0
+offset_bottom = 10.0
+color = Color(0.28, 0.2, 0.12, 1)
+
+[node name="Sign" type="Label" parent="EmptyRack"]
+z_index = 5
+offset_left = -80.0
+offset_top = -10.0
+offset_right = 80.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Empty spear rack"
+horizontal_alignment = 1
+
+[node name="SentryPost1" type="StaticBody2D" parent="."]
+position = Vector2(-680, -480)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SentryPost1"]
+shape = SubResource("RectangleShape2D_50x50")
+
+[node name="Visual" type="ColorRect" parent="SentryPost1"]
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+color = Color(0.42, 0.42, 0.44, 1)
+
+[node name="Sign" type="Label" parent="SentryPost1"]
+z_index = 5
+offset_left = -80.0
+offset_top = -10.0
+offset_right = 80.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Post"
+horizontal_alignment = 1
+
+[node name="SentryPost2" type="StaticBody2D" parent="."]
+position = Vector2(680, -480)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SentryPost2"]
+shape = SubResource("RectangleShape2D_50x50")
+
+[node name="Visual" type="ColorRect" parent="SentryPost2"]
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+color = Color(0.42, 0.42, 0.44, 1)
+
+[node name="Sign" type="Label" parent="SentryPost2"]
+z_index = 5
+offset_left = -80.0
+offset_top = -10.0
+offset_right = 80.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Empty post"
+horizontal_alignment = 1
+
+[node name="SentryPost3" type="StaticBody2D" parent="."]
+position = Vector2(680, 480)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SentryPost3"]
+shape = SubResource("RectangleShape2D_50x50")
+
+[node name="Visual" type="ColorRect" parent="SentryPost3"]
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+color = Color(0.42, 0.42, 0.44, 1)
+
+[node name="Sign" type="Label" parent="SentryPost3"]
+z_index = 5
+offset_left = -80.0
+offset_top = -10.0
+offset_right = 80.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Empty post"
+horizontal_alignment = 1
+
+[node name="StoryItems" type="Node2D" parent="."]
+
+[node name="ArmouryLedger" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(500, -45)
+script = ExtResource("2_story_item")
+interaction_name = "Read the armoury ledger"
+flag_to_set = "ashguard_ledger_read"
+discovery_text = "[b]The armoury ledger[/b]
+
+The quartermaster's ledger is chained to its desk. Five years back, the week after the border war, one entry is in the commander's own hand: 'Four wagons of crown arms: one hundred and sixty swords, two hundred and forty spearheads, forty-eight crossbows with bolts. All lost with the deserter Sgt. Varn.'
+
+But the stable log on the facing page counts the wagon-teams out of Ashguard that month, and only one team went with Varn. Three wagons left days earlier, signed out to a Guild factor. Varn's name was the easiest place to lose them."
+reexamine_text = "Four wagons blamed on one deserter. Three of them signed out to the Guild days before he ran."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/ArmouryLedger"]
+shape = SubResource("RectangleShape2D_80x68")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/ArmouryLedger"]
+offset_left = -20.0
+offset_top = -14.0
+offset_right = 20.0
+offset_bottom = 14.0
+color = Color(0.4, 0.28, 0.18, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/ArmouryLedger"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Read the armoury ledger"
+horizontal_alignment = 1
+
+[node name="WarrantBoard" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(-200, 420)
+script = ExtResource("2_story_item")
+interaction_name = "Read the warrant"
+flag_to_set = "varn_warrant_seen"
+discovery_text = "[b]A crown warrant[/b]
+
+Nailed up, torn by weather, nailed up again:
+
+VARN, late Sergeant of Ashguard. Deserter, and thief of crown arms. To be taken ALIVE and brought before the Commander of this fort. - L. Ferrow
+
+Beneath, in a clerk's smaller hand: 'Or, should he resist, his death to answer this warrant in full.'
+
+The word 'alive' has been underlined twice, in fresher ink."
+reexamine_text = "VARN. To be taken ALIVE, underlined twice. And beneath it, smaller: or dead, should he resist."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/WarrantBoard"]
+shape = SubResource("RectangleShape2D_90x74")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/WarrantBoard"]
+offset_left = -25.0
+offset_top = -17.0
+offset_right = 25.0
+offset_bottom = 17.0
+color = Color(0.85, 0.78, 0.6, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/WarrantBoard"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Read the warrant"
+horizontal_alignment = 1
+
+[node name="GarrisonRoll" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(-500, -45)
+script = ExtResource("2_story_item")
+interaction_name = "Read the garrison roll"
+flag_to_set = ""
+discovery_text = "[b]The garrison roll[/b]
+
+Two hundred places on the roll and ninety-one names. Beside the struck-through ones, a clerk has written 'deserted', 'unpaid', 'sent home', and once, 'hanged'. The pay column has been empty for four months.
+
+Ashguard guards the March with half a garrison and no silver."
+reexamine_text = "Ninety-one names. Four months unpaid."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/GarrisonRoll"]
+shape = SubResource("RectangleShape2D_80x68")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/GarrisonRoll"]
+offset_left = -20.0
+offset_top = -14.0
+offset_right = 20.0
+offset_bottom = 14.0
+color = Color(0.85, 0.78, 0.6, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/GarrisonRoll"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Read the garrison roll"
+horizontal_alignment = 1
+
+[node name="Gate" type="Area2D" parent="."]
+z_index = 6
+position = Vector2(0, 470)
+script = ExtResource("3_travel_point")
+interaction_name = "Leave by the gate"
+from_location = "fort_ashguard"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gate"]
+shape = SubResource("RectangleShape2D_140x60")
+
+[node name="Visual" type="ColorRect" parent="Gate"]
+offset_left = -70.0
+offset_top = -15.0
+offset_right = 70.0
+offset_bottom = 15.0
+color = Color(0.55, 0.42, 0.22, 1)
+
+[node name="RoadSign" type="Label" parent="Gate"]
+z_index = 5
+offset_left = -120.0
+offset_top = 26.0
+offset_right = 120.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0.94, 0.75, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 13
+text = "Leave by the gate"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="Gate"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Leave by the gate"
+horizontal_alignment = 1
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, -600)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/North"]
+shape = SubResource("RectangleShape2D_1680x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/North"]
+offset_left = -840.0
+offset_top = -20.0
+offset_right = 840.0
+offset_bottom = 20.0
+color = Color(0.3, 0.3, 0.32, 1)
+
+[node name="South" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, 600)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/South"]
+shape = SubResource("RectangleShape2D_1680x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/South"]
+offset_left = -840.0
+offset_top = -20.0
+offset_right = 840.0
+offset_bottom = 20.0
+color = Color(0.3, 0.3, 0.32, 1)
+
+[node name="West" type="StaticBody2D" parent="Walls"]
+position = Vector2(-800, 0)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/West"]
+shape = SubResource("RectangleShape2D_40x1200")
+
+[node name="Visual" type="ColorRect" parent="Walls/West"]
+offset_left = -20.0
+offset_top = -600.0
+offset_right = 20.0
+offset_bottom = 600.0
+color = Color(0.3, 0.3, 0.32, 1)
+
+[node name="East" type="StaticBody2D" parent="Walls"]
+position = Vector2(800, 0)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/East"]
+shape = SubResource("RectangleShape2D_40x1200")
+
+[node name="Visual" type="ColorRect" parent="Walls/East"]
+offset_left = -20.0
+offset_top = -600.0
+offset_right = 20.0
+offset_bottom = 600.0
+color = Color(0.3, 0.3, 0.32, 1)
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 360)
+
+[node name="from_travel" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 400)
+
+[node name="Player" parent="." instance=ExtResource("4_player")]
+z_index = 10
+position = Vector2(0, 400)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(1.5, 1.5)
+limit_left = -800
+limit_top = -600
+limit_right = 800
+limit_bottom = 600
+position_smoothing_enabled = true
+position_smoothing_speed = 5.0
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("5_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[node name="DebugInteractionPanel" parent="DialogueUI" instance=ExtResource("6_debug_interaction_panel")]
+visible = false
+
+[node name="DebugConsole" parent="." instance=ExtResource("7_debug_console")]
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

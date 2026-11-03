@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="LocationData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/location_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+location_id = "the_pit"
+display_name = "The Pit"
+region = "The Eastern March"
+area = "The Ridge"
+scene_path = "res://scenes/interiors/the_pit.tscn"
+is_interior = true
+spawn_points = {
+"default": "Below the shaft, on the spoil",
+"from_travel": "At the foot of the ladder down from the ridge trail"
+}

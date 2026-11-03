@@ -1,0 +1,1379 @@
+[gd_scene load_steps=35 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
+[ext_resource type="Script" path="res://scripts/world/world_obstacle.gd" id="2_world_obstacle"]
+[ext_resource type="Texture2D" path="res://assets/generated/props/shop_shelves.png" id="3_shop_shelves"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/shop_counter.png" id="4_shop_counter"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/crates_barrels.png" id="5_crates_barrels"]
+[ext_resource type="Texture2D" path="res://assets/generated/props/barrel.png" id="6_barrel"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="7_story_item"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="8_scene_trigger"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="9_dialogue_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="10_debug_interaction_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="11_debug_console"]
+
+[sub_resource type="RectangleShape2D" id="Rect_1024x40"]
+size = Vector2(1024, 40)
+
+[sub_resource type="RectangleShape2D" id="Rect_40x944"]
+size = Vector2(40, 944)
+
+[sub_resource type="RectangleShape2D" id="Rect_24x372"]
+size = Vector2(24, 372)
+
+[sub_resource type="RectangleShape2D" id="Rect_100x24"]
+size = Vector2(100, 24)
+
+[sub_resource type="RectangleShape2D" id="Rect_92x24"]
+size = Vector2(92, 24)
+
+[sub_resource type="RectangleShape2D" id="Rect_170x60"]
+size = Vector2(170, 60)
+
+[sub_resource type="RectangleShape2D" id="Rect_50x26"]
+size = Vector2(50, 26)
+
+[sub_resource type="RectangleShape2D" id="Rect_56x44"]
+size = Vector2(56, 44)
+
+[sub_resource type="RectangleShape2D" id="Rect_44x30"]
+size = Vector2(44, 30)
+
+[sub_resource type="RectangleShape2D" id="Rect_320x50"]
+size = Vector2(320, 50)
+
+[sub_resource type="RectangleShape2D" id="Rect_24x20"]
+size = Vector2(24, 20)
+
+[sub_resource type="RectangleShape2D" id="Rect_80x40"]
+size = Vector2(80, 40)
+
+[sub_resource type="RectangleShape2D" id="Rect_120x60"]
+size = Vector2(120, 60)
+
+[sub_resource type="RectangleShape2D" id="Rect_190x50"]
+size = Vector2(190, 50)
+
+[sub_resource type="RectangleShape2D" id="Rect_16x200"]
+size = Vector2(16, 200)
+
+[sub_resource type="RectangleShape2D" id="Rect_52x40"]
+size = Vector2(52, 40)
+
+[sub_resource type="RectangleShape2D" id="Rect_34x26"]
+size = Vector2(34, 26)
+
+[sub_resource type="RectangleShape2D" id="Rect_26x26"]
+size = Vector2(26, 26)
+
+[sub_resource type="RectangleShape2D" id="Rect_170x50"]
+size = Vector2(170, 50)
+
+[sub_resource type="RectangleShape2D" id="Rect_60x160"]
+size = Vector2(60, 160)
+
+[sub_resource type="RectangleShape2D" id="Rect_140x44"]
+size = Vector2(140, 44)
+
+[sub_resource type="RectangleShape2D" id="Rect_60x50"]
+size = Vector2(60, 50)
+
+[sub_resource type="RectangleShape2D" id="Rect_100x40"]
+size = Vector2(100, 40)
+
+[node name="CapitolGuildhall" type="Node2D"]
+
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+mouse_filter = 2
+color = Color(0.18, 0.149, 0.125, 1)
+
+[node name="InnerFloor" type="ColorRect" parent="Floor"]
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 984.0
+offset_bottom = 984.0
+mouse_filter = 2
+color = Color(0.353, 0.275, 0.212, 1)
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, -492)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/North"]
+shape = SubResource("Rect_1024x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/North"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.42, 0.329, 0.251, 1)
+
+[node name="South" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, 492)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/South"]
+shape = SubResource("Rect_1024x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/South"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.42, 0.329, 0.251, 1)
+
+[node name="West" type="StaticBody2D" parent="Walls"]
+position = Vector2(-492, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/West"]
+shape = SubResource("Rect_40x944")
+
+[node name="Visual" type="ColorRect" parent="Walls/West"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+mouse_filter = 2
+color = Color(0.42, 0.329, 0.251, 1)
+
+[node name="East" type="StaticBody2D" parent="Walls"]
+position = Vector2(492, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/East"]
+shape = SubResource("Rect_40x944")
+
+[node name="Visual" type="ColorRect" parent="Walls/East"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+mouse_filter = 2
+color = Color(0.42, 0.329, 0.251, 1)
+
+[node name="FloorDetail" type="Node2D" parent="."]
+z_index = -9
+
+[node name="Board1" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = -472.0
+offset_right = 472.0
+offset_bottom = -470.0
+mouse_filter = 2
+color = Color(0.29, 0.227, 0.18, 1)
+
+[node name="Board2" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = -354.0
+offset_right = 472.0
+offset_bottom = -352.0
+mouse_filter = 2
+color = Color(0.29, 0.227, 0.18, 1)
+
+[node name="Board3" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = -236.0
+offset_right = 472.0
+offset_bottom = -234.0
+mouse_filter = 2
+color = Color(0.29, 0.227, 0.18, 1)
+
+[node name="Board4" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = -118.0
+offset_right = 472.0
+offset_bottom = -116.0
+mouse_filter = 2
+color = Color(0.29, 0.227, 0.18, 1)
+
+[node name="Board5" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = 0.0
+offset_right = 472.0
+offset_bottom = 2.0
+mouse_filter = 2
+color = Color(0.29, 0.227, 0.18, 1)
+
+[node name="Board6" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = 118.0
+offset_right = 472.0
+offset_bottom = 120.0
+mouse_filter = 2
+color = Color(0.29, 0.227, 0.18, 1)
+
+[node name="Board7" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = 236.0
+offset_right = 472.0
+offset_bottom = 238.0
+mouse_filter = 2
+color = Color(0.29, 0.227, 0.18, 1)
+
+[node name="Board8" type="ColorRect" parent="FloorDetail"]
+offset_left = -472.0
+offset_top = 354.0
+offset_right = 472.0
+offset_bottom = 356.0
+mouse_filter = 2
+color = Color(0.29, 0.227, 0.18, 1)
+
+[node name="Rug1" type="ColorRect" parent="FloorDetail"]
+offset_left = -330.0
+offset_top = -30.0
+offset_right = 90.0
+offset_bottom = 270.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Field" type="ColorRect" parent="FloorDetail/Rug1"]
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 414.0
+offset_bottom = 294.0
+mouse_filter = 2
+color = Color(0.353, 0.227, 0.165, 1)
+
+[node name="CountingFloor" type="ColorRect" parent="FloorDetail"]
+offset_left = 192.0
+offset_top = -472.0
+offset_right = 472.0
+offset_bottom = -100.0
+mouse_filter = 2
+color = Color(0.243, 0.196, 0.165, 1)
+
+[node name="WallDressing" type="Node2D" parent="."]
+z_index = 3
+
+[node name="Banner1" type="Node2D" parent="WallDressing"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="WallDressing/Banner1"]
+offset_left = -415.0
+offset_top = -474.0
+offset_right = -385.0
+offset_bottom = -470.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="WallDressing/Banner1"]
+offset_left = -411.0
+offset_top = -470.0
+offset_right = -389.0
+offset_bottom = -422.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Band" type="ColorRect" parent="WallDressing/Banner1"]
+offset_left = -411.0
+offset_top = -461.36
+offset_right = -389.0
+offset_bottom = -457.36
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="WallDressing/Banner1"]
+offset_left = -405.5
+offset_top = -449.1
+offset_right = -394.5
+offset_bottom = -438.1
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="WallDressing/Banner1"]
+offset_left = -411.0
+offset_top = -422.0
+offset_right = -403.6666666666667
+offset_bottom = -414.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="TailR" type="ColorRect" parent="WallDressing/Banner1"]
+offset_left = -396.3333333333333
+offset_top = -422.0
+offset_right = -389.0
+offset_bottom = -414.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Banner2" type="Node2D" parent="WallDressing"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="WallDressing/Banner2"]
+offset_left = -295.0
+offset_top = -474.0
+offset_right = -265.0
+offset_bottom = -470.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="WallDressing/Banner2"]
+offset_left = -291.0
+offset_top = -470.0
+offset_right = -269.0
+offset_bottom = -422.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Band" type="ColorRect" parent="WallDressing/Banner2"]
+offset_left = -291.0
+offset_top = -461.36
+offset_right = -269.0
+offset_bottom = -457.36
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="WallDressing/Banner2"]
+offset_left = -285.5
+offset_top = -449.1
+offset_right = -274.5
+offset_bottom = -438.1
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="WallDressing/Banner2"]
+offset_left = -291.0
+offset_top = -422.0
+offset_right = -283.6666666666667
+offset_bottom = -414.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="TailR" type="ColorRect" parent="WallDressing/Banner2"]
+offset_left = -276.3333333333333
+offset_top = -422.0
+offset_right = -269.0
+offset_bottom = -414.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Banner3" type="Node2D" parent="WallDressing"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="WallDressing/Banner3"]
+offset_left = -175.0
+offset_top = -474.0
+offset_right = -145.0
+offset_bottom = -470.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="WallDressing/Banner3"]
+offset_left = -171.0
+offset_top = -470.0
+offset_right = -149.0
+offset_bottom = -422.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Band" type="ColorRect" parent="WallDressing/Banner3"]
+offset_left = -171.0
+offset_top = -461.36
+offset_right = -149.0
+offset_bottom = -457.36
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="WallDressing/Banner3"]
+offset_left = -165.5
+offset_top = -449.1
+offset_right = -154.5
+offset_bottom = -438.1
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="WallDressing/Banner3"]
+offset_left = -171.0
+offset_top = -422.0
+offset_right = -163.66666666666666
+offset_bottom = -414.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="TailR" type="ColorRect" parent="WallDressing/Banner3"]
+offset_left = -156.33333333333334
+offset_top = -422.0
+offset_right = -149.0
+offset_bottom = -414.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Banner4" type="Node2D" parent="WallDressing"]
+z_index = 0
+
+[node name="Pole" type="ColorRect" parent="WallDressing/Banner4"]
+offset_left = -55.0
+offset_top = -474.0
+offset_right = -25.0
+offset_bottom = -470.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Cloth" type="ColorRect" parent="WallDressing/Banner4"]
+offset_left = -51.0
+offset_top = -470.0
+offset_right = -29.0
+offset_bottom = -422.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Band" type="ColorRect" parent="WallDressing/Banner4"]
+offset_left = -51.0
+offset_top = -461.36
+offset_right = -29.0
+offset_bottom = -457.36
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Sun" type="ColorRect" parent="WallDressing/Banner4"]
+offset_left = -45.5
+offset_top = -449.1
+offset_right = -34.5
+offset_bottom = -438.1
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="TailL" type="ColorRect" parent="WallDressing/Banner4"]
+offset_left = -51.0
+offset_top = -422.0
+offset_right = -43.666666666666664
+offset_bottom = -414.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="TailR" type="ColorRect" parent="WallDressing/Banner4"]
+offset_left = -36.333333333333336
+offset_top = -422.0
+offset_right = -29.000000000000004
+offset_bottom = -414.0
+mouse_filter = 2
+color = Color(0.69, 0.502, 0.227, 1)
+
+[node name="Charter" type="Label" parent="WallDressing"]
+offset_left = -400.0
+offset_top = -500.0
+offset_right = -40.0
+offset_bottom = -480.0
+theme_override_colors/font_color = Color(1, 0.92, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 12
+text = "Guild of Highmarch: weight, measure, profit"
+horizontal_alignment = 1
+
+[node name="CountingSign" type="Label" parent="WallDressing"]
+offset_left = 220.0
+offset_top = -470.0
+offset_right = 440.0
+offset_bottom = -450.0
+theme_override_colors/font_color = Color(1, 0.92, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 12
+text = "Counting Room: Private"
+horizontal_alignment = 1
+
+[node name="Furniture" type="Node2D" parent="."]
+z_index = 5
+
+[node name="CountingWallWest" type="StaticBody2D" parent="Furniture"]
+position = Vector2(180, -286)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/CountingWallWest"]
+shape = SubResource("Rect_24x372")
+
+[node name="Visual" type="ColorRect" parent="Furniture/CountingWallWest"]
+offset_left = -12.0
+offset_top = -186.0
+offset_right = 12.0
+offset_bottom = 186.0
+mouse_filter = 2
+color = Color(0.42, 0.329, 0.251, 1)
+
+[node name="CountingWallSouthA" type="StaticBody2D" parent="Furniture"]
+position = Vector2(230, -100)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/CountingWallSouthA"]
+shape = SubResource("Rect_100x24")
+
+[node name="Visual" type="ColorRect" parent="Furniture/CountingWallSouthA"]
+offset_left = -50.0
+offset_top = -12.0
+offset_right = 50.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.42, 0.329, 0.251, 1)
+
+[node name="CountingWallSouthB" type="StaticBody2D" parent="Furniture"]
+position = Vector2(426, -100)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/CountingWallSouthB"]
+shape = SubResource("Rect_92x24")
+
+[node name="Visual" type="ColorRect" parent="Furniture/CountingWallSouthB"]
+offset_left = -46.0
+offset_top = -12.0
+offset_right = 46.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.42, 0.329, 0.251, 1)
+
+[node name="CountingDoor" type="ColorRect" parent="Furniture"]
+offset_left = 280.0
+offset_top = -104.0
+offset_right = 380.0
+offset_bottom = -96.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Table1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(330, -340)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Table1"]
+shape = SubResource("Rect_170x60")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Table1"]
+offset_left = -85.0
+offset_top = -30.0
+offset_right = 85.0
+offset_bottom = 30.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Item1" type="ColorRect" parent="Furniture/Table1"]
+offset_left = -65.0
+offset_top = -17.0
+offset_right = -15.0
+offset_bottom = 17.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Item2" type="ColorRect" parent="Furniture/Table1"]
+offset_left = 5.0
+offset_top = -15.0
+offset_right = 35.0
+offset_bottom = 15.0
+mouse_filter = 2
+color = Color(0.369, 0.11, 0.122, 1)
+
+[node name="Item3" type="ColorRect" parent="Furniture/Table1"]
+offset_left = 53.0
+offset_top = -13.0
+offset_right = 67.0
+offset_bottom = 1.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="HollisChair" type="StaticBody2D" parent="Furniture"]
+position = Vector2(330, -392)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/HollisChair"]
+shape = SubResource("Rect_50x26")
+
+[node name="Visual" type="ColorRect" parent="Furniture/HollisChair"]
+offset_left = -25.0
+offset_top = -13.0
+offset_right = 25.0
+offset_bottom = 13.0
+mouse_filter = 2
+color = Color(0.369, 0.11, 0.122, 1)
+
+[node name="Strongbox" type="StaticBody2D" parent="Furniture"]
+position = Vector2(430, -200)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Strongbox"]
+shape = SubResource("Rect_56x44")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Strongbox"]
+offset_left = -28.0
+offset_top = -22.0
+offset_right = 28.0
+offset_bottom = 22.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Bands" type="ColorRect" parent="Furniture/Strongbox"]
+offset_left = -28.0
+offset_top = -3.0
+offset_right = 28.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="CountingShelves" type="StaticBody2D" parent="Furniture"]
+position = Vector2(230, -420)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/CountingShelves"]
+position = Vector2(0, 16)
+shape = SubResource("Rect_44x30")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/CountingShelves"]
+scale = Vector2(1, 1)
+texture = ExtResource("3_shop_shelves")
+
+[node name="Table2" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-220, -320)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Table2"]
+shape = SubResource("Rect_320x50")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Table2"]
+offset_left = -160.0
+offset_top = -25.0
+offset_right = 160.0
+offset_bottom = 25.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Item1" type="ColorRect" parent="Furniture/Table2"]
+offset_left = -135.0
+offset_top = -10.0
+offset_right = -105.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Item2" type="ColorRect" parent="Furniture/Table2"]
+offset_left = -80.0
+offset_top = -12.0
+offset_right = -40.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Item3" type="ColorRect" parent="Furniture/Table2"]
+offset_left = 0.0
+offset_top = -12.0
+offset_right = 40.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Item4" type="ColorRect" parent="Furniture/Table2"]
+offset_left = 88.0
+offset_top = -12.0
+offset_right = 112.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Stool1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-340, -278)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Stool1"]
+shape = SubResource("Rect_24x20")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Stool1"]
+offset_left = -12.0
+offset_top = -10.0
+offset_right = 12.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Stool2" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-260, -278)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Stool2"]
+shape = SubResource("Rect_24x20")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Stool2"]
+offset_left = -12.0
+offset_top = -10.0
+offset_right = 12.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Stool3" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-180, -278)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Stool3"]
+shape = SubResource("Rect_24x20")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Stool3"]
+offset_left = -12.0
+offset_top = -10.0
+offset_right = 12.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Stool4" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-100, -278)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Stool4"]
+shape = SubResource("Rect_24x20")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Stool4"]
+offset_left = -12.0
+offset_top = -10.0
+offset_right = 12.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Table3" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-220, -180)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Table3"]
+shape = SubResource("Rect_320x50")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Table3"]
+offset_left = -160.0
+offset_top = -25.0
+offset_right = 160.0
+offset_bottom = 25.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Item1" type="ColorRect" parent="Furniture/Table3"]
+offset_left = -135.0
+offset_top = -10.0
+offset_right = -105.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Item2" type="ColorRect" parent="Furniture/Table3"]
+offset_left = -80.0
+offset_top = -12.0
+offset_right = -40.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Item3" type="ColorRect" parent="Furniture/Table3"]
+offset_left = 0.0
+offset_top = -12.0
+offset_right = 40.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Item4" type="ColorRect" parent="Furniture/Table3"]
+offset_left = 88.0
+offset_top = -12.0
+offset_right = 112.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.89, 0.761, 0.447, 1)
+
+[node name="Stool5" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-340, -138)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Stool5"]
+shape = SubResource("Rect_24x20")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Stool5"]
+offset_left = -12.0
+offset_top = -10.0
+offset_right = 12.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Stool6" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-260, -138)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Stool6"]
+shape = SubResource("Rect_24x20")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Stool6"]
+offset_left = -12.0
+offset_top = -10.0
+offset_right = 12.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Stool7" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-180, -138)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Stool7"]
+shape = SubResource("Rect_24x20")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Stool7"]
+offset_left = -12.0
+offset_top = -10.0
+offset_right = 12.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Stool8" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-100, -138)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Stool8"]
+shape = SubResource("Rect_24x20")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Stool8"]
+offset_left = -12.0
+offset_top = -10.0
+offset_right = 12.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="GuildScales" type="StaticBody2D" parent="Furniture"]
+position = Vector2(0, 40)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/GuildScales"]
+shape = SubResource("Rect_80x40")
+
+[node name="Visual" type="ColorRect" parent="Furniture/GuildScales"]
+offset_left = -40.0
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="Beam" type="ColorRect" parent="Furniture/GuildScales"]
+offset_left = -50.0
+offset_top = -30.0
+offset_right = 50.0
+offset_bottom = -24.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="PanL" type="ColorRect" parent="Furniture/GuildScales"]
+offset_left = -53.0
+offset_top = -22.0
+offset_right = -27.0
+offset_bottom = -14.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="PanR" type="ColorRect" parent="Furniture/GuildScales"]
+offset_left = 27.0
+offset_top = -18.0
+offset_right = 53.0
+offset_bottom = -10.0
+mouse_filter = 2
+color = Color(0.769, 0.639, 0.353, 1)
+
+[node name="Table4" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-300, 220)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Table4"]
+shape = SubResource("Rect_120x60")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Table4"]
+offset_left = -60.0
+offset_top = -30.0
+offset_right = 60.0
+offset_bottom = 30.0
+mouse_filter = 2
+color = Color(0.361, 0.29, 0.239, 1)
+
+[node name="Item1" type="ColorRect" parent="Furniture/Table4"]
+offset_left = -35.0
+offset_top = -20.0
+offset_right = 35.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.851, 0.788, 0.639, 1)
+
+[node name="Item2" type="ColorRect" parent="Furniture/Table4"]
+offset_left = -3.0
+offset_top = -20.0
+offset_right = 3.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.545, 0.165, 0.165, 1)
+
+[node name="Counter" type="StaticBody2D" parent="Furniture"]
+position = Vector2(250, 160)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Counter"]
+position = Vector2(0, 6)
+shape = SubResource("Rect_190x50")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Counter"]
+scale = Vector2(1.6, 1.6)
+texture = ExtResource("4_shop_counter")
+
+[node name="NoticeWall" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-456, -60)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/NoticeWall"]
+shape = SubResource("Rect_16x200")
+
+[node name="Visual" type="ColorRect" parent="Furniture/NoticeWall"]
+offset_left = -8.0
+offset_top = -100.0
+offset_right = 8.0
+offset_bottom = 100.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="CrateStack1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-420, 400)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/CrateStack1"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_52x40")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/CrateStack1"]
+scale = Vector2(1, 1)
+texture = ExtResource("5_crates_barrels")
+
+[node name="CrateStack2" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-360, 420)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/CrateStack2"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_52x40")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/CrateStack2"]
+scale = Vector2(1, 1)
+texture = ExtResource("5_crates_barrels")
+
+[node name="CrateStack3" type="StaticBody2D" parent="Furniture"]
+position = Vector2(420, 400)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/CrateStack3"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_52x40")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/CrateStack3"]
+scale = Vector2(1, 1)
+texture = ExtResource("5_crates_barrels")
+
+[node name="CrateStack4" type="StaticBody2D" parent="Furniture"]
+position = Vector2(380, 300)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/CrateStack4"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_52x40")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/CrateStack4"]
+scale = Vector2(1, 1)
+texture = ExtResource("5_crates_barrels")
+
+[node name="CrateStack5" type="StaticBody2D" parent="Furniture"]
+position = Vector2(420, 60)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/CrateStack5"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_52x40")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/CrateStack5"]
+scale = Vector2(1, 1)
+texture = ExtResource("5_crates_barrels")
+
+[node name="Barrel1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-420, -440)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Barrel1"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_34x26")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Barrel1"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("6_barrel")
+
+[node name="Barrel2" type="StaticBody2D" parent="Furniture"]
+position = Vector2(130, 400)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Barrel2"]
+position = Vector2(0, 8)
+shape = SubResource("Rect_34x26")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Barrel2"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("6_barrel")
+
+[node name="Brazier1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(0, -420)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Brazier1"]
+shape = SubResource("Rect_26x26")
+
+[node name="Bowl" type="ColorRect" parent="Furniture/Brazier1"]
+offset_left = -14.0
+offset_top = -3.0
+offset_right = 14.0
+offset_bottom = 11.0
+mouse_filter = 2
+color = Color(0.231, 0.231, 0.231, 1)
+
+[node name="Coals" type="ColorRect" parent="Furniture/Brazier1"]
+offset_left = -10.0
+offset_top = -6.0
+offset_right = 10.0
+offset_bottom = 2.0
+mouse_filter = 2
+color = Color(0.816, 0.38, 0.165, 1)
+
+[node name="Flame" type="ColorRect" parent="Furniture/Brazier1"]
+offset_left = -6.0
+offset_top = -16.0
+offset_right = 6.0
+offset_bottom = -4.0
+mouse_filter = 2
+color = Color(0.949, 0.651, 0.251, 0.85)
+
+[node name="Glow" type="ColorRect" parent="Furniture/Brazier1"]
+offset_left = -32.0
+offset_top = -38.0
+offset_right = 32.0
+offset_bottom = 26.0
+mouse_filter = 2
+color = Color(1, 0.69, 0.314, 0.15)
+
+[node name="Details" type="Node2D" parent="."]
+
+[node name="PatronLedger" type="Area2D" parent="Details"]
+z_index = 6
+position = Vector2(330, -284)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("7_story_item")
+interaction_name = "Open the Ledger"
+flag_to_set = "hollis_ledger_seen"
+discovery_text = "[b]A second ledger[/b]
+
+Not the Guild's books; those sit on the shelf with the Guild's crest. This one is plain calfskin, kept in the desk drawer that sticks.
+
+Every patron who has ever asked Hollis Marrow for a quiet favour is in it: names, dates, sums, and what was asked. One set of initials recurs each season, [i]S.A.[/i], always beside the words [i]the valley venture[/i]. Another line repeats with no name at all: \"[i]Received by Ferrisford barge from the west. Sold on. Their share held.[/i]\"
+
+It is not a record. It is insurance."
+reexamine_text = "Every patron's favour, written down. Insurance."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Details/PatronLedger"]
+shape = SubResource("Rect_170x50")
+
+[node name="InteractionPrompt" type="Label" parent="Details/PatronLedger"]
+z_index = 10
+visible = false
+offset_left = -90.0
+offset_top = -56.0
+offset_right = 90.0
+offset_bottom = -31.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Open the Ledger"
+horizontal_alignment = 1
+
+[node name="ReceiptBoard" type="Area2D" parent="Details"]
+z_index = 6
+position = Vector2(-420, -60)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("7_story_item")
+interaction_name = "Read the Receipts"
+flag_to_set = ""
+discovery_text = "[b]Warehouse receipts[/b]
+
+Pinned in rows: barges unloaded at Riverside, each signed for by a Guild factor. Grain, timber, salt fish, wool.
+
+The wool comes every fortnight from Ferrisford and goes into Warehouse Seven, which the factors' own notes call [i]the Guildmaster's store, no inspection[/i]. Thornhaven has no sheep worth the name."
+reexamine_text = "Wool from a valley without sheep, into Warehouse Seven."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Details/ReceiptBoard"]
+shape = SubResource("Rect_60x160")
+
+[node name="InteractionPrompt" type="Label" parent="Details/ReceiptBoard"]
+z_index = 10
+visible = false
+offset_left = -90.0
+offset_top = -56.0
+offset_right = 90.0
+offset_bottom = -31.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Read the Receipts"
+horizontal_alignment = 1
+
+[node name="HouseDebts" type="Area2D" parent="Details"]
+z_index = 6
+position = Vector2(-300, 274)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("7_story_item")
+interaction_name = "Read the Debt Book"
+flag_to_set = ""
+discovery_text = "[b]Debts of the great houses[/b]
+
+An open book on a lectern, kept so the clerks can see it and remember who owes the Guild.
+
+\"[i]House Ashdown: the late Lord's account. Four thousand crowns, at interest. Extended by the Guildmaster's grace, Midwinter last. Extended again.[/i]\"
+
+The column for payments has a single entry, and it is not money. It reads: [i]See private ledger.[/i]"
+reexamine_text = "House Ashdown owes four thousand crowns. 'See private ledger.'"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Details/HouseDebts"]
+shape = SubResource("Rect_140x44")
+
+[node name="InteractionPrompt" type="Label" parent="Details/HouseDebts"]
+z_index = 10
+visible = false
+offset_left = -90.0
+offset_top = -56.0
+offset_right = 90.0
+offset_bottom = -31.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Read the Debt Book"
+horizontal_alignment = 1
+
+[node name="DraftLetter" type="Area2D" parent="Details"]
+z_index = 6
+position = Vector2(260, -200)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("7_story_item")
+interaction_name = "Read the Draft"
+flag_to_set = ""
+discovery_text = "[b]A letter in draft[/b]
+
+\"[i]To his Grace the Lord Protector. The Guild has carried the crown's purse through four lean years and asks nothing for it but the chance to carry it further. A seat at the regency council table would allow the Guild to... [/i]\"
+
+The sentence has been begun six times and crossed out five."
+reexamine_text = "Hollis wants a seat at the regency table."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Details/DraftLetter"]
+shape = SubResource("Rect_60x50")
+
+[node name="InteractionPrompt" type="Label" parent="Details/DraftLetter"]
+z_index = 10
+visible = false
+offset_left = -90.0
+offset_top = -56.0
+offset_right = 90.0
+offset_bottom = -31.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Read the Draft"
+horizontal_alignment = 1
+
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(0, 460)
+collision_layer = 32
+collision_mask = 1
+script = ExtResource("8_scene_trigger")
+target_location = "capitol_market"
+target_spawn_point = "from_capitol_guildhall"
+require_input = false
+prompt_text = "To the Lantern Market"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+shape = SubResource("Rect_100x40")
+
+[node name="DoorVisual" type="ColorRect" parent="Exit"]
+offset_left = -50.0
+offset_top = -20.0
+offset_right = 50.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.243, 0.192, 0.161, 1)
+
+[node name="ExitLabel" type="Label" parent="Exit"]
+z_index = 11
+offset_left = -120.0
+offset_top = -46.0
+offset_right = 120.0
+offset_bottom = -25.0
+theme_override_colors/font_color = Color(1, 0.92, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 13
+text = "Lantern Market"
+horizontal_alignment = 1
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 340)
+
+[node name="from_capitol_market" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 360)
+
+[node name="NPCs" type="Node2D" parent="."]
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("9_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[node name="DebugInteractionPanel" parent="DialogueUI" instance=ExtResource("10_debug_interaction_panel")]
+visible = false
+
+[node name="DebugConsole" parent="." instance=ExtResource("11_debug_console")]
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

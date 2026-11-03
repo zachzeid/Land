@@ -861,6 +861,90 @@ script = ExtResource("8_world_solid")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TownBoundary/East"]
 shape = SubResource("RectangleShape2D_town_boundary_v")
 
+[node name="CouncilHallEntry" type="Area2D" parent="."]
+position = Vector2(400, 120)
+script = ExtResource("10_scene_trigger")
+target_location = "council_hall"
+target_spawn_point = "from_thornhaven_town_square"
+prompt_text = "Enter Council Hall"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CouncilHallEntry"]
+shape = SubResource("RectangleShape2D_door_trigger")
+
+[node name="Visual" type="ColorRect" parent="CouncilHallEntry"]
+offset_left = -24.0
+offset_top = -16.0
+offset_right = 24.0
+offset_bottom = 16.0
+color = Color(0.45, 0.32, 0.2, 1)
+
+[node name="Sign" type="Label" parent="CouncilHallEntry"]
+offset_left = -60.0
+offset_top = -44.0
+offset_right = 60.0
+offset_bottom = -20.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "Council Hall"
+horizontal_alignment = 1
+
+[node name="ChapelEntry" type="Area2D" parent="."]
+position = Vector2(-420, 200)
+script = ExtResource("10_scene_trigger")
+target_location = "thornhaven_chapel"
+target_spawn_point = "from_thornhaven_town_square"
+prompt_text = "Enter Chapel"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChapelEntry"]
+shape = SubResource("RectangleShape2D_door_trigger")
+
+[node name="Visual" type="ColorRect" parent="ChapelEntry"]
+offset_left = -24.0
+offset_top = -16.0
+offset_right = 24.0
+offset_bottom = 16.0
+color = Color(0.75, 0.72, 0.6, 1)
+
+[node name="Sign" type="Label" parent="ChapelEntry"]
+offset_left = -60.0
+offset_top = -44.0
+offset_right = 60.0
+offset_bottom = -20.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "Chapel"
+horizontal_alignment = 1
+
+[node name="VillageGateExit" type="Area2D" parent="."]
+position = Vector2(0, 430)
+script = ExtResource("10_scene_trigger")
+target_location = "village_gate"
+target_spawn_point = "from_thornhaven_town_square"
+prompt_text = "Road to the Gate"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VillageGateExit"]
+shape = SubResource("RectangleShape2D_door_trigger")
+
+[node name="Visual" type="ColorRect" parent="VillageGateExit"]
+offset_left = -24.0
+offset_top = -16.0
+offset_right = 24.0
+offset_bottom = 16.0
+color = Color(0.4, 0.35, 0.25, 1)
+
+[node name="Sign" type="Label" parent="VillageGateExit"]
+offset_left = -60.0
+offset_top = -44.0
+offset_right = 60.0
+offset_bottom = -20.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "the Gate"
+horizontal_alignment = 1
+
 [node name="SpawnPoints" type="Node2D" parent="."]
 
 [node name="default" type="Marker2D" parent="SpawnPoints"]
@@ -877,6 +961,12 @@ position = Vector2(-208, 16)
 
 [node name="from_village_gate" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(0, 352)
+
+[node name="from_council_hall" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(400, 176)
+
+[node name="from_thornhaven_chapel" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-420, 256)
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 z_index = 10

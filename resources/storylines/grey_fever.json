@@ -1,0 +1,2150 @@
+{
+  "id": "grey_fever",
+  "title": "The Grey Fever",
+  "summary": "Elena's fever is the Grey Fever. Five years of the Hollow's white salt have held it down, root alone only quiets it, and a full measure steeped with root cures it. The Cathedral rations that cure in the Capitol and never asked where the salt is dug: the Pit, by Thornhaven's taken, in chains.",
+  "prefix": "grey_",
+  "act_span": [
+    1,
+    3
+  ],
+  "flags": {
+    "grey_ague_named": "Sister Ysolde stood up in the Cathedral's chapter and named the coughing in the River Quarter for what it was: the Grey Fever, come back after twenty years.",
+    "grey_letter_to_anselm": "Sister Ysolde wrote to Brother Anselm at Brackenmoor that the Grey Fever had come back, and begged him for the old receipt.",
+    "grey_root_cornered": "The Guild's buyers bought up every bundle of fever-root in the Lantern Market, and its price went out of the River Quarter's reach.",
+    "grey_relapse_known": "Elena's cough came back days after fresh fever-root quieted it, the grey cough first and then the shaking, and it could not be hidden any longer.",
+    "grey_fever_returned": "The Grey Fever had come back to Hallowmere after twenty years, and those who remembered its cough knew it again.",
+    "grey_cure_recipe_known": "The true receipt for the Grey Fever, fever-root steeped with Greystone's deep-vein salt, was carried out of Brackenmoor's archive and into living hands.",
+    "grey_salt_taken_by_hollow": "Hollow men came down the ridge trail from the Pit by night and carried off the lump of white salt Foreman Dagna had kept from her dead husband's pack.",
+    "grey_salt_in_hand": "Greystone's deep-vein salt, the same white stone the Tithe's taken dig in the Pit, came into the stranger's keeping: enough to steep one true cure for the Grey Fever.",
+    "grey_cathedral_hushed": "The Merchants' Guild endowed the Cathedral infirmary, and the chapter went on calling the River Quarter's coughing a winter ague.",
+    "grey_cathedral_shamed": "The Cathedral of the Dawn was shamed before the city: the Grey Fever cure in its locked cabinet, sold dear to Palace Hill as it was twenty years ago, had been dug in chains by the people Iron Hollow took from Thornhaven.",
+    "grey_bosss_price_paid": "The player paid Iron Hollow's price for Greystone's white salt and carried it out of the Darkwood owing the Hollow.",
+    "grey_letters_laid_bare": "The player laid Brackenmoor's salt letters before the Cathedral's chapter, and with them where this year's salt was dug: the Grey Year's cure bought through the Guild at forty times its worth, and this year's dug in chains by Thornhaven's taken.",
+    "grey_salt_for_elena": "The player turned west at the Halfway House and carried the deep-vein salt to Elena in Thornhaven, a full measure to steep with fever-root, instead of east to the Capitol's ward.",
+    "grey_salt_for_the_ward": "The player carried the deep-vein salt east to Sister Ysolde's ward in the Capitol instead of west to Elena.",
+    "grey_salt_traced": "It came out in the Capitol that the white salt in the Cathedral's cabinet came east from Greystone in sacks marked as ore, from a seam Iron Hollow worked with the people the Tithe took."
+  },
+  "player_flags": [
+    "grey_bosss_price_paid",
+    "grey_letters_laid_bare",
+    "grey_salt_for_elena",
+    "grey_salt_for_the_ward"
+  ],
+  "crossovers": [
+    "fev_cure_found",
+    "fev_elena_left_home",
+    "ih_gregor_fled",
+    "hc_varn_ascendant",
+    "vein_ore_road_closed",
+    "vein_miners_rise",
+    "vein_deep_vein_reopened",
+    "fev_fever_quieted",
+    "fev_brought_the_salt",
+    "fev_cure_carried_up",
+    "tn_taken_alive_known",
+    "tn_taken_freed"
+  ],
+  "beats": [
+    {
+      "id": "ague_in_the_river_quarter",
+      "act": 1,
+      "title": "An Ague in the River Quarter",
+      "summary": "The River Quarter is coughing a cough Sister Ysolde last heard twenty years ago. The Cathedral calls it a winter ague and keeps its cabinet locked.",
+      "location": "capitol_cathedral",
+      "requires": [],
+      "resolves_on": [
+        "grey_ague_named",
+        "cathedral_cabinet_seen"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "grey_fever_returned",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "grey_ysolde_names_it",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "ysolde"
+          ],
+          "situation": "Three dockers' children on your ward this week with the grey cough and the shaking after. The chapter says ague. You carried the last ones out yourself.",
+          "options": [
+            {
+              "id": "name_it_in_chapter",
+              "label": "Stand up in chapter and call it the Grey Fever, by name and by count",
+              "serves": [
+                "admit_the_fever_returned",
+                "heal_the_sick"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_ague_named",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "ysolde",
+                  "text": "Tell the stranger, flatly, that it is the Grey Fever, that she said so in chapter, and that she is counting the coughs in the River Quarter."
+                }
+              ]
+            },
+            {
+              "id": "write_to_anselm",
+              "label": "Write to Brother Anselm at Brackenmoor tonight, by the Kingsroad post",
+              "serves": [
+                "free_the_cure",
+                "get_the_deep_salt"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_letter_to_anselm",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "ysolde",
+                  "text": "Ask the stranger whether they travel west by the Kingsroad, and whether they would carry word to an old monk at Brackenmoor."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Call it an ague for now, keep her vows and keep nursing",
+              "serves": [
+                "keep_her_vows"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_hollis_corners_the_root",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Your Lantern Market factors say the Cathedral infirmary is buying fever-root by the armful. Nobody buys fever-root unless they remember what it is for, and you have sacks of white salt in the River Quarter that came east from Greystone marked as ore.",
+          "options": [
+            {
+              "id": "buy_up_the_root",
+              "label": "Buy every bundle of fever-root in the Lantern Market before the price moves",
+              "serves": [
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_root_cornered",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Remark to the stranger that fever-root has become dear this month, and that the Guild happens to hold what there is."
+                }
+              ],
+              "harms": [
+                "ysolde"
+              ]
+            },
+            {
+              "id": "ask_after_the_salt",
+              "label": "Ask the Hollow's factor how many more sacks of the white salt can come east among the ore",
+              "serves": [
+                "own_the_ore",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Ask the stranger, idly, whether they have been to Greystone, and whether its ore carts ever carry anything but ore."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "A fever rumour is bad for trade; keep the Guild's name out of it",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_wren_reads_the_sister",
+          "type": "reveal",
+          "trigger": "on_flag:grey_letter_to_anselm",
+          "eligible": [
+            "wren"
+          ],
+          "situation": "A letter from the Cathedral infirmary to Brackenmoor lies on your rack, in a nurse's hurried hand. You lifted the wax. It says the Grey Fever is back.",
+          "options": [
+            {
+              "id": "reseal_and_send",
+              "label": "Press the wax down again, send it on, and say nothing",
+              "serves": [
+                "read_every_letter",
+                "a_quiet_fire"
+              ],
+              "effects": []
+            },
+            {
+              "id": "tell_the_stranger",
+              "label": "Send it on, and tell the stranger what a Capitol sister fears is coming down the road",
+              "serves": [
+                "one_last_game",
+                "keep_the_road_open"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "wren",
+                  "text": "Mention to the stranger, over the fire, that the Capitol's sisters are frightened of a fever they have not had in twenty years."
+                }
+              ]
+            },
+            {
+              "id": "warn_the_valley",
+              "label": "Put a word in the Thornhaven rider's ear, for the girl in the west the letter mentions",
+              "serves": [
+                "spare_the_young_ones"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger a rider brought word from the Kingsroad: a sister in the Capitol knows the grey cough, and is asking Brackenmoor for the old cure."
+                }
+              ],
+              "aids": "elena"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_cough_comes_back",
+      "act": 2,
+      "title": "The Cough Comes Back",
+      "summary": "Fresh root quieted Elena's fever for a few days, as root always has, and cured nothing. The messenger's salt comes at half measure this week, and the Grey Fever's cough comes back.",
+      "location": "thornhaven_gregor_shop",
+      "requires": [
+        "fev_fever_quieted",
+        "!fev_cure_found",
+        "!grey_relapse_known"
+      ],
+      "resolves_on": [
+        "grey_relapse_known"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "grey_fever_returned",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "grey_elena_feels_it_return",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The root bought you three quiet days. This morning the dry grey cough came back, the way it does when the salt runs short. Father has seen the packet is lighter, and he is smiling too hard.",
+          "options": [
+            {
+              "id": "tell_father",
+              "label": "Tell her father plainly, at the table, before he hears it from anyone else",
+              "serves": [
+                "survive_the_fever",
+                "choose_my_own_life",
+                "learn_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_relapse_known",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger the fever is back and she told Father herself. Root only quiets it; the salt holds it, and she wants to know where the salt is dug."
+                }
+              ]
+            },
+            {
+              "id": "tell_the_stranger",
+              "label": "Tell only the stranger, and ask where the Hollow's white salt comes from",
+              "serves": [
+                "survive_the_fever",
+                "learn_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_relapse_known",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Quietly tell the stranger the cough is back. Ask them not to tell Father, and ask where the Hollow digs the salt she drinks every night."
+                }
+              ]
+            },
+            {
+              "id": "hide_it",
+              "label": "Hide it; Father would only bargain away more for the salt",
+              "serves": [
+                "keep_the_fever_hidden",
+                "protect_father"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_elena_coughs_on_the_road",
+          "type": "reveal",
+          "trigger": "on_flag:fev_elena_left_home",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "You are past the gate, on your own road at last, and the cough has followed you out of Thornhaven.",
+          "options": [
+            {
+              "id": "tell_the_stranger",
+              "label": "Tell the stranger it has come back, and that she is not going home because of it",
+              "serves": [
+                "choose_my_own_life",
+                "survive_the_fever"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_relapse_known",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger the fever came back on the road, and she will follow the salt to where it is dug rather than go home to a barred door."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep walking and keep it to herself",
+              "serves": [
+                "keep_the_fever_hidden",
+                "see_beyond_thornhaven"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_mathias_remembers_the_return",
+          "type": "reveal",
+          "trigger": "idle",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "In the Grey Year the root quieted fevers for a few days and they came back worse. You see Elena at the well and you hear that cough again.",
+          "options": [
+            {
+              "id": "tell_gregor_and_council",
+              "label": "Tell Gregor and the council it is the old Grey Fever, and root alone never held it",
+              "serves": [
+                "tend_the_sick",
+                "save_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_relapse_known",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the girl's fever is the Grey Fever, that the root only quiets it, and that the old healers' books went east to Brackenmoor."
+                }
+              ]
+            },
+            {
+              "id": "write_to_brackenmoor",
+              "label": "Write to Brackenmoor, where the old healers' books were sent",
+              "serves": [
+                "tend_the_sick",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger if they will carry a letter east to Brackenmoor Abbey. The monks there kept the healers' books."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Wait until he is sure; a frightened father does worse than a fever",
+              "serves": [
+                "prove_before_acting"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_mathias_with_gregor_gone",
+          "type": "aid",
+          "trigger": "on_flag:ih_gregor_fled",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Gregor has run in the night. His daughter is alone above a dark shop, and she has started coughing again.",
+          "options": [
+            {
+              "id": "take_her_in",
+              "label": "Take Elena into his own house and send for help from the abbey",
+              "serves": [
+                "tend_the_sick",
+                "mercy_for_gregor"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_relapse_known",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger Elena is under his roof now, the fever is back, and somebody must ride to Brackenmoor for the old receipt."
+                }
+              ],
+              "aids": "elena"
+            },
+            {
+              "id": "hold",
+              "label": "Leave her be; she has made it plain she wants no keeper",
+              "serves": [
+                "prove_before_acting"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_mira_sells_hope",
+          "type": "scheme",
+          "trigger": "on_flag:grey_relapse_known",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The girl's fever is back and the root will not hold it. The merchant's packet comes at half measure on your word, and every grain of the cure in this valley comes up out of your Pit.",
+          "options": [
+            {
+              "id": "offer_through_varn",
+              "label": "Have Varn let it be known the Hollow could sell a full measure, for a price",
+              "serves": [
+                "control_the_cure",
+                "keep_varn_leashed"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Let slip to the stranger that the Hollow could find a full measure of the white salt, and that the merchant knows what Hollow salt costs."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "bring_broth",
+              "label": "Bring the girl broth and listen to who she talks to",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "mira",
+                  "location": "thornhaven_gregor_shop"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, with a widow's worry, whether anybody has found anything stronger than root for poor Elena."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Do nothing yet; a debt grows best when nobody sees it start",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_gregor_hears_it_again",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "It is back. The root only bought a few days, and the messenger's packet comes at half measure. Every grain that kept her alive was paid for with a neighbour's child.",
+          "options": [
+            {
+              "id": "sell_the_stock",
+              "label": "Sell the shop's stock to buy a Capitol cure, whatever it costs",
+              "serves": [
+                "cure_elena",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger what the Capitol's sisters charge for the Grey Fever cure, and say he will sell the shelves bare to pay it."
+                }
+              ]
+            },
+            {
+              "id": "plan_to_go_east",
+              "label": "Start planning to take her east to the Cathedral himself",
+              "serves": [
+                "get_elena_away",
+                "cure_elena"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "get_elena_away",
+                  "delta": 1
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger how many days it is to the Capitol by the Kingsroad, and whether a sick girl could stand the barge."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Tell nobody; a frightened merchant asks questions the Hollow notices",
+              "serves": [
+                "keep_the_secret"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_abbey_receipt",
+      "act": 2,
+      "title": "The Abbey's Receipt",
+      "summary": "Brackenmoor's archive holds the true receipt for the Grey Fever, in Brother Anselm's own copy. A page that leaves the abbey can be burned.",
+      "location": "brackenmoor_abbey",
+      "requires": [
+        "grey_fever_returned",
+        "!grey_cure_recipe_known"
+      ],
+      "resolves_on": [
+        "grey_cure_recipe_known",
+        "abbey_fever_records_read"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "grey_cure_recipe_known",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "grey_anselm_opens_the_archive",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "anselm"
+          ],
+          "situation": "The fever is back, and the receipt is on the third shelf in your own hand: fever-root steeped with Greystone's white salt. Twenty years you kept its counsel.",
+          "options": [
+            {
+              "id": "send_a_fair_copy",
+              "label": "Copy the receipt fair and send it to Sister Ysolde by the Kingsroad",
+              "serves": [
+                "share_the_cure",
+                "atone_for_silence"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_cure_recipe_known",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "anselm",
+                  "text": "Tell the stranger, very quietly, that he has sent the old receipt to the Capitol, and that he should have done it twenty years ago."
+                }
+              ],
+              "aids": "ysolde"
+            },
+            {
+              "id": "wait_for_the_stranger",
+              "label": "Wait for the stranger and let them read it here, where the page stays",
+              "serves": [
+                "keep_the_archive_whole",
+                "preserve_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "anselm",
+                  "text": "Invite the stranger up to the archive at night. Third Chronicle, the fever year. They may read it. The page does not leave."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep the abbey's counsel, as the Abbot asked",
+              "serves": [
+                "obey_the_abbot"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_ysolde_walks_to_brackenmoor",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "ysolde"
+          ],
+          "situation": "The old man has the receipt in his archive and loves his shelves more than the living. Ten hours' walk from the Dawn Gate.",
+          "options": [
+            {
+              "id": "walk_out",
+              "label": "Walk out of the Cathedral and go to Brackenmoor for it herself",
+              "serves": [
+                "free_the_cure",
+                "reach_the_valley"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "ysolde",
+                  "location": "brackenmoor_abbey"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "ysolde",
+                  "text": "Tell the stranger she is going to Brackenmoor to make an old monk let a page out of his archive, and they can walk with her or get out of the way."
+                }
+              ]
+            },
+            {
+              "id": "send_the_stranger",
+              "label": "Send the stranger with a letter in her hand that Anselm will trust",
+              "serves": [
+                "free_the_cure",
+                "heal_the_sick"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "ysolde",
+                  "text": "Give the stranger a letter for Brother Anselm at Brackenmoor and tell them to put it in his hands and nobody else's."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Stay on her ward; the sick in front of her come first",
+              "serves": [
+                "heal_the_sick",
+                "keep_her_vows"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_mathias_writes_brackenmoor",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Thornhaven's girl is coughing again, and Brackenmoor kept the old healers' books. An elder's letter might open a door a stranger's cannot.",
+          "options": [
+            {
+              "id": "write_as_elder",
+              "label": "Write to Brackenmoor as Thornhaven's elder, asking the receipt for the valley's sick",
+              "serves": [
+                "tend_the_sick",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "anselm",
+                  "text": "Tell the stranger an elder in the west has written asking for the fever receipt, and ask them gently what the valley's girl is like."
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger he has written to Brackenmoor under the council's seal, and that they should go there with his name."
+                }
+              ],
+              "aids": "elena"
+            },
+            {
+              "id": "hold",
+              "label": "Leave it; the abbey has never answered the valley before",
+              "serves": [
+                "prove_before_acting"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_anselm_after_the_page",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "anselm"
+          ],
+          "situation": "The receipt is out of your keeping now, in living hands. Twenty years of silence ended in an afternoon.",
+          "options": [
+            {
+              "id": "give_up_obedience",
+              "label": "Let the Abbot's counsel go; he has kept enough of it",
+              "serves": [
+                "atone_for_silence"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "anselm",
+                  "want": "obey_the_abbot",
+                  "delta": -2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "anselm",
+                  "text": "Tell the stranger there are other letters in the archive, about who bought the salt and who sold it, and that he is done keeping counsel."
+                }
+              ]
+            },
+            {
+              "id": "guard_the_rest",
+              "label": "Move the rest of the fever letters to a safer shelf, against fire",
+              "serves": [
+                "keep_the_archive_whole",
+                "preserve_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "anselm",
+                  "want": "keep_the_archive_whole",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Pray, and copy, and wait to see what the living do with it",
+              "serves": [
+                "preserve_the_truth"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "brams_salt",
+      "act": 2,
+      "title": "Bram's Salt",
+      "summary": "The deep vein that killed Bram Holt is boarded shut on Greystone's side, and a fist-sized lump of its white salt sits on a shelf in Foreman Dagna's hut. It is the only grain in the March the Hollow does not own.",
+      "location": "greystone_mines",
+      "requires": [
+        "grey_cure_recipe_known",
+        "!grey_salt_in_hand"
+      ],
+      "resolves_on": [
+        "grey_salt_in_hand",
+        "grey_salt_taken_by_hollow"
+      ],
+      "hooks": [
+        {
+          "id": "grey_dagna_brams_lump",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "Everybody suddenly wants the white salt. You have a lump of it on your shelf, out of Bram's pack the day they brought him up. Some nights, below the seventh level, you hear picks through the stone.",
+          "options": [
+            {
+              "id": "give_the_lump",
+              "label": "Give the stranger Bram's lump, so nobody needs to go below the seventh level",
+              "serves": [
+                "keep_the_deep_vein_shut"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_salt_in_hand",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger that is the only salt on her side of the boards. It came out of her husband's pack, and nobody digs for more while she is foreman."
+                }
+              ],
+              "aids": "player"
+            },
+            {
+              "id": "name_a_price",
+              "label": "Trade it to the stranger for a winter's bread for the camp",
+              "serves": [
+                "feed_my_miners"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger she has some of the white salt, and it costs a cartload of bread for the camp. Who's paying?"
+                }
+              ]
+            },
+            {
+              "id": "deny_it",
+              "label": "Say there is no salt, the vein is shut, and send them off",
+              "serves": [
+                "keep_the_deep_vein_shut",
+                "keep_greystone_working"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger the deep vein is shut and staying shut, and there is no salt at Greystone for anybody."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "grey_ysolde_unpicks_the_twist",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "ysolde"
+          ],
+          "situation": "You have one patient's worth of salt sewn into your habit, twenty years old, saved from the Grey Year. You could never choose who. The receipt is out now; the root is fresh.",
+          "options": [
+            {
+              "id": "give_the_twist",
+              "label": "Unpick the twist of salt from her habit and send it with the stranger",
+              "serves": [
+                "heal_the_sick",
+                "reach_the_valley"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_salt_in_hand",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "ysolde",
+                  "text": "Press the twist of salt on the stranger. Fresh root, steeped a night. Tell them to use it on whoever is worst, and not to sell it."
+                }
+              ],
+              "aids": "player"
+            },
+            {
+              "id": "go_to_greystone",
+              "label": "Go to Greystone herself and ask the foreman for the deep salt",
+              "serves": [
+                "get_the_deep_salt"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "ysolde",
+                  "location": "greystone_mines"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "ysolde",
+                  "text": "Tell the stranger she is going to Greystone to ask a foreman to open a seam that killed men, and she knows exactly how that sounds."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep the twist for the worst bed on her own ward",
+              "serves": [
+                "heal_the_sick",
+                "keep_her_vows"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_hollis_seals_the_salt",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Salt under Greystone is salt under a Guild lease. The Hollow's factor already sells you a few sacks a season, marked as ore. If the Cathedral wants more, the Guild sells it, as it did once at forty times its weight.",
+          "options": [
+            {
+              "id": "seal_it",
+              "label": "Order the factor: no salt leaves Greystone but in Guild sacks",
+              "serves": [
+                "own_the_ore",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "grey_fever",
+                  "beat": "brams_salt"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Inform the stranger that anything under Greystone belongs to the Guild's lease, salt included, and is sold through the Guildhall or not at all."
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            },
+            {
+              "id": "buy_the_lump",
+              "label": "Offer the foreman twice its weight in silver for whatever she keeps",
+              "serves": [
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Mention to the stranger that the Guild will pay handsomely for any of Greystone's white salt, and asks no questions about whose shelf it sat on."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Let the monks and sisters squabble over it; the Guild's name stays clean",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_mira_sends_for_the_salt",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The Greystone foreman keeps a lump of white salt on her shelf, the only grain in the March that is not yours, and the Pit's men walk the ridge down past her hut. A cure outside your cellar is a leash slipping.",
+          "options": [
+            {
+              "id": "take_it",
+              "label": "Send Varn's men down the ridge from the Pit by night for the foreman's salt",
+              "serves": [
+                "control_the_cure",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "grey_fever",
+                  "beat": "brams_salt"
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "grey_salt_taken_by_hollow",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger, grinning, that the Hollow has the white salt now, and that anybody who wants it knows where the Hollow sits."
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Leave it on the shelf; Dagna's purse keeps the ridge quiet, and that is worth more",
+              "serves": [
+                "keep_the_mask",
+                "rule_from_shadow"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_dagna_bread_for_salt",
+          "type": "intercept",
+          "trigger": "on_flag:vein_ore_road_closed",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "The ore road is shut and the camp's bread with it. Bram's lump is the only thing of value in Greystone that nobody has claimed yet.",
+          "options": [
+            {
+              "id": "trade_for_bread",
+              "label": "Put the lump in the stranger's hands for the price of bread",
+              "serves": [
+                "feed_my_miners"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_salt_in_hand",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger the salt is theirs, and the coin goes on bread. She is not sentimental about rocks. Mostly."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep it. Bread runs out; that lump is the last of Bram",
+              "serves": [
+                "keep_the_deep_vein_shut"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_dagna_the_hill_is_ours",
+          "type": "aid",
+          "trigger": "on_flag:vein_miners_rise",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "The yard threw the Guild's factor out. Whatever seal he put on Greystone's salt went out the gate with him.",
+          "options": [
+            {
+              "id": "break_the_seal",
+              "label": "Tear up the Guild's seal and give Bram's lump to whoever is dying",
+              "serves": [
+                "stand_up_to_the_guild",
+                "keep_the_deep_vein_shut"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "grey_fever",
+                  "beat": "brams_salt"
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "grey_salt_in_hand",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger the Guild doesn't own Greystone's salt any more. The lump is theirs. Somebody should live off this hill for once."
+                }
+              ],
+              "aids": "player"
+            },
+            {
+              "id": "hold",
+              "label": "Keep the camp's mind on the strike and not on salt",
+              "serves": [
+                "keep_greystone_working"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_dagna_new_face",
+          "type": "aid",
+          "trigger": "on_flag:vein_deep_vein_reopened",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "The boards are down below the seventh level, Dawn help everyone, and the new face is white with salt. Past the old fall the lamps found pick marks that are not Greystone's.",
+          "options": [
+            {
+              "id": "fill_a_sack",
+              "label": "Scrape a sack from the new face for the stranger to carry",
+              "serves": [
+                "keep_greystone_working",
+                "feed_my_miners"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "grey_fever",
+                  "beat": "brams_salt"
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "grey_salt_in_hand",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Hand the stranger a sack of the new salt and tell them it cost more than they will ever know."
+                }
+              ],
+              "aids": "player"
+            },
+            {
+              "id": "keep_for_the_camp",
+              "label": "Keep it for the camp to sell where it pays best",
+              "serves": [
+                "feed_my_miners"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger the deep salt is the camp's now, and the camp sells it to whoever pays in bread."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Let it sit; she cannot look at it yet",
+              "serves": [
+                "keep_the_deep_vein_shut"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_bosss_salt",
+      "act": 2,
+      "title": "The Boss's Salt",
+      "summary": "Bram's lump went up the ridge to the Hollow. Now every grain of the cure in the valley is in the Boss's keeping, in the Pit's store or under a tavern stair, and it waits for a price.",
+      "location": "thornhaven_tavern",
+      "requires": [
+        "grey_salt_taken_by_hollow",
+        "!grey_salt_in_hand"
+      ],
+      "resolves_on": [
+        "grey_bosss_price_paid",
+        "grey_salt_in_hand"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "grey_salt_in_hand",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "grey_mira_names_the_price",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The white salt is all yours now, the Pit's and the foreman's lump too. The merchant would give anything for a full measure, and his girl has owed you every night for five years, though she does not know whom.",
+          "options": [
+            {
+              "id": "price_through_varn",
+              "label": "Name the price through Varn: the merchant's deliveries run again, and the salt is his",
+              "serves": [
+                "control_the_cure",
+                "keep_the_steel_coming"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the Hollow has the white salt, and the price is the merchant's deliveries going up to the forest again. All of them."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "widows_gift",
+              "label": "Press it into the stranger's hands for Elena, as a frightened widow's mercy",
+              "serves": [
+                "keep_the_mask",
+                "be_known_by_one_person"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_salt_in_hand",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Give the stranger a twist of white salt, eyes down: found on the tavern stair, she says, and meant for poor Elena. She asks nothing for it."
+                }
+              ],
+              "aids": "elena"
+            },
+            {
+              "id": "hold",
+              "label": "Keep it in the cellar; a leash is only worth holding",
+              "serves": [
+                "control_the_cure",
+                "rule_from_shadow"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_elena_wont_be_bought",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Word is the Hollow has a full measure and wants Father's deliveries for it. Every night's salt was bought with a neighbour's child, and everybody is bargaining over you again.",
+          "options": [
+            {
+              "id": "refuse_the_terms",
+              "label": "Tell the stranger she will not live on the Hollow's terms",
+              "serves": [
+                "never_be_leverage",
+                "choose_my_own_life"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger she will not be bought back from the Hollow. Her salt has cost five names already; she would rather cough."
+                }
+              ]
+            },
+            {
+              "id": "ask_mira",
+              "label": "Go to the tavern and ask Mira, who hears everything, where the Hollow keeps such things",
+              "serves": [
+                "survive_the_fever",
+                "learn_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "thornhaven_tavern"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger she has asked Mira where the Hollow keeps what it steals. Mira went very still."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Wait, and let them argue",
+              "serves": [
+                "keep_the_fever_hidden"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_gregor_empties_the_strongbox",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The Hollow has a full measure and you have a strongbox. You know exactly what the Hollow's salt costs: five names. You would pay it again.",
+          "options": [
+            {
+              "id": "pay_anything",
+              "label": "Beg the stranger to pay whatever the Hollow asks, and offer every coin he has",
+              "serves": [
+                "cure_elena",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Push the strongbox at the stranger. Whatever the Hollow asks, pay it. He does not care what it costs him."
+                }
+              ]
+            },
+            {
+              "id": "refuse",
+              "label": "Refuse to buy one more grain with a neighbour's child; find another way",
+              "serves": [
+                "escape_the_deal",
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger he will not pay the Hollow again, not even for this. Ask them to find the salt anywhere but the Hollow."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Wait and see what the Hollow sends him",
+              "serves": [
+                "keep_the_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_varn_keeps_the_leash",
+          "type": "betray",
+          "trigger": "on_flag:hc_varn_ascendant",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The Hollow is yours now, and so is the white salt in the Pit's store. The widow wanted it as a leash. A leash works for whoever holds it, and the girl is worth most unharmed.",
+          "options": [
+            {
+              "id": "hold_the_full_measure",
+              "label": "Keep the full measure in his own tent, and let the merchant beg for it while the girl's nightly packet still comes",
+              "serves": [
+                "hold_elena_as_leverage",
+                "keep_gregor_on_the_hook"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the girl's nightly packet still comes, full weight, from his tent now. The cure is there too. Gregor can ask for it on his knees."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "sell_it_to_the_stranger",
+              "label": "Sell it to the stranger himself, at a price that makes the valley talk",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Name the stranger a price for the white salt: a hundred crowns, and a favour the Hollow names later."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Let it sit; he has a Hollow to hold",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter_of_the_dawn",
+      "act": 3,
+      "title": "The Chapter of the Dawn",
+      "summary": "The receipt is out of Brackenmoor, the fever is back, and word has come east that the white salt is dug in chains by Thornhaven's taken. The chapter meets to decide whether the cough is an ague, its cure a mercy to be rationed, or a sin to be confessed. Sisters may preach and the Guild may pay, but the chapter does not rise until the stranger has laid the salt letters before it.",
+      "location": "capitol_cathedral",
+      "requires": [
+        "grey_cure_recipe_known",
+        "grey_fever_returned",
+        "tn_taken_alive_known"
+      ],
+      "resolves_on": [
+        "grey_letters_laid_bare"
+      ],
+      "hooks": [
+        {
+          "id": "grey_hollis_buys_the_chapter",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The chapter meets on the fever, and the stranger says the salt your factor buys off Greystone's carters is dug by chained children. A chapter that confesses the salt names who sold it, and the Guild sold every grain.",
+          "options": [
+            {
+              "id": "endow_the_infirmary",
+              "label": "Endow the infirmary through the Guild, on the understanding the chapter says 'ague'",
+              "serves": [
+                "keep_the_guild_clean",
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_cathedral_hushed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger the Guild has made a generous gift to the Cathedral infirmary, and that charity is better than old gossip."
+                }
+              ],
+              "harms": [
+                "ysolde"
+              ]
+            },
+            {
+              "id": "warn_ashdown",
+              "label": "Warn Lady Ashdown that Brackenmoor remembers her father's salt charter",
+              "serves": [
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Ask the stranger, coolly, what an abbey's archive could possibly say about House Ashdown and a fever twenty years gone."
+                }
+              ]
+            },
+            {
+              "id": "bury_the_factor",
+              "label": "Burn the factor's bills for the salt sacks and swear the Guild bought honest ore",
+              "serves": [
+                "hold_every_patron",
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Assure the stranger the Guild buys iron ore from Greystone and nothing else, and has the bills to prove it. He burned the others himself."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Stay out of it; a gift now looks like guilt",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_ysolde_on_the_steps",
+          "type": "betray",
+          "trigger": "idle",
+          "eligible": [
+            "ysolde"
+          ],
+          "situation": "The receipt is out, the coughing is in every lane of the River Quarter, and the chapter is still saying ague. The salt in its cabinet was dug by children in chains, and the bishops never asked where it came from.",
+          "options": [
+            {
+              "id": "preach_on_the_steps",
+              "label": "Stand on the Cathedral steps and tell the city who dug its cure, and who died for want of it",
+              "serves": [
+                "expose_the_rationing",
+                "admit_the_fever_returned"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_salt_traced",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "grey_cathedral_shamed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "ysolde",
+                  "text": "Tell the stranger she said it all on the Cathedral steps: the River Quarter's dead and the Pit's chained diggers. The bishops may do their worst."
+                }
+              ]
+            },
+            {
+              "id": "carry_the_word",
+              "label": "Spread word through the River Quarter that the old fever is back and the Cathedral knows it",
+              "serves": [
+                "free_the_cure",
+                "heal_the_sick"
+              ],
+              "effects": [
+                {
+                  "type": "spread_rumor",
+                  "flag": "grey_fever_returned",
+                  "to": [
+                    "*"
+                  ],
+                  "via": "the River Quarter's wards"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "ysolde",
+                  "text": "Tell the stranger every washerwoman on the river knows what the cough is now. Let the chapter call it ague to their faces."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep her vows a little longer, and keep nursing",
+              "serves": [
+                "keep_her_vows"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_ysolde_swears_to_the_letters",
+          "type": "reveal",
+          "trigger": "on_flag:grey_letters_laid_bare",
+          "eligible": [
+            "ysolde"
+          ],
+          "situation": "The stranger has laid the salt letters before the chapter, and the word from the west: this year's cure was dug by Thornhaven's taken. Every face turns to the infirmarian who was on the wards in the Grey Year.",
+          "options": [
+            {
+              "id": "swear_them_true",
+              "label": "Swear the letters true, and add the names of the River Quarter dead she carried out",
+              "serves": [
+                "expose_the_rationing",
+                "free_the_cure"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_cathedral_shamed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "ysolde",
+                  "text": "Tell the stranger she swore to every word before the chapter, and asked the bishops aloud how many children dug the salt in their cabinet."
+                }
+              ],
+              "aids": "player"
+            },
+            {
+              "id": "go_west_for_them",
+              "label": "Swear to the letters, and tell the chapter she means to nurse the diggers when they come down from the Pit",
+              "serves": [
+                "heal_the_sick",
+                "reach_the_valley"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "grey_cathedral_shamed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "ysolde",
+                  "text": "Tell the stranger the chapter has its shame. She is going west; the ones who dug the salt will need nursing more than the bishops need her."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Hold her tongue and keep her vows; the letters can speak for themselves",
+              "serves": [
+                "keep_her_vows"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_anselm_second_copy",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "anselm"
+          ],
+          "situation": "The chapter will want proof. You have a second set of the salt letters hidden in the binding of a dull book of saints' days.",
+          "options": [
+            {
+              "id": "give_the_second_set",
+              "label": "Give the stranger the hidden second set of letters",
+              "serves": [
+                "name_the_profiteers",
+                "atone_for_silence"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "anselm",
+                  "text": "Give the stranger the saints'-days book and tell them to cut the binding. The letters inside name who bought the salt and who sold it."
+                }
+              ],
+              "aids": "player"
+            },
+            {
+              "id": "write_to_seraphine",
+              "label": "Write first to Lady Ashdown; she should hear what her father did from the archive, not the street",
+              "serves": [
+                "atone_for_silence",
+                "preserve_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Ask the stranger why an old monk at Brackenmoor would write to her about her father, the Greystone salt and the Grey Year."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep the second set where it is; pages that leave get burned",
+              "serves": [
+                "keep_the_archive_whole",
+                "obey_the_abbot"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_seraphine_after_the_chapter",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "The chapter has met on the Grey Fever. Old Garrick Ashdown's salt charter is being said in rooms where it had been forgotten, beside talk of children in chains on Greystone's hill.",
+          "options": [
+            {
+              "id": "endow_the_ward",
+              "label": "Endow the River Quarter ward in the Ashdown name, before anyone asks why",
+              "serves": [
+                "keep_her_hands_clean",
+                "restore_house_ashdown"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Mention to the stranger that House Ashdown has endowed the River Quarter's fever ward, as old houses do in hard years."
+                }
+              ]
+            },
+            {
+              "id": "learn_what_father_did",
+              "label": "Find out what her father actually did in the Grey Year",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "seraphine",
+                  "want": "keep_her_hands_clean",
+                  "delta": 1
+                },
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Ask the stranger, very carefully, what they know about the Greystone salt charter and her late father."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing; the dead do not testify",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "grey_salt_traced",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "one_patients_worth",
+      "act": 3,
+      "title": "One Patient's Worth",
+      "summary": "At the Halfway House the road splits: west to Elena in Thornhaven, who could steep it and live or sew it into her hem for the sick in the Pit, east to a fever ward in the Capitol. The stranger carries enough salt for one true cure.",
+      "location": "kingsroad_waystation",
+      "requires": [
+        "grey_salt_in_hand"
+      ],
+      "resolves_on": [
+        "grey_salt_for_elena",
+        "grey_salt_for_the_ward"
+      ],
+      "hooks": [
+        {
+          "id": "grey_gregor_begs",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The stranger has the salt. Enough for one. Your daughter is coughing her mother's cough, and they are deciding whether she is the one.",
+          "options": [
+            {
+              "id": "beg",
+              "label": "Beg the stranger for Elena, offering everything he owns",
+              "serves": [
+                "cure_elena",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Beg the stranger to bring the salt to Elena. Anything. The shop, the savings, his name. Just her."
+                }
+              ]
+            },
+            {
+              "id": "ride_to_meet_them",
+              "label": "Ride out to the Halfway House to meet the stranger on the road",
+              "serves": [
+                "cure_elena",
+                "get_elena_away"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "kingsroad_waystation"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Meet the stranger at the Halfway House and walk west beside them, talking about Elena the whole way."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing; a man like him has no right to ask",
+              "serves": [
+                "make_amends"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_elena_chooses",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "One cure, and everybody is deciding whether it is yours. Nobody has asked you.",
+          "options": [
+            {
+              "id": "send_it_east",
+              "label": "Tell the stranger to take it east to the ward; she will not be the one patient again",
+              "serves": [
+                "choose_my_own_life",
+                "never_be_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger to take the salt to the Capitol ward. Her mother was the one patient once. She will not be bought that way."
+                }
+              ]
+            },
+            {
+              "id": "ask_for_it",
+              "label": "Ask for it plainly; she wants to live",
+              "serves": [
+                "survive_the_fever"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger plainly that she wants to live, and she would like the salt, and she is sorry for whoever else needs it."
+                }
+              ]
+            },
+            {
+              "id": "carry_it_up",
+              "label": "Ask for it to sew into her hem, for the sick the Tithe took to the Pit",
+              "serves": [
+                "find_the_taken",
+                "choose_my_own_life"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger to bring her the salt, not to drink but to carry up the ridge. Corin and Willa are coughing in the Pit, and nobody steeps root for them."
+                }
+              ]
+            },
+            {
+              "id": "go_to_the_road",
+              "label": "Walk to the Halfway House to meet the stranger and decide it face to face",
+              "serves": [
+                "choose_my_own_life",
+                "see_beyond_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "kingsroad_waystation"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Meet the stranger on the Kingsroad and decide about the salt together, not in her father's shop."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "grey_elena_already_holds_a_measure",
+          "type": "intercept",
+          "trigger": "on_flag:fev_brought_the_salt",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The stranger has already put a full measure of the Pit's salt into your hands in Thornhaven. Whatever else they carry on the Kingsroad is for someone else.",
+          "options": [
+            {
+              "id": "send_this_east",
+              "label": "Tell the stranger to take what they carry east to the ward; she has hers",
+              "serves": [
+                "choose_my_own_life",
+                "never_be_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger she has her measure already. Take the rest east to the Capitol ward, where nobody's father bought it for them."
+                }
+              ]
+            },
+            {
+              "id": "both_up_the_ridge",
+              "label": "Ask for this salt too, so there is enough for everyone sick in the Pit",
+              "serves": [
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger to bring the second measure west as well. One cure is a girl saved. Two might be a seam of diggers kept alive."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing; let the stranger choose",
+              "serves": [
+                "keep_the_fever_hidden"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_ysolde_patient_in_front",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "ysolde"
+          ],
+          "situation": "One twist of salt on the Kingsroad, a girl to the west and a ward full of coughing to the east. You have always said a patient is a patient.",
+          "options": [
+            {
+              "id": "give_it_to_the_girl",
+              "label": "Write to the stranger: give it to the girl, and she will fight for the ward with the receipt",
+              "serves": [
+                "heal_the_sick",
+                "reach_the_valley"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "ysolde",
+                  "text": "Tell the stranger to give the salt to the girl in the west. One saved is one saved. She will fight the chapter for the rest."
+                }
+              ],
+              "aids": "elena"
+            },
+            {
+              "id": "bring_it_east",
+              "label": "Write begging them to bring it east, where one cure shown to the chapter could open the cabinet",
+              "serves": [
+                "free_the_cure",
+                "expose_the_rationing"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "ysolde",
+                  "text": "Ask the stranger to bring the salt east. One cure shown to the chapter, in front of the city, might open the cabinet for everyone."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Let them choose; she has no right to choose for them",
+              "serves": [
+                "keep_her_vows"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_varn_tolls_the_road",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Somebody is carrying the white salt down the Kingsroad, and the girl at the end of that road is the merchant's.",
+          "options": [
+            {
+              "id": "wait_at_the_house",
+              "label": "Ride to the Halfway House and wait for whoever carries salt west",
+              "serves": [
+                "be_feared",
+                "hold_elena_as_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "kingsroad_waystation"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Sit by the Halfway House fire and ask the stranger, friendly as anything, what they are carrying west and who it is for."
+                }
+              ]
+            },
+            {
+              "id": "send_word",
+              "label": "Send word that the road west has a toll now",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the road west is Hollow road, and whatever goes to the merchant's girl pays the Hollow first."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Leave it; a Hollow man at the Halfway House draws crown eyes",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "grey_mira_counts_the_debt",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The salt has gone where the stranger chose. Either way, someone in Thornhaven still needs medicine, and every grain the Pit digs still comes through your hands.",
+          "options": [
+            {
+              "id": "offer_the_cellar",
+              "label": "Let the girl's family know the widow's cellar has root and tinctures, if they ever need them",
+              "serves": [
+                "control_the_cure",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger, softly, that if Elena ever needs more medicine, a widow keeps a few things in her cellar for hard winters."
+                }
+              ]
+            },
+            {
+              "id": "let_it_go",
+              "label": "Let the cure go; a leash nobody feels is no leash",
+              "serves": [
+                "be_known_by_one_person"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mira",
+                  "want": "control_the_cure",
+                  "delta": -1
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing, remember everything",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "the_mercy_undug",
+      "title": "The Mercy Undug",
+      "requires": [
+        "grey_letters_laid_bare",
+        "grey_cathedral_shamed",
+        "tn_taken_freed"
+      ],
+      "summary": "The taken came down from the Pit alive, and the chapter heard where its cure had been dug. The cabinet stands open and the seam is silent; the Capitol must find a mercy nobody is chained to dig."
+    },
+    {
+      "id": "the_cabinet_opened",
+      "title": "The Cabinet Opened",
+      "requires": [
+        "grey_salt_for_the_ward",
+        "grey_cathedral_shamed"
+      ],
+      "summary": "The salt reached the ward, and the Cathedral, shamed before the city for selling a cure dug by Thornhaven's stolen children, unlocked its cabinet for the River Quarter and sent one west to Thornhaven."
+    },
+    {
+      "id": "the_bosss_mercy",
+      "title": "The Boss's Mercy",
+      "requires": [
+        "grey_salt_for_elena",
+        "grey_bosss_price_paid"
+      ],
+      "summary": "Elena lives on Iron Hollow's salt, dug by her neighbours' children, and the Hollow has the stranger's promise and Gregor's gratitude both."
+    },
+    {
+      "id": "salt_up_the_ridge",
+      "title": "Salt Up the Ridge",
+      "requires": [
+        "grey_salt_for_elena",
+        "fev_cure_carried_up"
+      ],
+      "summary": "Elena sewed the cure into her hem and carried it up the ridge to the sick in the Pit, and coughs her mother's cough still. The salt went back to the seam it was dug from."
+    },
+    {
+      "id": "one_patients_worth",
+      "title": "One Patient's Worth",
+      "requires": [
+        "grey_salt_for_elena",
+        "fev_cure_found"
+      ],
+      "summary": "The Grey Fever is steeped out of Elena for good. The River Quarter is still coughing, the Pit is still digging, and the receipt is loose in the world."
+    },
+    {
+      "id": "the_wards_salt",
+      "title": "The Ward's Salt",
+      "requires": [
+        "grey_salt_for_the_ward"
+      ],
+      "summary": "One cure went east to a ward that needed a hundred. The Cathedral rations what is left, still buying it from Greystone's carters, and in Thornhaven Elena lives on the Hollow's half measures or rides the cart without them."
+    },
+    {
+      "id": "the_salt_went_west",
+      "title": "The Salt Went West",
+      "requires": [
+        "grey_salt_for_elena"
+      ],
+      "summary": "The cure went west into Elena's hands in Tithe week. What a girl with her name on the lot does with one true cure is hers to choose, and the ward still waits."
+    }
+  ]
+}

@@ -60,6 +60,9 @@ func _ready():
 func _load_api_key():
 	# Try environment variable first
 	api_key = OS.get_environment("ELEVENLABS_API_KEY")
+	# Config covers OS env, user://.env and (dev only) res://.env
+	if api_key.is_empty() and Config and "elevenlabs_api_key" in Config:
+		api_key = Config.elevenlabs_api_key
 
 	# If not set, try loading from .env file
 	if api_key.is_empty():

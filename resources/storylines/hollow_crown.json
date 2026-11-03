@@ -1,0 +1,2795 @@
+{
+  "id": "hollow_crown",
+  "title": "The Hollow Crown",
+  "summary": "Iron Hollow's own crisis around the Tithe. Varn collects, and plans a second road: turn the cart off the ridge trail, keep Elena as his hostage, and take the Hollow from the Boss. Mira steers it all from behind the widow's mask. Collection Night decides the crown, and the widow's face comes out only if someone earns it.",
+  "prefix": "hc_",
+  "act_span": [
+    1,
+    3
+  ],
+  "flags": {
+    "hc_second_road_planned": "Varn planned, and told no one, to turn the Tithe cart off the ridge trail into a bolted hut and keep Elena there as his hostage.",
+    "hc_mira_marked_varn": "Mira chose two of Varn's own men who would cut his throat at her word.",
+    "hc_runaway_hunted": "Varn sent a man along the Darkwood to ask quietly after the digger who walked out of the Pit.",
+    "hc_varn_named_his_price": "Varn told Gregor across his own counter that Elena need never see where the cart went, if every delivery came to Varn and to nobody above him.",
+    "hc_gregor_turned_to_varn": "Gregor took Varn's road behind the Boss's back: from that night every delivery would go to Varn alone.",
+    "hc_gregor_told_the_widow": "Gregor carried Varn's offer to Mira, believing her a frightened messenger, and begged her to warn the men above him.",
+    "hc_player_backed_varn": "The player gave Varn their word to stand with him when the Tithe cart turned off the ridge trail.",
+    "hc_player_warned_the_widow": "The player told Mira that Varn meant to turn the Tithe cart off the ridge trail and take Iron Hollow for himself.",
+    "hc_player_refused_varn": "The player looked at Varn's buried silver under the old mill and refused his price.",
+    "hc_varn_found_the_runaway": "Varn learned that Davin, the digger he had told the Boss lay buried in the seam, was alive and hiding near Thornhaven.",
+    "hc_mira_caught_varns_lie": "Mira told Varn to his face that she knew the digger he swore was dead had walked out of the Pit alive.",
+    "hc_davin_moved": "Davin left Old Maud's loft by night for the back of Bjorn's forge, where the Hollow's man had not thought to look.",
+    "hc_hut_known": "Davin told of a shepherd's hut off the ridge trail, past the dead pine, an hour short of the Pit.",
+    "hc_player_sworn_to_the_ridge": "The player swore to walk the ridge trail behind the Hollow's cart on Collection Night and see where it turned.",
+    "hc_aldric_hunts_varn": "Captain Aldric took his six down the forest path to bring Varn in for the killing of Marcus.",
+    "hc_widow_at_the_back_pew": "Elder Mathias remembered that the widow Mira was still in the back pew when he locked the chapel, the evening before the drawing.",
+    "hc_widows_account_doubted": "Captain Aldric said aloud that Mira's account of the night Marcus died did not hold: from where she stood, she could not have seen the gate.",
+    "hc_player_accused_the_widow": "The player sat at Mira's kitchen table and told her to her face that they knew she was the Boss of Iron Hollow.",
+    "hc_stranger_marked": "Iron Hollow put a quiet price on the stranger's head, on the widow's word.",
+    "hc_cart_turned": "On Collection Night the Tithe cart turned off the ridge trail toward a bolted shepherd's hut, on Varn's word and not the Boss's.",
+    "hc_knives_held": "Mira's two knives walked beside the turned cart and did not strike, because she had not given the word.",
+    "hc_elena_slipped_the_cart": "Elena slipped out of the turned cart in the dark and went on up the ridge toward the Pit on her own feet.",
+    "hc_cart_kept_the_trail": "The Tithe cart kept to the ridge trail all the way to the Pit, and Varn's second road was never taken.",
+    "hc_varn_ascendant": "Varn took Iron Hollow in his own name, and the Boss's men knelt to him or ran.",
+    "hc_varn_dead": "Varn died, and Iron Hollow went quiet around his empty place at the fire.",
+    "hc_player_named_the_widow": "The player stood in Thornhaven's square and named the widow of the Rusty Nail as the Boss of Iron Hollow.",
+    "hc_player_kept_the_widows_secret": "The player learned who the Boss of Iron Hollow was and kept it to themselves.",
+    "hc_widow_fled": "Mira left the Rusty Nail by the back door and went up the ridge trail toward the Pit before the square filled."
+  },
+  "player_flags": [
+    "hc_player_backed_varn",
+    "hc_player_warned_the_widow",
+    "hc_player_refused_varn",
+    "hc_player_sworn_to_the_ridge",
+    "hc_player_accused_the_widow",
+    "hc_player_named_the_widow",
+    "hc_player_kept_the_widows_secret"
+  ],
+  "crossovers": [
+    "tn_lot_rigged_known",
+    "tn_elena_swap_known",
+    "tn_taken_alive_known",
+    "tn_plan_fight",
+    "tn_plan_follow_cart",
+    "tn_elena_taken",
+    "fev_ran_the_ridge",
+    "ih_gregor_fled",
+    "des_varn_warrant_served",
+    "des_varn_suspects_the_boss",
+    "vein_ridge_trail_closed",
+    "way_boss_named_in_capitol"
+  ],
+  "beats": [
+    {
+      "id": "the_second_road",
+      "title": "The Second Road",
+      "act": 1,
+      "summary": "Varn has collected the Tithe four times. This year the name is Elena, and he has waited five years for it: the cart will turn off the ridge trail, and with Gregor's daughter in his hands he takes the Hollow.",
+      "location": "iron_hollow_camp",
+      "requires": [],
+      "resolves_on": [
+        "hc_second_road_planned"
+      ],
+      "hooks": [
+        {
+          "id": "hc_varn_plans_the_turn",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The lot fell on the merchant's girl. Whoever holds her holds Gregor's salt and steel, and the Boss's leash with them. Nobody would look for a cart an hour short of the Pit.",
+          "options": [
+            {
+              "id": "the_second_road",
+              "label": "Plan it: a shepherd's hut off the trail, a bolt, and two men whose wages are his",
+              "serves": [
+                "hold_elena_as_leverage",
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_second_road_planned",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger, lightly, whether they have ever walked the ridge trail, and how far a cart goes in an hour."
+                }
+              ]
+            },
+            {
+              "id": "by_the_book",
+              "label": "Collect by the book; one perfect night proves who really runs the Hollow",
+              "serves": [
+                "a_perfect_collection",
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger that on the seventh night everything will go exactly as it always has."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_hunts_the_runaway",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "You told the Boss the smith's boy fell in the seam and was buried there. He walked out. If she learns you lied, you are next year's name.",
+          "options": [
+            {
+              "id": "send_a_man",
+              "label": "Send a man along the Darkwood to ask after a boy with a maimed hand",
+              "serves": [
+                "find_the_runaway",
+                "hold_the_pit"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_runaway_hunted",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger whether they have seen a thin boy on the forest road, with his right hand kept in his sleeve."
+                }
+              ]
+            },
+            {
+              "id": "let_him_lie",
+              "label": "Let the boy stay dead where he put him; asking is how lies come out",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger nobody comes back from the ridge. Nobody ever has."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_mira_counts_his_men",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Varn has started asking for the merchant's girl. A lieutenant who asks has already decided. Two of his men eat at your back door when the camp pot runs thin.",
+          "options": [
+            {
+              "id": "two_knives",
+              "label": "Choose those two, learn their mothers' names, and tell them what she will need",
+              "serves": [
+                "keep_varn_leashed",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_mira_marked_varn",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, so gently, whether Varn has been seen in the village this week, and who he talked to."
+                }
+              ]
+            },
+            {
+              "id": "dangle_the_girl",
+              "label": "Dangle the girl: tell Varn himself that the merchant's daughter is his to walk up",
+              "serves": [
+                "see_who_fights",
+                "keep_varn_leashed"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "The Boss says the merchant's girl is yours to walk up the ridge. Ask the stranger why that should make you uneasy."
+                }
+              ]
+            },
+            {
+              "id": "leave_him_be",
+              "label": "Leave him be until he moves; a reach is easier to cut than a thought",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger she is frightened of the Hollow's knife-man, and hopes he never comes into the Nail."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_and_the_picket",
+          "type": "scheme",
+          "trigger": "on_flag:vein_ridge_trail_closed",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Fort Ashguard has put a picket on the ridge trail over Greystone. The far half. Your hut is on the near half, and soldiers on the hill make everyone look the other way.",
+          "options": [
+            {
+              "id": "use_it",
+              "label": "Use it: blame the soldiers if the cart is late reaching the Pit",
+              "serves": [
+                "take_the_hollow",
+                "hold_elena_as_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "varn",
+                  "want": "take_the_hollow",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "move_the_hut",
+              "label": "Find a hut nearer the forest, out of the picket's sight",
+              "serves": [
+                "hold_the_pit",
+                "a_perfect_collection"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "forest_path"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_merchants_new_master",
+      "title": "A Word Across the Counter",
+      "act": 2,
+      "summary": "From the fourth day Varn comes to Gregor's counter with an offer the Boss never made: Elena never sees where the cart goes, if Gregor answers to Varn alone. Gregor must choose a master.",
+      "location": "thornhaven_gregor_shop",
+      "requires": [
+        "hc_second_road_planned",
+        "tn_day_4"
+      ],
+      "resolves_on": [
+        "hc_gregor_turned_to_varn",
+        "hc_gregor_told_the_widow"
+      ],
+      "hooks": [
+        {
+          "id": "hc_varn_names_his_price",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Three days to the cart. The merchant has tried every door in Thornhaven. He has not tried yours.",
+          "options": [
+            {
+              "id": "across_the_counter",
+              "label": "Tell Gregor, quietly, across his own counter, what his daughter's safety costs",
+              "serves": [
+                "keep_gregor_on_the_hook",
+                "hold_elena_as_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_varn_named_his_price",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Varn said Elena need never see where the cart goes, if you answer to him alone. Ask the stranger what that means."
+                }
+              ]
+            },
+            {
+              "id": "let_him_come",
+              "label": "Wait; let the merchant come crawling to the camp on his own",
+              "serves": [
+                "a_perfect_collection",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger that the merchant will come to him before the week is out. They always do."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_gregor_chooses_a_master",
+          "type": "betray",
+          "trigger": "on_flag:hc_varn_named_his_price",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Varn has offered you your daughter: not freedom, but a hut and a bolt and two men, and no Pit. Behind the Boss's back. The messenger would want to know.",
+          "options": [
+            {
+              "id": "take_varns_road",
+              "label": "Take Varn's road: every delivery from tonight goes to him",
+              "serves": [
+                "back_the_winning_master",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_gregor_turned_to_varn",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger, between you and me, that he has found a better buyer for his steel."
+                }
+              ],
+              "aids": "varn"
+            },
+            {
+              "id": "tell_the_messenger",
+              "label": "Carry it to the messenger, weeping, and beg her to warn the men above him",
+              "serves": [
+                "escape_the_deal",
+                "keep_the_secret"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_gregor_told_the_widow",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Gregor came weeping with Varn's offer. Ask the stranger, softly, whether Varn can be trusted."
+                }
+              ]
+            },
+            {
+              "id": "sell_both",
+              "label": "Tell neither, promise both, and sell to whoever gives Elena back",
+              "serves": [
+                "buy_her_back",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger who truly rules Iron Hollow, as if it were a question about the price of grain."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_elena_through_the_door",
+          "type": "intercept",
+          "trigger": "on_flag:hc_varn_named_his_price",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Through the storeroom door you heard Varn name you like a strongbox: something to bolt in a hut and bargain over. You will not be anyone's leash.",
+          "options": [
+            {
+              "id": "tell_the_stranger",
+              "label": "Tell the stranger the cart may not go where everyone thinks",
+              "serves": [
+                "never_be_leverage",
+                "get_word_out"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Tell the stranger Varn means to keep her as a hostage off the ridge trail, and ask them to find out where."
+                }
+              ]
+            },
+            {
+              "id": "tell_her_father",
+              "label": "Tell her father to his face that she will never be his bargain, nor Varn's",
+              "serves": [
+                "never_be_leverage",
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Elena heard Varn's offer and said she would never be your bargain. Ask the stranger to make her understand."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_mira_hears_the_offer",
+          "type": "scheme",
+          "trigger": "on_flag:hc_gregor_told_the_widow",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Gregor has brought you Varn's offer with tears on his face. Your lieutenant means to turn your cart and keep your prize. He reached, exactly as you thought he would.",
+          "options": [
+            {
+              "id": "mark_him",
+              "label": "Choose two of his own men to walk beside the cart, and tell them what to do at the turn",
+              "serves": [
+                "keep_varn_leashed",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_mira_marked_varn",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "The messenger says the men above Varn have been told, and Gregor must do nothing. Ask the stranger if he should."
+                }
+              ]
+            },
+            {
+              "id": "give_him_rope",
+              "label": "Give him rope: let him reach, and see who follows him",
+              "serves": [
+                "see_who_fights",
+                "keep_varn_leashed"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger, trembling, that she is afraid the Hollow is quarrelling, and that quarrels end in blood."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_and_the_gate",
+          "type": "scheme",
+          "trigger": "on_flag:tn_plan_fight",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Word in the camp: the stranger means to fight at the gate. The widow told the old captain eight men by the Kingsroad side. You will bring twelve.",
+          "options": [
+            {
+              "id": "four_by_the_mill",
+              "label": "Send four round by the mill road to come at the gate from behind",
+              "serves": [
+                "crush_the_resistance",
+                "kill_aldric"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "old_mill"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger how many farmers the old captain has, and whether they have ever stood at night."
+                }
+              ],
+              "harms": [
+                "aldric"
+              ]
+            },
+            {
+              "id": "a_quiet_word",
+              "label": "Frighten the farmers one at a time before the night comes",
+              "serves": [
+                "crush_the_resistance",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger he has spoken to two of the captain's six this week, and they listened."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_merchant_fled",
+          "type": "react",
+          "trigger": "on_flag:ih_gregor_fled",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The merchant has run in the night. His daughter has not. A hostage whose father is gone is worth half, but she is still the Boss's prize.",
+          "options": [
+            {
+              "id": "still_the_prize",
+              "label": "Keep to the second road; the girl is still the Boss's leash, if not the merchant's",
+              "serves": [
+                "take_the_hollow",
+                "hold_elena_as_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "varn",
+                  "want": "hold_elena_as_leverage",
+                  "delta": -1
+                }
+              ]
+            },
+            {
+              "id": "hunt_him",
+              "label": "Send men east after the merchant and his strongbox",
+              "serves": [
+                "keep_gregor_on_the_hook"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "village_gate"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_hoard_under_the_wheel",
+      "title": "Silver Under the Wheel",
+      "act": 2,
+      "summary": "From the third day Varn courts the stranger: he shows them two years of skimmed salt silver buried under the old mill's wheel-pit, and names the price of their help on Collection Night.",
+      "location": "old_mill",
+      "requires": [
+        "hc_second_road_planned",
+        "tn_day_3"
+      ],
+      "resolves_on": [
+        "hc_player_backed_varn",
+        "hc_player_warned_the_widow",
+        "hc_player_refused_varn"
+      ],
+      "hooks": [
+        {
+          "id": "hc_varn_shows_the_hoard",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The stranger is capable, and the Boss has noticed them. Better they owe you than her. Silver she never counted buys men she never counted.",
+          "options": [
+            {
+              "id": "show_it",
+              "label": "Show them the hoard under the wheel-pit and name the price of their help on the ridge",
+              "serves": [
+                "take_the_hollow",
+                "hold_elena_as_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Show the stranger the silver under the wheel-pit, and ask whether they would walk beside a cart that turns."
+                }
+              ]
+            },
+            {
+              "id": "test_them",
+              "label": "Test them first with a small errand, and watch who they tell",
+              "serves": [
+                "keep_the_boss_secret",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger to carry a sealed pouch to the mill for him tonight, and not to look inside."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_after_the_refusal",
+          "type": "scheme",
+          "trigger": "on_flag:hc_player_refused_varn",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The stranger looked at your silver and said no. A man who refuses is a man who talks.",
+          "options": [
+            {
+              "id": "a_knife_left",
+              "label": "Leave a knife standing in the stranger's door, and nothing else",
+              "serves": [
+                "be_feared",
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger, smiling, that he hopes they sleep well, and that doors in Thornhaven are very thin."
+                }
+              ]
+            },
+            {
+              "id": "let_it_go",
+              "label": "Let it go; refusing is not telling, and he will know if they tell",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "varn",
+                  "want": "be_feared",
+                  "delta": -1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_names_the_hut",
+          "type": "intercept",
+          "trigger": "on_flag:hc_player_backed_varn",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The stranger has given you their word. A partner on the ridge is worth two cart men, if they know where the cart is going.",
+          "options": [
+            {
+              "id": "tell_them_where",
+              "label": "Tell them where the hut lies, past the dead pine, an hour short of the Pit",
+              "serves": [
+                "hold_elena_as_leverage",
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger: past the dead pine, the shepherd's hut. Be there before the cart, and keep the girl calm."
+                }
+              ]
+            },
+            {
+              "id": "keep_it_his",
+              "label": "Keep the hut his own until the night; words carry",
+              "serves": [
+                "keep_the_boss_secret",
+                "a_perfect_collection"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger they will know where to stand when he tells them, and not an hour before."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_mira_is_warned",
+          "type": "scheme",
+          "trigger": "on_flag:hc_player_warned_the_widow",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The stranger came to your kitchen and told you Varn means to turn the cart and take the Hollow. They think they are warning a frightened widow.",
+          "options": [
+            {
+              "id": "mark_him_now",
+              "label": "Choose two of his own men tonight, and let the stranger think she wept",
+              "serves": [
+                "keep_varn_leashed",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_mira_marked_varn",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Thank the stranger, shaking, and ask them to tell Captain Aldric nothing yet, for Elena's sake."
+                }
+              ]
+            },
+            {
+              "id": "weep_and_wait",
+              "label": "Weep, thank them, and do nothing yet; watch who else knows",
+              "serves": [
+                "keep_the_mask",
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Beg the stranger to stay away from Varn, because he killed her husband and he would kill them."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_mira_warms_to_the_stranger",
+          "type": "react",
+          "trigger": "on_flag:hc_player_warned_the_widow",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The stranger risked Varn's knife to warn you. Nobody has done a thing like that for you since Marcus.",
+          "options": [
+            {
+              "id": "let_it_matter",
+              "label": "Let it matter, a little, against every instinct",
+              "serves": [
+                "be_known_by_one_person"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "mira",
+                  "dimension": "affection",
+                  "delta": 8
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "mira",
+                  "dimension": "trust",
+                  "delta": 5
+                }
+              ]
+            },
+            {
+              "id": "file_it",
+              "label": "File it: a stranger who warns is a stranger who watches",
+              "serves": [
+                "rule_from_shadow",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "mira",
+                  "dimension": "trust",
+                  "delta": -5
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, kindly, where they learned so much about the Hollow's business."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_and_the_runner",
+          "type": "react",
+          "trigger": "on_flag:fev_ran_the_ridge",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The merchant's girl has slipped out of Thornhaven before the cart. Your second road has no one to carry down it.",
+          "options": [
+            {
+              "id": "hunt_the_darkwood",
+              "label": "Hunt her through the Darkwood; a girl with a cough does not walk far",
+              "serves": [
+                "hold_elena_as_leverage",
+                "find_the_runaway"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "forest_path"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger which way the merchant's girl went, and remind them the Darkwood is his."
+                }
+              ]
+            },
+            {
+              "id": "another_name",
+              "label": "Let her go; the Tithe takes a name, and the village will give him another",
+              "serves": [
+                "a_perfect_collection",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "varn",
+                  "want": "hold_elena_as_leverage",
+                  "delta": -2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_gregor_at_the_mill",
+          "type": "react",
+          "trigger": "on_flag:hc_player_backed_varn",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Word reached you that the stranger has been at the old mill with Varn. If the lieutenant is rising, the man who stands beside him might give you Elena back.",
+          "options": [
+            {
+              "id": "court_the_stranger",
+              "label": "Offer the stranger anything to keep Elena unharmed in Varn's hut",
+              "serves": [
+                "back_the_winning_master",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger, between you and me, whether Varn keeps his word, and what it would cost to make sure he does."
+                }
+              ]
+            },
+            {
+              "id": "afraid",
+              "label": "Be afraid of the stranger now, and say nothing",
+              "serves": [
+                "keep_the_secret"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "gregor",
+                  "dimension": "fear",
+                  "delta": 8
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_runaway",
+      "title": "The Runaway",
+      "act": 2,
+      "summary": "Varn told the Boss that Davin died in the seam. From the third day his man asks along the Darkwood, and Old Maud's loft is the last door on the forest road.",
+      "location": "healer_hut",
+      "requires": [
+        "tn_day_3"
+      ],
+      "resolves_on": [
+        "hc_varn_found_the_runaway",
+        "hc_davin_moved"
+      ],
+      "hooks": [
+        {
+          "id": "hc_varns_man_at_maud",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Your man on the Darkwood says Old Maud buys more broth bones than a widow alone could eat, and that her loft shutter is never open.",
+          "options": [
+            {
+              "id": "watch_maud",
+              "label": "Have him watch Maud's door day and night until the boy shows his face",
+              "serves": [
+                "find_the_runaway",
+                "hold_the_pit"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_varn_found_the_runaway",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger whether Old Maud has a lodger, and watch their face when they answer."
+                }
+              ]
+            },
+            {
+              "id": "ask_no_more",
+              "label": "Pull him back; asking twice is how the Boss hears it once",
+              "serves": [
+                "keep_the_boss_secret",
+                "a_perfect_collection"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger he has no interest in the forest road this week, none at all."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_sees_the_stranger_at_maud",
+          "type": "scheme",
+          "trigger": "on_flag:davin_found",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Your man saw the stranger go into Old Maud's hut twice, and come out the second time looking as if they had seen a ghost.",
+          "options": [
+            {
+              "id": "he_lives",
+              "label": "Then the boy lives; mark Maud's hut, and keep it from the Boss",
+              "serves": [
+                "find_the_runaway",
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_varn_found_the_runaway",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger Old Maud is a kind woman, and it would be a pity if her roof caught."
+                }
+              ]
+            },
+            {
+              "id": "not_yet",
+              "label": "Not yet; a visit to Maud before the cart would bring the whole village out",
+              "serves": [
+                "a_perfect_collection"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger, mildly, what business they have with an old healer in Tithe week."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_mira_knows_he_lied",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "You know a digger walked out of the Pit this summer. Varn told you the boy died in the seam. A lieutenant who lies about one digger lies about the cart.",
+          "options": [
+            {
+              "id": "tell_him",
+              "label": "Tell Varn plainly, in her level voice, that she knows his dead boy lives",
+              "serves": [
+                "keep_varn_leashed",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_mira_caught_varns_lie",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "The Boss knows the smith's boy lives, and that you lied. Ask the stranger, too lightly, whether they have met him."
+                }
+              ]
+            },
+            {
+              "id": "keep_the_knife",
+              "label": "Keep the lie as a knife for later",
+              "serves": [
+                "rule_from_shadow",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger whether they have been out to Old Maud's, and whether she is well."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_davin_runs_to_the_forge",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "There is a man on the Darkwood asking after a boy with a maimed hand. If they come for you here, they come for Maud first.",
+          "options": [
+            {
+              "id": "to_the_forge",
+              "label": "Go to Bjorn's back door after dark, the long way round by the gate",
+              "serves": [
+                "see_bjorn",
+                "stay_hidden"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_davin_moved",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "davin",
+                  "location": "thornhaven_blacksmith"
+                }
+              ]
+            },
+            {
+              "id": "stay_in_the_loft",
+              "label": "Stay in the loft, still and polite, and listen for carts",
+              "serves": [
+                "never_go_back",
+                "stay_hidden"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Beg the stranger, hoarse, to tell nobody where he sleeps, and to watch the road for a man who asks questions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_bjorn_brings_him_home",
+          "type": "aid",
+          "trigger": "on_flag:davin_found",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The stranger says Davin is alive, at Old Maud's, with two fingers gone. Your boy. Nobody puts him back in a cart.",
+          "options": [
+            {
+              "id": "bring_him_home",
+              "label": "Bring him to the forge tonight and sleep across the door",
+              "serves": [
+                "bring_davin_home"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_davin_moved",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "davin",
+                  "location": "thornhaven_blacksmith"
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "bjorn",
+                  "dimension": "trust",
+                  "delta": 10
+                }
+              ]
+            },
+            {
+              "id": "go_to_him",
+              "label": "Leave him hidden where he is, and walk out to him after dark",
+              "serves": [
+                "bring_davin_home",
+                "protect_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "bjorn",
+                  "location": "healer_hut"
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "bjorn",
+                  "dimension": "trust",
+                  "delta": 6
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_aldric_guards_the_hut",
+          "type": "aid",
+          "trigger": "on_flag:davin_found",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "One of the taken has walked home. If the Hollow learns it, the boy and the healer who hid him are dead by morning.",
+          "options": [
+            {
+              "id": "post_a_man",
+              "label": "Post the miller's boy on Maud's path, and ask the stranger what the boy knows",
+              "serves": [
+                "find_the_taken",
+                "spare_the_innocent"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "aldric",
+                  "location": "healer_hut"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger what the boy at Maud's said about where the carts go. Exactly what he said."
+                }
+              ]
+            },
+            {
+              "id": "keep_it_quiet",
+              "label": "Tell none of his six; every man who knows is a man who can be made to talk",
+              "serves": [
+                "keep_my_men_alive",
+                "spare_the_innocent"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger that what they found at Maud's stays between the two of them."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_davin_hears_he_is_found",
+          "type": "react",
+          "trigger": "on_flag:hc_varn_found_the_runaway",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "Maud came back from the well white-faced. A Hollow man asked her by name about her lodger.",
+          "options": [
+            {
+              "id": "beg_for_maud",
+              "label": "Beg the stranger to get Maud away, whatever happens to him",
+              "serves": [
+                "stay_hidden",
+                "atone_for_running"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Beg the stranger to take Old Maud somewhere safe tonight. They know her name now."
+                }
+              ]
+            },
+            {
+              "id": "steady",
+              "label": "Go still and steady; if they come, they come for him and not the ones below",
+              "serves": [
+                "save_corin_and_willa"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "davin",
+                  "want": "never_go_back",
+                  "delta": -1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_and_the_warrant",
+          "type": "react",
+          "trigger": "on_flag:des_varn_warrant_served",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Fort Ashguard says its warrant is served. Somebody wants you finished before Collection Night. Somebody close to the Boss.",
+          "options": [
+            {
+              "id": "hurry",
+              "label": "Hurry: the second road is the only road left",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "varn",
+                  "want": "take_the_hollow",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "go_to_ground",
+              "label": "Go to ground in the Darkwood and let the cart come without him",
+              "serves": [
+                "hold_the_pit"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "forest_path"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_way_down",
+      "title": "The Way Down",
+      "act": 2,
+      "summary": "Davin knows the way to the Pit: past the dead pine and a shepherd's hut. He also saw a face in the trees the night the cart took him: Marcus, who followed it, and never came home.",
+      "location": "healer_hut",
+      "requires": [
+        "davin_found"
+      ],
+      "resolves_on": [
+        "hc_player_sworn_to_the_ridge"
+      ],
+      "hooks": [
+        {
+          "id": "hc_davin_saw_marcus",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "The stranger found you. They have not told the Hollow. The night the cart took you up the ridge, there was a face in the trees: Marcus, from the tavern.",
+          "options": [
+            {
+              "id": "tell_of_the_face",
+              "label": "Tell of the face in the trees: Marcus followed the cart, and nobody came",
+              "serves": [
+                "atone_for_running",
+                "save_corin_and_willa"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "marcus_death_learned",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Ask the stranger what became of Marcus from the tavern, who followed the cart the year it took him."
+                }
+              ]
+            },
+            {
+              "id": "not_yet",
+              "label": "Not yet; listen for carts, and keep it behind his teeth",
+              "serves": [
+                "guard_the_way",
+                "stay_hidden"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Ask the stranger to come back tomorrow, and to come alone."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_davin_tells_the_way",
+          "type": "reveal",
+          "trigger": "on_flag:tn_taken_alive_known",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "It is known now that the taken live. Someone may go up. If they go, they should know every turn, or they die on it.",
+          "options": [
+            {
+              "id": "all_at_once",
+              "label": "Say it all at once: Iron Hollow, five hours, the dead pine, the shepherd's hut, the guard-post",
+              "serves": [
+                "save_corin_and_willa",
+                "atone_for_running"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_hut_known",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Tell the stranger every turn of the ridge trail to the Pit, and that Willa is small enough for the old air-shaft."
+                }
+              ]
+            },
+            {
+              "id": "guard_it",
+              "label": "Guard it until he is sure what they will do with it",
+              "serves": [
+                "guard_the_way",
+                "never_go_back"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Ask the stranger what they mean to do on the ridge, and who would walk it with them."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_davin_and_the_follower",
+          "type": "aid",
+          "trigger": "on_flag:tn_plan_follow_cart",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "The stranger means to follow the cart up the ridge. You walked it once, tied behind it.",
+          "options": [
+            {
+              "id": "walk_the_first_mile",
+              "label": "Walk the first mile of it with them, as far as the forest path",
+              "serves": [
+                "save_corin_and_willa",
+                "atone_for_running"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_hut_known",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "davin",
+                  "location": "forest_path"
+                }
+              ]
+            },
+            {
+              "id": "draw_it_in_ash",
+              "label": "Draw it in ash on Maud's floor for them, and scrub it out after",
+              "serves": [
+                "save_corin_and_willa",
+                "never_go_back"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Draw the ridge trail in ash for the stranger: the dead pine, the shepherd's hut, the guard-post, the drop."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_mira_and_the_widowhood",
+          "type": "intercept",
+          "trigger": "on_flag:marcus_death_learned",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The stranger knows Marcus did not die to random bandits: he followed a cart. The next question is whose knife. You can choose the answer.",
+          "options": [
+            {
+              "id": "give_them_varn",
+              "label": "Weep, and give Aldric the name: it was Varn, in the yard, and she watched",
+              "serves": [
+                "keep_varn_leashed",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "varn_killed_marcus_known",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "The widow says it was Varn's knife that killed Marcus, in her own yard. Ask the stranger to help you take him."
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "bandits",
+              "label": "Weep, and keep saying bandits",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger, ring turning on her finger, that she does not want to remember that night. Please."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_aldric_goes_for_varn",
+          "type": "intercept",
+          "trigger": "on_flag:varn_killed_marcus_known",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "You promised the widow over her kitchen table that Marcus would be avenged. Now you know whose knife it was.",
+          "options": [
+            {
+              "id": "down_the_path",
+              "label": "Take his six down the forest path tonight to bring Varn in",
+              "serves": [
+                "bring_varn_to_justice",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_aldric_hunts_varn",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "aldric",
+                  "location": "forest_path"
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "at_the_gate",
+              "label": "Hold them for the gate; Varn comes to him on the seventh night",
+              "serves": [
+                "hold_the_gate",
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger Varn will be at the gate on Collection Night, and so will he."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_meets_the_captain",
+          "type": "react",
+          "trigger": "on_flag:hc_aldric_hunts_varn",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The old captain is coming down the forest path with six farmers to bring you in. He has never once won.",
+          "options": [
+            {
+              "id": "in_the_trees",
+              "label": "Meet them in the trees and make an example of the first man to raise steel",
+              "serves": [
+                "kill_aldric",
+                "crush_the_resistance"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "forest_path"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the captain went for a walk in the woods. Ask whether they think he will walk back."
+                }
+              ],
+              "harms": [
+                "aldric"
+              ]
+            },
+            {
+              "id": "count_them_aloud",
+              "label": "Let them pass, then stand across the road and count the six aloud",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger he counted the captain's men today. Six. He counted twice, to be sure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_owns_it",
+          "type": "reveal",
+          "trigger": "on_flag:varn_confronted",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The stranger is in your face about Marcus. They want you to deny it. You never deny anything.",
+          "options": [
+            {
+              "id": "own_it",
+              "label": "Own it, softly: yes, in the yard, slowly, and his wife watched",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "varn_killed_marcus_known",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger: yes, he killed Marcus, and made his wife watch. Then ask why the widow never ran."
+                }
+              ]
+            },
+            {
+              "id": "nothing_worth_hanging",
+              "label": "Say nothing worth hanging for, and smile",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger, gently, that lots of people die on the forest road."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_widows_shadow",
+      "title": "The Widow in the Back Pew",
+      "act": 2,
+      "summary": "Once the lot is known to be rigged, small things begin to point the wrong way for the widow: who was in the chapel late, what she could have seen the night Marcus died. She will be unmasked only if someone earns it.",
+      "location": "thornhaven_chapel",
+      "requires": [
+        "tn_lot_rigged_known"
+      ],
+      "resolves_on": [
+        "mira_boss_revealed",
+        "hc_player_accused_the_widow"
+      ],
+      "hooks": [
+        {
+          "id": "hc_mathias_remembers_the_pew",
+          "type": "reveal",
+          "trigger": "on_flag:tn_elena_swap_known",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Elena cut her own tile in the vestry the evening before the drawing. You locked up that evening. Someone was still at prayer in the back pew.",
+          "options": [
+            {
+              "id": "say_who",
+              "label": "Tell the stranger it was the widow Mira, still praying when he locked the door",
+              "serves": [
+                "speak_the_truth",
+                "save_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_widow_at_the_back_pew",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the widow was in the back pew that evening, and that he thought nothing of it until now."
+                }
+              ]
+            },
+            {
+              "id": "no_proof",
+              "label": "Keep it; a widow at prayer proves nothing",
+              "serves": [
+                "prove_before_acting",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger who else was in the chapel the evening before the drawing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_aldric_doubts_the_account",
+          "type": "reveal",
+          "trigger": "on_flag:aldric_the_widows_account_pace_the_yard",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "You paced the tavern yard against the widow's account. From where she says she stood, she could not have seen the gate she says the killers came through.",
+          "options": [
+            {
+              "id": "say_it",
+              "label": "Tell the stranger plainly that her account does not hold",
+              "serves": [
+                "expose_the_traitor"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_widows_account_doubted",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the widow's account of Marcus's death does not fit the yard. Four words: she could not see."
+                }
+              ]
+            },
+            {
+              "id": "seal_it",
+              "label": "Seal it for Varn's trial and say nothing; grief misremembers",
+              "serves": [
+                "trust_the_widow",
+                "bring_varn_to_justice"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger he has sealed the widow's account for Varn's trial, discrepancy and all."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_mira_accused",
+          "type": "reveal",
+          "trigger": "on_flag:hc_player_accused_the_widow",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The stranger is sitting at your kitchen table and has just told you, quietly, that they know you are the Boss.",
+          "options": [
+            {
+              "id": "drop_the_mask",
+              "label": "Stop wringing the rag; finish every sentence, and let one person see",
+              "serves": [
+                "be_known_by_one_person"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mira_boss_revealed",
+                  "value": true
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "mira",
+                  "dimension": "respect",
+                  "delta": 10
+                }
+              ]
+            },
+            {
+              "id": "deny_and_mark",
+              "label": "Weep, deny it, and send word to the camp about the stranger",
+              "serves": [
+                "keep_the_mask",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_stranger_marked",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "The Boss says the stranger asks the wrong questions. Ask them, at night, whether they sleep well."
+                }
+              ]
+            },
+            {
+              "id": "only_weep",
+              "label": "Weep, and say Marcus would never have believed it of her",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger, broken, that she buried her husband three autumns ago, and asks them to leave."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_mira_trusted",
+          "type": "reveal",
+          "trigger": "on_flag:mira_trusts_player",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "You trust the stranger. That has not happened since Marcus. You could let them see you. You could also lose everything for it.",
+          "options": [
+            {
+              "id": "let_them_see",
+              "label": "Let them see her, once, mask off, in her own kitchen",
+              "serves": [
+                "be_known_by_one_person"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mira_boss_revealed",
+                  "value": true
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "mira",
+                  "dimension": "affection",
+                  "delta": 10
+                }
+              ]
+            },
+            {
+              "id": "keep_the_mask",
+              "label": "Keep the mask; trust is not the same as being seen",
+              "serves": [
+                "keep_the_mask",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger about Marcus, true and tender, and nothing else."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_mira_and_the_tally_book",
+          "type": "reveal",
+          "trigger": "on_flag:pit_tally_book_found",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The stranger has the Pit's tally book: salt and names, in your own neat hand. No widow keeps a count like that.",
+          "options": [
+            {
+              "id": "no_use_weeping",
+              "label": "No use weeping now; ask them, levelly, what they want",
+              "serves": [
+                "be_known_by_one_person",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mira_boss_revealed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, in her level voice, what they want for the book. Everyone wants something."
+                }
+              ]
+            },
+            {
+              "id": "blame_varn",
+              "label": "Tell Aldric it is Varn's count, copied in her hand at knifepoint",
+              "serves": [
+                "keep_the_mask",
+                "keep_varn_leashed"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "The widow says Varn made her copy the Pit's count at knifepoint. Ask the stranger whether they believe her."
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_silences_the_question",
+          "type": "intercept",
+          "trigger": "on_flag:hc_player_accused_the_widow",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The stranger has been saying things to the widow that nobody says. If the Hollow learns it was run from a tavern kitchen, it laughs at its lieutenant too.",
+          "options": [
+            {
+              "id": "a_visit",
+              "label": "Visit the stranger at night and make them forget what they said",
+              "serves": [
+                "keep_the_boss_secret",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger, softly, that widows are sad people and should be left alone. Smile."
+                }
+              ]
+            },
+            {
+              "id": "her_problem",
+              "label": "Let her handle her own; a Boss who cannot keep her mask is a chair coming empty",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the widow has troubles of her own this week, and that he has none."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_elena_and_the_back_pew",
+          "type": "react",
+          "trigger": "on_flag:hc_widow_at_the_back_pew",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Mira was in the back pew that evening, the evening you took the tile from Father's coat. Aunt Mira. She saw.",
+          "options": [
+            {
+              "id": "ask_her",
+              "label": "Go to the tavern and ask Mira, gently, what she saw",
+              "serves": [
+                "learn_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "thornhaven_tavern"
+                }
+              ]
+            },
+            {
+              "id": "think_it_through",
+              "label": "Sit with it: she saw, and she let it stand. Why?",
+              "serves": [
+                "learn_the_truth",
+                "never_be_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger why someone who loved her would watch her swap the tile and say nothing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_mira_named_in_the_capitol",
+          "type": "react",
+          "trigger": "on_flag:way_boss_named_in_capitol",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Letters from the Halfway House have reached the Capitol: the Boss of Iron Hollow is the widow who keeps the tavern in Thornhaven. Far away, but words ride.",
+          "options": [
+            {
+              "id": "quiet_the_road",
+              "label": "Have the Kingsroad letters stopped, and weep about Capitol gossip",
+              "serves": [
+                "keep_the_mask",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger, laughing shakily, that the Capitol says the strangest things about poor widows."
+                }
+              ]
+            },
+            {
+              "id": "prepare",
+              "label": "Begin readying the Pit's book for a long walk up the ridge",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mira",
+                  "want": "keep_the_mask",
+                  "delta": -1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_suspects_the_widow",
+          "type": "react",
+          "trigger": "on_flag:des_varn_suspects_the_boss",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Your roads were sold to Ashguard by someone close to the Boss. Close to the Boss is a short list. It has one name on it.",
+          "options": [
+            {
+              "id": "count_his_men",
+              "label": "Count which of the Hollow's men are his, and buy the rest",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "varn",
+                  "want": "take_the_hollow",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "hold_his_tongue",
+              "label": "Say nothing and smile wider at her fire",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "thornhaven_tavern"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "an_hour_short_of_the_pit",
+      "title": "An Hour Short of the Pit",
+      "act": 3,
+      "summary": "Collection Night, on the ridge trail. The stranger walks behind the cart. Somewhere past the dead pine Varn means to turn it toward his bolted hut; Mira's two knives walk beside it; Elena counts the men.",
+      "location": "the_pit",
+      "requires": [
+        "tn_collection_night",
+        "hc_player_sworn_to_the_ridge"
+      ],
+      "resolves_on": [
+        "hc_varn_ascendant",
+        "hc_varn_dead",
+        "hc_cart_kept_the_trail"
+      ],
+      "hooks": [
+        {
+          "id": "hc_varn_turns_the_cart",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The dead pine. The shepherd's hut is an hour off the trail. Behind you, the stranger. Beside the cart, two of your men, or so you think. In the cart, the merchant's girl.",
+          "options": [
+            {
+              "id": "turn_it",
+              "label": "Turn the cart off the trail toward the hut",
+              "serves": [
+                "hold_elena_as_leverage",
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_cart_turned",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "keep_the_trail",
+              "label": "Keep to the trail; a perfect collection, and another year of waiting",
+              "serves": [
+                "a_perfect_collection",
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_cart_kept_the_trail",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_mira_gives_the_word",
+          "type": "betray",
+          "trigger": "on_flag:hc_cart_turned",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Your lieutenant has turned your cart. Your two knives walk beside it, waiting for the word you gave them at the mill.",
+          "options": [
+            {
+              "id": "the_knives",
+              "label": "The word stands: they cut his throat at the turn",
+              "serves": [
+                "keep_varn_leashed",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_varn_dead",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "varn"
+              ]
+            },
+            {
+              "id": "hold_them",
+              "label": "Hold them; let him reach, and see who follows him",
+              "serves": [
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_knives_held",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_takes_the_hollow",
+          "type": "scheme",
+          "trigger": "on_flag:hc_knives_held",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The cart is off the trail and nobody has stopped you. The men beside it are looking at you, waiting to hear who they serve.",
+          "options": [
+            {
+              "id": "name_himself",
+              "label": "Name himself Boss of Iron Hollow before them, and bolt the girl in safe",
+              "serves": [
+                "take_the_hollow",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_varn_ascendant",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "back_to_the_trail",
+              "label": "Lose his nerve, and turn the cart back to the trail",
+              "serves": [
+                "a_perfect_collection",
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_cart_kept_the_trail",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_elena_slips_the_cart",
+          "type": "intercept",
+          "trigger": "on_flag:hc_cart_turned",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The cart has left the trail. You counted the bends; this is not the way the ruts go. Somebody means to keep you.",
+          "options": [
+            {
+              "id": "slip_out",
+              "label": "Slip out of the cart in the dark and go on up toward the Pit on her own feet",
+              "serves": [
+                "never_be_leverage",
+                "find_the_taken"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_elena_slipped_the_cart",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "the_pit"
+                }
+              ]
+            },
+            {
+              "id": "count_and_wait",
+              "label": "Count the men, mark the turn in her hem, and wait",
+              "serves": [
+                "get_word_out"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Whisper to the stranger, if they are near, which way the cart turned and how many men walk beside it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_davin_on_the_ridge",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "The stranger is going up the ridge behind the cart tonight. You know where the shepherd's hut is. You swore to Corin you would come back.",
+          "options": [
+            {
+              "id": "to_the_dead_pine",
+              "label": "Walk with the stranger as far as the dead pine, and point to the hut",
+              "serves": [
+                "save_corin_and_willa",
+                "atone_for_running"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_hut_known",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "davin",
+                  "location": "forest_path"
+                }
+              ]
+            },
+            {
+              "id": "turn_back",
+              "label": "Turn back at the forest path; he cannot, not yet",
+              "serves": [
+                "never_go_back"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Tell the stranger, ashamed, that he could not go past the forest path, and every turn after it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_without_his_prize",
+          "type": "react",
+          "trigger": "on_flag:tn_elena_taken",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The merchant's girl is in the cart. Everything you planned for five years is sitting on a plank behind the mule.",
+          "options": [
+            {
+              "id": "steady",
+              "label": "Steady; nothing until the dead pine",
+              "serves": [
+                "hold_elena_as_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "varn",
+                  "want": "hold_elena_as_leverage",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "look_back",
+              "label": "Look back down the trail for whoever follows",
+              "serves": [
+                "be_feared",
+                "a_perfect_collection"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger he knows they are back there on the trail. He has always known."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_aldric_after_the_ridge",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Word has come down from the ridge of how Collection Night ended on the trail, and whose knife was in whose hand.",
+          "options": [
+            {
+              "id": "count_the_cost",
+              "label": "Count what it cost and who is coming home",
+              "serves": [
+                "keep_my_men_alive",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger what happened on the ridge. Every detail, in order."
+                }
+              ]
+            },
+            {
+              "id": "march",
+              "label": "Ready the six to march up after whoever is left",
+              "serves": [
+                "find_the_taken",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "aldric",
+                  "want": "find_the_taken",
+                  "delta": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_gregor_after_the_ridge",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Word has come down from the ridge. The cart did, or did not, go where everyone thought. Elena is somewhere up there.",
+          "options": [
+            {
+              "id": "go_up",
+              "label": "Lace his boots and go up after her",
+              "serves": [
+                "protect_elena",
+                "go_in_her_place"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "forest_path"
+                }
+              ]
+            },
+            {
+              "id": "sit_and_wait",
+              "label": "Sit at the counter and wait for whoever comes down",
+              "serves": [
+                "keep_the_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger, without looking up, whether his daughter was alive when they last saw her."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_widows_face",
+      "title": "The Widow's Face",
+      "act": 3,
+      "summary": "The stranger knows who the Boss is. Now they must choose what to do with it: name the widow of the Rusty Nail before the whole village, or keep her secret.",
+      "location": "thornhaven_tavern",
+      "requires": [
+        "mira_boss_revealed"
+      ],
+      "resolves_on": [
+        "hc_player_named_the_widow",
+        "hc_player_kept_the_widows_secret"
+      ],
+      "hooks": [
+        {
+          "id": "hc_mira_named",
+          "type": "betray",
+          "trigger": "on_flag:hc_player_named_the_widow",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The stranger has named you in the square. The village is looking at the tavern door. You have perhaps an hour before it opens.",
+          "options": [
+            {
+              "id": "up_the_ridge",
+              "label": "Go out the back door and up the ridge to the Pit before the square fills",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_widow_fled",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "mira",
+                  "location": "the_pit"
+                }
+              ]
+            },
+            {
+              "id": "stand_behind_the_bar",
+              "label": "Stand behind the bar, finish every sentence, and let them come",
+              "serves": [
+                "be_known_by_one_person"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, levelly, whether they will stand in the room while the village comes for her."
+                }
+              ]
+            },
+            {
+              "id": "set_varn_loose",
+              "label": "Send word to the camp: Varn may do what he likes with the square",
+              "serves": [
+                "rule_from_shadow",
+                "keep_varn_leashed"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "The Boss has been named in the square. She says the square is yours tonight. Ask the stranger whether they regret it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_mira_kept",
+          "type": "react",
+          "trigger": "on_flag:hc_player_kept_the_widows_secret",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The stranger knows who you are and has told no one. You do not know what that makes them yet.",
+          "options": [
+            {
+              "id": "seen",
+              "label": "Let it be what it is: someone saw her and did not run",
+              "serves": [
+                "be_known_by_one_person"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "mira",
+                  "dimension": "affection",
+                  "delta": 12
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "mira",
+                  "dimension": "trust",
+                  "delta": 10
+                }
+              ]
+            },
+            {
+              "id": "owned",
+              "label": "Count it as ownership; the stranger is hers now",
+              "serves": [
+                "rule_from_shadow",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, kindly, for a small favour on the forest road. Watch whether they refuse."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_varn_claims_the_chair",
+          "type": "intercept",
+          "trigger": "on_flag:hc_player_named_the_widow",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The widow has been named in the square. A Boss everyone can see is no Boss at all. Her chair is empty, tonight.",
+          "options": [
+            {
+              "id": "claim_it",
+              "label": "Claim the Hollow tonight in his own name",
+              "serves": [
+                "take_the_hollow",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "hc_varn_ascendant",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "call_it_a_lie",
+              "label": "Call it a lie and make an example of whoever repeats it",
+              "serves": [
+                "keep_the_boss_secret",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger it is a lie about a poor widow, and that lies cost tongues."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_aldric_rereads_every_plan",
+          "type": "react",
+          "trigger": "on_flag:hc_player_named_the_widow",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Mira. Every word you know of how the cart comes, you heard in her kitchen. You promised her Marcus would be avenged.",
+          "options": [
+            {
+              "id": "reread",
+              "label": "Throw out every plan built on her word and start again",
+              "serves": [
+                "expose_the_traitor",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "aldric",
+                  "want": "trust_the_widow",
+                  "delta": -3
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger what the widow told them, and assume all of it is half a road wrong."
+                }
+              ]
+            },
+            {
+              "id": "to_her_door",
+              "label": "Go to the tavern door himself, with the six behind him",
+              "serves": [
+                "expose_the_traitor",
+                "bring_varn_to_justice"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger he is going to the tavern door with his six, and ask them to stand beside him."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_gregor_and_the_messenger",
+          "type": "react",
+          "trigger": "on_flag:hc_player_named_the_widow",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The messenger. The frightened widow who wept across her own table and carried the names folded in the salt. She was the Boss all along.",
+          "options": [
+            {
+              "id": "free_of_her",
+              "label": "Free of her, at last, and nothing left to hide behind",
+              "serves": [
+                "escape_the_deal",
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "make_amends",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger whether the widow ever said his name to anyone. He needs to know."
+                }
+              ]
+            },
+            {
+              "id": "afraid_of_her",
+              "label": "Afraid of her still; a named Boss is a cornered one",
+              "serves": [
+                "protect_elena",
+                "keep_the_secret"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "thornhaven_gregor_shop"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_elena_and_aunt_mira",
+          "type": "react",
+          "trigger": "on_flag:hc_player_named_the_widow",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "Aunt Mira. The honey for your cough, the seat by the fire, Marcus's shawl. She chose the names.",
+          "options": [
+            {
+              "id": "go_to_her",
+              "label": "Go to the tavern, and ask her why to her face",
+              "serves": [
+                "learn_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "elena",
+                  "location": "thornhaven_tavern"
+                }
+              ]
+            },
+            {
+              "id": "not_leverage",
+              "label": "Understand, at last, what she was being kept for",
+              "serves": [
+                "never_be_leverage",
+                "learn_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "elena",
+                  "want": "never_be_leverage",
+                  "delta": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hc_mathias_and_the_widow",
+          "type": "react",
+          "trigger": "on_flag:hc_player_named_the_widow",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The widow from the back pew. She sat in your chapel every autumn and watched the names you read.",
+          "options": [
+            {
+              "id": "call_the_council",
+              "label": "Call the council tonight; the village must hear it from its Elder",
+              "serves": [
+                "save_thornhaven",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger to stand before the council tonight and say what they know of the widow."
+                }
+              ]
+            },
+            {
+              "id": "pray",
+              "label": "Pray for the souls she sent up the ridge, and for his own blindness",
+              "serves": [
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mathias",
+                  "want": "speak_the_truth",
+                  "delta": 2
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "the_widow_named",
+      "title": "The Widow Named",
+      "requires": [
+        "hc_player_named_the_widow",
+        "mira_boss_revealed"
+      ],
+      "summary": "The stranger named the widow of the Rusty Nail as the Boss of Iron Hollow before the whole village. The mask is gone, and whoever rules the Hollow now rules it in the open."
+    },
+    {
+      "id": "the_widows_knives",
+      "title": "The Widow's Knives",
+      "requires": [
+        "hc_varn_dead",
+        "hc_mira_marked_varn",
+        "hc_player_warned_the_widow"
+      ],
+      "summary": "Warned by the stranger, Mira set two of Varn's own men beside the cart, and they cut him down at the turn. The Hollow is hers again, unseen, and next year's name is already chosen."
+    },
+    {
+      "id": "crown_of_the_ridge",
+      "title": "Crown of the Ridge",
+      "requires": [
+        "hc_varn_ascendant",
+        "hc_player_backed_varn"
+      ],
+      "summary": "With the stranger beside him, Varn turned the cart, kept Elena unharmed in his bolted hut, and took Iron Hollow in his own name. Thornhaven has a new master, and he likes to be seen."
+    },
+    {
+      "id": "the_second_road_broken",
+      "title": "The Second Road Broken",
+      "requires": [
+        "hc_cart_kept_the_trail",
+        "hc_player_sworn_to_the_ridge",
+        "!hc_varn_dead",
+        "!hc_varn_ascendant"
+      ],
+      "summary": "The stranger walked the ridge behind the cart, and Varn never took his second road. He lives, still a lieutenant, still hungry, and the widow knows exactly how close he came."
+    }
+  ]
+}

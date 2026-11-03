@@ -1,0 +1,2694 @@
+{
+  "id": "deep_vein",
+  "title": "The Deep Vein",
+  "summary": "Greystone's iron feeds Bjorn's forge and the Hollow's blades, and beyond Dagna's seal below the seventh level the Hollow's Pit digs white salt with Thornhaven's taken. A purse to the Hollow, a Guild wage cut, picks heard through the stone, and a foreman who buried her husband under that seal put the valley's steel and its stolen children in play.",
+  "prefix": "vein_",
+  "act_span": [
+    1,
+    3
+  ],
+  "flags": {
+    "vein_purse_known": "It came out that Foreman Dagna paid Iron Hollow a monthly purse to let Greystone's ore carts pass the Darkwood unburned.",
+    "vein_purse_doubled": "Iron Hollow raised its price on the Greystone ore road, and Foreman Dagna was told to pay it by the new moon or watch the carts burn.",
+    "vein_purse_paid": "Foreman Dagna paid the Hollow's purse at the new moon out of the miners' contingency chest, and the ore carts rolled.",
+    "vein_road_under_escort": "Commander Lucan's Ashguard riders took Greystone's ore carts under escort, for a fee in iron the camp could not spare.",
+    "vein_ore_road_closed": "The ore road from Greystone closed, and no cart of Greystone iron reached the Thornhaven forge or the Capitol.",
+    "vein_camp_on_short_bread": "Greystone's camp went on short bread after the new moon, its winter margin spent on the ore road or lost with the idle carts.",
+    "vein_ridge_trail_closed": "Fort Ashguard put a picket where the smugglers' ridge trail comes down from the Pit to Greystone's back road, and Hollow packs of plunder and white salt stopped crossing the hill.",
+    "vein_trail_fee_named": "It was said aloud in Greystone's yard that Ashguard's patrols took a fee from every Hollow pack that came down the ridge trail, and who collected it.",
+    "vein_strike_called": "Foreman Dagna called Greystone's yard together, and the miners downed tools against the Guild's quarter-cut wage.",
+    "vein_cut_swallowed": "Foreman Dagna told Greystone's miners to swallow the Guild's quarter-cut wage and dig through the winter.",
+    "vein_wages_restored": "Guildmaster Hollis gave Greystone's miners their quarter back before the Capitol heard the hill had stopped.",
+    "vein_wage_quarrel_over": "The wage quarrel at Greystone was settled, by the Guild's yielding, the miners' holding or Ashguard's riders, and the camp turned to the winter.",
+    "vein_deep_vein_reopened": "The boards came down below Greystone's seventh level, and Dagna's miners dug back into the deep vein that killed Bram Holt, toward the picks on the far side of her seal.",
+    "vein_vein_kept_shut": "Foreman Dagna nailed the deep vein shut again and swore on Bram's name that nobody would go below the seventh level while she lived, whatever dug on the far side.",
+    "vein_miners_rise": "Greystone's miners downed tools and held the hill against the Guild's factor, and not one cart of ore moved until the Guildmaster answered them.",
+    "vein_strike_broken": "The strike at Greystone was broken, and the miners went back down the shafts on the Guild's wage.",
+    "vein_iron_to_the_valley": "The player struck the bargain that stopped Greystone's purse to Iron Hollow and sent its best iron to the Thornhaven forge alone.",
+    "vein_purse_kept_paid": "The player told Foreman Dagna to keep paying the Hollow's purse, so that Greystone's camp would eat through the winter.",
+    "vein_stood_in_the_yard": "The player went up to Greystone's yard on the day Ashguard's column and Dagna's miners met there, and stood where both sides could see them.",
+    "vein_picks_spoken": "Foreman Dagna said aloud that for five years she had heard picks through her seal below the seventh level, from a seam no Greystone miner worked, and had told herself it was water.",
+    "vein_opened_the_seal": "The player had Greystone's miners break through the old fall below the seventh level into the Pit, from Greystone's side, where the Hollow kept no guard."
+  },
+  "player_flags": [
+    "vein_iron_to_the_valley",
+    "vein_purse_kept_paid",
+    "vein_stood_in_the_yard",
+    "vein_opened_the_seal"
+  ],
+  "crossovers": [
+    "oath_blades_sabotaged",
+    "oath_resistance_armed",
+    "ih_supply_line_cut",
+    "hc_varn_ascendant",
+    "hc_varn_dead",
+    "grey_cure_recipe_known",
+    "grey_cathedral_shamed",
+    "des_lucan_disgraced",
+    "tn_taken_alive_known",
+    "tn_taken_freed",
+    "tn_tithe_broken",
+    "tn_elena_taken"
+  ],
+  "beats": [
+    {
+      "id": "the_light_cart",
+      "act": 1,
+      "title": "The Light Cart",
+      "summary": "Greystone's ore cart reaches Bjorn's forge late and light again, and the carter will not meet the smith's eye.",
+      "location": "thornhaven_blacksmith",
+      "requires": [],
+      "resolves_on": [
+        "vein_purse_known",
+        "dagna_payment_box_found"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "vein_purse_known",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "vein_bjorn_asks_the_carter",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Third cart this season come in short, and the carter keeps looking at the Darkwood road. Dagna has never once cheated you on weight.",
+          "options": [
+            {
+              "id": "ask_straight",
+              "label": "Ask the carter straight what the road costs and who he pays",
+              "serves": [
+                "honest_steel",
+                "face_gregor"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_purse_known",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger his ore passes the Darkwood by the Hollow's leave and Dagna pays them. His steel pays the Hollow that took his boy before it's forged."
+                }
+              ]
+            },
+            {
+              "id": "tell_the_stranger",
+              "label": "Tell the stranger his ore has been coming late and light, and let them ask",
+              "serves": [
+                "protect_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Mention to the stranger that Greystone's carts come in light and late lately, and that Dagna's carter is frightened of something on the road."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Pay for the ore and ask nothing; it's not his road",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_varn_squeezes_the_road",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The Greystone foreman pays the same purse she paid three years ago. Her carts carry the iron for every blade in the valley.",
+          "options": [
+            {
+              "id": "raise_the_price",
+              "label": "Raise the purse on the ore road, payable by the new moon",
+              "serves": [
+                "be_feared",
+                "arm_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_purse_doubled",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Let the stranger know the Greystone road got dearer this month. Iron's worth more than it was. So is passing the Hollow."
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            },
+            {
+              "id": "take_it_in_iron",
+              "label": "Take the purse in pig iron instead of coin",
+              "serves": [
+                "arm_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Boast to the stranger that the Hollow takes its Greystone toll in iron now, and has smiths enough to use it."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Leave the foreman be; a quiet road draws no soldiers",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_mira_steadies_the_road",
+          "type": "scheme",
+          "trigger": "on_flag:vein_purse_doubled",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Varn has raised Greystone's purse without asking you. The ore road feeds Bjorn's forge, and Bjorn's forge feeds the Hollow.",
+          "options": [
+            {
+              "id": "countermand",
+              "label": "Send word through the ridge men: the purse stays as it was",
+              "serves": [
+                "keep_varn_leashed",
+                "keep_the_steel_coming"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Grumble to the stranger that some people in the Hollow don't let a man take what the ore road owes."
+                }
+              ]
+            },
+            {
+              "id": "let_it_stand",
+              "label": "Let it stand; Dagna's coin is coin, and Varn's greed is useful to watch",
+              "serves": [
+                "rule_from_shadow",
+                "keep_varn_leashed"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "varn",
+                  "want": "take_the_hollow",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Do nothing yet, and see whether Dagna pays",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_varn_blames_the_ore",
+          "type": "intercept",
+          "trigger": "on_flag:oath_blades_sabotaged",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The last Thornhaven blades snapped like kindling on the first hard blow. Somebody's iron was bad.",
+          "options": [
+            {
+              "id": "blame_greystone",
+              "label": "Blame Greystone's ore and raise the foreman's purse for it",
+              "serves": [
+                "be_feared",
+                "arm_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_purse_doubled",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger Greystone sold the Hollow rotten iron, and the foreman pays double until the blades hold."
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            },
+            {
+              "id": "smell_the_smith",
+              "label": "Smell the smith in it and say so to the stranger",
+              "serves": [
+                "crush_the_resistance"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger, very quietly, whether they think good ore makes brittle steel, or whether the smith forgot how to quench."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing until he knows",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "purse_day",
+      "act": 1,
+      "title": "Purse Day",
+      "summary": "New moon at Greystone. The Hollow's man comes down the ridge trail from the Pit's side for the purse that keeps the ore road open, and the contingency chest is thinner than it was.",
+      "location": "greystone_mines",
+      "requires": [],
+      "resolves_on": [
+        "vein_purse_paid",
+        "vein_ore_road_closed",
+        "vein_road_under_escort"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "vein_camp_on_short_bread",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "vein_dagna_counts_the_purse",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "The ridge man is in the yard. The purse comes out of the miners' contingency chest, as it has every new moon for three years.",
+          "options": [
+            {
+              "id": "pay",
+              "label": "Pay the purse, as every month, and keep the carts rolling",
+              "serves": [
+                "keep_the_ore_road_open",
+                "feed_my_miners"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_purse_paid",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger the carts roll because she pays. Anyone with a better idea can feed two hundred miners first."
+                }
+              ]
+            },
+            {
+              "id": "ask_ashguard",
+              "label": "Send to Ashguard to ask what an escort would cost instead",
+              "serves": [
+                "keep_greystone_working",
+                "stand_up_to_the_guild"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Ask the stranger whether Ashguard's riders are worth their fee, or whether soldiers on the ore road just mean two tolls."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Make the ridge man wait a day",
+              "serves": [
+                "keep_the_ridge_trail_quiet"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_dagna_pays_double",
+          "type": "intercept",
+          "trigger": "on_flag:vein_purse_doubled",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "The Hollow wants more. More means the miners' winter margin goes over the ridge with the purse.",
+          "options": [
+            {
+              "id": "pay_double",
+              "label": "Pay it, through her teeth, out of the winter chest",
+              "serves": [
+                "keep_the_ore_road_open",
+                "keep_greystone_working"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_purse_paid",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger she paid the Hollow's new price, and the camp eats thin this winter because of it. Who's paying for that?"
+                }
+              ]
+            },
+            {
+              "id": "refuse_and_warn",
+              "label": "Refuse, and send word west that the ore carts will need guarding",
+              "serves": [
+                "honest_iron_for_bjorn",
+                "stand_up_to_the_guild"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Ask the stranger to carry word to the Thornhaven smith: Greystone won't pay the Hollow's new price, and his ore needs guards."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Stall the ridge man and count again",
+              "serves": [
+                "feed_my_miners"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_lucan_sells_an_escort",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "Greystone's carts pay the Hollow to pass. Ashguard's riders could guard them instead, and be paid for it, and be seen keeping order.",
+          "options": [
+            {
+              "id": "escort",
+              "label": "Offer Ashguard riders as escort for the ore carts, paid in iron",
+              "serves": [
+                "keep_ashguard_paid",
+                "a_victory_of_my_own"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_road_under_escort",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger Ashguard keeps the ore road now, as soldiers should, and that the March will remember who did."
+                }
+              ]
+            },
+            {
+              "id": "offer_to_the_guild",
+              "label": "Write to the Guildhall offering the escort at the Guild's expense",
+              "serves": [
+                "keep_ashguard_paid"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Remark to the stranger that the Guild ought to pay soldiers to guard its ore, and that he has said so to the Guildmaster."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Leave it; his riders on that road would meet Hollow men who know Varn",
+              "serves": [
+                "bury_the_arms_sale"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_varn_wants_iron",
+          "type": "intercept",
+          "trigger": "on_flag:ih_supply_line_cut",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The merchant's supply line has been cut. Greystone's ore is the last iron the Hollow can reach.",
+          "options": [
+            {
+              "id": "purse_in_iron",
+              "label": "Demand the purse in pig iron from now on, and more of it",
+              "serves": [
+                "arm_the_hollow",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_purse_doubled",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the Hollow takes Greystone iron now instead of the merchant's steel, and the foreman will learn to like it."
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            },
+            {
+              "id": "burn_a_cart",
+              "label": "Burn the next cart to remind Greystone who keeps the road",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_ore_road_closed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger a Greystone cart burned on the Darkwood road, and the road stays shut until the foreman learns manners."
+                }
+              ],
+              "harms": [
+                "dagna",
+                "bjorn"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Wait for orders",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_varn_new_boss",
+          "type": "scheme",
+          "trigger": "on_flag:hc_varn_ascendant",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The Hollow is yours. So is every purse it ever collected, the Greystone purse first.",
+          "options": [
+            {
+              "id": "collect_himself",
+              "label": "Raise the purse and ride over the ridge to collect it himself",
+              "serves": [
+                "be_feared",
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_purse_doubled",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "greystone_mines"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger he collects at Greystone in person now. The foreman should see the new Boss's face."
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Let the old purse run; there are bigger things to hold",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_ridge_trail",
+      "act": 2,
+      "title": "The Ridge Trail",
+      "summary": "The far half of the smugglers' ridge trail comes down from the Pit to Greystone's back road. Hollow packs come down it, plunder and sacks of white salt marked as ore, for Greystone's carters to carry east. Ashguard's patrols take a fee to look away, and Commander Lucan would like to be seen closing it.",
+      "location": "greystone_mines",
+      "requires": [
+        "vein_camp_on_short_bread"
+      ],
+      "resolves_on": [
+        "vein_ridge_trail_closed",
+        "vein_trail_fee_named"
+      ],
+      "hooks": [
+        {
+          "id": "vein_lucan_pickets_the_trail",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "A picket where the ridge trail comes down to Greystone would show the March that Ashguard still keeps order. It would also end the fee your sergeants take from the packs, and the sacks of 'ore' that come down it white.",
+          "options": [
+            {
+              "id": "picket",
+              "label": "Put a picket on the ridge trail and let the March see it",
+              "serves": [
+                "close_the_ridge_trail",
+                "a_victory_of_my_own"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_ridge_trail_closed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger Ashguard has closed the smugglers' trail down to Greystone, and that it took a soldier to do what the Guild would not."
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            },
+            {
+              "id": "raise_the_fee",
+              "label": "Raise the patrols' fee quietly instead",
+              "serves": [
+                "keep_ashguard_paid"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Assure the stranger the ridge trail is patrolled and well in hand. Nothing passes Ashguard's patrols that Ashguard does not know about."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Leave the trail alone; a picket means questions about who patrolled it",
+              "serves": [
+                "bury_the_arms_sale"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_dagna_hides_the_trail",
+          "type": "intercept",
+          "trigger": "on_flag:smugglers_trail_found",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "The stranger has found the ridge trail, and the packs that come down it from the far side of your seal. That fee is the camp's winter salt pork, and soldiers take their cut of it too.",
+          "options": [
+            {
+              "id": "ask_to_forget",
+              "label": "Ask the stranger to forget it, for the camp's sake",
+              "serves": [
+                "keep_the_ridge_trail_quiet",
+                "feed_my_miners"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Ask the stranger to forget the ridge trail. Two hundred miners eat off what it brings in. She'll owe them."
+                }
+              ]
+            },
+            {
+              "id": "point_at_ashguard",
+              "label": "Tell the stranger who collects Ashguard's fee, so they look at the soldiers and not the camp",
+              "serves": [
+                "keep_the_ridge_trail_quiet",
+                "keep_greystone_working"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_trail_fee_named",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger if they want to know who profits from that trail, ask Ashguard's sergeants who collects at the cairn."
+                }
+              ],
+              "harms": [
+                "lucan"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing; let them prove it",
+              "serves": [
+                "keep_the_ridge_trail_quiet"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_dagna_names_the_fee",
+          "type": "reveal",
+          "trigger": "on_flag:vein_ridge_trail_closed",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "Ashguard has put a picket on your trail and is calling it order, as if its patrols never took their cut there.",
+          "options": [
+            {
+              "id": "name_it",
+              "label": "Say in the yard, loud, who took Ashguard's fee on the ridge",
+              "serves": [
+                "keep_greystone_working",
+                "stand_up_to_the_guild"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_trail_fee_named",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger Ashguard's patrols took a fee off every Hollow pack for three years. Now they want thanks for a picket."
+                }
+              ],
+              "harms": [
+                "lucan"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Swallow it; soldiers remember who shouts at them",
+              "serves": [
+                "keep_the_ridge_trail_quiet"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_varn_hits_the_picket",
+          "type": "intercept",
+          "trigger": "on_flag:vein_ridge_trail_closed",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Ashguard has put soldiers where the ridge trail comes down to Greystone. The Pit's salt and your packs have nowhere to go east but back over the ridge to the river barges.",
+          "options": [
+            {
+              "id": "hit_the_picket",
+              "label": "Go down the ridge past the Pit and hit the picket at night",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "greystone_mines"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger whether they have heard what happened to Ashguard's picket on the ridge. Soldiers sleep so soundly."
+                }
+              ],
+              "harms": [
+                "lucan"
+              ]
+            },
+            {
+              "id": "send_by_river",
+              "label": "Send the packs to the Ferrisford barges instead",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the ridge is crowded with soldiers these days. The Hollow has other roads east."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Wait; pickets get cold and go home",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_dagna_after_the_disgrace",
+          "type": "reveal",
+          "trigger": "on_flag:des_lucan_disgraced",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "Commander Lucan is disgraced. Nobody is protecting his sergeants' fee on your trail now.",
+          "options": [
+            {
+              "id": "tell_the_stranger",
+              "label": "Tell the stranger who collected the fee at the cairn",
+              "serves": [
+                "keep_greystone_working",
+                "stand_up_to_the_guild"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_trail_fee_named",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger Lucan's sergeants took a fee on the ridge trail every new moon, and she can name the one who collected."
+                }
+              ],
+              "harms": [
+                "lucan"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep the trail quiet; a disgraced man's sergeants still have swords",
+              "serves": [
+                "keep_the_ridge_trail_quiet"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_guild_quarter",
+      "act": 2,
+      "title": "The Guild's Quarter",
+      "summary": "The Guild's factor posts the season's wage at Greystone, a quarter short, to cover the carts the road cost. The camp is already on short bread.",
+      "location": "greystone_mines",
+      "requires": [
+        "vein_camp_on_short_bread"
+      ],
+      "resolves_on": [
+        "vein_strike_called",
+        "vein_wages_restored",
+        "vein_cut_swallowed"
+      ],
+      "hooks": [
+        {
+          "id": "vein_hollis_holds_the_cut",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Greystone's road cost money this season, and the Guild does not lose on a deal. Your factor has cut the wage by a quarter.",
+          "options": [
+            {
+              "id": "hold_the_cut",
+              "label": "Hold the cut, and remind the foreman who holds the lease",
+              "serves": [
+                "own_the_ore",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Observe to the stranger that Greystone is a Guild lease, and a foreman who forgets it can be replaced by one who does not."
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            },
+            {
+              "id": "restore_quietly",
+              "label": "Restore the wage quietly before anyone in the Capitol hears of it",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_wages_restored",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "vein_wage_quarrel_over",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Mention to the stranger that the Guild has always been generous with Greystone, whatever miners say."
+                }
+              ]
+            },
+            {
+              "id": "price_the_smith",
+              "label": "Raise the ore price to the Thornhaven smith to cover the season instead",
+              "serves": [
+                "turn_a_profit",
+                "own_the_ore"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger iron has become dear this year. Roads, bandits, wages. The valley's smith will understand."
+                }
+              ],
+              "harms": [
+                "bjorn"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "vein_dagna_calls_the_yard",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "A quarter off the wage, and the chest already went over the ridge. The yard is waiting to hear what the foreman says.",
+          "options": [
+            {
+              "id": "down_tools",
+              "label": "Call the yard together and down tools",
+              "serves": [
+                "stand_up_to_the_guild",
+                "feed_my_miners"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_strike_called",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger Greystone has stopped. Not a basket comes up until the Guild pays what it owes."
+                }
+              ]
+            },
+            {
+              "id": "swallow_it",
+              "label": "Tell the yard to swallow it for the winter and dig",
+              "serves": [
+                "keep_greystone_working"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_cut_swallowed",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "vein_wage_quarrel_over",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger the camp is digging on three-quarter wage, because a closed mine feeds nobody."
+                }
+              ]
+            },
+            {
+              "id": "write_once",
+              "label": "Write once to the Guildhall, foreman to master, and wait",
+              "serves": [
+                "keep_greystone_working",
+                "stand_up_to_the_guild"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Ask the stranger if they're going to the Capitol, and whether they'd put a foreman's letter in the Guildmaster's hand."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing yet; let the yard grumble",
+              "serves": [
+                "keep_greystone_working"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_bjorn_pays_fair",
+          "type": "aid",
+          "trigger": "on_flag:oath_resistance_armed",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The peacekeepers carry your blades now, and they will need more. The iron comes from Greystone, where the Guild is cutting the wage.",
+          "options": [
+            {
+              "id": "pay_direct",
+              "label": "Send coin east for Dagna's best ore at a fair price, Guild or no Guild",
+              "serves": [
+                "arm_the_resistance",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger to carry his coin to Foreman Dagna at Greystone. Fair price, straight to her, none of it to the Guild."
+                }
+              ],
+              "aids": "dagna"
+            },
+            {
+              "id": "hold",
+              "label": "Work the iron he has; he's a smith, not a merchant",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_mira_feeds_the_strike",
+          "type": "scheme",
+          "trigger": "on_flag:vein_strike_called",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Greystone has downed tools. No ore means no steel, but a hungry camp remembers who fed it.",
+          "options": [
+            {
+              "id": "hollow_bread",
+              "label": "Have Varn's men carry Hollow bread over the ridge to the striking camp",
+              "serves": [
+                "rule_from_shadow",
+                "keep_the_steel_coming"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Boast to the stranger that the Hollow is feeding Greystone's strikers now, and a fed man remembers who fed him."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Let them starve a little; they will dig sooner",
+              "serves": [
+                "keep_the_steel_coming"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "picks_in_the_stone",
+      "act": 2,
+      "title": "Picks in the Stone",
+      "summary": "Below the seventh level, on the far side of the seal Dagna nailed over Bram's grave, someone has been digging for five years. She has called it water, and scavengers, and the hill settling. She has never gone down to look.",
+      "location": "greystone_mines",
+      "requires": [
+        "tn_day_2"
+      ],
+      "resolves_on": [
+        "vein_picks_spoken"
+      ],
+      "hooks": [
+        {
+          "id": "vein_dagna_names_the_picks",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "The yard is asking about the white salt again. Below the seventh level the picks rang last night, on the far side of your boards, steady as a heartbeat. No Greystone crew works there.",
+          "options": [
+            {
+              "id": "speak_of_it",
+              "label": "Tell the stranger and the yard about the picks, and that nobody goes below the seventh level",
+              "serves": [
+                "keep_the_deep_vein_shut",
+                "keep_greystone_working"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_picks_spoken",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger something digs behind her seal and has for five years. She called it water. She would like someone to tell her it is water."
+                }
+              ]
+            },
+            {
+              "id": "call_it_water",
+              "label": "Call it water in the old workings, and keep the ridge fee coming",
+              "serves": [
+                "keep_the_ridge_trail_quiet",
+                "keep_the_ore_road_open"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger there's water moving in the old workings under the seventh level, and nobody needs to go and listen to it."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing; it is not her seam",
+              "serves": [
+                "keep_greystone_working"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_dagna_knows_the_picks",
+          "type": "reveal",
+          "trigger": "on_flag:tn_taken_alive_known",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "Word has come from Thornhaven that the people the Tithe took are alive, digging white salt in chains beyond the ridge. Beyond the ridge is behind your seal. You have heard their picks for five years.",
+          "options": [
+            {
+              "id": "say_it",
+              "label": "Say it aloud in the yard: the picks are Thornhaven's children, and Greystone's carts carried their salt",
+              "serves": [
+                "keep_greystone_working",
+                "stand_up_to_the_guild"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_picks_spoken",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger she has heard those children's picks five years and called it water. Her carters carried their salt east as ore."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep it to herself; the camp eats off the ridge fee",
+              "serves": [
+                "feed_my_miners",
+                "keep_the_ridge_trail_quiet"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Ask the stranger, low, how many the Tithe took, and how old they were. Then tell them to leave her yard."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "vein_varn_quiets_the_seam",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Greystone's galleries run close to the Pit's back-seam, and the foreman has started asking her yard about noises. The day anyone learns the diggers live, the Tithe ends.",
+          "options": [
+            {
+              "id": "dig_by_day",
+              "label": "Send word up the ridge: the diggers work only when Greystone's shafts are loud",
+              "serves": [
+                "hold_the_pit"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger, easy, whether they've been down Greystone's shafts. Loud work, mining. A man can't hear himself think down there."
+                }
+              ]
+            },
+            {
+              "id": "lean_on_the_foreman",
+              "label": "Tell the foreman the ridge fee stops dead if she ever goes below the seventh level",
+              "serves": [
+                "hold_the_pit",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "dagna",
+                  "want": "keep_the_deep_vein_shut",
+                  "delta": 1
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the Greystone foreman has been reminded what's good for her camp. Some seams are best left to the dead."
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Leave it; a foreman who hears ghosts is no danger",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_mira_pays_for_the_boards",
+          "type": "scheme",
+          "trigger": "on_flag:vein_picks_spoken",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The Greystone foreman has said aloud that she hears picks behind her seal. A frightened foreman can be bought quiet, or frightened quieter.",
+          "options": [
+            {
+              "id": "raise_the_fee",
+              "label": "Have the ridge men pay the foreman a fatter fee, for boards that stay nailed",
+              "serves": [
+                "rule_from_shadow",
+                "control_the_cure"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the Greystone foreman is being paid handsomely this season to mind her own galleries."
+                }
+              ]
+            },
+            {
+              "id": "the_old_dead",
+              "label": "Have the ridge men put it about that the deep vein's dead are knocking",
+              "serves": [
+                "keep_the_mask",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Shiver, and tell the stranger the carters say Greystone's deep vein is haunted by the men who died there. Knocking, all night."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Do nothing; the foreman has told herself it is water for five years",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_seventh_level",
+      "act": 2,
+      "title": "Below the Seventh Level",
+      "summary": "Below the seventh level Dagna's boards still hold. Everybody wants the white salt now, and on the far side of the boards someone is already digging it. Opening the vein from Greystone's side means opening it onto the Pit.",
+      "location": "greystone_mines",
+      "requires": [
+        "vein_picks_spoken"
+      ],
+      "resolves_on": [
+        "vein_deep_vein_reopened",
+        "vein_vein_kept_shut"
+      ],
+      "hooks": [
+        {
+          "id": "vein_dagna_brams_boards",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "They want the deep vein open for the salt. You nailed those boards yourself the day you brought Bram up, and for five years you have heard picks on the far side of them.",
+          "options": [
+            {
+              "id": "nail_it_shut",
+              "label": "Nail it shut again and swear on Bram's name",
+              "serves": [
+                "keep_the_deep_vein_shut"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_vein_kept_shut",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger the deep vein stays shut. Four men died down there. Nobody's salt is worth a fifth."
+                }
+              ]
+            },
+            {
+              "id": "bar_the_level",
+              "label": "Put a man on the seventh level and let no crew past, Guild or Cathedral",
+              "serves": [
+                "keep_the_deep_vein_shut",
+                "stand_up_to_the_guild"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "deep_vein",
+                  "beat": "the_seventh_level"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger there's a man with a pick handle on the seventh level, and he answers to her."
+                }
+              ]
+            },
+            {
+              "id": "open_it_herself",
+              "label": "Open it herself, timbered right, and see at last what digs beyond it",
+              "serves": [
+                "keep_greystone_working",
+                "feed_my_miners"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_deep_vein_reopened",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger she is taking the boards down herself and timbering every yard. Something has been digging behind them five years. She'll see what."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Leave the boards and say nothing",
+              "serves": [
+                "keep_the_deep_vein_shut"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_hollis_sends_a_crew",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Greystone's foreman says something digs beyond her seal, and your factor's sacks of salt come down that ridge marked as ore. If a seam under a Guild lease is being worked, the Guild should own the digging.",
+          "options": [
+            {
+              "id": "send_crew",
+              "label": "Send a Guild crew to open the deep vein, foreman or no foreman",
+              "serves": [
+                "own_the_ore",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_deep_vein_reopened",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Inform the stranger that the Guild has reopened a seam at Greystone that was closed out of sentiment."
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            },
+            {
+              "id": "sell_at_old_price",
+              "label": "Offer the Cathedral the salt at the old price, before anyone else can",
+              "serves": [
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Remark to the stranger that the Guild stands ready to supply the Cathedral with Greystone salt, at a fair price."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Wait for the price to rise",
+              "serves": [
+                "turn_a_profit",
+                "keep_the_guild_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_hollis_after_the_shame",
+          "type": "scheme",
+          "trigger": "on_flag:grey_cathedral_shamed",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The Cathedral has been shamed before the city: its cure was dug in chains, and the Guild's name was on the bills. The city wants salt, cheap, now, and dug by free hands.",
+          "options": [
+            {
+              "id": "salt_at_cost",
+              "label": "Offer the Cathedral salt at cost, loudly, to wash the Guild's name",
+              "serves": [
+                "keep_the_guild_clean",
+                "a_seat_on_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger the Guild will supply Greystone salt to the Cathedral at cost, dug by paid miners. Public duty. He hopes it is remembered."
+                }
+              ]
+            },
+            {
+              "id": "send_crew_now",
+              "label": "Send a crew to open the vein while the city is grateful to anyone who does",
+              "serves": [
+                "own_the_ore"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_deep_vein_reopened",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep his head down until the city forgets",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_ysolde_sits_with_the_foreman",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "ysolde"
+          ],
+          "situation": "The salt is under Greystone, behind a widow's boards. You know the names of everyone coughing in the River Quarter.",
+          "options": [
+            {
+              "id": "go_and_sit",
+              "label": "Go to Greystone and sit with the foreman, with the names of the dying",
+              "serves": [
+                "get_the_deep_salt",
+                "heal_the_sick"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "deep_vein",
+                  "beat": "the_seventh_level"
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "ysolde",
+                  "location": "greystone_mines"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger a Cathedral sister sat in her hut all night reading her the names of the dying. She hasn't slept."
+                }
+              ]
+            },
+            {
+              "id": "write",
+              "label": "Write to the foreman: names, ages, how many coughing in each house",
+              "serves": [
+                "get_the_deep_salt"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "deep_vein",
+                  "beat": "the_seventh_level"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "ysolde",
+                  "text": "Ask the stranger to carry a letter to Greystone's foreman. It is only a list of names. That is the point."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Leave her be; a widow owes the city nothing",
+              "serves": [
+                "heal_the_sick"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_dagna_salt_on_their_sleeve",
+          "type": "intercept",
+          "trigger": "on_flag:deep_vein_salt_seen",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "There's white dust on the stranger's sleeve. They have been at your boards below the seventh level.",
+          "options": [
+            {
+              "id": "go_down_with_them",
+              "label": "Go down with them and timber it properly before somebody dies",
+              "serves": [
+                "keep_greystone_working"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_deep_vein_reopened",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger if they're fool enough to go below the seventh level, they go with her, and they hold the lamp."
+                }
+              ]
+            },
+            {
+              "id": "nail_it_back",
+              "label": "Nail it back and throw them out of the yard",
+              "serves": [
+                "keep_the_deep_vein_shut"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_vein_kept_shut",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger they're lucky the roof held. Out of her yard, and don't come back below the seventh level."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Let it go; she can't watch every board",
+              "serves": [
+                "keep_the_deep_vein_shut"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_dagna_hears_of_the_girl",
+          "type": "intercept",
+          "trigger": "on_flag:tn_elena_taken",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "Word came down the ridge with the packs: a merchant's girl from Thornhaven rode the Tithe cart up to the Pit. The picks behind your seal have one more pair of hands, and she is eighteen.",
+          "options": [
+            {
+              "id": "take_the_boards_down",
+              "label": "Take the boards down tonight and dig toward the picks",
+              "serves": [
+                "keep_greystone_working"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_deep_vein_reopened",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger she has her miners at the boards tonight. Bram died down there. She'll not have a girl die there in chains."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Leave the boards; four men died the last time anyone went below",
+              "serves": [
+                "keep_the_deep_vein_shut",
+                "feed_my_miners"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger she heard about the merchant's girl. Ask them, flat, what they expect a foreman to do about it with two hundred mouths to feed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "vein_hollis_the_empty_seam",
+          "type": "scheme",
+          "trigger": "on_flag:tn_taken_freed",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The Hollow's diggers have come down off the ridge, and the sacks of white salt with them stopped. The seam is still there, under a Guild lease, and nobody is working it.",
+          "options": [
+            {
+              "id": "send_a_wage_crew",
+              "label": "Send a Guild crew on wages to open the deep vein from Greystone's side",
+              "serves": [
+                "own_the_ore",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_deep_vein_reopened",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Inform the stranger the Guild is opening Greystone's salt seam with paid miners. Honest salt. The Cathedral will be grateful."
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Let the salt stay in the hill until the city forgets where it came from",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "through_the_fall",
+      "act": 3,
+      "title": "Through the Fall",
+      "summary": "The reopened vein runs to the old fall, and past the fall is the Pit. From Greystone's side the Tithe's taken are a wall of loose stone away, and no Hollow guard watches this end. The wall stands until the stranger tells Dagna's miners to break it.",
+      "location": "greystone_mines",
+      "requires": [
+        "vein_deep_vein_reopened",
+        "tn_taken_alive_known"
+      ],
+      "resolves_on": [
+        "vein_opened_the_seal"
+      ],
+      "hooks": [
+        {
+          "id": "vein_dagna_at_the_fall",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "Your lamp is on the old fall. Bram is under it somewhere. On the other side, picks, and a chain dragged on stone. The stranger wants your miners to dig through.",
+          "options": [
+            {
+              "id": "timber_it_and_lead",
+              "label": "Timber every yard and lead the crew through herself",
+              "serves": [
+                "keep_greystone_working",
+                "stand_up_to_the_guild"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger her crew is at the fall with timber. Say the word and they dig. If the roof comes down, it comes down on her first."
+                }
+              ]
+            },
+            {
+              "id": "no_fifth_man",
+              "label": "Refuse to send her miners; the stranger can dig alone",
+              "serves": [
+                "feed_my_miners",
+                "keep_the_deep_vein_shut"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger four men died at that fall. She'll lend a pick and a lamp. Not a miner."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Stand at the fall and listen",
+              "serves": [
+                "keep_greystone_working"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_varn_the_back_door",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Greystone has dug down to the old fall behind the back-seam. The Pit has a back door now, and no man of yours stands at it.",
+          "options": [
+            {
+              "id": "guard_the_fall",
+              "label": "Go to the Pit and put men on the back-seam at the fall",
+              "serves": [
+                "hold_the_pit"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "the_pit"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Ask the stranger whether they've ever seen a seam fall in. One loose prop, and a wall of stone. Terrible thing, mining."
+                }
+              ]
+            },
+            {
+              "id": "move_the_diggers",
+              "label": "Chain the diggers further up the seam, away from the fall",
+              "serves": [
+                "hold_the_pit",
+                "a_perfect_collection"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger, if they're digging toward voices, the voices will have moved by the time they get there."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Leave it; nobody from Greystone has the stomach",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_bjorn_to_the_fall",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Greystone's miners are a wall of stone from the Pit, where his neighbours' children dig in chains. A smith's hammer breaks stone as well as iron.",
+          "options": [
+            {
+              "id": "walk_to_greystone",
+              "label": "Take his heaviest hammer to Greystone and break the fall himself",
+              "serves": [
+                "atone_for_the_steel",
+                "protect_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "bjorn",
+                  "location": "greystone_mines"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger he's going to Greystone with his heaviest hammer. Corin Ashby and Willa Brand are on the other side of a wall. Walls break."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Stay at the forge; the gate needs him on Collection Night",
+              "serves": [
+                "protect_the_village"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_davin_from_below",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "Someone means to break into the Pit from Greystone's side, through the old fall at the bottom of the back-seam. You know where the chains are staked.",
+          "options": [
+            {
+              "id": "tell_the_stakes",
+              "label": "Tell the stranger where the chains are staked, and where Corin sleeps",
+              "serves": [
+                "save_corin_and_willa",
+                "atone_for_running"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Tell the stranger the chains are staked to the wall nearest the fall. Corin sleeps by the water. Willa sleeps by Corin. Dig quiet."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing; he cannot see what they will do with it yet",
+              "serves": [
+                "guard_the_way",
+                "stay_hidden"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_hollis_the_lease",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "A Greystone foreman is digging toward a seam the Guild's factor buys from. Whatever comes out of that wall, the seam stays on the Guild's lease.",
+          "options": [
+            {
+              "id": "ready_a_crew",
+              "label": "Have the factor ready a Guild crew to take the seam the day it is empty",
+              "serves": [
+                "own_the_ore",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Observe to the stranger that any seam at Greystone, however it was worked before, is the Guild's to work after."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep the Guild's name a long way from that wall",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_yard_holds",
+      "act": 3,
+      "title": "The Yard Holds",
+      "summary": "Greystone has downed tools. The Guild wants the yard cleared, Ashguard can be hired to do it, and the Hollow is watching from the ridge. Whoever wins the yard, the quarrel is not over until the stranger has stood in it.",
+      "location": "greystone_mines",
+      "requires": [
+        "vein_strike_called"
+      ],
+      "resolves_on": [
+        "vein_stood_in_the_yard"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "vein_wage_quarrel_over",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "vein_hollis_hires_ashguard",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Greystone has stopped. Every day the hill is quiet the Capitol's foundries ask why, and the Guild's name is on the lease.",
+          "options": [
+            {
+              "id": "hire_ashguard",
+              "label": "Pay Ashguard to clear the yard",
+              "serves": [
+                "own_the_ore",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "lucan",
+                  "want": "keep_ashguard_paid",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger the Guild has offered Ashguard a winter's pay to clear Greystone's yard, and soldiers must eat."
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            },
+            {
+              "id": "give_the_quarter_back",
+              "label": "Give the yard its quarter back before the city hears Greystone stopped",
+              "serves": [
+                "keep_the_guild_clean",
+                "a_seat_on_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_miners_rise",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Assure the stranger the misunderstanding at Greystone is settled, and the Guild was glad to hear its miners out."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Starve them out; strikes end in the spring",
+              "serves": [
+                "turn_a_profit"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_lucan_clears_the_yard",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "The Guild will pay Ashguard to clear Greystone's yard. Your men have not been paid since the summer.",
+          "options": [
+            {
+              "id": "clear_it",
+              "label": "Ride in and clear the yard",
+              "serves": [
+                "keep_ashguard_paid",
+                "a_victory_of_my_own"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_strike_broken",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger order has been restored at Greystone, and that it was regrettable and necessary."
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            },
+            {
+              "id": "refuse",
+              "label": "Refuse; Ashguard is the crown's garrison, not the Guild's bailiff",
+              "serves": [
+                "restore_ashguards_honour"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger Ashguard does not ride down miners for a merchant's purse, whatever else it has done."
+                }
+              ]
+            },
+            {
+              "id": "ride_slowly",
+              "label": "Take the Guild's coin and ride slowly, so the yard settles itself",
+              "serves": [
+                "keep_ashguard_paid"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Mention to the stranger that Ashguard's column is on the Greystone road, in no particular hurry."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "vein_lucan_disgraced_column",
+          "type": "intercept",
+          "trigger": "on_flag:des_lucan_disgraced",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "Your name is being dragged through the March. Riding down miners now would finish whatever is left of it.",
+          "options": [
+            {
+              "id": "stand_down",
+              "label": "Turn the column round and go back to Ashguard",
+              "serves": [
+                "restore_ashguards_honour"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "lucan",
+                  "location": "fort_ashguard"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger, stiffly, that Ashguard has withdrawn from Greystone. The garrison has enough to answer for."
+                }
+              ]
+            },
+            {
+              "id": "clear_it_anyway",
+              "label": "Clear the yard anyway; a soldier's pay comes before his name",
+              "serves": [
+                "keep_ashguard_paid"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_strike_broken",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "vein_dagna_holds_the_hill",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "The yard is with you. The Guild's factor is shouting at the gate and soldiers are on the road.",
+          "options": [
+            {
+              "id": "hold_the_hill",
+              "label": "Hold the hill: no cart moves until the Guild answers",
+              "serves": [
+                "stand_up_to_the_guild",
+                "feed_my_miners"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_miners_rise",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger Greystone is holding. The factor's out the gate and the hill is the miners' until the Guildmaster comes himself."
+                }
+              ]
+            },
+            {
+              "id": "take_the_terms",
+              "label": "Take the Guild's terms before the soldiers arrive",
+              "serves": [
+                "keep_greystone_working"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_strike_broken",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger the strike's over. She's not burying miners for a quarter wage."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Wait one more day",
+              "serves": [
+                "feed_my_miners"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_varn_on_the_ridge",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Greystone has stopped, and the Guild and Ashguard are both looking at the yard instead of the ridge.",
+          "options": [
+            {
+              "id": "stand_with_the_miners",
+              "label": "Send Hollow men over the ridge to stand with the miners against Ashguard, and own the yard after",
+              "serves": [
+                "be_feared",
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "varn",
+                  "location": "greystone_mines"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the Hollow stands with honest working folk at Greystone. Ashguard will have to go through him."
+                }
+              ]
+            },
+            {
+              "id": "close_the_road",
+              "label": "Close the ore road while everybody is busy with the yard",
+              "serves": [
+                "be_feared",
+                "crush_the_resistance"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_ore_road_closed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the Greystone road is shut. No iron for the valley's smith, no iron for the valley's heroes."
+                }
+              ],
+              "harms": [
+                "dagna",
+                "bjorn"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Watch, and let them bleed each other",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "whose_iron",
+      "act": 3,
+      "title": "Whose Iron",
+      "summary": "The wage quarrel is settled one way or another. Now the question Dagna has never let herself ask: does Greystone keep paying the Hollow, or does its iron go to the valley's forge alone?",
+      "location": "greystone_mines",
+      "requires": [
+        "vein_purse_known",
+        "vein_wage_quarrel_over"
+      ],
+      "resolves_on": [
+        "vein_iron_to_the_valley",
+        "vein_purse_kept_paid"
+      ],
+      "hooks": [
+        {
+          "id": "vein_dagna_weighs_the_purse",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "Three years of purses. Some of the iron in the Hollow's blades is yours, sold through Thornhaven. The stranger is asking what Greystone is for.",
+          "options": [
+            {
+              "id": "keep_paying",
+              "label": "Tell the stranger the purse gets paid: the camp eats",
+              "serves": [
+                "keep_the_ore_road_open",
+                "feed_my_miners"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger she keeps paying the Hollow. She's sorry about the blades. Two hundred miners eating is not a thing she apologises for."
+                }
+              ]
+            },
+            {
+              "id": "stop_the_purse",
+              "label": "Tell the stranger she will stop the purse if her best ore can reach Bjorn under guard",
+              "serves": [
+                "honest_iron_for_bjorn",
+                "stand_up_to_the_guild"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger she'll stop paying the Hollow if somebody guards the carts to Thornhaven. Honest iron to an honest smith."
+                }
+              ],
+              "aids": "bjorn"
+            },
+            {
+              "id": "hold",
+              "label": "Let the stranger decide; she's done deciding alone",
+              "serves": [
+                "keep_greystone_working"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_dagna_no_ridge_man",
+          "type": "react",
+          "trigger": "on_flag:tn_tithe_broken",
+          "eligible": [
+            "dagna"
+          ],
+          "situation": "No ridge man came down for the purse this new moon. Word is Thornhaven refused the Tithe and the Hollow's hold on the valley broke. The packs have stopped coming down the trail.",
+          "options": [
+            {
+              "id": "stop_paying",
+              "label": "Close the contingency chest; there is nobody left to pay",
+              "serves": [
+                "feed_my_miners",
+                "honest_iron_for_bjorn"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "dagna",
+                  "want": "keep_the_ore_road_open",
+                  "delta": -2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger nobody came for the purse. The chest stays shut, the camp eats, and the smith gets his iron without the Hollow's cut."
+                }
+              ]
+            },
+            {
+              "id": "keep_the_purse_ready",
+              "label": "Keep the purse counted; the Hollow has broken before and come back",
+              "serves": [
+                "keep_the_ore_road_open"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "dagna",
+                  "text": "Tell the stranger she's keeping the purse counted. Bandits scatter in autumn and come back hungrier in spring."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Wait and see who comes down the ridge next",
+              "serves": [
+                "keep_greystone_working"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_bjorn_rides_for_iron",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "Greystone's ore has been paying the Hollow's toll before it ever reached your anvil. Dagna has never cheated you on weight.",
+          "options": [
+            {
+              "id": "ride_to_greystone",
+              "label": "Ride to Greystone and buy direct at a fair price, out of his savings",
+              "serves": [
+                "honest_steel",
+                "atone_for_the_steel"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "bjorn",
+                  "location": "greystone_mines"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger he's going to Greystone himself to pay Dagna fair, face to face. No more steel bought through the Hollow."
+                }
+              ],
+              "aids": "dagna"
+            },
+            {
+              "id": "refuse_tainted_ore",
+              "label": "Tell the stranger he forges nothing more from Hollow-taxed ore",
+              "serves": [
+                "honest_steel",
+                "restore_family_honour"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger he won't forge another blade from ore that paid the Hollow to reach him. The forge goes cold first."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep out of it; he buys ore, he doesn't run roads",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_varn_stops_the_carts",
+          "type": "intercept",
+          "trigger": "on_flag:vein_iron_to_the_valley",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Greystone has stopped paying, and its best iron is going to the Thornhaven smith. The smith who arms the old captain.",
+          "options": [
+            {
+              "id": "close_the_road",
+              "label": "Close the ore road: nothing from Greystone passes the Darkwood",
+              "serves": [
+                "be_feared",
+                "crush_the_resistance"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_ore_road_closed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the ore road is closed, and that they did it, not him. Every cold forge in the valley is theirs."
+                }
+              ],
+              "harms": [
+                "dagna",
+                "bjorn"
+              ]
+            },
+            {
+              "id": "squeeze_the_merchant",
+              "label": "Let the carts through and take it out of the merchant instead",
+              "serves": [
+                "keep_gregor_on_the_hook"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the Hollow lost a purse at Greystone and Gregor is going to make it up. Ask how his daughter is."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Let it go; ore is ore, there is other iron",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_lucan_escorts_the_iron",
+          "type": "aid",
+          "trigger": "on_flag:vein_iron_to_the_valley",
+          "eligible": [
+            "lucan"
+          ],
+          "situation": "Greystone's iron is going west to Thornhaven without the Hollow's leave. Someone will have to guard it, and be seen doing it.",
+          "options": [
+            {
+              "id": "escort_west",
+              "label": "Ride escort for the iron as far as the Halfway House, and take the credit",
+              "serves": [
+                "a_victory_of_my_own",
+                "restore_ashguards_honour"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "lucan",
+                  "location": "greystone_mines"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "lucan",
+                  "text": "Tell the stranger Ashguard will see Greystone's iron safely down the Kingsroad. Let the March remember who did."
+                }
+              ],
+              "aids": "bjorn"
+            },
+            {
+              "id": "hold",
+              "label": "Stay away; Hollow men on that road know his face, and Varn's",
+              "serves": [
+                "bury_the_arms_sale"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_mira_after_varn",
+          "type": "scheme",
+          "trigger": "on_flag:hc_varn_dead",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Varn is dead, and the Greystone purse comes to you alone now, with no lieutenant to blame for its price.",
+          "options": [
+            {
+              "id": "halve_the_purse",
+              "label": "Send word over the ridge that the purse is halved: the Hollow keeps its word",
+              "serves": [
+                "rule_from_shadow",
+                "keep_the_steel_coming"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Remark to the stranger that she hears the Greystone carts are getting through cheaper since that Varn died. Thank the Dawn."
+                }
+              ]
+            },
+            {
+              "id": "close_it",
+              "label": "Close the ore road, so the valley learns the Hollow still bites without Varn",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "vein_ore_road_closed",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "dagna",
+                "bjorn"
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Leave it as it is, and watch who moves",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "vein_hollis_counts_the_hill",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Greystone has chosen whose iron it digs. The Guild holds the lease, whatever the foreman thinks.",
+          "options": [
+            {
+              "id": "raise_the_rent",
+              "label": "Raise Greystone's lease rent to cover what the Guild lost",
+              "serves": [
+                "own_the_ore",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger Greystone's lease is up for review, and foremen who choose their own buyers pay for the privilege."
+                }
+              ],
+              "harms": [
+                "dagna"
+              ]
+            },
+            {
+              "id": "write_it_off",
+              "label": "Write the hill off as a bad season and look to the river",
+              "serves": [
+                "keep_the_river_moving"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "hollis",
+                  "want": "own_the_ore",
+                  "delta": -1
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Note it in the ledger and wait",
+              "serves": [
+                "hold_every_patron"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "the_seal_broken",
+      "title": "The Seal Broken",
+      "requires": [
+        "vein_opened_the_seal",
+        "tn_taken_freed"
+      ],
+      "summary": "Greystone's miners broke through the fall below the seventh level, and the people the Tithe took walked out of the Pit through Dagna's galleries. The seam is silent, no salt goes east, and Greystone knows what its ore carts carried."
+    },
+    {
+      "id": "the_miners_hill",
+      "title": "The Miners' Hill",
+      "requires": [
+        "vein_miners_rise",
+        "vein_iron_to_the_valley",
+        "!vein_ore_road_closed"
+      ],
+      "summary": "Greystone's miners broke the Guild's grip and the Hollow's purse in one winter, and their best iron goes west to an honest forge."
+    },
+    {
+      "id": "the_cold_forge",
+      "title": "The Cold Forge",
+      "requires": [
+        "vein_ore_road_closed",
+        "vein_iron_to_the_valley"
+      ],
+      "summary": "Greystone stopped paying the Hollow and the Hollow shut the ore road. Bjorn's forge and the Hollow's both go cold, and the valley waits to see whose fire lasts."
+    },
+    {
+      "id": "honest_iron",
+      "title": "Honest Iron",
+      "requires": [
+        "vein_iron_to_the_valley"
+      ],
+      "summary": "The purse stopped and the carts still roll under guard. For the first time in three years, no Greystone iron reaches Iron Hollow."
+    },
+    {
+      "id": "the_purse_holds",
+      "title": "The Purse Holds",
+      "requires": [
+        "vein_purse_kept_paid"
+      ],
+      "summary": "Greystone's camp eats through the winter, and every new moon a purse goes over the ridge. Some of the Hollow's blades are still Greystone iron."
+    },
+    {
+      "id": "the_open_wall",
+      "title": "The Open Wall",
+      "requires": [
+        "vein_opened_the_seal"
+      ],
+      "summary": "The fall below the seventh level is broken through, and Greystone has seen the Pit from its own side. Whatever the ridge decides, nobody in Dagna's yard will call those picks water again."
+    }
+  ]
+}

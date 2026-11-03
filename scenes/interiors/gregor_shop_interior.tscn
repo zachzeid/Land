@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dw8xk3m9pq2vn"]
+[gd_scene load_steps=17 format=3 uid="uid://dw8xk3m9pq2vn"]
 
 [ext_resource type="PackedScene" uid="uid://bvxh8k7m2p3tn" path="res://scenes/npcs/gregor_merchant.tscn" id="1_gregor"]
 [ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="2_dialogue_ui"]
@@ -26,6 +26,12 @@ size = Vector2(140, 180)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ledger"]
 size = Vector2(40, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_strongbox"]
+size = Vector2(56, 44)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_medicine"]
+size = Vector2(64, 48)
 
 [node name="GregorShopInterior" type="Node2D"]
 
@@ -160,10 +166,12 @@ interaction_name = "Examine Ledger"
 flag_to_set = "ledger_found"
 discovery_text = "[b]You found a hidden ledger![/b]
 
-Tucked behind the crates, you discover a worn leather-bound book. Inside are meticulous records of payments made to someone called 'The Iron Hand' - large sums of gold, dates going back months.
+Tucked behind the crates is a worn leather-bound book in Gregor's careful merchant's hand. The front pages are an honest shop's: flour, lamp oil, nails. Turn it over and start from the back, and it is something else.
 
-The handwriting is unmistakably Gregor's. Names of villages raided by bandits appear alongside the payment dates. This is damning evidence."
-reexamine_text = "The ledger is still here. Its contents weigh heavily on your mind - proof of Gregor's dealings with bandits."
+One page for each autumn of the Tithe, five of them. On each: the year, the tile he palmed from the urn, and the name it fell to instead. Year one: Corin Ashby. Year two: Davin, the smith's boy. Year three: Hesk Marlow. Year four: Willa Brand. Year five: Ada Fenn, written in, and then struck through so hard the nib tore the page.
+
+Beside the draws run his other accounts with the Hollow: blades from the forge, salt, sacks, a cart axle, all 'collected at night', and against them, small and regular, 'one packet, for E.'"
+reexamine_text = "Five autumns of palmed tiles, five names that went instead of Elena's. The fifth, Ada Fenn, is struck through."
 one_time_only = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/SecretLedger"]
@@ -195,6 +203,102 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 14
 text = "[E] Examine Ledger"
+horizontal_alignment = 1
+
+[node name="Strongbox" type="Area2D" parent="Furniture"]
+z_index = 6
+position = Vector2(300, -150)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("8_story_item")
+interaction_name = "Open the Strongbox"
+flag_to_set = "duplicate_tiles_found"
+discovery_text = "[b]Gregor's strongbox[/b]
+
+Under the end of the counter, bolted to the boards, a merchant's strongbox. The lock has been worked open before and closed again with care. Beneath the coin tray is a cloth bundle.
+
+Iron tiles. A whole second set of lot tiles, the same grey iron as the chapel's, the same square letters, Bjorn's hammer and pine on every back. Not every name in the village: a choice of them, the ones a man could palm in a year when the draw needed to fall somewhere. Several are worn smooth at the edges, as if they had been carried in a sleeve.
+
+There is a gap in the bundle where one tile used to lie."
+reexamine_text = "A second set of lot tiles in the chapel's iron, palm-worn. One is missing."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Strongbox"]
+shape = SubResource("RectangleShape2D_strongbox")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Strongbox"]
+offset_left = -22.0
+offset_top = -14.0
+offset_right = 22.0
+offset_bottom = 14.0
+color = Color(0.3, 0.27, 0.24, 1)
+
+[node name="Hasp" type="ColorRect" parent="Furniture/Strongbox"]
+offset_left = -4.0
+offset_top = -6.0
+offset_right = 4.0
+offset_bottom = 6.0
+color = Color(0.6, 0.55, 0.35, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Furniture/Strongbox"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -44.0
+offset_right = 110.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Open the Strongbox"
+horizontal_alignment = 1
+
+[node name="MedicineShelf" type="Area2D" parent="Furniture"]
+z_index = 6
+position = Vector2(-380, -150)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("8_story_item")
+interaction_name = "Look at Elena's Medicines"
+flag_to_set = "white_salt_found"
+discovery_text = "[b]Elena's medicine shelf[/b]
+
+A low shelf kept apart from the stock, cleaner than the rest of the shop. Fever-root, bundled and dated. A honey crock. A cup with a rim of dried brown tea.
+
+Behind the crock, a paper packet folded like an apothecary's, though no apothecary in the valley folds them this way. Inside is a white mineral salt, fine as flour, that bites the tongue. Enough for a month, if a pinch goes into the root-tea each night.
+
+There is white dust in the cup's rim, too. Someone has been drinking this for a long time."
+reexamine_text = "Fever-root, honey, and a packet of white salt no apothecary in the valley sells."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/MedicineShelf"]
+shape = SubResource("RectangleShape2D_medicine")
+
+[node name="Visual" type="ColorRect" parent="Furniture/MedicineShelf"]
+offset_left = -28.0
+offset_top = -10.0
+offset_right = 28.0
+offset_bottom = 10.0
+color = Color(0.48, 0.38, 0.26, 1)
+
+[node name="Packet" type="ColorRect" parent="Furniture/MedicineShelf"]
+offset_left = -6.0
+offset_top = -18.0
+offset_right = 6.0
+offset_bottom = -10.0
+color = Color(0.92, 0.9, 0.85, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Furniture/MedicineShelf"]
+z_index = 10
+visible = false
+offset_left = -145.0
+offset_top = -44.0
+offset_right = 145.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Look at Elena's Medicines"
 horizontal_alignment = 1
 
 [node name="Exit" type="Area2D" parent="."]

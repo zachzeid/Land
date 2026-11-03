@@ -1,0 +1,734 @@
+[gd_scene load_steps=25 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
+[ext_resource type="Script" path="res://scripts/world/world_obstacle.gd" id="2_world_obstacle"]
+[ext_resource type="Texture2D" path="res://assets/generated/props/bench.png" id="3_bench"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/tavern_fireplace.png" id="4_tavern_fireplace"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/shop_shelves.png" id="5_shop_shelves"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/crates_barrels.png" id="6_crates_barrels"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="7_story_item"]
+[ext_resource type="Script" path="res://scripts/world/scene_trigger.gd" id="8_scene_trigger"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="9_dialogue_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="10_debug_interaction_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="11_debug_console"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1024x40"]
+size = Vector2(1024, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40x944"]
+size = Vector2(40, 944)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_420x70"]
+size = Vector2(420, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40x40"]
+size = Vector2(40, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_32x32"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_120x24"]
+size = Vector2(120, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80x120"]
+size = Vector2(80, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80x160"]
+size = Vector2(80, 160)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_88x76"]
+size = Vector2(88, 76)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_84x76"]
+size = Vector2(84, 76)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_114x64"]
+size = Vector2(114, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_76x70"]
+size = Vector2(76, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80x40"]
+size = Vector2(80, 40)
+
+[node name="CouncilHall" type="Node2D"]
+
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+color = Color(0.3, 0.24, 0.18, 1)
+
+[node name="Floorboards" type="ColorRect" parent="Floor"]
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 984.0
+offset_bottom = 984.0
+color = Color(0.4, 0.32, 0.23, 1)
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, -492)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/North"]
+shape = SubResource("RectangleShape2D_1024x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/North"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+color = Color(0.42, 0.33, 0.24, 1)
+
+[node name="South" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, 492)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/South"]
+shape = SubResource("RectangleShape2D_1024x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/South"]
+offset_left = -512.0
+offset_top = -20.0
+offset_right = 512.0
+offset_bottom = 20.0
+color = Color(0.42, 0.33, 0.24, 1)
+
+[node name="West" type="StaticBody2D" parent="Walls"]
+position = Vector2(-492, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/West"]
+shape = SubResource("RectangleShape2D_40x944")
+
+[node name="Visual" type="ColorRect" parent="Walls/West"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+color = Color(0.42, 0.33, 0.24, 1)
+
+[node name="East" type="StaticBody2D" parent="Walls"]
+position = Vector2(492, 0)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/East"]
+shape = SubResource("RectangleShape2D_40x944")
+
+[node name="Visual" type="ColorRect" parent="Walls/East"]
+offset_left = -20.0
+offset_top = -472.0
+offset_right = 20.0
+offset_bottom = 472.0
+color = Color(0.42, 0.33, 0.24, 1)
+
+[node name="Room" type="Node2D" parent="."]
+z_index = -9
+
+[node name="Runner" type="ColorRect" parent="Room"]
+offset_left = -64.0
+offset_top = -200.0
+offset_right = 64.0
+offset_bottom = 440.0
+color = Color(0.42, 0.18, 0.14, 1)
+
+[node name="RunnerHem" type="ColorRect" parent="Room"]
+offset_left = -56.0
+offset_top = -192.0
+offset_right = 56.0
+offset_bottom = 432.0
+color = Color(0.5, 0.24, 0.17, 1)
+
+[node name="Dais" type="ColorRect" parent="Room"]
+offset_left = -300.0
+offset_top = -420.0
+offset_right = 300.0
+offset_bottom = -170.0
+color = Color(0.34, 0.27, 0.2, 1)
+
+[node name="Banner" type="ColorRect" parent="Room"]
+offset_left = -60.0
+offset_top = -470.0
+offset_right = 60.0
+offset_bottom = -380.0
+color = Color(0.3, 0.38, 0.22, 1)
+
+[node name="BannerSigil" type="ColorRect" parent="Room"]
+offset_left = -20.0
+offset_top = -450.0
+offset_right = 20.0
+offset_bottom = -410.0
+color = Color(0.77, 0.64, 0.35, 1)
+
+[node name="WindowWest" type="ColorRect" parent="Room"]
+offset_left = -360.0
+offset_top = -472.0
+offset_right = -280.0
+offset_bottom = -456.0
+color = Color(0.55, 0.62, 0.68, 1)
+
+[node name="WindowEast" type="ColorRect" parent="Room"]
+offset_left = 280.0
+offset_top = -472.0
+offset_right = 360.0
+offset_bottom = -456.0
+color = Color(0.55, 0.62, 0.68, 1)
+
+[node name="Furniture" type="Node2D" parent="."]
+z_index = 5
+
+[node name="CouncilTable" type="StaticBody2D" parent="Furniture"]
+position = Vector2(0, -260)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/CouncilTable"]
+shape = SubResource("RectangleShape2D_420x70")
+
+[node name="Visual" type="ColorRect" parent="Furniture/CouncilTable"]
+offset_left = -210.0
+offset_top = -35.0
+offset_right = 210.0
+offset_bottom = 35.0
+color = Color(0.36, 0.25, 0.16, 1)
+
+[node name="TableTop" type="ColorRect" parent="Furniture/CouncilTable"]
+offset_left = -202.0
+offset_top = -27.0
+offset_right = 202.0
+offset_bottom = 27.0
+color = Color(0.45, 0.32, 0.2, 1)
+
+[node name="Chair1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-160, -330)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Chair1"]
+shape = SubResource("RectangleShape2D_40x40")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Chair1"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.3, 0.2, 0.13, 1)
+
+[node name="Back" type="ColorRect" parent="Furniture/Chair1"]
+offset_left = -20.0
+offset_top = -26.0
+offset_right = 20.0
+offset_bottom = -14.0
+color = Color(0.24, 0.16, 0.1, 1)
+
+[node name="Chair2" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-80, -330)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Chair2"]
+shape = SubResource("RectangleShape2D_40x40")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Chair2"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.3, 0.2, 0.13, 1)
+
+[node name="Back" type="ColorRect" parent="Furniture/Chair2"]
+offset_left = -20.0
+offset_top = -26.0
+offset_right = 20.0
+offset_bottom = -14.0
+color = Color(0.24, 0.16, 0.1, 1)
+
+[node name="Chair3" type="StaticBody2D" parent="Furniture"]
+position = Vector2(0, -330)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Chair3"]
+shape = SubResource("RectangleShape2D_40x40")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Chair3"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.3, 0.2, 0.13, 1)
+
+[node name="Back" type="ColorRect" parent="Furniture/Chair3"]
+offset_left = -20.0
+offset_top = -26.0
+offset_right = 20.0
+offset_bottom = -14.0
+color = Color(0.24, 0.16, 0.1, 1)
+
+[node name="Chair4" type="StaticBody2D" parent="Furniture"]
+position = Vector2(80, -330)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Chair4"]
+shape = SubResource("RectangleShape2D_40x40")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Chair4"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.3, 0.2, 0.13, 1)
+
+[node name="Back" type="ColorRect" parent="Furniture/Chair4"]
+offset_left = -20.0
+offset_top = -26.0
+offset_right = 20.0
+offset_bottom = -14.0
+color = Color(0.24, 0.16, 0.1, 1)
+
+[node name="Chair5" type="StaticBody2D" parent="Furniture"]
+position = Vector2(160, -330)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Chair5"]
+shape = SubResource("RectangleShape2D_40x40")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Chair5"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.3, 0.2, 0.13, 1)
+
+[node name="Back" type="ColorRect" parent="Furniture/Chair5"]
+offset_left = -20.0
+offset_top = -26.0
+offset_right = 20.0
+offset_bottom = -14.0
+color = Color(0.24, 0.16, 0.1, 1)
+
+[node name="PetitionerStool" type="StaticBody2D" parent="Furniture"]
+position = Vector2(0, -170)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/PetitionerStool"]
+shape = SubResource("RectangleShape2D_32x32")
+
+[node name="Visual" type="ColorRect" parent="Furniture/PetitionerStool"]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(0.33, 0.24, 0.16, 1)
+
+[node name="Bench1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-200, 40)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Bench1"]
+shape = SubResource("RectangleShape2D_120x24")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Bench1"]
+position = Vector2(0, 0)
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("3_bench")
+
+[node name="Bench2" type="StaticBody2D" parent="Furniture"]
+position = Vector2(200, 40)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Bench2"]
+shape = SubResource("RectangleShape2D_120x24")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Bench2"]
+position = Vector2(0, 0)
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("3_bench")
+
+[node name="Bench3" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-200, 160)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Bench3"]
+shape = SubResource("RectangleShape2D_120x24")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Bench3"]
+position = Vector2(0, 0)
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("3_bench")
+
+[node name="Bench4" type="StaticBody2D" parent="Furniture"]
+position = Vector2(200, 160)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Bench4"]
+shape = SubResource("RectangleShape2D_120x24")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Bench4"]
+position = Vector2(0, 0)
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("3_bench")
+
+[node name="Bench5" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-200, 280)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Bench5"]
+shape = SubResource("RectangleShape2D_120x24")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Bench5"]
+position = Vector2(0, 0)
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("3_bench")
+
+[node name="Bench6" type="StaticBody2D" parent="Furniture"]
+position = Vector2(200, 280)
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("2_world_obstacle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Bench6"]
+shape = SubResource("RectangleShape2D_120x24")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Bench6"]
+position = Vector2(0, 0)
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("3_bench")
+
+[node name="Hearth" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-420, -250)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Hearth"]
+shape = SubResource("RectangleShape2D_80x120")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Hearth"]
+position = Vector2(0, 0)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("4_tavern_fireplace")
+
+[node name="RecordShelves" type="StaticBody2D" parent="Furniture"]
+position = Vector2(420, -230)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/RecordShelves"]
+shape = SubResource("RectangleShape2D_80x160")
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/RecordShelves"]
+position = Vector2(0, 0)
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("5_shop_shelves")
+
+[node name="Crates" type="Sprite2D" parent="Furniture"]
+position = Vector2(400, 380)
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("6_crates_barrels")
+
+[node name="Interactables" type="Node2D" parent="."]
+z_index = 6
+
+[node name="MinuteBook" type="Area2D" parent="Interactables"]
+z_index = 6
+position = Vector2(-110, -245)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("7_story_item")
+interaction_name = "Read the Minute Book"
+flag_to_set = ""
+discovery_text = "[b]The council's minute book[/b]
+
+Three winters of entries in Elder Mathias's careful hand.
+
+'First winter of the Hollow. Twenty crowns paid at the mill stone, that the north farms not burn. Carried.'
+'Second winter. Thirty crowns. Carried.'
+'Third winter. Forty crowns. Carried, two against.'
+
+Every entry ends the same way: 'Drawn from the reserve, as kept.' Nowhere does it say where the reserve is kept. Beside the last entry, someone has written 'Motion to report the losses to the crown's reeve' and then struck it through."
+reexamine_text = "Twenty, thirty, forty crowns. 'Drawn from the reserve, as kept.' The motion to tell the crown is still struck through."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/MinuteBook"]
+shape = SubResource("RectangleShape2D_88x76")
+
+[node name="Visual" type="ColorRect" parent="Interactables/MinuteBook"]
+offset_left = -20.0
+offset_top = -14.0
+offset_right = 20.0
+offset_bottom = 14.0
+color = Color(0.28, 0.2, 0.12, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Interactables/MinuteBook"]
+z_index = 10
+visible = false
+offset_left = -90.0
+offset_top = -44.0
+offset_right = 90.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Read the Minute Book"
+horizontal_alignment = 1
+
+[node name="CaptainsPetition" type="Area2D" parent="Interactables"]
+z_index = 6
+position = Vector2(110, -245)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("7_story_item")
+interaction_name = "Read the Petition"
+flag_to_set = ""
+discovery_text = "[b]A petition, nailed and then taken down[/b]
+
+'To the elders of Thornhaven. The undersigned peacekeepers ask leave to bear the smith's steel in the village's defence, and that the coin paid to the forest be spent instead on spears. - Aldric, Captain of the Watch.'
+
+Six names below his, three of them only marks. Across the top, in another hand: 'Deferred. Again.'"
+reexamine_text = "'Deferred. Again.' Aldric's six volunteers are still waiting for an answer."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/CaptainsPetition"]
+shape = SubResource("RectangleShape2D_84x76")
+
+[node name="Visual" type="ColorRect" parent="Interactables/CaptainsPetition"]
+offset_left = -18.0
+offset_top = -14.0
+offset_right = 18.0
+offset_bottom = 14.0
+color = Color(0.75, 0.7, 0.58, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Interactables/CaptainsPetition"]
+z_index = 10
+visible = false
+offset_left = -76.5
+offset_top = -44.0
+offset_right = 76.5
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Read the Petition"
+horizontal_alignment = 1
+
+[node name="ValleyCharter" type="Area2D" parent="Interactables"]
+z_index = 6
+position = Vector2(-300, -430)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("7_story_item")
+interaction_name = "Read the Charter"
+flag_to_set = ""
+discovery_text = "[b]The Charter of Thornhaven[/b]
+
+Behind glass gone yellow with smoke hangs the village charter. The freeholders of Thornhaven hold their fields 'of House Ashdown, by deed, for so long as they keep the peace and render their due.'
+
+The Ashdown seal is a tower over a river. Someone has lately underlined 'keep the peace' in fresh ink, hard enough to dent the parchment."
+reexamine_text = "'For so long as they keep the peace.' The fresh ink under those words has not faded."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/ValleyCharter"]
+shape = SubResource("RectangleShape2D_114x64")
+
+[node name="Visual" type="ColorRect" parent="Interactables/ValleyCharter"]
+offset_left = -45.0
+offset_top = -20.0
+offset_right = 45.0
+offset_bottom = 20.0
+color = Color(0.82, 0.76, 0.6, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Interactables/ValleyCharter"]
+z_index = 10
+visible = false
+offset_left = -72.0
+offset_top = -44.0
+offset_right = 72.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Read the Charter"
+horizontal_alignment = 1
+
+[node name="CouncillorsNotes" type="Area2D" parent="Interactables"]
+z_index = 6
+position = Vector2(250, -262)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("7_story_item")
+interaction_name = "Look at the Papers"
+flag_to_set = ""
+discovery_text = "[b]Papers left on a councillor's chair[/b]
+
+Two notes of debt, both in Gregor's neat merchant's script. Seed grain on credit, a roof mended, a dowry advanced. Each signed with a councillor's mark, and each with the same line at the foot: 'No interest asked between friends.'
+
+Two of the five chairs at this table owe the merchant more than they could repay."
+reexamine_text = "Two councillors, two debts to Gregor. 'No interest asked between friends.'"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/CouncillorsNotes"]
+shape = SubResource("RectangleShape2D_76x70")
+
+[node name="Visual" type="ColorRect" parent="Interactables/CouncillorsNotes"]
+offset_left = -14.0
+offset_top = -11.0
+offset_right = 14.0
+offset_bottom = 11.0
+color = Color(0.85, 0.82, 0.7, 1)
+
+[node name="InteractionPrompt" type="Label" parent="Interactables/CouncillorsNotes"]
+z_index = 10
+visible = false
+offset_left = -81.0
+offset_top = -44.0
+offset_right = 81.0
+offset_bottom = -18.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "[E] Look at the Papers"
+horizontal_alignment = 1
+
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(0, 460)
+collision_layer = 32
+collision_mask = 1
+script = ExtResource("8_scene_trigger")
+target_location = "thornhaven_town_square"
+target_spawn_point = "from_council_hall"
+require_input = false
+prompt_text = "Exit"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+shape = SubResource("RectangleShape2D_80x40")
+
+[node name="DoorVisual" type="ColorRect" parent="Exit"]
+offset_left = -40.0
+offset_top = -10.0
+offset_right = 40.0
+offset_bottom = 30.0
+color = Color(0.28, 0.2, 0.14, 1)
+
+[node name="ExitLabel" type="Label" parent="Exit"]
+offset_left = -70.0
+offset_top = -30.0
+offset_right = 70.0
+offset_bottom = -10.0
+text = "To the Square"
+horizontal_alignment = 1
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 350)
+
+[node name="from_thornhaven_town_square" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 350)
+
+[node name="from_exterior" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 350)
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("9_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[node name="DebugInteractionPanel" parent="DialogueUI" instance=ExtResource("10_debug_interaction_panel")]
+visible = false
+
+[node name="DebugConsole" parent="." instance=ExtResource("11_debug_console")]
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

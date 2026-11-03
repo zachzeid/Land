@@ -1,0 +1,6 @@
+{
+  "_note": "test fixture",
+  "thornhaven_town_square": [{"archetype": "farmer", "count": 2}, {"archetype": "gate_guard", "count": 1}],
+  "village_gate": [{"archetype": "gate_guard", "count": 1, "hours": [6, 20]}],
+  "old_mill": [{"archetype": "farmer", "count": 1}, {"archetype": "missing_archetype", "count": 1}]
+}

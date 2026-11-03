@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="LocationData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/location_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+location_id = "forest_path"
+display_name = "The Forest Path"
+region = "Western Valley"
+area = "Darkwood"
+scene_path = "res://scenes/exterior/forest_path.tscn"
+is_interior = false
+spawn_points = {
+	"default": "On the path below the treeline",
+	"from_village_gate": "Where the road enters the trees",
+	"from_old_mill": "Where the mill track joins the path",
+	"from_iron_hollow_camp": "On the path up from the Hollow"
+}

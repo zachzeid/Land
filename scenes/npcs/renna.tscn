@@ -1,0 +1,71 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/npcs/renna.gd" id="1_renna_script"]
+[ext_resource type="Script" path="res://scripts/world/generatable_character.gd" id="2_gen_char"]
+[ext_resource type="Resource" path="res://resources/npc_personalities/renna.tres" id="3_personality"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(32, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_interaction"]
+size = Vector2(80, 80)
+
+[node name="Renna" type="CharacterBody2D" groups=["npcs", "capitol", "rangers", "crown"]]
+collision_layer = 2
+collision_mask = 12
+script = ExtResource("1_renna_script")
+npc_id = "renna_captain_001"
+npc_name = "Captain Renna Thorne"
+personality_resource = ExtResource("3_personality")
+home_location = "capitol_gate"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(0.72, 0.9, 0.72, 1)
+position = Vector2(0, -24)
+scale = Vector2(0.75, 0.75)
+
+[node name="GeneratableCharacter" type="Node" parent="."]
+script = ExtResource("2_gen_char")
+character_id = "elena_daughter_001"
+placeholder_color = Color(0.25, 0.45, 0.25, 1)
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -66.0
+offset_top = -60.0
+offset_right = 66.0
+offset_bottom = -50.0
+theme_override_colors/font_color = Color(0.75, 1.0, 0.75, 1)
+theme_override_font_sizes/font_size = 12
+text = "Captain Renna Thorne"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 1
+monitoring = true
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_interaction")
+debug_color = Color(0, 0.184314, 0.647059, 0.270588)
+
+[node name="InteractionPrompt" type="Label" parent="."]
+visible = false
+offset_left = -40.0
+offset_top = 18.0
+offset_right = 40.0
+offset_bottom = 33.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 14
+text = "[E] Talk"
+horizontal_alignment = 1
+
+[connection signal="body_entered" from="InteractionArea" to="." method="_on_interaction_area_body_entered"]
+[connection signal="body_exited" from="InteractionArea" to="." method="_on_interaction_area_body_exited"]

@@ -129,6 +129,21 @@ func query_memories(query_params: Dictionary) -> Array:
 	
 	return memories
 
+## Exact metadata lookup, no embedding: memories whose metadata matches every key/value in where
+## Returns: Array of {id, document, metadata} (empty on error or no match)
+func get_where(collection_name: String, where: Dictionary, limit: int = 10) -> Array:
+	var cli_path = ProjectSettings.globalize_path(CHROMA_CLI_PATH)
+	var where_b64 = Marshalls.utf8_to_base64(JSON.stringify(where))
+	var output = []
+	var exit_code = OS.execute(PYTHON_CMD, [cli_path, "get_where", collection_name, where_b64, str(limit)], output, true)
+	if exit_code != 0:
+		error_occurred.emit("get_where failed: " + str(output))
+		return []
+	var result = _parse_json_output(output)
+	if result.has("error"):
+		return []
+	return result.get("memories", [])
+
 ## Delete a collection (use with caution!)
 func delete_collection(collection_name: String) -> Dictionary:
 	var cli_path = ProjectSettings.globalize_path(CHROMA_CLI_PATH)

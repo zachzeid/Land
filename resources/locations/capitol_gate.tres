@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="LocationData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/location_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+location_id = "capitol_gate"
+display_name = "The Dawn Gate"
+region = "The Capitol"
+area = "Highmarch Walls"
+scene_path = "res://scenes/capitol/capitol_gate.tscn"
+is_interior = false
+spawn_points = {
+"from_travel": "Arrived from the road",
+	"default": "On the Kingsroad before the gate",
+	"from_capitol_market": "Inside the walls, on the street to the market",
+	"from_ferrisford": "On the Kingsroad, arriving from Ferrisford",
+	"from_brackenmoor_abbey": "On the Kingsroad, arriving from Brackenmoor"
+}

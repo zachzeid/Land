@@ -1,0 +1,717 @@
+[gd_scene load_steps=24 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
+[ext_resource type="Texture2D" path="res://assets/generated/props/cart.png" id="2_cart"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="3_story_item"]
+[ext_resource type="Script" path="res://scripts/world/travel_point.gd" id="4_travel_point"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="5_player"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="6_dialogue_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="7_debug_interaction_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="8_debug_console"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_220x130"]
+size = Vector2(220, 130)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_70x70"]
+size = Vector2(70, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_60x40"]
+size = Vector2(60, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_170x110"]
+size = Vector2(170, 110)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_220x120"]
+size = Vector2(220, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_160x100"]
+size = Vector2(160, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_200x130"]
+size = Vector2(200, 130)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_120x90"]
+size = Vector2(120, 90)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_140x40"]
+size = Vector2(140, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80x68"]
+size = Vector2(80, 68)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_110x80"]
+size = Vector2(110, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80x80"]
+size = Vector2(80, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_140x60"]
+size = Vector2(140, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1680x40"]
+size = Vector2(1680, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40x1200"]
+size = Vector2(40, 1200)
+
+[node name="GreystoneMines" type="Node2D"]
+
+[node name="SceneBackground" type="Node2D" parent="."]
+z_index = -10
+
+[node name="Ground" type="ColorRect" parent="SceneBackground"]
+offset_left = -800.0
+offset_top = -600.0
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.36, 0.35, 0.33, 1)
+
+[node name="Hillside" type="ColorRect" parent="SceneBackground"]
+offset_left = -800.0
+offset_top = -600.0
+offset_right = 800.0
+offset_bottom = -340.0
+color = Color(0.3, 0.29, 0.28, 1)
+
+[node name="OreRoad" type="ColorRect" parent="SceneBackground"]
+offset_left = -50.0
+offset_top = 0.0
+offset_right = 50.0
+offset_bottom = 600.0
+color = Color(0.44, 0.38, 0.3, 1)
+
+[node name="TrackBed" type="ColorRect" parent="SceneBackground"]
+offset_left = -40.0
+offset_top = -340.0
+offset_right = 40.0
+offset_bottom = 140.0
+color = Color(0.28, 0.24, 0.2, 1)
+
+[node name="RailLeft" type="ColorRect" parent="SceneBackground"]
+offset_left = -27.0
+offset_top = -340.0
+offset_right = -21.0
+offset_bottom = 140.0
+color = Color(0.45, 0.32, 0.18, 1)
+
+[node name="RailRight" type="ColorRect" parent="SceneBackground"]
+offset_left = 21.0
+offset_top = -340.0
+offset_right = 27.0
+offset_bottom = 140.0
+color = Color(0.45, 0.32, 0.18, 1)
+
+[node name="RidgeTrack" type="ColorRect" parent="SceneBackground"]
+offset_left = -680.0
+offset_top = -400.0
+offset_right = -640.0
+offset_bottom = -100.0
+color = Color(0.4, 0.36, 0.3, 1)
+
+[node name="RoadSign" type="Label" parent="SceneBackground"]
+z_index = 5
+offset_left = -150.0
+offset_top = 550.0
+offset_right = 150.0
+offset_bottom = 570.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 13
+text = "Ore road - south to the Kingsroad"
+horizontal_alignment = 1
+
+[node name="Pithead" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(0, -420)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pithead"]
+shape = SubResource("RectangleShape2D_220x130")
+
+[node name="Visual" type="ColorRect" parent="Pithead"]
+offset_left = -110.0
+offset_top = -65.0
+offset_right = 110.0
+offset_bottom = 65.0
+color = Color(0.3, 0.26, 0.22, 1)
+
+[node name="Roof" type="ColorRect" parent="Pithead"]
+offset_left = -116.0
+offset_top = -67.0
+offset_right = 116.0
+offset_bottom = -43.0
+color = Color(0.22, 0.18, 0.15, 1)
+
+[node name="Sign" type="Label" parent="Pithead"]
+z_index = 5
+offset_left = -110.0
+offset_top = -10.0
+offset_right = 110.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Pithead"
+horizontal_alignment = 1
+
+[node name="Winch" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(170, -400)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Winch"]
+shape = SubResource("RectangleShape2D_70x70")
+
+[node name="Visual" type="ColorRect" parent="Winch"]
+offset_left = -35.0
+offset_top = -35.0
+offset_right = 35.0
+offset_bottom = 35.0
+color = Color(0.28, 0.2, 0.12, 1)
+
+[node name="Sign" type="Label" parent="Winch"]
+z_index = 5
+offset_left = -80.0
+offset_top = -10.0
+offset_right = 80.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Winch"
+horizontal_alignment = 1
+
+[node name="OreCart1" type="StaticBody2D" parent="."]
+position = Vector2(0, -260)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="OreCart1"]
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("2_cart")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OreCart1"]
+shape = SubResource("RectangleShape2D_60x40")
+
+[node name="OreCart2" type="StaticBody2D" parent="."]
+position = Vector2(0, 40)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="OreCart2"]
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("2_cart")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OreCart2"]
+shape = SubResource("RectangleShape2D_60x40")
+
+[node name="OreHeap" type="StaticBody2D" parent="."]
+position = Vector2(200, 90)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OreHeap"]
+shape = SubResource("RectangleShape2D_170x110")
+
+[node name="Visual" type="ColorRect" parent="OreHeap"]
+offset_left = -85.0
+offset_top = -55.0
+offset_right = 85.0
+offset_bottom = 55.0
+color = Color(0.4, 0.3, 0.26, 1)
+
+[node name="Sign" type="Label" parent="OreHeap"]
+z_index = 5
+offset_left = -85.0
+offset_top = -10.0
+offset_right = 85.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Ore heap"
+horizontal_alignment = 1
+
+[node name="SpoilHeap1" type="StaticBody2D" parent="."]
+position = Vector2(-380, -280)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpoilHeap1"]
+shape = SubResource("RectangleShape2D_220x120")
+
+[node name="Visual" type="ColorRect" parent="SpoilHeap1"]
+offset_left = -110.0
+offset_top = -60.0
+offset_right = 110.0
+offset_bottom = 60.0
+color = Color(0.33, 0.31, 0.29, 1)
+
+[node name="Sign" type="Label" parent="SpoilHeap1"]
+z_index = 5
+offset_left = -110.0
+offset_top = -10.0
+offset_right = 110.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Spoil heap"
+horizontal_alignment = 1
+
+[node name="SpoilHeap2" type="StaticBody2D" parent="."]
+position = Vector2(-520, -40)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpoilHeap2"]
+shape = SubResource("RectangleShape2D_160x100")
+
+[node name="Visual" type="ColorRect" parent="SpoilHeap2"]
+offset_left = -80.0
+offset_top = -50.0
+offset_right = 80.0
+offset_bottom = 50.0
+color = Color(0.33, 0.31, 0.29, 1)
+
+[node name="ForemansOffice" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(470, -160)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ForemansOffice"]
+shape = SubResource("RectangleShape2D_200x130")
+
+[node name="Visual" type="ColorRect" parent="ForemansOffice"]
+offset_left = -100.0
+offset_top = -65.0
+offset_right = 100.0
+offset_bottom = 65.0
+color = Color(0.4, 0.33, 0.25, 1)
+
+[node name="Roof" type="ColorRect" parent="ForemansOffice"]
+offset_left = -106.0
+offset_top = -67.0
+offset_right = 106.0
+offset_bottom = -43.0
+color = Color(0.28, 0.2, 0.12, 1)
+
+[node name="Sign" type="Label" parent="ForemansOffice"]
+z_index = 5
+offset_left = -100.0
+offset_top = -10.0
+offset_right = 100.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Foreman's Office"
+horizontal_alignment = 1
+
+[node name="Cottage1" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(-620, 330)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cottage1"]
+shape = SubResource("RectangleShape2D_120x90")
+
+[node name="Visual" type="ColorRect" parent="Cottage1"]
+offset_left = -60.0
+offset_top = -45.0
+offset_right = 60.0
+offset_bottom = 45.0
+color = Color(0.38, 0.33, 0.28, 1)
+
+[node name="Roof" type="ColorRect" parent="Cottage1"]
+offset_left = -66.0
+offset_top = -47.0
+offset_right = 66.0
+offset_bottom = -23.0
+color = Color(0.28, 0.24, 0.2, 1)
+
+[node name="Cottage2" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(-470, 330)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cottage2"]
+shape = SubResource("RectangleShape2D_120x90")
+
+[node name="Visual" type="ColorRect" parent="Cottage2"]
+offset_left = -60.0
+offset_top = -45.0
+offset_right = 60.0
+offset_bottom = 45.0
+color = Color(0.38, 0.33, 0.28, 1)
+
+[node name="Roof" type="ColorRect" parent="Cottage2"]
+offset_left = -66.0
+offset_top = -47.0
+offset_right = 66.0
+offset_bottom = -23.0
+color = Color(0.28, 0.24, 0.2, 1)
+
+[node name="Cottage3" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(-320, 330)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cottage3"]
+shape = SubResource("RectangleShape2D_120x90")
+
+[node name="Visual" type="ColorRect" parent="Cottage3"]
+offset_left = -60.0
+offset_top = -45.0
+offset_right = 60.0
+offset_bottom = 45.0
+color = Color(0.38, 0.33, 0.28, 1)
+
+[node name="Roof" type="ColorRect" parent="Cottage3"]
+offset_left = -66.0
+offset_top = -47.0
+offset_right = 66.0
+offset_bottom = -23.0
+color = Color(0.28, 0.24, 0.2, 1)
+
+[node name="Cottage4" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(-170, 330)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cottage4"]
+shape = SubResource("RectangleShape2D_120x90")
+
+[node name="Visual" type="ColorRect" parent="Cottage4"]
+offset_left = -60.0
+offset_top = -45.0
+offset_right = 60.0
+offset_bottom = 45.0
+color = Color(0.38, 0.33, 0.28, 1)
+
+[node name="Roof" type="ColorRect" parent="Cottage4"]
+offset_left = -66.0
+offset_top = -47.0
+offset_right = 66.0
+offset_bottom = -23.0
+color = Color(0.28, 0.24, 0.2, 1)
+
+[node name="MinersRowSign" type="Label" parent="."]
+z_index = 5
+offset_left = -495.0
+offset_top = 390.0
+offset_right = -295.0
+offset_bottom = 410.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 14
+text = "Miners' Row"
+horizontal_alignment = 1
+
+[node name="WashTrough" type="StaticBody2D" parent="."]
+position = Vector2(400, 330)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WashTrough"]
+shape = SubResource("RectangleShape2D_140x40")
+
+[node name="Visual" type="ColorRect" parent="WashTrough"]
+offset_left = -70.0
+offset_top = -20.0
+offset_right = 70.0
+offset_bottom = 20.0
+color = Color(0.28, 0.2, 0.12, 1)
+
+[node name="Sign" type="Label" parent="WashTrough"]
+z_index = 5
+offset_left = -80.0
+offset_top = -10.0
+offset_right = 80.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Wash trough"
+horizontal_alignment = 1
+
+[node name="StoryItems" type="Node2D" parent="."]
+
+[node name="ProtectionBox" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(470, -70)
+script = ExtResource("3_story_item")
+interaction_name = "Look under the tally desk"
+flag_to_set = "dagna_payment_box_found"
+discovery_text = "[b]An iron-bound strongbox[/b]
+
+Under the foreman's tally desk sits a strongbox that is not in the mine's accounts. Inside, coin is counted into bags of ten, ready to go. Scratched into the lid is one stroke for every new moon, three years of them, and beside the strokes a single word: ROAD.
+
+Dagna pays someone to leave the ore road alone, and the miners' pay has been short by exactly that much."
+reexamine_text = "ROAD, and three years of new moons scratched beneath it."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/ProtectionBox"]
+shape = SubResource("RectangleShape2D_80x68")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/ProtectionBox"]
+offset_left = -20.0
+offset_top = -14.0
+offset_right = 20.0
+offset_bottom = 14.0
+color = Color(0.3, 0.3, 0.32, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/ProtectionBox"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Look under the tally desk"
+horizontal_alignment = 1
+
+[node name="DeepVein" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(-170, -470)
+script = ExtResource("3_story_item")
+interaction_name = "Look at the boarded adit"
+flag_to_set = "deep_vein_salt_seen"
+discovery_text = "[b]The deep vein[/b]
+
+A lower adit has been boarded over and chalked: DEEP VEIN - CLOSED BY ORDER - D.H. Cold air breathes through the gaps. The timbers inside are furred with a white crust that tastes of salt and iron, and someone has scraped patches of it away with a knife, carefully, the way you gather something you mean to sell.
+
+The old miners say the deep-vein salt was worth more than the ore once, in the fever years."
+reexamine_text = "White salt crusts the timbers behind the boards."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/DeepVein"]
+shape = SubResource("RectangleShape2D_110x80")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/DeepVein"]
+offset_left = -35.0
+offset_top = -20.0
+offset_right = 35.0
+offset_bottom = 20.0
+color = Color(0.85, 0.85, 0.8, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/DeepVein"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Look at the boarded adit"
+horizontal_alignment = 1
+
+[node name="RidgeTrail" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(-660, -420)
+script = ExtResource("3_story_item")
+interaction_name = "Look up the ridge track"
+flag_to_set = "smugglers_trail_found"
+discovery_text = "[b]A track over the ridge[/b]
+
+Behind the spoil heaps a narrow track climbs west toward the ridge. Goats did not make these ruts. Narrow cart wheels, heavily loaded coming down to the mine, light going back up. A cairn at the bend carries a twist of iron wire.
+
+West, over that ridge, lies the Darkwood. No crown map shows this path."
+reexamine_text = "The ridge track climbs west toward the Darkwood."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/RidgeTrail"]
+shape = SubResource("RectangleShape2D_80x80")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/RidgeTrail"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.5, 0.45, 0.38, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/RidgeTrail"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Look up the ridge track"
+horizontal_alignment = 1
+
+[node name="OreRoadEnd" type="Area2D" parent="."]
+z_index = 6
+position = Vector2(0, 520)
+script = ExtResource("4_travel_point")
+interaction_name = "Take the ore road"
+from_location = "greystone_mines"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OreRoadEnd"]
+shape = SubResource("RectangleShape2D_140x60")
+
+[node name="Visual" type="ColorRect" parent="OreRoadEnd"]
+offset_left = -70.0
+offset_top = -15.0
+offset_right = 70.0
+offset_bottom = 15.0
+color = Color(0.55, 0.42, 0.22, 1)
+
+[node name="RoadSign" type="Label" parent="OreRoadEnd"]
+z_index = 5
+offset_left = -120.0
+offset_top = 26.0
+offset_right = 120.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0.94, 0.75, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 13
+text = "Take the ore road"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="OreRoadEnd"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Take the ore road"
+horizontal_alignment = 1
+
+[node name="Bounds" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Bounds"]
+position = Vector2(0, -600)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bounds/North"]
+shape = SubResource("RectangleShape2D_1680x40")
+
+[node name="South" type="StaticBody2D" parent="Bounds"]
+position = Vector2(0, 600)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bounds/South"]
+shape = SubResource("RectangleShape2D_1680x40")
+
+[node name="West" type="StaticBody2D" parent="Bounds"]
+position = Vector2(-800, 0)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bounds/West"]
+shape = SubResource("RectangleShape2D_40x1200")
+
+[node name="East" type="StaticBody2D" parent="Bounds"]
+position = Vector2(800, 0)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bounds/East"]
+shape = SubResource("RectangleShape2D_40x1200")
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 420)
+
+[node name="from_travel" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 450)
+
+[node name="Player" parent="." instance=ExtResource("5_player")]
+z_index = 10
+position = Vector2(0, 450)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(1.5, 1.5)
+limit_left = -800
+limit_top = -600
+limit_right = 800
+limit_bottom = 600
+position_smoothing_enabled = true
+position_smoothing_speed = 5.0
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("6_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[node name="DebugInteractionPanel" parent="DialogueUI" instance=ExtResource("7_debug_interaction_panel")]
+visible = false
+
+[node name="DebugConsole" parent="." instance=ExtResource("8_debug_console")]
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

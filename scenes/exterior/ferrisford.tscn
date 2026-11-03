@@ -1,0 +1,702 @@
+[gd_scene load_steps=21 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="2_story_item"]
+[ext_resource type="Script" path="res://scripts/world/travel_point.gd" id="3_travel_point"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="4_player"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="5_dialogue_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="6_debug_interaction_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="7_debug_console"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_300x1200"]
+size = Vector2(300, 1200)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_170x120"]
+size = Vector2(170, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_200x140"]
+size = Vector2(200, 140)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_120x20"]
+size = Vector2(120, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_20x20"]
+size = Vector2(20, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40x40"]
+size = Vector2(40, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_50x120"]
+size = Vector2(50, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_66x80"]
+size = Vector2(66, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_60x90"]
+size = Vector2(60, 90)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_100x80"]
+size = Vector2(100, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_120x70"]
+size = Vector2(120, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1680x40"]
+size = Vector2(1680, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40x1200"]
+size = Vector2(40, 1200)
+
+[node name="Ferrisford" type="Node2D"]
+
+[node name="SceneBackground" type="Node2D" parent="."]
+z_index = -10
+
+[node name="Ground" type="ColorRect" parent="SceneBackground"]
+offset_left = -800.0
+offset_top = -600.0
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.26, 0.34, 0.18, 1)
+
+[node name="Kingsroad" type="ColorRect" parent="SceneBackground"]
+offset_left = -800.0
+offset_top = -45.0
+offset_right = 120.0
+offset_bottom = 45.0
+color = Color(0.45, 0.37, 0.25, 1)
+
+[node name="Quay" type="ColorRect" parent="SceneBackground"]
+offset_left = 90.0
+offset_top = -130.0
+offset_right = 210.0
+offset_bottom = 130.0
+color = Color(0.42, 0.3, 0.18, 1)
+
+[node name="EastBank" type="ColorRect" parent="SceneBackground"]
+offset_left = 520.0
+offset_top = -600.0
+offset_right = 820.0
+offset_bottom = 600.0
+color = Color(0.24, 0.32, 0.17, 1)
+
+[node name="Mud" type="ColorRect" parent="SceneBackground"]
+offset_left = 190.0
+offset_top = -600.0
+offset_right = 220.0
+offset_bottom = 600.0
+color = Color(0.3, 0.26, 0.18, 1)
+
+[node name="RoadSign" type="Label" parent="SceneBackground"]
+z_index = 5
+offset_left = -750.0
+offset_top = -80.0
+offset_right = -450.0
+offset_bottom = -60.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 13
+text = "The Kingsroad - west to Thornhaven"
+horizontal_alignment = 1
+
+[node name="River" type="StaticBody2D" parent="."]
+z_index = -5
+position = Vector2(370, 0)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="River"]
+shape = SubResource("RectangleShape2D_300x1200")
+
+[node name="Visual" type="ColorRect" parent="River"]
+offset_left = -150.0
+offset_top = -600.0
+offset_right = 150.0
+offset_bottom = 600.0
+color = Color(0.18, 0.3, 0.42, 1)
+
+[node name="RiverName" type="Label" parent="River"]
+z_index = 5
+offset_left = -100.0
+offset_top = -490.0
+offset_right = 100.0
+offset_bottom = -470.0
+theme_override_colors/font_color = Color(0.75, 0.85, 0.95, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 16
+text = "River Ferris"
+horizontal_alignment = 1
+
+[node name="Boats" type="Node2D" parent="."]
+z_index = -4
+
+[node name="FerryRope" type="ColorRect" parent="Boats"]
+offset_left = 220.0
+offset_top = -4.0
+offset_right = 520.0
+offset_bottom = 0.0
+color = Color(0.6, 0.5, 0.3, 1)
+
+[node name="FerryRaft" type="ColorRect" parent="Boats"]
+offset_left = 230.0
+offset_top = -45.0
+offset_right = 350.0
+offset_bottom = 45.0
+color = Color(0.5, 0.36, 0.2, 1)
+
+[node name="FerryRaftSign" type="Label" parent="Boats"]
+z_index = 5
+offset_left = 190.0
+offset_top = 50.0
+offset_right = 390.0
+offset_bottom = 70.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Ferry raft"
+horizontal_alignment = 1
+
+[node name="BargeNorth" type="ColorRect" parent="Boats"]
+offset_left = 355.0
+offset_top = -450.0
+offset_right = 465.0
+offset_bottom = -210.0
+color = Color(0.36, 0.25, 0.15, 1)
+
+[node name="BargeNorthCargo" type="ColorRect" parent="Boats"]
+offset_left = 375.0
+offset_top = -405.0
+offset_right = 445.0
+offset_bottom = -255.0
+color = Color(0.55, 0.5, 0.38, 1)
+
+[node name="BargeSouth" type="ColorRect" parent="Boats"]
+offset_left = 355.0
+offset_top = 200.0
+offset_right = 465.0
+offset_bottom = 440.0
+color = Color(0.34, 0.24, 0.14, 1)
+
+[node name="BargeSign" type="Label" parent="Boats"]
+z_index = 5
+offset_left = 290.0
+offset_top = 180.0
+offset_right = 530.0
+offset_bottom = 200.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Barges, east to the Capitol"
+horizontal_alignment = 1
+
+[node name="TollHut" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(-200, -230)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TollHut"]
+shape = SubResource("RectangleShape2D_170x120")
+
+[node name="Visual" type="ColorRect" parent="TollHut"]
+offset_left = -85.0
+offset_top = -60.0
+offset_right = 85.0
+offset_bottom = 60.0
+color = Color(0.4, 0.28, 0.16, 1)
+
+[node name="Roof" type="ColorRect" parent="TollHut"]
+offset_left = -91.0
+offset_top = -62.0
+offset_right = 91.0
+offset_bottom = -38.0
+color = Color(0.28, 0.2, 0.12, 1)
+
+[node name="Sign" type="Label" parent="TollHut"]
+z_index = 5
+offset_left = -85.0
+offset_top = -10.0
+offset_right = 85.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Toll Hut"
+horizontal_alignment = 1
+
+[node name="FerrymanCottage" type="StaticBody2D" parent="."]
+z_index = 20
+position = Vector2(-560, -330)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FerrymanCottage"]
+shape = SubResource("RectangleShape2D_200x140")
+
+[node name="Visual" type="ColorRect" parent="FerrymanCottage"]
+offset_left = -100.0
+offset_top = -70.0
+offset_right = 100.0
+offset_bottom = 70.0
+color = Color(0.42, 0.32, 0.2, 1)
+
+[node name="Roof" type="ColorRect" parent="FerrymanCottage"]
+offset_left = -106.0
+offset_top = -72.0
+offset_right = 106.0
+offset_bottom = -48.0
+color = Color(0.28, 0.2, 0.12, 1)
+
+[node name="Sign" type="Label" parent="FerrymanCottage"]
+z_index = 5
+offset_left = -100.0
+offset_top = -10.0
+offset_right = 100.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Ferryman's Cottage"
+horizontal_alignment = 1
+
+[node name="TollBoard" type="StaticBody2D" parent="."]
+position = Vector2(-40, -110)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TollBoard"]
+shape = SubResource("RectangleShape2D_120x20")
+
+[node name="Visual" type="ColorRect" parent="TollBoard"]
+offset_left = -60.0
+offset_top = -10.0
+offset_right = 60.0
+offset_bottom = 10.0
+color = Color(0.28, 0.2, 0.12, 1)
+
+[node name="TollBoardText" type="Label" parent="TollBoard"]
+z_index = 5
+offset_left = -210.0
+offset_top = -34.0
+offset_right = 210.0
+offset_bottom = -14.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "FERRISFORD TOLL: foot 1d, horse 3d, cart 6d, barges by arrangement"
+horizontal_alignment = 1
+
+[node name="Bollard1" type="StaticBody2D" parent="."]
+position = Vector2(130, -110)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bollard1"]
+shape = SubResource("RectangleShape2D_20x20")
+
+[node name="Visual" type="ColorRect" parent="Bollard1"]
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+color = Color(0.28, 0.2, 0.12, 1)
+
+[node name="Bollard2" type="StaticBody2D" parent="."]
+position = Vector2(130, 110)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bollard2"]
+shape = SubResource("RectangleShape2D_20x20")
+
+[node name="Visual" type="ColorRect" parent="Bollard2"]
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+color = Color(0.28, 0.2, 0.12, 1)
+
+[node name="Willow1" type="StaticBody2D" parent="."]
+z_index = 30
+position = Vector2(-700, 380)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Willow1"]
+shape = SubResource("RectangleShape2D_40x40")
+
+[node name="Visual" type="ColorRect" parent="Willow1"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.2, 0.36, 0.16, 1)
+
+[node name="Willow2" type="StaticBody2D" parent="."]
+z_index = 30
+position = Vector2(-420, 480)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Willow2"]
+shape = SubResource("RectangleShape2D_40x40")
+
+[node name="Visual" type="ColorRect" parent="Willow2"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.2, 0.36, 0.16, 1)
+
+[node name="Willow3" type="StaticBody2D" parent="."]
+z_index = 30
+position = Vector2(-120, 520)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Willow3"]
+shape = SubResource("RectangleShape2D_40x40")
+
+[node name="Visual" type="ColorRect" parent="Willow3"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.2, 0.36, 0.16, 1)
+
+[node name="Willow4" type="StaticBody2D" parent="."]
+z_index = 30
+position = Vector2(-720, -520)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Willow4"]
+shape = SubResource("RectangleShape2D_40x40")
+
+[node name="Visual" type="ColorRect" parent="Willow4"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.2, 0.36, 0.16, 1)
+
+[node name="Willow5" type="StaticBody2D" parent="."]
+z_index = 30
+position = Vector2(-300, -520)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Willow5"]
+shape = SubResource("RectangleShape2D_40x40")
+
+[node name="Visual" type="ColorRect" parent="Willow5"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.2, 0.36, 0.16, 1)
+
+[node name="Reeds1" type="StaticBody2D" parent="."]
+position = Vector2(170, -440)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Reeds1"]
+shape = SubResource("RectangleShape2D_50x120")
+
+[node name="Visual" type="ColorRect" parent="Reeds1"]
+offset_left = -25.0
+offset_top = -60.0
+offset_right = 25.0
+offset_bottom = 60.0
+color = Color(0.36, 0.42, 0.2, 1)
+
+[node name="Reeds2" type="StaticBody2D" parent="."]
+position = Vector2(170, 440)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Reeds2"]
+shape = SubResource("RectangleShape2D_50x120")
+
+[node name="Visual" type="ColorRect" parent="Reeds2"]
+offset_left = -25.0
+offset_top = -60.0
+offset_right = 25.0
+offset_bottom = 60.0
+color = Color(0.36, 0.42, 0.2, 1)
+
+[node name="StoryItems" type="Node2D" parent="."]
+
+[node name="TallySticks" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(-95, -200)
+script = ExtResource("2_story_item")
+interaction_name = "Look at the tally sticks"
+flag_to_set = "oskar_tally_seen"
+discovery_text = "[b]Oskar's tally sticks[/b]
+
+Inside the toll-hut door hangs a bundle of hazel sticks, notched and split down the middle the way honest men keep a debt, one half for each party. But nobody holds the other halves.
+
+Each notch is a barge Oskar has taken across for the Hollow men, three years of them, and the end of every stick is burned with a small mark: a day, a cargo, a name he overheard. It is the only honest account of the Hollow's river trade in the kingdom, and it hangs where anyone who knew to look could take it."
+reexamine_text = "The tally sticks hang inside the door. Three years of notches."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/TallySticks"]
+shape = SubResource("RectangleShape2D_66x80")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/TallySticks"]
+offset_left = -13.0
+offset_top = -20.0
+offset_right = 13.0
+offset_bottom = 20.0
+color = Color(0.65, 0.55, 0.35, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/TallySticks"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Look at the tally sticks"
+horizontal_alignment = 1
+
+[node name="BrotherMarker" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(120, 400)
+script = ExtResource("2_story_item")
+interaction_name = "Look at the marker"
+flag_to_set = "oskar_brother_marker_seen"
+discovery_text = "[b]A marker on the bank[/b]
+
+A driftwood post is sunk deep where the current runs fastest, with a ferryman's pole lashed across it. The letters cut into it have been cut again, year after year, so the river cannot wear them away:
+
+HE WOULD NOT CARRY THEIRS.
+
+River flowers, still fresh, are tied at its foot. Oskar's brother drowned saying no."
+reexamine_text = "Someone has tied fresh flowers to the post again."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/BrotherMarker"]
+shape = SubResource("RectangleShape2D_60x90")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/BrotherMarker"]
+offset_left = -10.0
+offset_top = -25.0
+offset_right = 10.0
+offset_bottom = 25.0
+color = Color(0.55, 0.48, 0.38, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/BrotherMarker"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Look at the marker"
+horizontal_alignment = 1
+
+[node name="CargoBales" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(60, 70)
+script = ExtResource("2_story_item")
+interaction_name = "Look at the waiting bales"
+flag_to_set = "ferrisford_unmarked_cargo_seen"
+discovery_text = "[b]Bales on the quay[/b]
+
+Bales wait for the next barge east: good wool and crated ironwork, wrapped in sacking with no guild seal and no tithe stamp. The only mark is a twist of iron wire round every knot.
+
+The bargemen do not look at them, or at you."
+reexamine_text = "Iron wire round every knot, and no tithe stamp anywhere."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/CargoBales"]
+shape = SubResource("RectangleShape2D_100x80")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/CargoBales"]
+offset_left = -30.0
+offset_top = -20.0
+offset_right = 30.0
+offset_bottom = 20.0
+color = Color(0.6, 0.55, 0.4, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/CargoBales"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Look at the waiting bales"
+horizontal_alignment = 1
+
+[node name="Landing" type="Area2D" parent="."]
+z_index = 6
+position = Vector2(40, -10)
+script = ExtResource("3_travel_point")
+interaction_name = "Travel (road or barge)"
+from_location = "ferrisford"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Landing"]
+shape = SubResource("RectangleShape2D_120x70")
+
+[node name="Visual" type="ColorRect" parent="Landing"]
+offset_left = -60.0
+offset_top = -17.5
+offset_right = 60.0
+offset_bottom = 17.5
+color = Color(0.55, 0.42, 0.22, 1)
+
+[node name="RoadSign" type="Label" parent="Landing"]
+z_index = 5
+offset_left = -120.0
+offset_top = 31.0
+offset_right = 120.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0.94, 0.75, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 13
+text = "Travel (road or barge)"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="Landing"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Travel (road or barge)"
+horizontal_alignment = 1
+
+[node name="Bounds" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Bounds"]
+position = Vector2(0, -600)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bounds/North"]
+shape = SubResource("RectangleShape2D_1680x40")
+
+[node name="South" type="StaticBody2D" parent="Bounds"]
+position = Vector2(0, 600)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bounds/South"]
+shape = SubResource("RectangleShape2D_1680x40")
+
+[node name="West" type="StaticBody2D" parent="Bounds"]
+position = Vector2(-800, 0)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bounds/West"]
+shape = SubResource("RectangleShape2D_40x1200")
+
+[node name="East" type="StaticBody2D" parent="Bounds"]
+position = Vector2(800, 0)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bounds/East"]
+shape = SubResource("RectangleShape2D_40x1200")
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-300, 40)
+
+[node name="from_travel" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-120, 40)
+
+[node name="Player" parent="." instance=ExtResource("4_player")]
+z_index = 10
+position = Vector2(-120, 40)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(1.5, 1.5)
+limit_left = -800
+limit_top = -600
+limit_right = 800
+limit_bottom = 600
+position_smoothing_enabled = true
+position_smoothing_speed = 5.0
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("5_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[node name="DebugInteractionPanel" parent="DialogueUI" instance=ExtResource("6_debug_interaction_panel")]
+visible = false
+
+[node name="DebugConsole" parent="." instance=ExtResource("7_debug_console")]
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

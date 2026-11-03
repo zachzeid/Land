@@ -1,0 +1,632 @@
+[gd_scene load_steps=24 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/world_solid.gd" id="1_world_solid"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/tavern_fireplace.png" id="2_tavern_fireplace"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/tavern_bar.png" id="3_tavern_bar"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/tavern_table.png" id="4_tavern_table"]
+[ext_resource type="Texture2D" path="res://assets/generated/interiors/furniture/crates_barrels.png" id="5_crates_barrels"]
+[ext_resource type="Script" path="res://scripts/world/story_item.gd" id="6_story_item"]
+[ext_resource type="Script" path="res://scripts/world/travel_point.gd" id="7_travel_point"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="8_dialogue_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_interaction_panel.tscn" id="9_debug_interaction_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_console.tscn" id="10_debug_console"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1536x40"]
+size = Vector2(1536, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40x1456"]
+size = Vector2(40, 1456)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_200x90"]
+size = Vector2(200, 90)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_260x70"]
+size = Vector2(260, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_50x50"]
+size = Vector2(50, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_140x260"]
+size = Vector2(140, 260)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_140x70"]
+size = Vector2(140, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_60x120"]
+size = Vector2(60, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_160x80"]
+size = Vector2(160, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_76x64"]
+size = Vector2(76, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80x68"]
+size = Vector2(80, 68)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80x80"]
+size = Vector2(80, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_140x60"]
+size = Vector2(140, 60)
+
+[node name="KingsroadWaystation" type="Node2D"]
+
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -768.0
+offset_top = -768.0
+offset_right = 768.0
+offset_bottom = 768.0
+color = Color(0.3, 0.24, 0.18, 1)
+
+[node name="FloorBoards" type="ColorRect" parent="Floor"]
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 1496.0
+offset_bottom = 1496.0
+color = Color(0.38, 0.3, 0.22, 1)
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, -748)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/North"]
+shape = SubResource("RectangleShape2D_1536x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/North"]
+offset_left = -768.0
+offset_top = -20.0
+offset_right = 768.0
+offset_bottom = 20.0
+color = Color(0.42, 0.32, 0.22, 1)
+
+[node name="South" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, 748)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/South"]
+shape = SubResource("RectangleShape2D_1536x40")
+
+[node name="Visual" type="ColorRect" parent="Walls/South"]
+offset_left = -768.0
+offset_top = -20.0
+offset_right = 768.0
+offset_bottom = 20.0
+color = Color(0.42, 0.32, 0.22, 1)
+
+[node name="West" type="StaticBody2D" parent="Walls"]
+position = Vector2(-748, 0)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/West"]
+shape = SubResource("RectangleShape2D_40x1456")
+
+[node name="Visual" type="ColorRect" parent="Walls/West"]
+offset_left = -20.0
+offset_top = -728.0
+offset_right = 20.0
+offset_bottom = 728.0
+color = Color(0.42, 0.32, 0.22, 1)
+
+[node name="East" type="StaticBody2D" parent="Walls"]
+position = Vector2(748, 0)
+collision_layer = 4
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/East"]
+shape = SubResource("RectangleShape2D_40x1456")
+
+[node name="Visual" type="ColorRect" parent="Walls/East"]
+offset_left = -20.0
+offset_top = -728.0
+offset_right = 20.0
+offset_bottom = 728.0
+color = Color(0.42, 0.32, 0.22, 1)
+
+[node name="Rooms" type="Node2D" parent="."]
+z_index = -9
+
+[node name="CommonRoomRug" type="ColorRect" parent="Rooms"]
+offset_left = -330.0
+offset_top = -310.0
+offset_right = 570.0
+offset_bottom = 390.0
+color = Color(0.42, 0.33, 0.24, 1)
+
+[node name="BunkRoomFloor" type="ColorRect" parent="Rooms"]
+offset_left = -710.0
+offset_top = -330.0
+offset_right = -410.0
+offset_bottom = 570.0
+color = Color(0.33, 0.27, 0.2, 1)
+
+[node name="Partition" type="ColorRect" parent="Rooms"]
+offset_left = -408.0
+offset_top = -340.0
+offset_right = -392.0
+offset_bottom = 220.0
+color = Color(0.42, 0.32, 0.22, 1)
+
+[node name="BunkRoomSign" type="Label" parent="Rooms"]
+z_index = 5
+offset_left = -660.0
+offset_top = -410.0
+offset_right = -460.0
+offset_bottom = -390.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 14
+text = "Couriers' Bunks"
+horizontal_alignment = 1
+
+[node name="CommonRoomSign" type="Label" parent="Rooms"]
+z_index = 5
+offset_left = -40.0
+offset_top = -340.0
+offset_right = 280.0
+offset_bottom = -320.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 14
+text = "The Halfway House - common room"
+horizontal_alignment = 1
+
+[node name="Furniture" type="Node2D" parent="."]
+z_index = 5
+
+[node name="Hearth" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-200, -640)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Hearth"]
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("2_tavern_fireplace")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Hearth"]
+shape = SubResource("RectangleShape2D_200x90")
+
+[node name="Counter" type="StaticBody2D" parent="Furniture"]
+position = Vector2(400, -560)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Furniture/Counter"]
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("3_tavern_bar")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Counter"]
+shape = SubResource("RectangleShape2D_260x70")
+
+[node name="Table1" type="Sprite2D" parent="Furniture"]
+position = Vector2(-60, -120)
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("4_tavern_table")
+
+[node name="Table2" type="Sprite2D" parent="Furniture"]
+position = Vector2(260, -120)
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("4_tavern_table")
+
+[node name="Table3" type="Sprite2D" parent="Furniture"]
+position = Vector2(-60, 220)
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("4_tavern_table")
+
+[node name="Table4" type="Sprite2D" parent="Furniture"]
+position = Vector2(260, 220)
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("4_tavern_table")
+
+[node name="Barrels" type="Sprite2D" parent="Furniture"]
+position = Vector2(640, -380)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("5_crates_barrels")
+
+[node name="WrenChair" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-60, -600)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/WrenChair"]
+shape = SubResource("RectangleShape2D_50x50")
+
+[node name="Visual" type="ColorRect" parent="Furniture/WrenChair"]
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+color = Color(0.45, 0.2, 0.15, 1)
+
+[node name="Stairs" type="StaticBody2D" parent="Furniture"]
+position = Vector2(620, 300)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Stairs"]
+shape = SubResource("RectangleShape2D_140x260")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Stairs"]
+offset_left = -70.0
+offset_top = -130.0
+offset_right = 70.0
+offset_bottom = 130.0
+color = Color(0.32, 0.24, 0.16, 1)
+
+[node name="Sign" type="Label" parent="Furniture/Stairs"]
+z_index = 5
+offset_left = -80.0
+offset_top = -10.0
+offset_right = 80.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Stairs to the rooms"
+horizontal_alignment = 1
+
+[node name="Bunk1" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-620, -260)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Bunk1"]
+shape = SubResource("RectangleShape2D_140x70")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Bunk1"]
+offset_left = -70.0
+offset_top = -35.0
+offset_right = 70.0
+offset_bottom = 35.0
+color = Color(0.5, 0.42, 0.3, 1)
+
+[node name="Bunk2" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-620, -90)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Bunk2"]
+shape = SubResource("RectangleShape2D_140x70")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Bunk2"]
+offset_left = -70.0
+offset_top = -35.0
+offset_right = 70.0
+offset_bottom = 35.0
+color = Color(0.5, 0.42, 0.3, 1)
+
+[node name="Bunk3" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-620, 80)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Bunk3"]
+shape = SubResource("RectangleShape2D_140x70")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Bunk3"]
+offset_left = -70.0
+offset_top = -35.0
+offset_right = 70.0
+offset_bottom = 35.0
+color = Color(0.5, 0.42, 0.3, 1)
+
+[node name="Bunk4" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-620, 250)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/Bunk4"]
+shape = SubResource("RectangleShape2D_140x70")
+
+[node name="Visual" type="ColorRect" parent="Furniture/Bunk4"]
+offset_left = -70.0
+offset_top = -35.0
+offset_right = 70.0
+offset_bottom = 35.0
+color = Color(0.5, 0.42, 0.3, 1)
+
+[node name="SaddleRack" type="StaticBody2D" parent="Furniture"]
+position = Vector2(-470, 520)
+script = ExtResource("1_world_solid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture/SaddleRack"]
+shape = SubResource("RectangleShape2D_60x120")
+
+[node name="Visual" type="ColorRect" parent="Furniture/SaddleRack"]
+offset_left = -30.0
+offset_top = -60.0
+offset_right = 30.0
+offset_bottom = 60.0
+color = Color(0.28, 0.2, 0.12, 1)
+
+[node name="Sign" type="Label" parent="Furniture/SaddleRack"]
+z_index = 5
+offset_left = -80.0
+offset_top = -10.0
+offset_right = 80.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Saddles"
+horizontal_alignment = 1
+
+[node name="StoryItems" type="Node2D" parent="."]
+
+[node name="LetterRack" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(640, -660)
+script = ExtResource("6_story_item")
+interaction_name = "Look at the letter rack"
+flag_to_set = "wren_letter_rack_seen"
+discovery_text = "[b]Old Wren's letter rack[/b]
+
+Behind the counter is a wall of pigeonholes, each chalked with a destination: THORNHAVEN, GREYSTONE, ASHGUARD, BRACKENMOOR, THE CAPITOL, PALACE HILL. Couriers leave their bags with Wren overnight, and she keeps them dry.
+
+Look closer and some of the seals sit a little proud of the paper, as if they had been lifted with a warm knife and pressed down again. In the CAPITOL slot lies a letter from Thornhaven in plain brown wax with no crest, addressed in a careful hand to the Merchants' Guildhall, 'for the lady's attention.'"
+reexamine_text = "The pigeonholes are full again. You are fairly sure now that Wren reads every one."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/LetterRack"]
+shape = SubResource("RectangleShape2D_160x80")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/LetterRack"]
+offset_left = -60.0
+offset_top = -20.0
+offset_right = 60.0
+offset_bottom = 20.0
+color = Color(0.85, 0.78, 0.6, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/LetterRack"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Look at the letter rack"
+horizontal_alignment = 1
+
+[node name="SealKit" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(40, -620)
+script = ExtResource("6_story_item")
+interaction_name = "Look at the side table"
+flag_to_set = "wren_seal_kit_seen"
+discovery_text = "[b]Wren's side table[/b]
+
+Beside Wren's chair at the hearth: a tin of sealing wax in a dozen colours, a thin bone knife warming on the hearthstone, and a row of small brass seals. A merchant's mark. A chapter house's. One bears the crown's own lion, worn smooth with use.
+
+Wren served the crown as an intelligencer once. She never gave the tools back."
+reexamine_text = "The bone knife is still warm."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/SealKit"]
+shape = SubResource("RectangleShape2D_76x64")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/SealKit"]
+offset_left = -18.0
+offset_top = -12.0
+offset_right = 18.0
+offset_bottom = 12.0
+color = Color(0.6, 0.15, 0.12, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/SealKit"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Look at the side table"
+horizontal_alignment = 1
+
+[node name="CourierBook" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(220, -495)
+script = ExtResource("6_story_item")
+interaction_name = "Read the courier book"
+flag_to_set = "waystation_courier_log_read"
+discovery_text = "[b]The courier book[/b]
+
+Every rider who sleeps here signs Wren's book: name, from where, bound where. Two entries stand out.
+
+A King's Ranger came west three nights ago, asking the road to Thornhaven and how many men the village keeps under arms.
+
+And a Guild courier rides east every new moon, always the morning after a rider has come in from Thornhaven."
+reexamine_text = "The courier book. A Guild rider east every new moon, a Thornhaven rider the night before."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/CourierBook"]
+shape = SubResource("RectangleShape2D_80x68")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/CourierBook"]
+offset_left = -20.0
+offset_top = -14.0
+offset_right = 20.0
+offset_bottom = 14.0
+color = Color(0.35, 0.25, 0.15, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/CourierBook"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Read the courier book"
+horizontal_alignment = 1
+
+[node name="GameBoard" type="Area2D" parent="StoryItems"]
+z_index = 6
+position = Vector2(-120, -560)
+script = ExtResource("6_story_item")
+interaction_name = "Look at the game board"
+flag_to_set = ""
+discovery_text = "[b]A game of fox and geese[/b]
+
+A worn board sits on a stool by Wren's chair, mid-game. The fox is almost hemmed in, but not quite. Whoever plays the geese has been very patient.
+
+Wren says she is waiting for one last game worth playing."
+reexamine_text = "The fox has not moved. Neither have the geese."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StoryItems/GameBoard"]
+shape = SubResource("RectangleShape2D_80x80")
+
+[node name="Visual" type="ColorRect" parent="StoryItems/GameBoard"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.6, 0.52, 0.36, 1)
+
+[node name="InteractionPrompt" type="Label" parent="StoryItems/GameBoard"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Look at the game board"
+horizontal_alignment = 1
+
+[node name="RoadDoor" type="Area2D" parent="."]
+z_index = 6
+position = Vector2(0, 700)
+script = ExtResource("7_travel_point")
+interaction_name = "Take the Kingsroad"
+from_location = "kingsroad_waystation"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoadDoor"]
+shape = SubResource("RectangleShape2D_140x60")
+
+[node name="Visual" type="ColorRect" parent="RoadDoor"]
+offset_left = -70.0
+offset_top = -15.0
+offset_right = 70.0
+offset_bottom = 15.0
+color = Color(0.55, 0.42, 0.22, 1)
+
+[node name="RoadSign" type="Label" parent="RoadDoor"]
+z_index = 5
+offset_left = -120.0
+offset_top = 26.0
+offset_right = 120.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0.94, 0.75, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 13
+text = "Take the Kingsroad"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="RoadDoor"]
+z_index = 10
+visible = false
+offset_left = -110.0
+offset_top = -48.0
+offset_right = 110.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "[E] Take the Kingsroad"
+horizontal_alignment = 1
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 560)
+
+[node name="from_travel" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, 600)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.7, 0.7)
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+script = ExtResource("8_dialogue_ui")
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogueUI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="NPCName" type="Label" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PlayerInput" type="LineEdit" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type your response..."
+
+[node name="SendButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "Send"
+
+[node name="EndButton" type="Button" parent="DialogueUI/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "End Conversation"
+
+[node name="DebugInteractionPanel" parent="DialogueUI" instance=ExtResource("9_debug_interaction_panel")]
+visible = false
+
+[node name="DebugConsole" parent="." instance=ExtResource("10_debug_console")]
+
+[connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
+[connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

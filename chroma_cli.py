@@ -109,6 +109,25 @@ def get_by_id(collection_name, memory_id):
     except Exception as e:
         print(json.dumps({"error": str(e)}))
 
+def get_where(collection_name, where_b64, limit=10):
+    """Exact metadata match (no embedding). where is base64 JSON {key: value, ...}"""
+    try:
+        where = json.loads(base64.b64decode(where_b64).decode('utf-8'))
+        collection = client.get_collection(name=collection_name)
+        conditions = [{key: value} for key, value in where.items()]
+        where_filter = conditions[0] if len(conditions) == 1 else {"$and": conditions}
+        results = collection.get(where=where_filter, limit=limit)
+        memories = []
+        for i, memory_id in enumerate(results.get('ids', [])):
+            memories.append({
+                "id": memory_id,
+                "document": results['documents'][i] if results.get('documents') else "",
+                "metadata": results['metadatas'][i] if results.get('metadatas') else {}
+            })
+        print(json.dumps({"success": True, "memories": memories}))
+    except Exception as e:
+        print(json.dumps({"error": str(e), "memories": []}))
+
 def delete_collection(collection_name):
     """Delete a collection and all its data"""
     try:
@@ -166,6 +185,9 @@ if __name__ == "__main__":
             collection_name = sys.argv[2]
             memory_id = sys.argv[3]
             get_by_id(collection_name, memory_id)
+
+        elif command == "get_where":
+            get_where(sys.argv[2], sys.argv[3], int(sys.argv[4]) if len(sys.argv) > 4 else 10)
 
         elif command == "delete_collection":
             collection_name = sys.argv[2]

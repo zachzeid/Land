@@ -44,8 +44,8 @@
 
 | Task | Priority | Notes |
 |------|----------|-------|
-| Evidence Discovery Triggers | P1 | Area2D triggers for ledger, weapons |
-| NPC Event Propagation | P1 | NPCs auto-learn from world events |
+| Evidence Discovery Triggers | ✅ Done | Ledger (shop), order book (smithy), marked weapons (Iron Hollow) via `StoryItem` |
+| NPC Event Propagation | ✅ Done | `event_propagator.gd`: witnesses + delayed gossip + pending delivery; test: `scripts/debug/test_event_propagation.gd` |
 | Sample Quest Content | P2 | Create main quest chain |
 
 ---

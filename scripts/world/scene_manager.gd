@@ -4,6 +4,8 @@ extends Node
 
 # Preload BaseInterior for static validation method
 const BaseInteriorClass = preload("res://scripts/world/base_interior.gd")
+const NpcSpawnerScript = preload("res://scripts/world/npc_spawner.gd")
+const OpeningSequenceScript = preload("res://scripts/world/opening_sequence.gd")
 
 ## Signals
 signal scene_transition_started(from_location: String, to_location: String)
@@ -29,6 +31,11 @@ var fade_tween: Tween = null
 ## Default fade duration
 const DEFAULT_FADE_DURATION = 0.3
 
+## Puts world.json NPCs into the scene that matches where they are
+var npc_spawner: Node = null
+## The Tithe Night's opening (the drawing in the chapel); GameWorld asks it to play on a new game
+var opening: Node = null
+
 func _ready():
 	# Load player scene
 	player_scene = load("res://scenes/player/player.tscn")
@@ -38,6 +45,19 @@ func _ready():
 
 	# Load all location resources
 	_load_locations()
+
+	npc_spawner = NpcSpawnerScript.new()
+	npc_spawner.name = "NpcSpawner"
+	add_child(npc_spawner)
+	opening = OpeningSequenceScript.new()
+	opening.name = "OpeningSequence"
+	add_child(opening)
+	var bus = get_node_or_null("/root/EventBus")
+	if bus:
+		# NPCs leaving or arriving change who belongs in the current scene
+		bus.npc_travel_started.connect(func(_id, _from, _to, _arrive): refresh_npcs())
+		bus.npc_arrived.connect(func(_id, _location): refresh_npcs())
+	call_deferred("_adopt_initial_scene")
 
 	print("[SceneManager] Initialized with %d locations" % locations.size())
 
@@ -84,7 +104,8 @@ func get_location(location_id: String) -> Resource:
 	return locations.get(location_id, null)
 
 ## Transition to a new location
-func transition_to(location_id: String, spawn_point: String = "default", fade_duration: float = DEFAULT_FADE_DURATION):
+## walk_time = false: no route minutes pass (the opening places the player without walking)
+func transition_to(location_id: String, spawn_point: String = "default", fade_duration: float = DEFAULT_FADE_DURATION, walk_time: bool = true):
 	var target_location = get_location(location_id)
 	if target_location == null:
 		push_error("[SceneManager] Unknown location: %s" % location_id)
@@ -96,6 +117,11 @@ func transition_to(location_id: String, spawn_point: String = "default", fade_du
 	# Store spawn point for use after scene loads
 	current_spawn_point = spawn_point
 	previous_location = current_location
+
+	# Walking to a neighbour along a world.json route takes that route's minutes of game time
+	# (long journeys go through TravelMap, which advances the clock itself)
+	if walk_time:
+		_advance_time_for_walk(from_id, location_id)
 
 	# Fade out
 	await _fade_out(fade_duration)
@@ -112,8 +138,8 @@ func transition_to(location_id: String, spawn_point: String = "default", fade_du
 	# Position player at spawn point
 	_position_player_at_spawn(spawn_point)
 
-	# Filter NPCs for this location
-	_filter_npcs_for_location(location_id)
+	# Roster NPCs: spawn / show / hide by where they are; others by their own location
+	_reconcile_npcs(location_id)
 
 	# Update current location
 	current_location = target_location
@@ -251,10 +277,54 @@ func _position_player_at_spawn(spawn_point_name: String):
 	push_warning("[SceneManager] Spawn point '%s' not found, using origin" % spawn_point_name)
 	player_instance.global_position = Vector2.ZERO
 
+## Advance the clock by the direct route's minutes (no route: no time, e.g. a debug jump)
+func _advance_time_for_walk(from_id: String, to_id: String) -> int:
+	var registry = get_node_or_null("/root/WorldRegistry")
+	var world_state = get_node_or_null("/root/WorldState")
+	if registry == null or world_state == null or from_id == to_id:
+		return 0
+	var minutes = registry.get_route_minutes(from_id, to_id)
+	if minutes > 0:
+		world_state.advance_time(minutes, "walk:%s->%s" % [from_id, to_id])
+	return maxi(minutes, 0)
+
+## Re-check who belongs in the current scene (NPCs set off or arrived)
+func refresh_npcs() -> void:
+	var location_id = get_current_location_id()
+	if location_id != "" and is_inside_tree() and get_tree().current_scene:
+		_reconcile_npcs(location_id)
+
+func _reconcile_npcs(location_id: String) -> void:
+	var scene_root = get_tree().current_scene
+	if npc_spawner and scene_root:
+		npc_spawner.reconcile(location_id, scene_root)
+	_filter_npcs_for_location(location_id)
+
+## The main scene was loaded by the engine, not by transition_to: learn which location it is
+func _adopt_initial_scene() -> void:
+	var scene_root = get_tree().current_scene
+	if current_location != null or scene_root == null or scene_root.scene_file_path == "":
+		return
+	for id in locations:
+		if locations[id].scene_path == scene_root.scene_file_path:
+			current_location = locations[id]
+			break
+	if current_location == null:
+		var registry = get_node_or_null("/root/WorldRegistry")
+		var id = registry.get_location_for_scene(scene_root.scene_file_path) if registry else ""
+		if id != "" and locations.has(id):
+			current_location = locations[id]
+	if current_location:
+		print("[SceneManager] Initial scene is %s" % current_location.location_id)
+		_reconcile_npcs(current_location.location_id)
+
+## NPCs off the world.json roster (dynamic NPCs) show only where their own location says
 func _filter_npcs_for_location(location_id: String):
-	# Find all NPCs in scene and filter by location
+	var registry = get_node_or_null("/root/WorldRegistry")
 	var npcs = get_tree().get_nodes_in_group("npcs")
 	for npc in npcs:
+		if registry and "npc_id" in npc and registry.get_npc_key(str(npc.npc_id)) != "":
+			continue  # roster NPCs belong to the spawner
 		if "current_location" in npc:
 			var npc_location = npc.current_location if npc.current_location != "" else npc.get("home_location")
 			if npc_location == location_id:

@@ -1,0 +1,280 @@
+{
+  "locations": {
+    "thornhaven_town_square": [
+      {
+        "archetype": "valley_farmer",
+        "count": 2
+      },
+      {
+        "archetype": "valley_widow",
+        "count": 1
+      },
+      {
+        "archetype": "peacekeeper_recruit",
+        "count": 1
+      },
+      {
+        "archetype": "woodcutter",
+        "count": 1
+      }
+    ],
+    "thornhaven_gregor_shop": [
+      {
+        "archetype": "valley_farmer",
+        "count": 1
+      },
+      {
+        "archetype": "carter",
+        "count": 1
+      }
+    ],
+    "thornhaven_tavern": [
+      {
+        "archetype": "tavern_regular",
+        "count": 3
+      }
+    ],
+    "thornhaven_blacksmith": [
+      {
+        "archetype": "woodcutter",
+        "count": 1
+      },
+      {
+        "archetype": "peacekeeper_recruit",
+        "count": 1
+      }
+    ],
+    "council_hall": [
+      {
+        "archetype": "valley_widow",
+        "count": 1
+      },
+      {
+        "archetype": "valley_farmer",
+        "count": 1
+      }
+    ],
+    "thornhaven_chapel": [
+      {
+        "archetype": "cathedral_acolyte",
+        "count": 1
+      },
+      {
+        "archetype": "valley_widow",
+        "count": 1
+      }
+    ],
+    "healer_hut": [
+      {
+        "archetype": "valley_farmer",
+        "count": 1
+      }
+    ],
+    "village_gate": [
+      {
+        "archetype": "peacekeeper_recruit",
+        "count": 2
+      },
+      {
+        "archetype": "carter",
+        "count": 1
+      }
+    ],
+    "old_mill": [
+      {
+        "archetype": "valley_farmer",
+        "count": 2
+      },
+      {
+        "archetype": "woodcutter",
+        "count": 1
+      }
+    ],
+    "forest_path": [
+      {
+        "archetype": "woodcutter",
+        "count": 2
+      },
+      {
+        "archetype": "hollow_grunt",
+        "count": 1
+      }
+    ],
+    "iron_hollow_camp": [
+      {
+        "archetype": "hollow_grunt",
+        "count": 5
+      }
+    ],
+    "kingsroad_waystation": [
+      {
+        "archetype": "courier",
+        "count": 1
+      },
+      {
+        "archetype": "pilgrim",
+        "count": 1
+      },
+      {
+        "archetype": "tavern_regular",
+        "count": 1
+      }
+    ],
+    "ferrisford": [
+      {
+        "archetype": "dockhand",
+        "count": 2
+      },
+      {
+        "archetype": "carter",
+        "count": 1
+      },
+      {
+        "archetype": "pilgrim",
+        "count": 1
+      }
+    ],
+    "greystone_mines": [
+      {
+        "archetype": "miner",
+        "count": 5
+      },
+      {
+        "archetype": "carter",
+        "count": 1
+      }
+    ],
+    "fort_ashguard": [
+      {
+        "archetype": "garrison_soldier",
+        "count": 5
+      }
+    ],
+    "brackenmoor_abbey": [
+      {
+        "archetype": "novice_monk",
+        "count": 2
+      },
+      {
+        "archetype": "pilgrim",
+        "count": 1
+      }
+    ],
+    "capitol_gate": [
+      {
+        "archetype": "garrison_soldier",
+        "count": 2
+      },
+      {
+        "archetype": "pilgrim",
+        "count": 1
+      },
+      {
+        "archetype": "street_hawker",
+        "count": 1
+      },
+      {
+        "archetype": "courier",
+        "count": 1
+      }
+    ],
+    "capitol_market": [
+      {
+        "archetype": "street_hawker",
+        "count": 3
+      },
+      {
+        "archetype": "warrens_urchin",
+        "count": 1
+      },
+      {
+        "archetype": "house_servant",
+        "count": 1
+      }
+    ],
+    "capitol_palace": [
+      {
+        "archetype": "house_servant",
+        "count": 2
+      }
+    ],
+    "capitol_magistry": [
+      {
+        "archetype": "clerk",
+        "count": 2
+      },
+      {
+        "archetype": "courier",
+        "count": 1
+      }
+    ],
+    "capitol_cathedral": [
+      {
+        "archetype": "cathedral_acolyte",
+        "count": 2
+      },
+      {
+        "archetype": "pilgrim",
+        "count": 1
+      }
+    ],
+    "capitol_guildhall": [
+      {
+        "archetype": "clerk",
+        "count": 2
+      },
+      {
+        "archetype": "courier",
+        "count": 1
+      }
+    ],
+    "capitol_docks": [
+      {
+        "archetype": "dockhand",
+        "count": 4
+      },
+      {
+        "archetype": "warrens_urchin",
+        "count": 1
+      }
+    ],
+    "capitol_warrens": [
+      {
+        "archetype": "warrens_urchin",
+        "count": 3
+      },
+      {
+        "archetype": "dockhand",
+        "count": 1
+      },
+      {
+        "archetype": "street_hawker",
+        "count": 1
+      }
+    ],
+    "ashdown_manor": [
+      {
+        "archetype": "house_servant",
+        "count": 3
+      }
+    ],
+    "the_pit": [
+      {
+        "archetype": "valley_farmer",
+        "count": 2
+      },
+      {
+        "archetype": "woodcutter",
+        "count": 1
+      },
+      {
+        "archetype": "miner",
+        "count": 1
+      },
+      {
+        "archetype": "hollow_grunt",
+        "count": 2
+      }
+    ]
+  }
+}

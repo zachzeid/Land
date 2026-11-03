@@ -29,5 +29,12 @@ signal npc_response_generated(npc_id: String, response_data: Dictionary)
 signal player_entered_area(area_id: String)
 signal player_exited_area(area_id: String)
 
+# Game clock and travel (WorldState owns both)
+signal time_advanced(minutes: int, total_minutes: int, reason: String)
+signal npc_travel_started(npc_id: String, from_location: String, to_location: String, arrive_minute: int)
+signal npc_arrived(npc_id: String, location: String)
+## A world.json calendar fixed point was reached and its flag set (WorldState; world-caused)
+signal calendar_flag_fired(flag_name: String, at_minute: int)
+
 func _ready():
 	print("EventBus initialized")

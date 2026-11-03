@@ -1,0 +1,1759 @@
+{
+  "id": "ashdown_inheritance",
+  "title": "The Ashdown Inheritance",
+  "summary": "Lady Seraphine Ashdown holds the ancient deed to the Western Valley and is buying it cheap on the Tithe's terror: a village that gives up a child every autumn is a village that sells and goes east. Thornhaven's freeholders, its council and the High Magistry each find a different piece, and the player decides whether the valley is sold, defended or tried.",
+  "prefix": "inh_",
+  "act_span": [
+    1,
+    3
+  ],
+  "flags": {
+    "inh_agent_buying": "A land agent in a plain grey coat was found to have bought eleven Thornhaven freeholds in two autumns, each for a third of its worth, in new Capitol silver, the first of them from families the Tithe had taken a child from.",
+    "inh_ashdown_named_as_buyer": "The freeholds the grey land agent bought were found to be made out to House Ashdown of the Capitol.",
+    "inh_petition_carried": "The player took the freeholders' petition against the Ashdown deed from Elder Mathias's hand and swore to carry it to the High Magistry.",
+    "inh_petition_sent": "Elder Mathias sent a seventh petition east by the post rider, signed by every freeholder still holding land, against the Ashdown buying and the Tithe that drove it.",
+    "inh_petition_on_road": "The freeholders' petition against the Ashdown deed left Thornhaven on the Kingsroad, bound for the High Magistry.",
+    "inh_petition_entered": "The freeholders' petition against the Ashdown deed was entered on the High Magistry's roll.",
+    "inh_petition_lost": "The freeholders' petition against the Ashdown deed went missing from the Magistry registry, as six before it had.",
+    "inh_fire_money_sent": "Guild coin went west to the Iron Hollow with word that the farms near Thornhaven square that would not sell, Tithe or no Tithe, needed reminding.",
+    "inh_fire_money_withheld": "The coin for the valley's fires was held back in the Capitol, and no word about the holdout farms went west.",
+    "inh_holdouts_burned": "The barns of the Thornhaven farms that would not sell burned in one night, and the Iron Hollow was paid for it.",
+    "inh_fires_refused": "Iron Hollow took the Capitol's coin for fire and lit nothing.",
+    "inh_freeholders_pledged": "The player went farm to farm and talked Thornhaven's last freeholders into swearing they would not sell.",
+    "inh_player_took_ashdown_coin": "The player took House Ashdown's silver and carried the land agent's offers from farm to farm.",
+    "inh_sale_refused": "Thornhaven refused to sell its common land and last freeholds to House Ashdown.",
+    "inh_council_ready_to_sell": "Elder Mathias, with the holdouts' barns still smoking, told Thornhaven's council he was ready to put its seal to the Ashdown sale.",
+    "inh_valley_sold": "Thornhaven's council sold the common land and the last freeholds to House Ashdown's agent, and the Western Valley became Ashdown land in all but name.",
+    "inh_player_testified": "The player stood before the High Magistry and swore to the grey agent's buying, and to the Tithe drawings and fires that made the valley cheap.",
+    "inh_deed_quashed": "The Lord Protector took the Ashdown deed out of the High Magistry's hands and declared it a matter for the crown alone.",
+    "inh_deed_challenged": "High Magistrate Corwin Vane opened a challenge to House Ashdown's ancient deed in open court, on behalf of the valley's freeholders.",
+    "inh_ashdown_tied_to_hollow": "House Ashdown's coin was entered on the High Magistry's record as having paid for the Iron Hollow's 'protection' in the Western Valley, in the years its Tithe took Thornhaven's people.",
+    "inh_tithe_ended_the_selling": "With the Tithe broken, Thornhaven's families stopped selling to the grey agent: nobody now had a child to save by going east."
+  },
+  "player_flags": [
+    "inh_petition_carried",
+    "inh_freeholders_pledged",
+    "inh_player_took_ashdown_coin",
+    "inh_player_testified"
+  ],
+  "crossovers": [
+    "ih_supply_line_cut",
+    "hc_varn_dead",
+    "hc_varn_ascendant",
+    "cou_council_bargains",
+    "cou_martial_law",
+    "tithe_rangers_arrive",
+    "fence_ledger_taken",
+    "mag_trial_called",
+    "reg_crown_strikes_hollow",
+    "tn_tithe_broken"
+  ],
+  "beats": [
+    {
+      "id": "grey_coat",
+      "act": 1,
+      "title": "Freeholds for Silver",
+      "summary": "Act I. A land agent in a plain grey coat has been buying Thornhaven's freeholds after every Tithe drawing and every burning, cheap, and paying in Capitol silver. Nobody will say who for.",
+      "location": "council_hall",
+      "requires": [
+        "!inh_valley_sold"
+      ],
+      "resolves_on": [
+        "inh_agent_buying"
+      ],
+      "hooks": [
+        {
+          "id": "inh_mathias_counts_the_sales",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Eleven families have sold to the grey agent in two autumns. The Ashbys sold the week after the lot took Corin, the Brands after Willa; the rest after a fire or a drawing. The council's roll shows every sale, and the stranger is asking why so many houses stand empty.",
+          "options": [
+            {
+              "id": "tell_the_stranger",
+              "label": "Show the stranger the council's roll of sales and what each field fetched",
+              "serves": [
+                "save_thornhaven",
+                "prove_before_acting"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_agent_buying",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Show the stranger the roll: eleven freeholds sold to a grey-coated agent, a third of their worth, the first by families the Tithe had taken a child from."
+                }
+              ]
+            },
+            {
+              "id": "raise_it_in_council",
+              "label": "Put the sales before the council and ask who is buying the valley",
+              "serves": [
+                "hold_the_council_together",
+                "save_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_agent_buying",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger he will ask the council tonight who the grey agent buys for, and ask them to sit at the back and watch faces."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep it to himself; a man may sell his own field",
+              "serves": [
+                "keep_the_peace_paid"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "inh_gregor_and_the_agent",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The grey agent bought cloth from you and asked, softly, which families owe the shop money. He pays well. A man could send his daughter a long way past the Tithe cart on what the agent pays.",
+          "options": [
+            {
+              "id": "name_the_debtors",
+              "label": "Give the agent the names of the families who owe the shop",
+              "serves": [
+                "get_elena_away"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_agent_buying",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Mention to the stranger, too casually, that a buyer from the east pays fair coin for land, and a man could take his daughter far on it."
+                }
+              ]
+            },
+            {
+              "id": "price_the_shop",
+              "label": "Ask the agent what he would pay for the shop and the field behind it",
+              "serves": [
+                "get_elena_away",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger whether they think the shop would sell, and how far a girl could get on the price of it."
+                }
+              ]
+            },
+            {
+              "id": "send_him_off",
+              "label": "Tell the agent the shop is not for sale and neither are his neighbours",
+              "serves": [
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger he turned the grey agent out of his shop, and is not sure why it felt like the first honest thing he had done in five years."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "inh_seraphine_reads_the_count",
+          "type": "scheme",
+          "trigger": "on_resolve",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "Your agent's letter came under plain wax: eleven freeholds, most of them sold in the week after the valley's autumn drawing, whatever that is. The holdouts are the old families around the square.",
+          "options": [
+            {
+              "id": "squeeze_harder",
+              "label": "Write back that the price must keep falling, whatever it takes",
+              "serves": [
+                "keep_the_valley_afraid",
+                "own_the_valley"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "seraphine",
+                  "want": "keep_the_valley_afraid",
+                  "delta": 1
+                },
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Ask the stranger, lightly, whether the farmers out west are frightened enough to sell, and what it is they fear every autumn."
+                }
+              ]
+            },
+            {
+              "id": "pay_fairly",
+              "label": "Tell the agent to pay the holdouts a fair price and be quick about it",
+              "serves": [
+                "keep_her_hands_clean",
+                "clear_fathers_debts"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "seraphine",
+                  "want": "keep_the_valley_afraid",
+                  "delta": -1
+                },
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Tell the stranger that House Ashdown pays honest prices for honest land, and watch whether they believe it."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Burn the letter and wait; a deed two hundred years old can wait a season",
+              "serves": [
+                "restore_house_ashdown"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "agents_papers",
+      "act": 1,
+      "title": "The Agent's Saddlebag",
+      "summary": "Act I. The grey agent lodges above the Rusty Nail, and the deeds in his saddlebag are made out to a house in the Capitol. The same name is chalked on a Warrens slate and written in the Guild's letters on a lady's desk.",
+      "location": "thornhaven_tavern",
+      "requires": [
+        "inh_agent_buying"
+      ],
+      "resolves_on": [
+        "inh_ashdown_named_as_buyer",
+        "rook_buyer_slate_seen",
+        "ashdown_debt_letters_read"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "inh_ashdown_named_as_buyer",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "inh_mira_opens_the_saddlebag",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The grey agent sleeps in your upstairs room. His saddlebag holds deeds made out to House Ashdown, paid in Guild silver. Someone in the Capitol is buying the valley your Tithe made cheap, and never asked you.",
+          "options": [
+            {
+              "id": "leave_it_open",
+              "label": "Leave the saddlebag open where the stranger will see the Ashdown seal",
+              "serves": [
+                "rule_from_shadow",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_ashdown_named_as_buyer",
+                  "value": true
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "mira",
+                  "dimension": "trust",
+                  "delta": 5
+                }
+              ],
+              "harms": [
+                "seraphine"
+              ]
+            },
+            {
+              "id": "copy_for_the_cellar",
+              "label": "Copy the deed roll by candlelight and keep it in the cellar",
+              "serves": [
+                "rule_from_shadow",
+                "own_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, as a worried widow, whether they have ever heard of a great house in the Capitol called Ashdown."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Leave the agent's bag alone; a widow does not pry",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "inh_gregor_knows_the_silver",
+          "type": "reveal",
+          "trigger": "idle",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The agent paid for his supplies in new silver stamped with the Guild's mark: the same stamp as the coin the Hollow's runner pays for your grain at the old mill. Saying so means saying how you know it.",
+          "options": [
+            {
+              "id": "tell_the_stranger",
+              "label": "Tell the stranger the agent's silver bears the same Guild stamp as the Hollow's coin",
+              "serves": [
+                "make_amends",
+                "escape_the_deal"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger, low, that the grey agent's silver and the Hollow runner's silver bear the same Guild stamp, and do not ask him how he knows."
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "gregor",
+                  "dimension": "trust",
+                  "delta": 5
+                }
+              ]
+            },
+            {
+              "id": "keep_quiet",
+              "label": "Weigh the coins, put them in the till and say nothing",
+              "serves": [
+                "keep_the_secret",
+                "protect_elena"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_petition",
+      "act": 2,
+      "title": "The Seventh Petition",
+      "summary": "Act II. Six petitions went east begging the crown for help against the Tithe, and none were answered. Now that the buyer has a name, Mathias drafts a seventh, signed by every freeholder still holding, and must decide whose hands to trust it to.",
+      "location": "council_hall",
+      "requires": [
+        "inh_ashdown_named_as_buyer",
+        "!inh_valley_sold"
+      ],
+      "resolves_on": [
+        "inh_petition_sent",
+        "inh_petition_carried"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "inh_petition_on_road",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "inh_mathias_writes_again",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Six petitions you sent the Capitol against the Tithe were never answered. Now you know a great house is buying the valley the Tithe empties. A seventh, signed by every freeholder still holding, could go by the post rider, or in the stranger's hands.",
+          "options": [
+            {
+              "id": "by_the_rider",
+              "label": "Send it east with the post rider, as he sent the other six",
+              "serves": [
+                "prove_before_acting",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_petition_sent",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "ask_the_stranger",
+              "label": "Ask the stranger to carry it to the High Magistry by hand",
+              "serves": [
+                "leave_a_legacy",
+                "save_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger to carry the freeholders' petition to the High Magistry by hand; six sent by rider vanished on the road."
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "mathias",
+                  "dimension": "trust",
+                  "delta": 5
+                }
+              ],
+              "aids": "player"
+            },
+            {
+              "id": "hold",
+              "label": "Let it lie; petitions bring tax men, not justice",
+              "serves": [
+                "keep_the_peace_paid"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "inh_mira_and_the_petition",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Mathias means to send a petition east about the Ashdown buying. A Magistry that looks west at the valley's deeds will look at its Tithe too, and ask where the carts go.",
+          "options": [
+            {
+              "id": "talk_him_down",
+              "label": "Tell Mathias, kindly, that petitions only bring the crown's tax men down the road",
+              "serves": [
+                "own_the_council",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Wonder aloud to the stranger whether a petition to the Capitol would only bring tax men and soldiers down on Thornhaven."
+                }
+              ]
+            },
+            {
+              "id": "read_it_first",
+              "label": "Offer the tavern's own carrier, and read the petition before it leaves",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Offer the stranger the tavern's carrier for any letters east; he is cheaper than the post rider and asks nothing."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Let the old man write; the Capitol never answers",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_registry",
+      "act": 2,
+      "title": "The Registry Desk",
+      "summary": "Act II. The petition reaches the High Magistry's registry, where Tobias Vane, the High Magistrate's nephew, sits at the desk and keeps the Guild's books on the side.",
+      "location": "capitol_magistry",
+      "requires": [
+        "inh_petition_on_road",
+        "!inh_valley_sold"
+      ],
+      "resolves_on": [
+        "inh_petition_entered",
+        "inh_petition_lost"
+      ],
+      "hooks": [
+        {
+          "id": "inh_hollis_pays_the_clerk",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "A valley petition against the Ashdown deed has reached the registry desk, where Tobias sits. Lady Ashdown owes the Guild; a deed in open court is a debt nobody repays.",
+          "options": [
+            {
+              "id": "lose_it",
+              "label": "Pay Tobias to lose it, as he lost the other six",
+              "serves": [
+                "hold_every_patron",
+                "turn_a_profit"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_petition_lost",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "let_it_through",
+              "label": "Let it be entered; a frightened Lady Ashdown needs the Guild more",
+              "serves": [
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Remark to the stranger that the Magistry has a valley petition on its roll, and that Lady Ashdown will be needing her friends."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Leave the clerk alone; the Magistrate has been looking at Tobias's new coat",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "inh_corwin_enters_it",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "A petition from Thornhaven's freeholders lies in the registry tray, against House Ashdown's deed. It is the first valley paper you have ever seen with your own eyes.",
+          "options": [
+            {
+              "id": "enter_it_himself",
+              "label": "Enter it on the roll in his own hand before anyone can lose it",
+              "serves": [
+                "challenge_the_deed",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_petition_entered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "leave_it_to_the_registry",
+              "label": "Leave it to the registry, as the rules require",
+              "serves": [
+                "save_the_nephew"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "inh_corwin_finds_it_gone",
+          "type": "reveal",
+          "trigger": "on_flag:inh_petition_lost",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The valley petition was in the registry tray this morning. Now it is not, and the book shows Tobias signed for it.",
+          "options": [
+            {
+              "id": "pull_the_book",
+              "label": "Pull the registry book and ask Tobias, before the clerks, where it went",
+              "serves": [
+                "find_the_lost_reports",
+                "law_applied_evenly"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_petition_entered",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger a valley petition vanished from his registry today, that he found it in his nephew's satchel, and that it is entered now."
+                }
+              ]
+            },
+            {
+              "id": "ask_at_supper",
+              "label": "Ask Tobias quietly over supper, where no clerk can hear",
+              "serves": [
+                "save_the_nephew"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Ask the stranger whether anyone in the valley ever heard back from the six petitions their elder sent east."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing yet and watch what Tobias signs out next",
+              "serves": [
+                "find_the_lost_reports"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "inh_seraphine_hears_of_it",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "Hollis's note says the valley's petition reached the Magistry. Entered, or lost: either way, Thornhaven's freeholders know your name now.",
+          "options": [
+            {
+              "id": "charm_the_stranger",
+              "label": "Learn who in the valley stands behind the petition",
+              "serves": [
+                "own_the_valley"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Ask the stranger, with a smile that costs her, whether Thornhaven's elder is the sort of man who can be reasoned with."
+                }
+              ]
+            },
+            {
+              "id": "buy_faster",
+              "label": "Resolve to buy the rest before any court can sit",
+              "serves": [
+                "own_the_valley",
+                "keep_the_valley_afraid"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "seraphine",
+                  "want": "keep_the_valley_afraid",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Do nothing that could be written down",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fire_money",
+      "act": 2,
+      "title": "A Price for Fire",
+      "summary": "Act II. The holdouts around Thornhaven square will not sell, even with the Tithe at their door. In the Guildhall counting room, Lady Ashdown and Guildmaster Hollis weigh what a season of fire would cost, and who would pay for it.",
+      "location": "capitol_guildhall",
+      "requires": [
+        "inh_agent_buying",
+        "!inh_valley_sold",
+        "!inh_deed_challenged",
+        "!reg_crown_strikes_hollow"
+      ],
+      "resolves_on": [
+        "inh_fire_money_sent",
+        "inh_fire_money_withheld"
+      ],
+      "hooks": [
+        {
+          "id": "inh_seraphine_asks_for_fire",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "The holdout farms near Thornhaven square will not sell, though the valley gives a child a year to the Hollow. Hollis's factors can carry coin to the Hollow's 'protection' with a word that the stubborn farms need reminding. You need never write the word yourself.",
+          "options": [
+            {
+              "id": "ask_for_fire",
+              "label": "Pay Hollis's factor to carry coin west with a word about the holdout farms",
+              "serves": [
+                "keep_the_valley_afraid",
+                "own_the_valley"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_fire_money_sent",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "wait_for_winter",
+              "label": "Send nothing; a hard winter will do what fire would",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_fire_money_withheld",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Leave it with Hollis and let him decide what it costs",
+              "serves": [
+                "clear_fathers_debts"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "inh_hollis_advances_the_coin",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "Lady Ashdown wants the valley cheaper and cannot pay for it. You can advance the fire money against her father's debt notes, and own a little more of her.",
+          "options": [
+            {
+              "id": "advance_it",
+              "label": "Advance the fire money himself and add it to her father's debt notes",
+              "serves": [
+                "turn_a_profit",
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_fire_money_sent",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "seraphine"
+              ]
+            },
+            {
+              "id": "write_it_down",
+              "label": "Write 'S.A., the valley venture' in the patron ledger and send nothing yet",
+              "serves": [
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Ask the stranger, as one merchant to another, what an acre near Thornhaven fetches this season, and whether it will fall further."
+                }
+              ]
+            },
+            {
+              "id": "refuse",
+              "label": "Refuse; the Magistry has started asking about valley papers",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_fire_money_withheld",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "inh_seraphine_sees_the_rangers",
+          "type": "intercept",
+          "trigger": "on_flag:tithe_rangers_arrive",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "The regent's rangers have reached the valley. Fire in Thornhaven now would light the road back to whoever paid for it.",
+          "options": [
+            {
+              "id": "withhold",
+              "label": "Hold the coin in the Capitol until the rangers ride home",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_fire_money_withheld",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "before_they_settle",
+              "label": "Send the coin now, before the rangers learn the roads",
+              "serves": [
+                "own_the_valley",
+                "keep_the_valley_afraid"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_fire_money_sent",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "inh_hollis_hears_the_line_is_cut",
+          "type": "scheme",
+          "trigger": "on_flag:ih_supply_line_cut",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The Hollow's supply through the Thornhaven merchant is cut. A hungry gang works cheap, and the lady's fire money would go twice as far this month.",
+          "options": [
+            {
+              "id": "sell_fire_cheap",
+              "label": "Send the fire money west while the Hollow is hungry for it",
+              "serves": [
+                "turn_a_profit",
+                "keep_the_river_moving"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_fire_money_sent",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Wait; a hungry gang is an unpredictable one",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "burning_season",
+      "act": 2,
+      "title": "Fire for Hire",
+      "summary": "Act II. Guild coin comes west to Iron Hollow with a request: the farms that would not sell need reminding. The Boss has never met the buyer, and does not like being hired.",
+      "location": "iron_hollow_camp",
+      "requires": [
+        "inh_fire_money_sent",
+        "!hc_varn_dead"
+      ],
+      "resolves_on": [
+        "inh_holdouts_burned",
+        "inh_fires_refused"
+      ],
+      "hooks": [
+        {
+          "id": "inh_mira_weighs_the_coin",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Guild coin came west with a note: the holdout farms by the square need reminding. You never asked who in the Capitol wants Thornhaven cheap. A village of tenants that moves east is a village with no names left for the lot.",
+          "options": [
+            {
+              "id": "burn_for_coin",
+              "label": "Take the coin and burn the holdouts' barns",
+              "serves": [
+                "own_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_holdouts_burned",
+                  "value": true
+                },
+                {
+                  "type": "shift_want",
+                  "npc": "mathias",
+                  "want": "keep_the_peace_paid",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "take_coin_light_nothing",
+              "label": "Keep the coin, light nothing, and let the Capitol wonder who rules the valley",
+              "serves": [
+                "rule_from_shadow",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_fires_refused",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "ask_who_pays",
+              "label": "Send word back down the trail: no fire until she knows whose coin it is",
+              "serves": [
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, idly, whether they have heard who is buying up the farms; a widow worries for her neighbours."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "inh_varn_lights_it_himself",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Coin for fire, and the Boss is sitting on it. The holdouts' barns are dry, and the men are watching who brings coin into camp.",
+          "options": [
+            {
+              "id": "burn_it",
+              "label": "Take ten men down to the holdout farms and earn the coin",
+              "serves": [
+                "be_feared",
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_holdouts_burned",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "tell_the_men",
+              "label": "Let the men hear the Boss turned down good coin",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger the Boss turns down good coin these days, and that a camp notices who brings it in."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Leave it; the Boss's coin is the Boss's business, for now",
+              "serves": [
+                "keep_the_boss_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "inh_varn_rules_the_fire",
+          "type": "scheme",
+          "trigger": "on_flag:hc_varn_ascendant",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Iron Hollow is yours now, and the Capitol's fire money is sitting in a strongbox with nobody's name on it but yours.",
+          "options": [
+            {
+              "id": "burn_in_his_name",
+              "label": "Burn the holdouts and let the valley learn whose camp it is",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_holdouts_burned",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "raise_the_price",
+              "label": "Send the coin back with a higher price scratched on the purse",
+              "serves": [
+                "take_the_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the stranger that fire in this valley costs more now, and that the buyer in the Capitol will learn it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "inh_aldric_counts_the_farms",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The Hollow's fire season has been decided, one way or the other. Either way, the farms it chose to watch are the ones that would not sell, even after the Tithe.",
+          "options": [
+            {
+              "id": "tell_mathias",
+              "label": "Tell Mathias it is not the Hollow choosing those farms; it is buyers",
+              "serves": [
+                "expose_the_traitor",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the farms the Hollow watches are the ones that would not sell, even after the drawing, and ask who in the Capitol profits."
+                }
+              ]
+            },
+            {
+              "id": "post_men",
+              "label": "Post two men by the holdout farms at night, though he cannot spare them",
+              "serves": [
+                "arm_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger to help him watch the holdout farms at night; he cannot spare the men and is posting them anyway."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep his six men in the square, where they can be counted",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_sale",
+      "act": 3,
+      "title": "The Last Freeholds",
+      "summary": "Act III. The agent offers the council one price for the common land and every freehold still held: enough to move every family east, past the reach of the lot. Selling ends the Tithe for Thornhaven. It also ends Thornhaven. The council can lean either way, but the last freeholds go or stay farm by farm, and the stranger is the one walking between the farms.",
+      "location": "council_hall",
+      "requires": [
+        "inh_ashdown_named_as_buyer",
+        "!inh_deed_challenged",
+        "!inh_valley_sold"
+      ],
+      "resolves_on": [
+        "inh_freeholders_pledged",
+        "inh_player_took_ashdown_coin"
+      ],
+      "hooks": [
+        {
+          "id": "inh_mathias_and_the_seal",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The agent offers one price for the common land and every freehold still held, enough to move every family east. The Hollow cannot draw a name from a village that has gone. Your seal is the last one needed.",
+          "options": [
+            {
+              "id": "call_the_freeholders",
+              "label": "Call every freeholder to the hall at the new moon to decide together",
+              "serves": [
+                "hold_the_council_together",
+                "save_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger to stand at the back of the hall at the new moon, when Thornhaven's freeholders decide whether to sell."
+                }
+              ]
+            },
+            {
+              "id": "stall_the_agent",
+              "label": "Tell the agent the council will answer after the harvest",
+              "serves": [
+                "prove_before_acting"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger he has put the grey agent off until the harvest, and ask whether a harvest is long enough to save anything."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Let each family decide on its own field for now",
+              "serves": [
+                "keep_the_peace_paid"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "inh_mathias_after_the_fire",
+          "type": "intercept",
+          "trigger": "on_flag:inh_holdouts_burned",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The holdout barns burned in one night. The agent was at the hall door by noon with the same offer, and the families are looking at you.",
+          "options": [
+            {
+              "id": "sign",
+              "label": "Tell the council he is ready to seal the sale and let the families go with coin in hand",
+              "serves": [
+                "keep_the_peace_paid",
+                "avoid_the_hollow_war"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_council_ready_to_sell",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the council will sell if the last freeholders do, and ask them, wearily, which way the farms are leaning."
+                }
+              ]
+            },
+            {
+              "id": "refuse",
+              "label": "Refuse to seal while the Magistry has the deed before it",
+              "serves": [
+                "leave_a_legacy",
+                "save_thornhaven",
+                "prove_before_acting"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_sale_refused",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "inh_gregor_follows_the_coin",
+          "type": "intercept",
+          "trigger": "on_flag:inh_player_took_ashdown_coin",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The stranger is carrying the agent's silver from farm to farm. If the village sells, Elena leaves with coin in her purse, no lot to answer and no ledger following her.",
+          "options": [
+            {
+              "id": "urge_the_sale",
+              "label": "Stand up in council and say the stranger is right: sell, and get the children out",
+              "serves": [
+                "get_elena_away",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_valley_sold",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Keep his head down; the council never listened to him anyway",
+              "serves": [
+                "keep_the_secret"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "inh_mathias_stands_with_them",
+          "type": "aid",
+          "trigger": "on_flag:inh_freeholders_pledged",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The stranger went farm to farm, and the last freeholders have sworn not to sell. They are looking to you to say it aloud in council.",
+          "options": [
+            {
+              "id": "stand_with_them",
+              "label": "Say it in council: Thornhaven is not for sale",
+              "serves": [
+                "leave_a_legacy",
+                "save_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_sale_refused",
+                  "value": true
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "mathias",
+                  "dimension": "respect",
+                  "delta": 10
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Thank them, and say nothing the Hollow could hear",
+              "serves": [
+                "keep_the_peace_paid"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "inh_aldric_forbids_the_sale",
+          "type": "intercept",
+          "trigger": "on_flag:cou_martial_law",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "You hold Thornhaven under martial law. An agent from the Capitol wants to buy the ground your men are standing on.",
+          "options": [
+            {
+              "id": "forbid",
+              "label": "Post a man at the hall door: no land changes hands under martial law",
+              "serves": [
+                "take_command",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_sale_refused",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "leave_it",
+              "label": "Leave land to the council; he has a war to run",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "inh_mira_whispers_to_the_council",
+          "type": "scheme",
+          "trigger": "on_flag:cou_council_bargains",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The council bargains with you now, through you. If it sells the valley to a Capitol house, there is no council left to bargain with.",
+          "options": [
+            {
+              "id": "name_the_buyer",
+              "label": "Let the councillors hear whose name is on the agent's deeds",
+              "serves": [
+                "own_the_council",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "spread_rumor",
+                  "flag": "inh_ashdown_named_as_buyer",
+                  "to": [
+                    "mathias"
+                  ],
+                  "via": "a widow's worried word over the bar"
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Let them sell; a valley of tenants pays as well as a valley of freeholders",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "inh_mathias_after_the_tithe",
+          "type": "intercept",
+          "trigger": "on_flag:tn_tithe_broken",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Thornhaven refused the Tithe and the Hollow's hold broke. The families were selling to get their children past the lot. Now there is no lot, and the agent is still at the hall door with his price.",
+          "options": [
+            {
+              "id": "tell_the_families",
+              "label": "Tell the council the reason to sell is gone, and refuse the agent",
+              "serves": [
+                "save_thornhaven",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_tithe_ended_the_selling",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "inh_sale_refused",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "let_them_choose",
+              "label": "Let each family choose; five autumns of fear do not end in one night",
+              "serves": [
+                "prove_before_acting"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_tithe_ended_the_selling",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger to sit with the families who still mean to sell, and tell them the cart is not coming back."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing; the agent's coin is still coin",
+              "serves": [
+                "keep_the_peace_paid"
+              ],
+              "effects": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_deed_tried",
+      "act": 3,
+      "title": "The Deed Before the Court",
+      "summary": "Act III. The freeholders' petition is on the High Magistry's roll. House Ashdown's deed is two hundred years old and good in law; whether it is good in equity depends on what the court hears, and whether the regent lets it hear anything.",
+      "location": "capitol_magistry",
+      "requires": [
+        "inh_petition_entered",
+        "!inh_valley_sold"
+      ],
+      "resolves_on": [
+        "inh_player_testified"
+      ],
+      "hooks": [
+        {
+          "id": "inh_edric_weighs_the_deed",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "edric"
+          ],
+          "situation": "The High Magistrate has a valley petition against House Ashdown's deed on his roll. A great house humbled in court needs the regent. A court that humbles great houses may one day try regents.",
+          "options": [
+            {
+              "id": "let_it_run",
+              "label": "Let the hearing go ahead; Ashdown could use reminding who protects it",
+              "serves": [
+                "curb_the_great_houses"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "edric",
+                  "text": "Ask the stranger what they saw of Lady Ashdown's buying in the west, as a man who already knows and wants to hear it said."
+                }
+              ],
+              "aids": "corwin"
+            },
+            {
+              "id": "hold_for_review",
+              "label": "Have the hearing held at the palace 'for the crown's review'",
+              "serves": [
+                "keep_the_magistry_quiet",
+                "stay_indispensable"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "ashdown_inheritance",
+                  "beat": "the_deed_tried"
+                }
+              ]
+            },
+            {
+              "id": "quash_it",
+              "label": "Declare the Ashdown deed a matter for the crown, not the Magistry",
+              "serves": [
+                "keep_the_regency"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_deed_quashed",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "inh_seraphine_strikes_the_roll",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "seraphine"
+          ],
+          "situation": "Your deed is before the High Magistry. Corwin Vane thinks it good in law and void in equity; he has not said so, but everyone knows what he thinks.",
+          "options": [
+            {
+              "id": "offer_terms",
+              "label": "Offer the holdouts a fair price, today, if the petition is withdrawn",
+              "serves": [
+                "keep_her_hands_clean",
+                "own_the_valley"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Tell the stranger House Ashdown will pay the valley's holdouts a fair price, today, if the petition is quietly withdrawn."
+                }
+              ]
+            },
+            {
+              "id": "go_to_the_regent",
+              "label": "Go up to the palace and remind the Lord Protector what Ashdown is worth to him",
+              "serves": [
+                "a_seat_beside_the_throne"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "seraphine",
+                  "location": "capitol_palace"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "seraphine",
+                  "text": "Ask the stranger whether the Lord Protector is a man who remembers his friends, or only his debts."
+                }
+              ]
+            },
+            {
+              "id": "hold",
+              "label": "Say nothing; a lady who answers a petition admits it deserved one",
+              "serves": [
+                "keep_her_hands_clean"
+              ],
+              "effects": []
+            }
+          ]
+        },
+        {
+          "id": "inh_corwin_writes_it_back",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The valley's hearing has been taken up to the palace 'for the crown's review'. Nothing in the law lets a regent review a judge's roll.",
+          "options": [
+            {
+              "id": "write_it_back",
+              "label": "Write the hearing back onto the roll in his own hand, with the palace's note pinned beside it",
+              "serves": [
+                "law_applied_evenly",
+                "challenge_the_deed"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "ashdown_inheritance",
+                  "beat": "the_deed_tried"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger the palace took the valley's hearing off his roll for review, and that he has written it back in his own hand."
+                }
+              ]
+            },
+            {
+              "id": "note_the_name",
+              "label": "Leave the roll as it stands and set down who struck it",
+              "serves": [
+                "check_the_regent"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Ask the stranger whether they would swear in open court to what they saw in the valley, if the court can be made to sit."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "inh_corwin_hears_the_stranger",
+          "type": "aid",
+          "trigger": "on_flag:inh_player_testified",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The stranger has sworn before your court to the grey agent's buying, and to the Tithe drawings and fires that came before every sale. The deed is good in law. You have never believed it good in equity.",
+          "options": [
+            {
+              "id": "open_the_challenge",
+              "label": "Open the challenge to the Ashdown deed in open court, on the freeholders' behalf",
+              "serves": [
+                "challenge_the_deed",
+                "law_applied_evenly",
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_deed_challenged",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "under_advisement",
+              "label": "Take the testimony under advisement and wait for the Guild's books",
+              "serves": [
+                "find_the_lost_reports"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger their testimony is on the record, and that he needs one more thing: the Guild's own books."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "inh_hollis_sells_the_lady",
+          "type": "betray",
+          "trigger": "on_flag:mag_trial_called",
+          "eligible": [
+            "hollis"
+          ],
+          "situation": "The Magistry has called an open trial of the valley's rot. The Guild's name has to come out of it clean, and Lady Ashdown's page in your patron ledger would buy a great deal of clean.",
+          "options": [
+            {
+              "id": "give_up_her_page",
+              "label": "Send the High Magistrate Lady Ashdown's page from the patron ledger, unsigned",
+              "serves": [
+                "keep_the_guild_clean"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_ashdown_tied_to_hollow",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "seraphine"
+              ]
+            },
+            {
+              "id": "keep_her",
+              "label": "Keep her page; a patron who owes you is worth more than a clean name",
+              "serves": [
+                "hold_every_patron"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "hollis",
+                  "text": "Tell the stranger the Guild has nothing to hide from any court, and offer to show them the public books."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "inh_corwin_reads_the_fence_ledger",
+          "type": "reveal",
+          "trigger": "on_flag:fence_ledger_taken",
+          "eligible": [
+            "corwin"
+          ],
+          "situation": "The fence's ledger is out of Hollis Marrow's counting room, and one page reads 'S.A., the valley venture', beside payments for the Hollow's 'protection' in the years of its Tithe.",
+          "options": [
+            {
+              "id": "into_the_record",
+              "label": "Read the Ashdown entries into the court's record",
+              "serves": [
+                "law_applied_evenly",
+                "challenge_the_deed"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "inh_ashdown_tied_to_hollow",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "seraphine"
+              ]
+            },
+            {
+              "id": "seal_it",
+              "label": "Seal the pages until the deed itself is heard",
+              "serves": [
+                "try_it_in_the_open"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "corwin",
+                  "text": "Tell the stranger he holds pages that could end a great house, and that he will not read them until the court sits."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "the_freeholders_deed",
+      "title": "The Freeholders' Deed",
+      "requires": [
+        "inh_deed_challenged",
+        "inh_ashdown_tied_to_hollow",
+        "inh_player_testified"
+      ],
+      "summary": "The High Magistry hears the valley and reads House Ashdown's coin into the record beside the Hollow's Tithe. The deed is voided in equity, the eleven sales are set aside, and the families who sold after the lot took their children may come home to their fields by the crown's word."
+    },
+    {
+      "id": "the_long_suit",
+      "title": "The Long Suit",
+      "requires": [
+        "inh_deed_challenged",
+        "inh_player_testified"
+      ],
+      "summary": "The challenge stands in open court, and no freehold can be sold under a contested deed. House Ashdown keeps its name clean and its deed in the Magistry's chest, and the valley keeps its fields for as long as the suit lasts."
+    },
+    {
+      "id": "sold_by_the_stranger",
+      "title": "Sold by the Stranger's Hand",
+      "requires": [
+        "inh_valley_sold",
+        "inh_player_took_ashdown_coin"
+      ],
+      "summary": "The stranger carried Ashdown silver from farm to farm, and Thornhaven sold. The families go east with coin and no more names for the lot, House Ashdown owns the valley outright, and the Hollow's fires and drawings were never written down anywhere."
+    },
+    {
+      "id": "the_buried_deed",
+      "title": "The Buried Deed",
+      "requires": [
+        "inh_deed_quashed",
+        "inh_freeholders_pledged"
+      ],
+      "summary": "The regent takes the deed out of the court's hands and nobody will ever try it. But the last freeholders swore to the stranger they would not sell, and they keep their oath on land a great house still claims."
+    }
+  ]
+}

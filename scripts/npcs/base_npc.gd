@@ -146,6 +146,20 @@ func initialize(use_chromadb: bool = true, enable_kpi_tracking: bool = false) ->
 	_is_initialized = true
 	_is_initializing = false
 	print("%s ready (ID: %s)" % [npc_name, npc_id])
+
+	# Feelings toward the player persist (and fade per day apart) in the shared relationship ledger
+	var ledger = _relationship_ledger()
+	if ledger:
+		ledger.apply_to_npc(self)
+
+	# Learn any story events that reached this NPC while it wasn't loaded
+	var propagator = get_node_or_null("/root/EventPropagator")
+	if propagator:
+		propagator.deliver_pending(self)
+	# And any feelings storyline NPCs changed while it wasn't loaded
+	var director = get_node_or_null("/root/StorylineDirector")
+	if director:
+		director.deliver_pending(self)
 	return true
 
 ## Setup AI component instances
@@ -322,6 +336,10 @@ func start_conversation():
 
 	# Add player to known NPCs (they're interacting with us)
 	add_known_npc("player", "stranger", 7)  # Will upgrade based on relationship
+	# Speaking with the player is contact: relationship decay restarts from now
+	var ledger = _relationship_ledger()
+	if ledger:
+		ledger.note_contact(npc_id)
 
 	print("[%s] Starting conversation..." % npc_name)
 	is_in_conversation = true
@@ -374,17 +392,15 @@ func start_conversation():
 	
 	print("[%s] Sending greeting request to Claude..." % npc_name)
 	# Get greeting from Claude
-	var response = await claude_client.send_message(
+	var response = await request_checked_reply(
 		greeting_context.messages,
 		greeting_context.system_prompt
 	)
 	
-	print("[%s] Received response: %s" % [npc_name, "text" if response.has("text") else "error"])
-	if response.has("text"):
-		var raw_greeting = response.text
-		
-		# Parse JSON response (greeting also uses analysis format)
-		var parsed_response = _parse_npc_response(raw_greeting)
+	print("[%s] Received response: %s" % [npc_name, "text" if response.ok else "error"])
+	if response.ok:
+		# Parsed JSON (greeting also uses analysis format), already held to the world's rules
+		var parsed_response = response
 		var greeting = parsed_response.response
 		var analysis = parsed_response.analysis
 
@@ -409,6 +425,7 @@ func start_conversation():
 				debug_console.log_analysis(npc_name + " (greeting)", analysis)
 		
 		_add_to_history("assistant", greeting)
+		_mark_storyline_agendas_raised()
 		
 		# Store memory of conversation start
 		rag_memory.store_conversation(
@@ -492,17 +509,15 @@ func respond_to_player(player_message: String):
 	
 	print("[%s] Sending message to Claude..." % npc_name)
 	# Get response from Claude
-	var response = await claude_client.send_message(
+	var response = await request_checked_reply(
 		context.messages,
 		context.system_prompt
 	)
 	
-	print("[%s] Received response: %s" % [npc_name, "text" if response.has("text") else "error"])
-	if response.has("text"):
-		var raw_response = response.text
-
-		# Try to parse JSON response
-		var parsed_response = _parse_npc_response(raw_response)
+	print("[%s] Received response: %s" % [npc_name, "text" if response.ok else "error"])
+	if response.ok:
+		# Parsed JSON, already held to the world's rules (forbidden concepts regenerated, then sanitised)
+		var parsed_response = response
 		var npc_response = parsed_response.response
 		var analysis = parsed_response.analysis
 
@@ -546,6 +561,10 @@ func respond_to_player(player_message: String):
 					print("[%s] KPI VIOLATIONS: %s" % [npc_name, ", ".join(violations)])
 
 		_add_to_history("assistant", npc_response)
+		_mark_storyline_agendas_raised()
+
+		# The NPC may act on what was said (docs/WORLD_SCHEMA.md §6); the Director enforces plausibility
+		_apply_conversation_actions(parsed_response, player_message, npc_response)
 
 		# Automatically record interaction based on Claude's analysis
 		if analysis and analysis.has("interaction_type"):
@@ -650,6 +669,17 @@ func end_conversation():
 		return
 
 	is_in_conversation = false
+	var ledger = _relationship_ledger()
+	if ledger:
+		ledger.sync_from_npc(self)
+
+	# Storyline agendas this NPC had in its prompt during the conversation are now done
+	var director = get_node_or_null("/root/StorylineDirector")
+	if director:
+		director.complete_raised_agendas(npc_id)
+		if director.has_method("finish_conversation"):
+			director.finish_conversation(npc_id)  # moves decided while talking set off now
+		director.request_round("conversation_ended")  # the story clock ticks after each conversation
 
 	# Generate KPI report if tracking enabled
 	if kpi_tracker != null:
@@ -1132,6 +1162,35 @@ func witness_event(event_description: String, event_type: String, importance: in
 		if response.has("text"):
 			dialogue_response_ready.emit(npc_id, response.text)
 
+## Storyline agendas in this reply's prompt count as raised (done when the conversation ends)
+func _mark_storyline_agendas_raised() -> void:
+	var director = get_node_or_null("/root/StorylineDirector")
+	if director:
+		director.mark_agendas_raised(npc_id)
+
+## Change one relationship dimension directly (storyline adjust_relationship effects)
+## dimension: trust|respect|affection|fear|familiarity; delta is clamped like the analysis path
+func apply_relationship_delta(dimension: String, delta: float) -> void:
+	var var_name = "relationship_" + dimension
+	if not (var_name in self):
+		return
+	var low = 0.0 if dimension == "familiarity" else -100.0
+	set(var_name, clamp(get(var_name) + delta, low, 100.0))
+	_update_legacy_relationship_status()
+	print("[%s] Storyline changed %s by %+d (now %d)" % [npc_name, dimension, delta, get(var_name)])
+	EventBus.npc_relationship_changed.emit({
+		"npc_id": npc_id,
+		"interaction_type": "storyline_effect",
+		"impacts": {dimension: delta},
+		"new_dimensions": {
+			"trust": relationship_trust,
+			"respect": relationship_respect,
+			"affection": relationship_affection,
+			"fear": relationship_fear,
+			"familiarity": relationship_familiarity
+		}
+	})
+
 ## Update relationship status (called by reputation system)
 func adjust_relationship(delta: float):
 	relationship_status = clamp(relationship_status + delta, -100.0, 100.0)
@@ -1377,9 +1436,81 @@ func _update_legacy_relationship_status():
 				   (relationship_respect * 0.2) - (relationship_fear * 0.3)
 	relationship_status = clamp(weighted, -100, 100)
 
+## Last conversation-agency result ({applied, dropped, entry}) for debugging
+var last_conversation_actions: Dictionary = {}
+
+## Ask Claude for a reply and hold it to the world's rules (docs/WORLD_SCHEMA.md §6, rule 6):
+## speech or action text naming a forbidden concept is regenerated once with a correction note,
+## then sanitised if it still fails. Returns the parsed reply plus
+## {"ok": bool, "error": String, "regenerated": bool, "sanitised": Array of words replaced}
+func request_checked_reply(messages: Array, system_prompt: String) -> Dictionary:
+	var response = await claude_client.send_message(messages, system_prompt)
+	if not response is Dictionary or not response.has("text"):
+		return {"ok": false, "error": str(response.get("error", "Unknown error")) if response is Dictionary else "bad response",
+			"response": "", "analysis": null, "actions": [], "commitments": [], "regenerated": false, "sanitised": []}
+	var parsed = _parse_npc_response(str(response.text))
+	var found = _forbidden_in_reply(parsed)
+	var regenerated = false
+	if not found.is_empty():
+		regenerated = true
+		print("[%s] Reply used forbidden concepts %s; regenerating once" % [npc_name, found])
+		var note = "\n\n## CORRECTION (your previous reply was rejected)\n"
+		note += "It used words that cannot exist in this world: %s. This realm has no such things. " % ", ".join(found)
+		note += "Write the whole reply again in-world, in the same JSON format, without them or anything like them.\n"
+		var retry = await claude_client.send_message(messages, system_prompt + note)
+		if retry is Dictionary and retry.has("text"):
+			parsed = _parse_npc_response(str(retry.text))
+			found = _forbidden_in_reply(parsed)
+	var sanitised: Array = []
+	if not found.is_empty():
+		sanitised = found
+		var registry = get_node_or_null("/root/WorldRegistry")
+		if registry:
+			parsed.response = registry.sanitize_forbidden(str(parsed.response))
+			for action in parsed.actions:
+				if action is Dictionary:
+					for field in ["text", "via"]:
+						if action.has(field):
+							action[field] = registry.sanitize_forbidden(str(action[field]))
+		print("[%s] Still forbidden after regenerating; sanitised %s" % [npc_name, found])
+	parsed["ok"] = true
+	parsed["error"] = ""
+	parsed["regenerated"] = regenerated
+	parsed["sanitised"] = sanitised
+	return parsed
+
+## Forbidden concepts in a parsed reply's speech and action text (lowercase words)
+func _forbidden_in_reply(parsed: Dictionary) -> Array:
+	var registry = get_node_or_null("/root/WorldRegistry")
+	if registry == null:
+		return []
+	var text = str(parsed.get("response", ""))
+	for action in parsed.get("actions", []):
+		if action is Dictionary:
+			text += "\n" + str(action.get("text", "")) + "\n" + str(action.get("via", ""))
+	return registry.find_forbidden_concepts(text)
+
+## Hand the reply's actions and commitments to the StorylineDirector (plausibility rules 1-7)
+func _apply_conversation_actions(reply: Dictionary, player_message: String, npc_response: String) -> void:
+	var actions: Array = reply.get("actions", [])
+	var commitments: Array = reply.get("commitments", [])
+	if actions.is_empty() and commitments.is_empty():
+		return
+	var config = get_node_or_null("/root/Config")
+	if config and "conversation_agency" in config and not config.conversation_agency:
+		print("[%s] Conversation agency is off (CONVERSATION_AGENCY); ignoring %d action(s)" % [npc_name, actions.size()])
+		return
+	var director = get_node_or_null("/root/StorylineDirector")
+	if director == null or not director.has_method("apply_conversation_actions"):
+		return
+	last_conversation_actions = director.apply_conversation_actions(npc_id, actions, commitments, {"said": npc_response, "player": player_message})
+	var debug_console = get_tree().root.find_child("DebugConsole", true, false) if is_inside_tree() else null
+	if debug_console and debug_console.has_method("log_conversation_actions"):
+		debug_console.log_conversation_actions(npc_name, last_conversation_actions)
+
 ## Parse NPC response JSON with fallback to plain text
 func _parse_npc_response(raw_text: String) -> Dictionary:
-	var result = {"response": "", "analysis": null}
+	var result = {"response": "", "analysis": null, "actions": [], "commitments": []}
 	
 	# Try to extract JSON from response (Claude might wrap it in markdown)
 	var json_start = raw_text.find("{")
@@ -1397,6 +1528,11 @@ func _parse_npc_response(raw_text: String) -> Dictionary:
 					result.response = data.response
 				if data.has("analysis") and data.analysis is Dictionary:
 					result.analysis = data.analysis
+				# Optional conversation agency (docs/WORLD_SCHEMA.md §6)
+				if data.get("actions") is Array:
+					result.actions = data.actions
+				if data.get("commitments") is Array:
+					result.commitments = data.commitments.map(func(c): return str(c))
 				
 				# Return successfully parsed JSON
 				if result.response != "":
@@ -1801,6 +1937,11 @@ func _prune_least_important_relationships():
 		var npc_id_to_forget = sorted_npcs[i].id
 		known_npcs.erase(npc_id_to_forget)
 		print("[%s] Forgot about %s (low importance/old)" % [npc_name, npc_id_to_forget])
+
+## The generic NPC system's relationship ledger (decay, last contact) for every NPC, or null
+func _relationship_ledger() -> Node:
+	var registry = get_node_or_null("/root/DynamicNPCRegistry") if is_inside_tree() else null
+	return registry.generics if registry and "generics" in registry and registry.generics else null
 
 ## Get NPC ID (used by other NPCs during discovery)
 func get_npc_id() -> String:

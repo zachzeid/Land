@@ -307,6 +307,55 @@ func _on_command_submitted(command_text: String):
 			_cmd_clear_memories(args)
 		"dump_prompt", "prompt":
 			_cmd_dump_prompt(args)
+		# Storyline commands
+		"storylines":
+			_cmd_storylines()
+		"beats":
+			_cmd_beats(args)
+		"hooks":
+			_cmd_hooks(args)
+		"soul":
+			_cmd_soul(args)
+		"chronicle":
+			_cmd_chronicle(args)
+		"fire_hook":
+			_cmd_fire_hook(args)
+		"agency_mode":
+			_cmd_agency_mode(args)
+		"choose":
+			_cmd_choose(args)
+		"round":
+			_cmd_round(args)
+		"time", "clock":
+			_cmd_time(args)
+		"player_flags", "pflags":
+			_cmd_player_flags()
+		"travel":
+			_cmd_travel()
+		# --- BEGIN personal arcs commands (arcs engine) ---
+		"life":
+			_cmd_life(args)
+		"life_round":
+			_cmd_life_round(args)
+		# --- END personal arcs commands ---
+		# --- BEGIN generic NPC commands (generics engine) ---
+		"generics":
+			_cmd_generics(args)
+		"generic":
+			_cmd_generic(args)
+		"promote":
+			_cmd_promote(args)
+		"demote":
+			_cmd_demote(args)
+		"decay_days":
+			_cmd_decay_days(args)
+		# --- END generic NPC commands ---
+		# --- BEGIN calendar commands (world & engine; The Tithe Night) ---
+		"day":
+			_cmd_day(args)
+		"calendar":
+			_cmd_calendar()
+		# --- END calendar commands ---
 		_:
 			log_message("Unknown command: " + cmd, Color.RED)
 			log_message("Type 'help' for available commands", Color.GRAY)
@@ -345,6 +394,35 @@ func _cmd_help():
 	h.call("World Commands:", Color.YELLOW)
 	h.call("  set_flag <name> <0|1>       Set world flag")
 	h.call("  list_flags                  Show all world flags")
+	h.call("")
+	h.call("Storyline Commands:", Color.YELLOW)
+	h.call("  storylines                  List storylines and endings")
+	h.call("  beats <storyline>           Show beat states")
+	h.call("  hooks <storyline>           Show hooks and who may act")
+	h.call("  soul <npc>                  Show an NPC's SOUL (wants, lines, agency)")
+	h.call("  chronicle [n] [talk]        Last n NPC decisions (talk: conversation actions only)")
+	h.call("  fire_hook <s> <hook> [npc]  Offer a hook now (ignores once)")
+	h.call("  agency_mode offline|claude  How NPCs decide at hooks")
+	h.call("  choose <flag>               Player choice: set a storyline flag")
+	h.call("  round [n]                   Force n story rounds (NPC decisions)")
+	h.call("  time [+minutes]             Show the game clock, or advance it")
+	h.call("  player_flags                Player flags and whether talk can commit them")
+	h.call("  travel                      NPCs on the road, delayed word in flight")
+	# --- BEGIN personal arcs help (arcs engine) ---
+	h.call("  life <npc>                  An NPC's personal arcs, steps and progress")
+	h.call("  life_round [n]              Run n personal phases only (personal turns)")
+	# --- END personal arcs help ---
+	# --- BEGIN generic NPC help (generics engine) ---
+	h.call("  generics [location]         Generic NPCs (all, or at a location) with significance")
+	h.call("  generic <id>                A generic's seed, layers, feelings, significance, history")
+	h.call("  promote <id>                Promote a generic now (full SOUL.md + Life arc)")
+	h.call("  demote <id>                 Demote a promoted generic now (residue)")
+	h.call("  decay_days <n>              Everyone n more days apart: feelings fade, demotions run")
+	# --- END generic NPC help ---
+	# --- BEGIN calendar help (world & engine) ---
+	h.call("  day <n>                     Advance the clock to day n, 06:00 (fixed points fire on the way)")
+	h.call("  calendar                    The Tithe Night's fixed points and which have passed")
+	# --- END calendar help ---
 	h.call("")
 	h.call("Debug Commands:", Color.YELLOW)
 	h.call("  dump_prompt <id>            Show full Claude prompt for NPC")
@@ -1420,3 +1498,432 @@ func _cmd_dump_prompt(args: Array):
 			log_message(line, Color.WHITE, false, true)
 	log_message("--- SYSTEM PROMPT END ---", Color.YELLOW, false, true)
 	log_message("Total length: %d characters (~%d tokens)" % [prompt.length(), prompt.length() / 4], Color.GRAY, false, true)
+
+# =============================================================================
+# STORYLINE COMMANDS (StorylineDirector)
+# =============================================================================
+
+func _director() -> Node:
+	var director = get_node_or_null("/root/StorylineDirector")
+	if director == null:
+		log_message("StorylineDirector not available", Color.RED)
+	return director
+
+func _cmd_storylines():
+	var director = _director()
+	if not director:
+		return
+	var ids = director.get_storyline_ids()
+	log_message("=== Storylines (%d, agency: %s) ===" % [ids.size(), director.agency_mode], Color.CYAN)
+	for sid in ids:
+		var storyline = director.get_storyline(sid)
+		var beats = director.get_beats(sid)
+		var open_count = beats.filter(func(b): return b.status == "open").size()
+		var resolved_count = beats.filter(func(b): return b.status == "resolved").size()
+		var ending = director.get_ending(sid)
+		log_message("  %s - %s: %d beats (%d open, %d resolved)%s" % [sid, storyline.get("title", ""), beats.size(), open_count, resolved_count,
+			" | ENDING: " + ending if ending != "" else ""], Color.WHITE, false, true)
+
+func _cmd_beats(args: Array):
+	var director = _director()
+	if not director:
+		return
+	if args.is_empty():
+		log_message("Usage: beats <storyline>", Color.RED)
+		return
+	var beats = director.get_beats(args[0])
+	if beats.is_empty():
+		log_message("No storyline '%s' (see 'storylines')" % args[0], Color.RED)
+		return
+	var colors = {"open": Color.GREEN, "resolved": Color.GRAY, "blocked": Color.ORANGE, "locked": Color.DIM_GRAY}
+	log_message("=== Beats: %s ===" % args[0], Color.CYAN)
+	for beat in beats:
+		var act = "Act %d " % beat.act if beat.act > 0 else ""
+		log_message("  [%s] %s%s - %s" % [beat.status, act, beat.id, beat.title], colors.get(beat.status, Color.WHITE), false, true)
+
+func _cmd_hooks(args: Array):
+	var director = _director()
+	if not director:
+		return
+	if args.is_empty():
+		log_message("Usage: hooks <storyline>", Color.RED)
+		return
+	var hooks = director.get_hooks(args[0])
+	if hooks.is_empty():
+		log_message("No hooks for '%s'" % args[0], Color.RED)
+		return
+	log_message("=== Hooks: %s ===" % args[0], Color.CYAN)
+	var queued = {}
+	for item in director.get_decision_queue():
+		if item.storyline == args[0]:
+			queued[item.hook] = true
+	for hook in hooks:
+		log_message("  %s%s (%s, %s) beat %s, eligible %s, acted %d" % ["[queued] " if queued.has(hook.id) else "", hook.id, hook.type, hook.trigger, hook.beat,
+			", ".join(hook.eligible), hook.acted], Color.YELLOW if queued.has(hook.id) else Color.WHITE, false, true)
+	_log_decision_queue(director, args[0])
+
+func _cmd_soul(args: Array):
+	var director = _director()
+	if not director:
+		return
+	if args.is_empty():
+		log_message("Usage: soul <npc>   (loaded: %s)" % ", ".join(director.get_soul_keys()), Color.RED)
+		return
+	var soul = director.get_soul(args[0])
+	if soul == null:
+		log_message("No SOUL.md loaded for '%s'" % args[0], Color.RED)
+		return
+	var info = soul.to_debug_dict()
+	log_message("=== SOUL: %s (%s) ===" % [info.name, info.npc_id], Color.CYAN)
+	log_message("  Wants: " + ", ".join(info.wants), Color.WHITE, false, true)
+	log_message("  Lines: " + ", ".join(info.lines), Color.WHITE, false, true)
+	for hook_type in info.agency:
+		log_message("  Agency %s: %s" % [hook_type, ", ".join(info.agency[hook_type])], Color.WHITE, false, true)
+	log_message("  Drift: " + ", ".join(info.drift), Color.WHITE, false, true)
+	for agenda in director.get_agendas(args[0]):
+		log_message("  Agenda [%s]: %s" % [agenda.status, agenda.text], Color.YELLOW, false, true)
+
+func _cmd_chronicle(args: Array):
+	var director = _director()
+	if not director:
+		return
+	var count = 10
+	var talk_only = false
+	for arg in args:
+		if str(arg).is_valid_int():
+			count = int(arg)
+		elif str(arg) in ["talk", "conversation"]:
+			talk_only = true
+	var entries = director.get_chronicle(0 if talk_only else count)
+	if talk_only:
+		entries = entries.filter(func(e): return e.get("mode", "") == "conversation")
+		entries = entries.slice(maxi(entries.size() - count, 0))
+	log_message("=== Chronicle (last %d, round %d) ===" % [entries.size(), director.get_round()], Color.CYAN)
+	for entry in entries:
+		if entry.get("mode", "") == "conversation":
+			_log_conversation_entry(entry)
+			continue
+		var color = Color.GRAY if entry.choice == "pass" else Color.GREEN
+		log_message("  #%d r%d %s @ %s/%s [%s, %s]: %s" % [entry.seq, int(entry.get("round", 0)), entry.npc, entry.storyline, entry.hook, entry.trigger, entry.mode, entry.choice], color, false, true)
+		if entry.reason != "":
+			log_message("      why: %s" % entry.reason, Color.WHITE, false, true)
+		for effect in entry.applied:
+			log_message("      + %s" % JSON.stringify(effect), Color.WHITE, false, true)
+		for drop in entry.dropped:
+			log_message("      - %s (%s)" % [JSON.stringify(drop.effect), drop.reason], Color.ORANGE, false, true)
+		if entry.get("fallback_reason", "") != "":
+			log_message("      fallback: %s" % entry.fallback_reason, Color.ORANGE, false, true)
+	_log_decision_queue(director, "")
+
+## A conversation chronicle entry: who, when, what was said, each action applied or dropped (with why)
+func _log_conversation_entry(entry: Dictionary):
+	var when = _clock_text(int(entry.get("game_minutes", 0)))
+	var what = {"conversation": "TALK", "conversation_end": "TALK END", "word_arrived": "WORD ARRIVED"}.get(entry.trigger, entry.trigger)
+	log_message("  #%d r%d %s %s %s @ %s%s" % [entry.seq, int(entry.get("round", 0)), when, what, entry.npc, entry.get("location", ""),
+		(" [%s]" % entry.storyline) if entry.storyline != "" else ""], Color.SKY_BLUE, false, true)
+	if entry.get("reason", "") != "":
+		log_message("      player: \"%s\"" % entry.reason, Color.GRAY, false, true)
+	if entry.get("label", "") != "":
+		log_message("      %s: \"%s\"" % ["note" if entry.trigger == "word_arrived" else "said", entry.label], Color.GRAY, false, true)
+	for effect in entry.applied:
+		log_message("      + %s" % _describe_action(effect), Color.GREEN, false, true)
+	for drop in entry.dropped:
+		log_message("      - DROPPED %s: %s" % [_describe_action(drop.effect), drop.reason], Color.ORANGE, false, true)
+
+func _describe_action(effect) -> String:
+	if not effect is Dictionary:
+		return JSON.stringify(effect)
+	if effect.get("type", "") == "commitment":
+		return "commitment %s" % effect.get("flag", "")
+	return JSON.stringify(effect)
+
+## BaseNPC calls this after a reply carried actions or commitments
+func log_conversation_actions(npc_name: String, result: Dictionary):
+	var applied: Array = result.get("applied", [])
+	var dropped: Array = result.get("dropped", [])
+	log_message("%s acted: %d applied, %d dropped" % [npc_name, applied.size(), dropped.size()], Color.SKY_BLUE)
+	for effect in applied:
+		log_message("  + %s" % _describe_action(effect), Color.GREEN, false, true)
+	for drop in dropped:
+		log_message("  - %s: %s" % [_describe_action(drop.effect), drop.reason], Color.ORANGE, false, true)
+
+func _clock_text(total_minutes: int) -> String:
+	return "D%d %02d:%02d" % [floori(total_minutes / 1440.0) + 1, floori((total_minutes % 1440) / 60.0), total_minutes % 60]
+
+func _cmd_time(args: Array):
+	var world_state = get_node_or_null("/root/WorldState")
+	if world_state == null or not world_state.has_method("advance_time"):
+		log_message("WorldState clock not available", Color.RED)
+		return
+	if not args.is_empty():
+		var text = str(args[0]).trim_prefix("+")
+		if not text.is_valid_int() or int(text) <= 0:
+			log_message("Usage: time [+minutes]", Color.RED)
+			return
+		world_state.advance_time(int(text), "debug")
+	log_message("Game clock: %s (%s), minute %d" % [world_state.get_time_string(), world_state.get_time_of_day(), world_state.get_game_minutes()], Color.CYAN)
+
+func _cmd_player_flags():
+	var director = _director()
+	if not director or not director.has_method("get_player_flag_report"):
+		return
+	var colors = {"committable": Color.GREEN, "waiting": Color.GRAY, "done": Color.DIM_GRAY, "not in resolves_on": Color.ORANGE}
+	log_message("=== Player flags (committable = an NPC can recognise it in conversation now) ===", Color.CYAN)
+	for row in director.get_player_flag_report():
+		log_message("  [%s] %s (%s) beats: %s" % [row.status, row.flag, row.storyline, ", ".join(row.in_resolves_on)], colors.get(row.status, Color.WHITE), false, true)
+
+func _cmd_travel():
+	var world_state = get_node_or_null("/root/WorldState")
+	var director = _director()
+	if world_state == null or not director:
+		return
+	log_message("=== On the road (%s) ===" % world_state.get_time_string(), Color.CYAN)
+	for npc_id in world_state.get_travelling_npcs():
+		var travel = world_state.get_npc_travel(npc_id)
+		log_message("  %s: %s -> %s, arrives %s" % [npc_id, travel.get("from", "?"), travel.get("to", "?"), _clock_text(int(travel.get("arrive", 0)))], Color.WHITE, false, true)
+	for key in director.get_pending_moves():
+		for move in director.get_pending_moves()[key]:
+			log_message("  %s leaves for %s when %s's conversation ends" % [move.npc, move.location, key], Color.YELLOW, false, true)
+	for item in director.get_scheduled_effects():
+		log_message("  word in flight from %s, lands %s: %s" % [item.actor, _clock_text(int(item.at)), JSON.stringify(item.effect)], Color.GRAY, false, true)
+
+func _cmd_fire_hook(args: Array):
+	var director = _director()
+	if not director:
+		return
+	if args.size() < 2:
+		log_message("Usage: fire_hook <storyline> <hook_id> [npc]", Color.RED)
+		return
+	var entries = await director.fire_hook(args[0], args[1], args[2] if args.size() > 2 else "")
+	if entries.is_empty():
+		log_message("Nothing happened (unknown hook, or no eligible living NPC)", Color.RED)
+		return
+	for entry in entries:
+		log_message("%s chose %s: %d applied, %d dropped" % [entry.npc, entry.choice, entry.applied.size(), entry.dropped.size()], Color.GREEN)
+
+func _cmd_agency_mode(args: Array):
+	var director = _director()
+	if not director:
+		return
+	if args.is_empty():
+		log_message("Agency mode: %s (usage: agency_mode offline|claude)" % director.agency_mode, Color.CYAN)
+		return
+	if director.set_agency_mode(args[0]):
+		log_message("Agency mode: %s" % director.agency_mode, Color.GREEN)
+	else:
+		log_message("Unknown mode '%s' (offline|claude)" % args[0], Color.RED)
+
+func _cmd_choose(args: Array):
+	var director = _director()
+	if not director:
+		return
+	if args.is_empty():
+		log_message("Usage: choose <storyline_flag>   (sets it as the player's own choice)", Color.RED)
+		return
+	var result = director.player_choice(args[0])
+	if result.ok:
+		log_message("Player chose: %s" % args[0], Color.GREEN)
+	else:
+		log_message("Refused: %s" % result.reason, Color.RED)
+
+func _cmd_round(args: Array):
+	var director = _director()
+	if not director:
+		return
+	var count = clampi(int(args[0]), 1, 100) if not args.is_empty() and args[0].is_valid_int() else 1
+	for i in count:
+		var entries = await director.advance_round("debug")
+		log_message("Round %d: %d decision(s)" % [director.get_round(), entries.size()], Color.CYAN)
+		for entry in entries:
+			log_message("  %s @ %s/%s: %s" % [entry.npc, entry.storyline, entry.hook, entry.choice], Color.GRAY if entry.choice == "pass" else Color.GREEN, false, true)
+	_log_decision_queue(director, "")
+
+## Pending decisions (storyline_id "" = all storylines)
+func _log_decision_queue(director: Node, storyline_id: String):
+	var queue = director.get_decision_queue().filter(func(item): return storyline_id == "" or item.storyline == storyline_id)
+	log_message("Decision queue: %d pending" % queue.size(), Color.CYAN, false, true)
+	for item in queue.slice(0, 15):
+		log_message("  %s/%s (%s, queued round %d)" % [item.storyline, item.hook, item.trigger, item.queued_round], Color.GRAY, false, true)
+
+# =============================================================================
+# --- BEGIN personal arcs commands (arcs engine; docs/WORLD_SCHEMA.md §8) ---
+# =============================================================================
+
+## life <npc>: tier, location, every arc with its steps (done / progress / help) and what it would do next
+func _cmd_life(args: Array):
+	var director = _director()
+	if not director:
+		return
+	if args.is_empty():
+		log_message("Usage: life <npc>   (key, npc_id or registered generic id)", Color.RED)
+		var keys = director.get_soul_keys().filter(func(k): return director.get_soul_tier(k) in ["main", "promoted"])
+		keys.sort()
+		log_message("  With personal turns: %s" % ", ".join(keys), Color.GRAY, false, true)
+		return
+	var life: Dictionary = director.get_life(args[0])
+	if life.is_empty():
+		log_message("No soul for '%s'" % args[0], Color.RED)
+		return
+	log_message("=== Life: %s [%s%s] @ %s%s (last turn: personal round %d of %d) ===" % [life.npc, life.tier, ", registered" if life.registered else "",
+		life.location, " (on the road)" if life.travelling else "", int(life.last_turn), director.get_personal_round()], Color.CYAN)
+	if life.arcs.is_empty():
+		log_message("  No ## Life arcs", Color.GRAY, false, true)
+	for arc in life.arcs:
+		var color = {"active": Color.WHITE, "completed": Color.GREEN, "failed": Color.ORANGE}.get(arc.status, Color.WHITE)
+		log_message("  %s (serves %s %d/10) [%s] -> %s%s" % [arc.arc, arc.serves, int(arc.weight), arc.status, arc.result,
+			("  fails_if: " + ", ".join(arc.fails_if)) if not arc.fails_if.is_empty() else ""], color, false, true)
+		for step in arc.steps:
+			var mark = "x" if step.done else ("~" if int(step.progress) > 0 else " ")
+			var extra = ""
+			if step.player != "":
+				extra = " player:%s%s" % [step.player, " (promised)" if step.helped else ""]
+			log_message("    [%s] %s %d/%d @%s after:%s needs:%s effects:%s%s" % [mark, step.id, int(step.progress), int(step.effective_takes), step.at,
+				step.after if step.after != "" else "none", ",".join(step.needs) if not step.needs.is_empty() else "none", ",".join(step.effects), extra],
+				Color.GREEN if step.done else Color.WHITE, false, true)
+	for error in life.errors:
+		log_message("  rejected: %s" % error, Color.ORANGE, false, true)
+	if life.plan.is_empty():
+		log_message("  Next turn: nothing (%s)" % ("tier %s gets no personal turns" % life.tier if life.tier not in ["main", "promoted"] else "on the road, done, or every step blocked"), Color.GRAY, false, true)
+	else:
+		log_message("  Next turn: %s %s/%s%s" % [life.plan.action, life.plan.arc, life.plan.step, (" (%dm away)" % int(life.plan.minutes)) if life.plan.action == "travel" else ""], Color.YELLOW, false, true)
+	for offer in life.help_offers:
+		log_message("  Player could promise help: help:%s (%s)" % [offer.flag, offer.player], Color.SKY_BLUE, false, true)
+
+## life_round [n]: run n personal phases (no storyline decisions) and show each turn
+func _cmd_life_round(args: Array):
+	var director = _director()
+	if not director:
+		return
+	var count = clampi(int(args[0]), 1, 50) if not args.is_empty() and args[0].is_valid_int() else 1
+	for i in count:
+		var entries = await director.run_personal_turns("debug")
+		log_message("Personal round %d: %d turn(s) (cap %d)" % [director.get_personal_round(), entries.size(), director.get_personal_decisions_per_round()], Color.CYAN)
+		for entry in entries:
+			var color = Color.GREEN if str(entry.choice).begins_with("completed") else (Color.ORANGE if entry.choice in ["abandoned", "waiting"] else Color.WHITE)
+			log_message("  %s %s %s: %s" % [entry.npc, entry.choice, entry.hook, entry.reason], color, false, true)
+			for effect in entry.applied:
+				log_message("      + %s" % JSON.stringify(effect), Color.WHITE, false, true)
+			for drop in entry.dropped:
+				log_message("      - %s (%s)" % [JSON.stringify(drop.effect), drop.reason], Color.ORANGE, false, true)
+
+# =============================================================================
+# --- END personal arcs commands ---
+# =============================================================================
+
+# =============================================================================
+# --- BEGIN generic NPC commands (generics engine) ---
+# docs/WORLD_SCHEMA.md §9: generics, layering, decay, promotion and demotion
+# =============================================================================
+
+func _generics_manager() -> Node:
+	var registry = get_node_or_null("/root/DynamicNPCRegistry")
+	var manager = registry.generics if registry and "generics" in registry else null
+	if manager == null:
+		log_message("Generic NPC system not available", Color.RED)
+	return manager
+
+func _cmd_generics(args: Array):
+	var manager = _generics_manager()
+	if not manager:
+		return
+	var location = args[0] if not args.is_empty() else ""
+	var lines = manager.describe_list(location)
+	log_message("Generics%s: %d (%d promoted)" % [" at " + location if location != "" else "", lines.size(), manager.get_promoted_ids().size()], Color.CYAN)
+	for line in lines:
+		log_message("  " + line, Color.GREEN if "PROMOTED" in line else Color.WHITE, false, true)
+	if not manager.archetype_errors.is_empty():
+		log_message("Malformed archetypes: %s" % ", ".join(manager.archetype_errors.keys()), Color.ORANGE, false, true)
+
+func _cmd_generic(args: Array):
+	var manager = _generics_manager()
+	if not manager:
+		return
+	if args.is_empty():
+		log_message("Usage: generic <id>   (see 'generics')", Color.RED)
+		return
+	for line in manager.describe(args[0]):
+		log_message(line, Color.WHITE, false, true)
+
+func _cmd_promote(args: Array):
+	var manager = _generics_manager()
+	if not manager:
+		return
+	if args.is_empty():
+		log_message("Usage: promote <id>", Color.RED)
+		return
+	var result = manager.promote(args[0], true)
+	if result.ok:
+		log_message("Promoted %s: soul at %s (%d Life arcs)" % [args[0], result.soul_path, result.arcs], Color.GREEN)
+	else:
+		log_message("Refused: %s %s" % [result.reason, "; ".join(result.get("errors", []))], Color.RED)
+
+func _cmd_demote(args: Array):
+	var manager = _generics_manager()
+	if not manager:
+		return
+	if args.is_empty():
+		log_message("Usage: demote <id>", Color.RED)
+		return
+	var result = manager.demote(args[0], true)
+	if result.ok:
+		log_message("Demoted %s; residue: %s" % [args[0], " | ".join(result.residue)], Color.GREEN)
+	else:
+		log_message("Refused: %s" % result.reason, Color.RED)
+
+func _cmd_decay_days(args: Array):
+	var manager = _generics_manager()
+	if not manager:
+		return
+	var days = clampi(int(args[0]), 1, 365) if not args.is_empty() and str(args[0]).is_valid_int() else 1
+	var before = manager.get_promoted_ids()
+	var changed = manager.simulate_days_apart(days)
+	log_message("%d day(s) apart: %d NPC(s) faded" % [days, changed.size()], Color.CYAN)
+	for npc_id in changed:
+		var d = manager.ledger.get_dims(npc_id)
+		log_message("  %s  T%.1f R%.1f A%.1f F%.1f Fam%.1f" % [npc_id, d.trust, d.respect, d.affection, d.fear, d.familiarity], Color.GRAY, false, true)
+	for id in before:
+		if not id in manager.get_promoted_ids():
+			log_message("  %s demoted (friends become acquaintances)" % id, Color.ORANGE, false, true)
+
+# =============================================================================
+# --- END generic NPC commands ---
+# =============================================================================
+
+# =============================================================================
+# --- BEGIN calendar commands (world & engine; world.json "calendar") ---
+# =============================================================================
+
+## day <n>: advance to that morning (06:00). The clock only runs forward
+func _cmd_day(args: Array):
+	var world_state = get_node_or_null("/root/WorldState")
+	if world_state == null or not world_state.has_method("get_morning_minute"):
+		log_message("WorldState calendar not available", Color.RED)
+		return
+	if args.is_empty() or not str(args[0]).is_valid_int() or int(args[0]) < 1:
+		log_message("Usage: day <n>   (n >= 1; advances to day n, 06:00)", Color.RED)
+		return
+	var target: int = world_state.get_morning_minute(int(args[0]))
+	var minutes: int = target - world_state.get_game_minutes()
+	if minutes <= 0:
+		log_message("It is already %s; the clock does not run backwards" % world_state.get_time_string(), Color.ORANGE)
+		return
+	var before: Array = world_state.get_calendar().filter(func(e): return e.fired).map(func(e): return e.flag)
+	world_state.advance_time(minutes, "debug_day")
+	var fired: Array = world_state.get_calendar().filter(func(e): return e.fired and e.flag not in before).map(func(e): return e.flag)
+	log_message("Game clock: %s (+%d minutes)" % [world_state.get_time_string(), minutes], Color.CYAN)
+	if not fired.is_empty():
+		log_message("  Fixed points passed: %s" % ", ".join(fired), Color.YELLOW)
+
+func _cmd_calendar():
+	var world_state = get_node_or_null("/root/WorldState")
+	if world_state == null or not world_state.has_method("get_calendar"):
+		log_message("WorldState calendar not available", Color.RED)
+		return
+	log_message("=== Calendar (now %s) ===" % world_state.get_time_string(), Color.CYAN)
+	for entry in world_state.get_calendar():
+		var at = "Day %d, %02d:%02d" % [floori(entry.minute / 1440.0) + 1, floori((entry.minute % 1440) / 60.0), entry.minute % 60]
+		log_message("  [%s] %s  %s" % ["x" if entry.fired else " ", at, entry.flag], Color.DIM_GRAY if entry.fired else Color.WHITE, false, true)
+
+# =============================================================================
+# --- END calendar commands ---
+# =============================================================================

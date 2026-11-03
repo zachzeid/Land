@@ -60,6 +60,42 @@ var forbidden_npc_names: Array = [
 	# Add more as they appear in testing
 ]
 
+## NPC names the world has made canon at runtime (generic instances, referenced NPCs)
+## lowercase name word -> {source id: true}. A registered name is valid even if it is on the
+## hallucination list above: a generic really called Thomas exists, so memories of him are real
+var registered_npc_names: Dictionary = {}
+
+## Make an NPC's name canon (every word of it). source_id: who it belongs to (for unregistering)
+func register_npc_name(full_name: String, source_id: String) -> void:
+	for word in _name_words(full_name):
+		var owners: Dictionary = registered_npc_names.get(word, {})
+		owners[source_id] = true
+		registered_npc_names[word] = owners
+
+func unregister_npc_names_from(source_id: String) -> void:
+	for word in registered_npc_names.keys():
+		registered_npc_names[word].erase(source_id)
+		if registered_npc_names[word].is_empty():
+			registered_npc_names.erase(word)
+
+## True when every word of the name belongs to a registered NPC name
+func is_registered_npc_name(npc_name: String) -> bool:
+	var words = _name_words(npc_name)
+	if words.is_empty():
+		return false
+	for word in words:
+		if not registered_npc_names.has(word):
+			return false
+	return true
+
+func _name_words(full_name: String) -> Array:
+	var out: Array = []
+	for part in full_name.to_lower().replace(",", " ").replace(".", " ").split(" ", false):
+		var word = part.strip_edges().trim_suffix("'s")
+		if word.length() >= 2 and word not in ["of", "the", "and"]:
+			out.append(word)
+	return out
+
 ## Register a canonical event that actually happened
 func register_event(category: EventCategory, description: String, participants: Array = [], location: String = "") -> String:
 	event_counter += 1
@@ -132,7 +168,7 @@ func validate_memory(memory_text: String, npc_id: String) -> Dictionary:
 	# Check for establishment names that don't exist
 	var mentioned_establishments = _extract_quoted_names(memory_text)
 	for name in mentioned_establishments:
-		if not WorldKnowledge.is_valid_establishment_name(name):
+		if not WorldKnowledge.is_valid_establishment_name(name) and not _is_canon_name(name):
 			# Check if it's close to a valid name (typo tolerance)
 			var valid_names = WorldKnowledge.get_all_establishment_names()
 			var found_match = false
@@ -151,6 +187,8 @@ func validate_memory(memory_text: String, npc_id: String) -> Dictionary:
 	var npc_names_mentioned = _extract_npc_names(memory_text)
 	for name in npc_names_mentioned:
 		# Check if it's a known hallucination pattern
+		if is_registered_npc_name(name):
+			continue  # a real (registered) NPC, even if the name is on the hallucination list
 		if name.to_lower() in forbidden_npc_names:
 			result.valid = false
 			result.issues.append("Contains hallucinated NPC: '%s'" % name)
@@ -158,11 +196,10 @@ func validate_memory(memory_text: String, npc_id: String) -> Dictionary:
 			result.issues.append("Unknown NPC name: '%s' (may be hallucinated)" % name)
 			# Don't invalidate for unknown names - could be player's name or legitimate new character
 
-	# Check for location inconsistencies
-	if "king's castle" in lower_text or "capital" in lower_text:
-		var npc_scope = WorldKnowledge.get_knowledge_scope_for_location(npc_id, "kings_castle")
-		if npc_scope == WorldKnowledge.KnowledgeScope.DISTANT or npc_scope == WorldKnowledge.KnowledgeScope.UNKNOWN:
-			if "i visited" in lower_text or "i went to" in lower_text or "i was at" in lower_text:
+	# Check for location inconsistencies: a claim to have been to the Capitol needs a reason to be true
+	if "king's castle" in lower_text or "capital" in lower_text or "capitol" in lower_text or "highmarch" in lower_text:
+		if "i visited" in lower_text or "i went to" in lower_text or "i was at" in lower_text:
+			if not _could_have_been_to_capitol(npc_id):
 				result.valid = false
 				result.issues.append("NPC claims to have visited distant location they couldn't know")
 
@@ -305,12 +342,49 @@ func _extract_npc_names(text: String) -> Array:
 				names.append(word)
 	return names
 
+## A proper name the world knows (world.json names, roles, places, regions; storyline text)
+func _is_canon_name(name: String) -> bool:
+	var registry = get_node_or_null("/root/WorldRegistry")
+	return registry != null and registry.has_method("is_canon_name") and registry.is_canon_name(name)
+
+## Roster NPCs who live in the Capitol, or have travelled there, can truthfully say they went
+## NPCs off the roster keep the old WorldKnowledge scope check
+func _could_have_been_to_capitol(npc_id: String) -> bool:
+	var registry = get_node_or_null("/root/WorldRegistry")
+	var key = registry.get_npc_key(npc_id) if registry else ""
+	if key == "":
+		var npc_scope = WorldKnowledge.get_knowledge_scope_for_location(npc_id, "kings_castle")
+		return npc_scope != WorldKnowledge.KnowledgeScope.DISTANT and npc_scope != WorldKnowledge.KnowledgeScope.UNKNOWN
+	var world_state = get_node_or_null("/root/WorldState")
+	for region in registry.get_region_ids():
+		var info: Dictionary = registry.get_region_info(region)
+		if not ("capitol" in str(region).to_lower() or "capitol" in str(info.get("name", "")).to_lower()):
+			continue
+		if registry.get_region(registry.get_npc_home(key)) == region:
+			return true
+		if world_state and world_state.has_method("has_npc_visited_region") and world_state.has_npc_visited_region(registry.get_npc_id(key), region):
+			return true
+	return false
+
 ## Check if a name is a valid NPC
 func _is_valid_npc_name(name: String) -> bool:
 	var lower_name = name.to_lower()
 
 	# "Player" is always valid
 	if lower_name == "player":
+		return true
+
+	# Generic instances and other runtime NPCs whose names were registered
+	if is_registered_npc_name(name):
+		return true
+
+	# Every world.json roster NPC (all regions), and any name the world's own text uses
+	var registry = get_node_or_null("/root/WorldRegistry")
+	if registry:
+		for key in registry.get_npc_keys():
+			if lower_name == key or lower_name in registry.get_npc_name(key).to_lower().split(" "):
+				return true
+	if _is_canon_name(name):
 		return true
 
 	for npc_id in WorldKnowledge.world_facts.npcs:

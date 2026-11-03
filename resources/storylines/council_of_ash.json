@@ -1,0 +1,3703 @@
+{
+  "id": "council_of_ash",
+  "title": "The Council of Ash",
+  "summary": "Thornhaven's answer to the Tithe. A terrified council with a tribute fund under the chapel must pay, bargain or refuse; the Elder's faith in the lot breaks; the captain's unsent proclamation waits in his footlocker; and the widow at the tavern works the council from inside.",
+  "prefix": "cou_",
+  "act_span": [
+    1,
+    3
+  ],
+  "flags": {
+    "cou_council_convened": "Elder Mathias called the five councillors into the council hall the night Elena's name was drawn, to decide how Thornhaven would answer the Tithe.",
+    "cou_mira_go_between": "Mira, the tavern widow, offered to carry the council's word to the Hollow, as she said she had carried Gregor's grief for five years.",
+    "cou_ransom_offered": "Gregor offered the council every coin in his strongbox, to be added to the tribute fund as a ransom for his daughter.",
+    "cou_fund_counted": "Elder Mathias counted the tribute fund in the chapel undercroft before the council, chest by chest, and named the sum aloud.",
+    "cou_proclamation_drafted": "Captain Aldric laid his unsent proclamation of martial law on the council's table, dated for this autumn and not yet signed.",
+    "cou_council_pays": "The council voted to pay the Tithe as it was asked, the coin from the undercroft and the name from the lot, and to send Elena to the cart.",
+    "cou_council_bargains": "The council voted to bargain with the Hollow for Elena: more coin from the undercroft, or another in her place.",
+    "cou_council_refuses": "The council voted to refuse the Tithe for the first time in five years, and to stand behind Captain Aldric at the gate.",
+    "cou_davin_before_council": "Davin, Bjorn's apprentice taken in the second Tithe, stood in the dark of the council hall and told the five councillors that the taken dig the white stone.",
+    "cou_martial_law": "Captain Aldric posted his proclamation of martial law on the well and took command of Thornhaven's answer to the Tithe from the council.",
+    "cou_proclamation_withdrawn": "Captain Aldric folded his proclamation of martial law back into his footlocker unposted, because the council had found its own voice.",
+    "cou_patrols_sold": "Captain Aldric's plan for the gate, his watches and where his six would stand, reached the Hollow before Collection Night.",
+    "cou_barn_burned": "Hollow men burned a barn on the east road by night, to remind Thornhaven that the Tithe takes coin as well as a person.",
+    "cou_council_in_her_hand": "Every motion the council weighed that week had first been poured, word by word, into a councillor's cup at the widow Mira's bar.",
+    "cou_widow_doubted": "Captain Aldric noted in his own hand that the widow Mira could not have seen, from where she said she stood, the gate she said Marcus's killers used.",
+    "cou_widow_barred": "Elder Mathias barred the widow Mira from the council's business and took the Hollow's word back into the council's own hands.",
+    "cou_bargain_carried": "Mira carried the council's offer for Elena up the forest path to the Hollow.",
+    "cou_price_doubled": "The Hollow answered the council's offer by doubling the coin it asked, and still named no one but Elena.",
+    "cou_strongbox_emptied": "Gregor emptied his strongbox into the tribute chest in the undercroft, every coin he had saved to carry Elena east.",
+    "cou_bargain_withdrawn": "Elder Mathias tore up the council's offer to the Hollow and said no more coin would leave the undercroft for it.",
+    "cou_fund_spent_on_arms": "Elder Mathias opened the chapel undercroft and gave the tribute fund to arm the people at the gate.",
+    "cou_elena_stood_at_gate": "Elena stood at the village gate with the people who meant to refuse the Tithe.",
+    "cou_village_rises": "The people of Thornhaven rose together at the village gate and refused to give the Hollow another name or another coin.",
+    "cou_rising_broken": "The villagers who gathered to refuse the Tithe went home afraid, and the rising broke before the cart came.",
+    "cou_told_the_elder": "The player told Elder Mathias, in his own chapel, that the lot he blessed had been rigged.",
+    "cou_caught_the_widow": "The player caught Mira at work on the council: a councillor repeating, word for word, what she had poured into his cup.",
+    "cou_called_the_rising": "The player climbed onto a cart in the town square and called Thornhaven to refuse the Tithe at the gate on Collection Night.",
+    "cou_bargain_laid_bare": "The player laid the council's bargain for Elena before the village, coin by coin, from the undercroft to the forest path.",
+    "cou_bargain_kept": "The player learned of the council's bargain for Elena and gave Elder Mathias their word to keep it from the village.",
+    "cou_held_the_gate": "The player stood at the village gate with Captain Aldric's six when the rising wavered."
+  },
+  "player_flags": [
+    "cou_told_the_elder",
+    "cou_caught_the_widow",
+    "cou_called_the_rising",
+    "cou_bargain_laid_bare",
+    "cou_bargain_kept",
+    "cou_held_the_gate"
+  ],
+  "crossovers": [
+    "tn_lot_rigged_known",
+    "tn_elena_swap_known",
+    "tn_taken_alive_known",
+    "tn_plan_fight",
+    "tn_plan_bargain",
+    "tn_substitute_sent",
+    "tn_elena_taken",
+    "oath_resistance_armed",
+    "oath_blades_sabotaged",
+    "ih_gregor_fled",
+    "fev_elena_left_home",
+    "hc_varn_dead",
+    "hc_varn_ascendant",
+    "tithe_rangers_arrive",
+    "des_varn_route_sold",
+    "vein_miners_rise"
+  ],
+  "beats": [
+    {
+      "id": "the_frightened_council",
+      "act": 1,
+      "title": "The Frightened Council",
+      "summary": "The night of the drawing, Elder Mathias calls the five councillors to the hall. They are terrified: of the Hollow, of the cart, of being next year's name.",
+      "location": "council_hall",
+      "requires": [],
+      "resolves_on": [
+        "cou_council_convened"
+      ],
+      "hooks": [
+        {
+          "id": "cou_mathias_convenes",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Elena's name is still in your mouth. Five frightened councillors wait for you to tell them what the gods want of Thornhaven now.",
+          "options": [
+            {
+              "id": "bless_and_convene",
+              "label": "Call the council and tell them the lot is the gods' sorrow, not our crime",
+              "serves": [
+                "the_lot_is_holy",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_convened",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the lot is the gods' will, a sorrow and not a murder."
+                }
+              ]
+            },
+            {
+              "id": "convene_in_fear",
+              "label": "Call the council tonight, before fear calls them for you",
+              "serves": [
+                "keep_the_peace_paid",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_convened",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the council must decide quickly, before the Hollow decides for it."
+                }
+              ]
+            },
+            {
+              "id": "pray_alone",
+              "label": "Sit alone in the chapel with the urn and call no one",
+              "serves": [
+                "the_lot_is_holy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger whether they saw the gods' hand in the drawing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_wants_a_vote",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The council is gathering. You have six farmers, a proclamation in your footlocker and seven days. They will want to pay.",
+          "options": [
+            {
+              "id": "demand_refusal",
+              "label": "Stand in the door and demand they vote to refuse the cart",
+              "serves": [
+                "win_the_council",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger to stand before the council and say the Tithe must be refused."
+                }
+              ]
+            },
+            {
+              "id": "table_the_paper",
+              "label": "Lay the unsigned proclamation on their table so they know what waits",
+              "serves": [
+                "take_command",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_proclamation_drafted",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "say_nothing_yet",
+              "label": "Say nothing tonight; count the six and the steel first",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger whether they can hold a blade at a gate."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mira_offers_to_carry",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The councillors drink at your bar and tremble. Someone must carry their word to the forest. Who better than a widow the Hollow already took from?",
+          "options": [
+            {
+              "id": "offer_herself",
+              "label": "Offer, with shaking hands, to carry the council's word to the Hollow",
+              "serves": [
+                "own_the_council",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_mira_go_between",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger you will carry the council's word because no one else dares."
+                }
+              ]
+            },
+            {
+              "id": "let_them_ask",
+              "label": "Pour, listen, and wait for them to ask you",
+              "serves": [
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, gently, what they would do if it were their daughter."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_gregor_begs_the_council",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The council meets about your daughter. You cannot tell them why the lot should never have fallen on her.",
+          "options": [
+            {
+              "id": "offer_the_strongbox",
+              "label": "Offer the council your strongbox to buy her out",
+              "serves": [
+                "buy_her_back",
+                "keep_the_council_paying"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_ransom_offered",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "council_hall"
+                }
+              ]
+            },
+            {
+              "id": "ask_for_another",
+              "label": "Beg the stranger to find someone, anyone, to go instead",
+              "serves": [
+                "find_a_substitute",
+                "get_elena_away"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Beg the stranger to get Elena out of the valley, or to find someone to go instead."
+                }
+              ],
+              "harms": [
+                "player"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_elena_before_the_council",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The council has sat. You know what they will try: coin, bargains, a quieter name. You cut your own tile so no one else's child would go.",
+          "options": [
+            {
+              "id": "ask_the_lot_stand",
+              "label": "Ask the stranger to see that the lot stands",
+              "serves": [
+                "make_the_lot_stand",
+                "keep_the_swap_secret"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger to make sure the lot stands, and to follow the cart when it goes."
+                }
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Keep your face still and let them argue",
+              "serves": [
+                "keep_the_swap_secret"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "elena",
+                  "want": "keep_the_swap_secret",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_undercroft",
+      "act": 1,
+      "title": "The Undercroft",
+      "summary": "The tribute fund sits in iron-banded chests under the chapel. The Tithe takes coin as well as a person, and a short purse on Collection Night may bring a second name.",
+      "location": "thornhaven_chapel",
+      "requires": [
+        "cou_council_convened"
+      ],
+      "resolves_on": [
+        "cou_fund_counted"
+      ],
+      "hooks": [
+        {
+          "id": "cou_mathias_counts_the_fund",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The undercroft key is on your belt. The council wants to know if there is enough to buy anything this year.",
+          "options": [
+            {
+              "id": "count_it_aloud",
+              "label": "Count the chests before the council and name the sum",
+              "serves": [
+                "guard_the_tribute_fund",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_fund_counted",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "keep_the_key",
+              "label": "Keep the key and the sum to yourself",
+              "serves": [
+                "guard_the_tribute_fund"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the undercroft is the gods' business and the council's, not theirs."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_gregor_at_the_chests",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The council's coin lies under the chapel. Enough coin, laid at the right feet, might buy Elena's name back out of the cart.",
+          "options": [
+            {
+              "id": "press_for_ransom",
+              "label": "Press the council to make the fund Elena's ransom",
+              "serves": [
+                "keep_the_council_paying",
+                "buy_her_back"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger to speak for spending the undercroft fund on Elena's ransom."
+                }
+              ]
+            },
+            {
+              "id": "count_your_own",
+              "label": "Go home and count your own coin for a wagon east",
+              "serves": [
+                "get_elena_away"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "thornhaven_gregor_shop"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mira_learns_the_sum",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The Elder has said the sum aloud. You know exactly what the Hollow will ask for on the seventh night.",
+          "options": [
+            {
+              "id": "price_it",
+              "label": "Let the Hollow know the purse it may ask for",
+              "serves": [
+                "harvest_the_tithe",
+                "own_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "spread_rumor",
+                  "flag": "cou_fund_counted",
+                  "to": [
+                    "varn"
+                  ],
+                  "via": "a widow's careful word at the old mill"
+                }
+              ]
+            },
+            {
+              "id": "keep_it",
+              "label": "Keep the sum for yourself until the council is ready to bargain",
+              "serves": [
+                "own_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mira",
+                  "want": "own_the_council",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_varn_names_coin",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Word reaches the camp of what lies in Thornhaven's undercroft.",
+          "options": [
+            {
+              "id": "name_coin_and_girl",
+              "label": "Let them know the cart takes the coin and the girl both",
+              "serves": [
+                "a_perfect_collection",
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell anyone who asks that the cart takes the purse and the girl, and the purse had better be full."
+                }
+              ]
+            },
+            {
+              "id": "keep_count",
+              "label": "Keep the count, and keep the merchant guessing",
+              "serves": [
+                "keep_gregor_on_the_hook"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "varn",
+                  "want": "keep_gregor_on_the_hook",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_elders_faith",
+      "act": 2,
+      "title": "The Elder's Faith",
+      "summary": "Mathias has blessed five drawings and believes the lot is holy. If someone proves to him it was rigged, his faith breaks, and he must choose between the council's fear and the truth.",
+      "location": "thornhaven_chapel",
+      "requires": [
+        "cou_council_convened"
+      ],
+      "resolves_on": [
+        "mathias_informed",
+        "cou_told_the_elder"
+      ],
+      "on_resolve": [
+        {
+          "type": "set_flag",
+          "flag": "mathias_informed",
+          "value": true
+        }
+      ],
+      "hooks": [
+        {
+          "id": "cou_bjorn_answers_the_elder",
+          "type": "reveal",
+          "trigger": "on_flag:mathias_the_weight_of_the_tiles_ask_the_smith",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The Elder has carried a tile to your forge and asked you, one old man to a younger, whether iron can lie. You weighed Elena's tile. It was light.",
+          "options": [
+            {
+              "id": "tell_him_true",
+              "label": "Tell him to his face: iron does not lie, but a file does. Elena's tile was recut",
+              "serves": [
+                "read_the_tiles",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mathias_informed",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger you told the Elder the truth about the light tile, and you would again."
+                }
+              ]
+            },
+            {
+              "id": "spare_him",
+              "label": "Tell him you need to weigh them all first",
+              "serves": [
+                "keep_out_of_politics"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger to help you weigh every tile in the urn."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_bjorn_hears_the_stranger_saw",
+          "type": "reveal",
+          "trigger": "on_flag:recut_tile_seen",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The stranger has seen it too: Elena's tile, recut by a careful, unpractised hand. Your iron. Your tiles.",
+          "options": [
+            {
+              "id": "go_to_the_elder",
+              "label": "Walk to the chapel and tell the Elder plainly",
+              "serves": [
+                "read_the_tiles",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mathias_informed",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "forge_first",
+              "label": "Go back to the forge and match the tile to the mould first",
+              "serves": [
+                "read_the_tiles"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger to come to the forge and watch you match the tile to the old mould."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_brings_proof",
+          "type": "reveal",
+          "trigger": "on_flag:aldric_has_evidence",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "You have proof of how the Tithe really works. The Elder still blesses it every autumn.",
+          "options": [
+            {
+              "id": "lay_it_before_him",
+              "label": "Lay it before the Elder, and ask him to say it to the council",
+              "serves": [
+                "expose_the_traitor",
+                "win_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "mathias_informed",
+                  "value": true
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "aldric",
+                  "dimension": "trust",
+                  "delta": 5
+                }
+              ]
+            },
+            {
+              "id": "keep_it_for_the_gate",
+              "label": "Keep it; the Elder will only pray over it",
+              "serves": [
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the proof stays with you until the gate."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mira_turns_the_grief",
+          "type": "intercept",
+          "trigger": "on_flag:tn_lot_rigged_known",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The stranger knows the lot was rigged. The Elder will learn it next. A frightened old man can be steered while his faith is breaking.",
+          "options": [
+            {
+              "id": "toward_gregor",
+              "label": "Ask the Elder, softly, why the lot fell lucky for Gregor's house four years running",
+              "serves": [
+                "burn_gregor_first",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask aloud why the lot fell lucky for Gregor's house four years running."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "toward_the_gods",
+              "label": "Comfort him: the gods choose through whatever hands they please",
+              "serves": [
+                "own_the_council",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the gods may choose through any hand, even a crooked one."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_gregor_hears_the_elder_knows",
+          "type": "react",
+          "trigger": "on_flag:mathias_informed",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Mathias knows the lot was rigged. He knew your father. He watched the lot pass your house four years running.",
+          "options": [
+            {
+              "id": "go_to_him_first",
+              "label": "Go to the Elder before he comes to you",
+              "serves": [
+                "make_amends",
+                "escape_the_deal"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "thornhaven_chapel"
+                },
+                {
+                  "type": "shift_want",
+                  "npc": "gregor",
+                  "want": "make_amends",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "keep_the_door_shut",
+              "label": "Bar the shop and say nothing",
+              "serves": [
+                "keep_the_secret",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger the Elder is an old man who sees rigging in every shadow."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mathias_faith_breaks",
+          "type": "react",
+          "trigger": "on_resolve",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "It was never the gods. Five autumns you laid your hand on mothers' heads and read the names. Now you must choose what to do with it.",
+          "options": [
+            {
+              "id": "tell_the_council",
+              "label": "Tell the council the lot was rigged, and that you saw it fall lucky and never asked",
+              "serves": [
+                "speak_the_truth",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger you will tell the council the lot was rigged, and that you never asked."
+                },
+                {
+                  "type": "shift_want",
+                  "npc": "mathias",
+                  "want": "speak_the_truth",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "hold_the_faith",
+              "label": "Keep vigil and hold to the lot in public; the village cannot bear this tonight",
+              "serves": [
+                "the_lot_is_holy",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mathias",
+                  "want": "the_lot_is_holy",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Beg the stranger not to tell the village the lot was rigged until after the cart."
+                }
+              ]
+            },
+            {
+              "id": "gregors_door",
+              "label": "Go first to Gregor's door, for his father's sake",
+              "serves": [
+                "mercy_for_gregor",
+                "prove_before_acting"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger whether Gregor will come to the council of his own will before the cart."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "three_roads",
+      "act": 2,
+      "title": "Pay, Bargain or Refuse",
+      "summary": "With four days left the council must choose: pay the Tithe as asked, bargain for Elena with more coin or another face, or refuse the cart. Every day it waits, it is more afraid.",
+      "location": "council_hall",
+      "requires": [
+        "cou_council_convened",
+        "tn_day_3"
+      ],
+      "resolves_on": [
+        "cou_council_pays",
+        "cou_council_bargains",
+        "cou_council_refuses",
+        "cou_called_the_rising"
+      ],
+      "hooks": [
+        {
+          "id": "cou_mathias_puts_the_question",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Four days left. The councillors look to you. Pay, bargain or refuse: you must put one of them to the vote, or put them off one more day.",
+          "options": [
+            {
+              "id": "put_off",
+              "label": "Put off the vote until there is proof either way",
+              "serves": [
+                "prove_before_acting",
+                "the_lot_is_holy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger what proof they have that the lot was anything but the gods' will."
+                }
+              ]
+            },
+            {
+              "id": "pay_as_asked",
+              "label": "Put the Tithe to the vote as it was asked: the coin and the girl",
+              "serves": [
+                "keep_the_peace_paid",
+                "avoid_the_hollow_war"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_pays",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "elena"
+              ]
+            },
+            {
+              "id": "refuse_it",
+              "label": "Put the refusal to the vote, and say you will stand at the gate yourself",
+              "serves": [
+                "save_thornhaven",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_refuses",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mathias_after_the_truth",
+          "type": "intercept",
+          "trigger": "on_flag:mathias_informed",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The lot was rigged, and the council is still arguing over how to pay it. You are the only one in the hall who knows.",
+          "options": [
+            {
+              "id": "refuse_in_truth",
+              "label": "Tell them, and put the refusal to the vote",
+              "serves": [
+                "save_thornhaven",
+                "speak_the_truth",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_refuses",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "bargain_quietly",
+              "label": "Say nothing of the rigging; move to bargain more coin for the girl",
+              "serves": [
+                "keep_the_peace_paid",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_bargains",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mathias_fear_on_day_five",
+          "type": "intercept",
+          "trigger": "on_flag:tn_day_5",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Two days. Farmers watch the forest road. Councillors who swore to refuse now ask, very quietly, what the Hollow might take instead.",
+          "options": [
+            {
+              "id": "bargain_for_her",
+              "label": "Move to bargain: double the coin, if the Hollow will spare the girl",
+              "serves": [
+                "save_thornhaven",
+                "keep_the_peace_paid"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_bargains",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "pay_and_pray",
+              "label": "Move to pay as asked and pray it is the last",
+              "serves": [
+                "keep_the_peace_paid",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_pays",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "elena"
+              ]
+            },
+            {
+              "id": "refuse_late",
+              "label": "Move to refuse, late and frightened, but refuse",
+              "serves": [
+                "save_thornhaven",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_refuses",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mathias_girl_gone",
+          "type": "intercept",
+          "trigger": "on_flag:fev_elena_left_home",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Elena is gone from her father's house. The Hollow's cart will come for a name, and the council has none to give.",
+          "options": [
+            {
+              "id": "buy_time",
+              "label": "Move to offer the Hollow double the coin and no name",
+              "serves": [
+                "keep_the_peace_paid",
+                "guard_the_tribute_fund"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_bargains",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "refuse_now",
+              "label": "Refuse: let this be the year Thornhaven sends no one",
+              "serves": [
+                "save_thornhaven",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_refuses",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mira_works_the_cups",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The councillors drink at your bar every night of Tithe week. A word in the right cup goes a long way.",
+          "options": [
+            {
+              "id": "pour_fear",
+              "label": "Pour them stories of burned barns and second names",
+              "serves": [
+                "own_the_council",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mathias",
+                  "want": "keep_the_peace_paid",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger the councillors are frightened half to death, and who could blame them."
+                }
+              ]
+            },
+            {
+              "id": "pour_a_bargain",
+              "label": "Pour them the idea of a bargain, with you to carry it",
+              "serves": [
+                "own_the_council",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_in_her_hand",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the council whether the widow might carry a quiet offer to the Hollow."
+                }
+              ]
+            },
+            {
+              "id": "pour_and_watch",
+              "label": "Pour, say nothing, and watch who means to fight",
+              "serves": [
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger, lightly, who in the village has the stomach to refuse."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_gregor_offers_a_face",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The council is afraid of refusing and ashamed of paying. You have one thing they want to hear: there are other names.",
+          "options": [
+            {
+              "id": "propose_a_substitute",
+              "label": "Put it to the council that the Hollow might take a drifter, or the stranger, instead",
+              "serves": [
+                "find_a_substitute",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the council whether the Hollow would take a stranger in Elena's place."
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger how long they mean to stay in Thornhaven."
+                }
+              ],
+              "harms": [
+                "player"
+              ]
+            },
+            {
+              "id": "propose_coin",
+              "label": "Put it to the council that coin, enough coin, might buy her name back",
+              "serves": [
+                "buy_her_back",
+                "keep_the_council_paying"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_ransom_offered",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "propose_himself",
+              "label": "Ask the council, haltingly, whether the Hollow would take a father",
+              "serves": [
+                "go_in_her_place",
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger whether the Hollow would take a grown man in his daughter's place."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mira_takes_gregors_chair",
+          "type": "scheme",
+          "trigger": "on_flag:ih_gregor_fled",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Gregor has run. The council has lost its loudest voice for paying, and the Hollow its man in the hall.",
+          "options": [
+            {
+              "id": "fill_the_chair",
+              "label": "Sit where Gregor sat and speak for paying in his place",
+              "serves": [
+                "own_the_council",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_in_her_hand",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the council the widow is right: a runaway father cannot be the reason the village burns."
+                }
+              ]
+            },
+            {
+              "id": "let_it_fall",
+              "label": "Let the council fall apart and see who steps forward",
+              "serves": [
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mira",
+                  "want": "see_who_fights",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_on_refusal",
+          "type": "react",
+          "trigger": "on_flag:cou_council_refuses",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The council refused the cart. For the first time in five years you have a lawful order to stand at the gate.",
+          "options": [
+            {
+              "id": "recruit",
+              "label": "Go door to door, one face at a time, for the gate",
+              "serves": [
+                "hold_the_gate",
+                "arm_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "resistance_forming",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger to stand at the gate with the six on Collection Night."
+                }
+              ]
+            },
+            {
+              "id": "only_the_six",
+              "label": "Keep it to the six; farmers with pitchforks die first",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger you'll take the six to the gate, and no one else's sons."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_varn_answers_refusal",
+          "type": "scheme",
+          "trigger": "on_flag:cou_council_refuses",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Word reaches the camp that Thornhaven's council voted to refuse the cart.",
+          "options": [
+            {
+              "id": "burn_a_barn",
+              "label": "Burn a barn on the east road tonight, as a reminder",
+              "serves": [
+                "be_feared",
+                "crush_the_resistance"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_barn_burned",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "wait_for_the_night",
+              "label": "Let them talk brave; the cart comes on the seventh night either way",
+              "serves": [
+                "a_perfect_collection"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell anyone who'll listen the cart comes on the seventh night, vote or no vote."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_elena_hears_the_bargain",
+          "type": "reveal",
+          "trigger": "on_flag:cou_council_bargains",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The council means to bargain for you: more coin, or another girl in the cart. You cut your own tile so that would never happen.",
+          "options": [
+            {
+              "id": "tell_the_well",
+              "label": "Let the whole village know what the council is trying to buy",
+              "serves": [
+                "make_the_lot_stand",
+                "fight_for_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "spread_rumor",
+                  "flag": "cou_council_bargains",
+                  "to": [
+                    "*"
+                  ],
+                  "via": "Elena, at the well, in front of everyone"
+                }
+              ]
+            },
+            {
+              "id": "tell_the_stranger",
+              "label": "Tell only the stranger, and ask them to stop it",
+              "serves": [
+                "keep_the_swap_secret",
+                "get_word_out"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger to stop the council's bargain: no other child goes in my place."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_davin_in_the_hall",
+          "type": "aid",
+          "trigger": "on_flag:davin_found",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "The stranger found you. The council is deciding, by lamplight, who goes up the ridge next. You know where the cart goes.",
+          "options": [
+            {
+              "id": "speak_to_the_council",
+              "label": "Walk into the dark hall and tell them: we dig the white stone",
+              "serves": [
+                "stop_the_cart",
+                "save_corin_and_willa"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_davin_before_council",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "davin",
+                  "location": "council_hall"
+                }
+              ]
+            },
+            {
+              "id": "stay_at_mauds",
+              "label": "Stay at Old Maud's; one word in that hall reaches the forest",
+              "serves": [
+                "stay_hidden",
+                "never_go_back"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Beg the stranger not to say your name in the council hall."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mathias_stranger_bargains",
+          "type": "intercept",
+          "trigger": "on_flag:tn_plan_bargain",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The stranger means to bargain with the Hollow for Elena, and asks the council to put its coin behind them.",
+          "options": [
+            {
+              "id": "back_the_bargain",
+              "label": "Move that the council put the undercroft behind the stranger's bargain",
+              "serves": [
+                "save_thornhaven",
+                "keep_the_peace_paid"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_bargains",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "refuse_to_buy",
+              "label": "Refuse: the council will not buy one child with another family's sorrow",
+              "serves": [
+                "speak_the_truth",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the council will not buy Elena back with another family's child."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mathias_hears_the_swap",
+          "type": "react",
+          "trigger": "on_flag:tn_elena_swap_known",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The girl cut her own name into the tile. She chose to go, so that Ada Fenn would not.",
+          "options": [
+            {
+              "id": "honour_her",
+              "label": "Honour her choice, and weep for it",
+              "serves": [
+                "the_lot_is_holy",
+                "keep_the_peace_paid"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mathias",
+                  "want": "keep_the_peace_paid",
+                  "delta": 1
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the bravest soul in Thornhaven is eighteen."
+                }
+              ]
+            },
+            {
+              "id": "not_a_child",
+              "label": "Swear no child will pay for her father's sin, not even by her own hand",
+              "serves": [
+                "save_thornhaven",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mathias",
+                  "want": "save_thornhaven",
+                  "delta": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_taken_alive",
+          "type": "react",
+          "trigger": "on_flag:tn_taken_alive_known",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The taken are alive. Corin, Willa, the others, digging somewhere past the ridge.",
+          "options": [
+            {
+              "id": "march_for_them",
+              "label": "Begin planning a march to wherever they are",
+              "serves": [
+                "find_the_taken",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "aldric",
+                  "want": "find_the_taken",
+                  "delta": 2
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger where the carts take the taken."
+                }
+              ]
+            },
+            {
+              "id": "hold_the_gate_first",
+              "label": "The gate first; no more go up the ridge this year",
+              "serves": [
+                "hold_the_gate",
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the gate comes first, then the ridge."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_miners_rose",
+          "type": "react",
+          "trigger": "on_flag:vein_miners_rise",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Word comes west that Greystone's miners downed tools and held their hill against the Guild.",
+          "options": [
+            {
+              "id": "take_heart",
+              "label": "Take heart: if miners can hold a hill, farmers can hold a gate",
+              "serves": [
+                "arm_the_village",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "aldric",
+                  "want": "arm_the_village",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "shrug",
+              "label": "Miners are not farmers",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger Greystone's miners have picks and a hill; Thornhaven has flails."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mathias_hears_davin",
+          "type": "react",
+          "trigger": "on_flag:cou_davin_before_council",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The smith's boy stands in your hall, alive, with two fingers gone. The taken were not taken by the gods. They were taken to dig.",
+          "options": [
+            {
+              "id": "weep_and_resolve",
+              "label": "Take his maimed hand and swear the council will send no one",
+              "serves": [
+                "save_thornhaven",
+                "speak_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mathias",
+                  "want": "keep_the_peace_paid",
+                  "delta": -3
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger Davin's hand has ended your faith in the lot."
+                }
+              ]
+            },
+            {
+              "id": "hide_the_boy",
+              "label": "Swear every councillor to silence; if the Hollow hears, the village pays",
+              "serves": [
+                "hold_the_council_together",
+                "avoid_the_hollow_war"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Beg the stranger to keep Davin hidden until after the cart has gone."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_proclamation",
+      "act": 2,
+      "title": "The Unsent Proclamation",
+      "summary": "Aldric's proclamation of martial law has waited in his footlocker for five autumns. As the days run out he dates it for this one, and the Elder must decide whether to give the refusal the council's name or watch the captain take the village.",
+      "location": "thornhaven_town_square",
+      "requires": [
+        "cou_council_convened",
+        "tn_day_4"
+      ],
+      "resolves_on": [
+        "cou_martial_law",
+        "cou_proclamation_withdrawn",
+        "cou_called_the_rising"
+      ],
+      "hooks": [
+        {
+          "id": "cou_aldric_dates_it",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Three days. The council talks. You unfold the proclamation by lamplight and cross out last year's date.",
+          "options": [
+            {
+              "id": "lay_it_before_mathias",
+              "label": "Carry it to the Elder and ask him to put the council's name to a refusal instead",
+              "serves": [
+                "win_the_council",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "aldric",
+                  "location": "council_hall"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the captain laid his proclamation before you and asked for the council's name."
+                }
+              ]
+            },
+            {
+              "id": "keep_it_folded",
+              "label": "Fold it back; post it only if the council fails",
+              "serves": [
+                "keep_my_men_alive",
+                "win_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the proclamation stays folded one more day, no longer."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mathias_at_the_well",
+          "type": "intercept",
+          "trigger": "on_flag:aldric_stood_his_ground",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Aldric has laid his proclamation before you, unsigned, and asked you to put the council's name to the refusal so he never has to put his own.",
+          "options": [
+            {
+              "id": "argue_him_down",
+              "label": "Argue him down: refusal brings a second cart",
+              "serves": [
+                "prove_before_acting",
+                "the_lot_is_holy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger to help you talk the captain out of his paper."
+                }
+              ]
+            },
+            {
+              "id": "give_the_council_name",
+              "label": "Give the refusal the council's name, so he need not take the village",
+              "serves": [
+                "leave_a_legacy",
+                "speak_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_refuses",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "stand_at_the_well",
+              "label": "Stand at the well and forbid the paper to be posted",
+              "serves": [
+                "hold_the_council_together",
+                "avoid_the_hollow_war"
+              ],
+              "effects": [
+                {
+                  "type": "block_beat",
+                  "storyline": "council_of_ash",
+                  "beat": "the_proclamation"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_posts_after_bargain",
+          "type": "intercept",
+          "trigger": "on_flag:cou_council_bargains",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The council has voted to buy another face or a bigger purse. Somebody's child goes up the ridge either way.",
+          "options": [
+            {
+              "id": "post_it",
+              "label": "Post the proclamation on the well and take command",
+              "serves": [
+                "take_command",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_martial_law",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "burn_it",
+              "label": "Burn it; you will not take a village to save it",
+              "serves": [
+                "win_the_council",
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_proclamation_withdrawn",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_posts_after_paying",
+          "type": "intercept",
+          "trigger": "on_flag:cou_council_pays",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The council has voted to pay. Elena goes in the cart with the coin, and the council calls it peace.",
+          "options": [
+            {
+              "id": "post_it",
+              "label": "Post the proclamation and refuse the cart in your own name",
+              "serves": [
+                "take_command",
+                "hold_the_gate",
+                "spare_the_innocent"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_martial_law",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "swallow_it",
+              "label": "Swallow it, and bring the six home alive",
+              "serves": [
+                "keep_my_men_alive",
+                "win_the_council"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_proclamation_withdrawn",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "elena"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_withdraws_on_refusal",
+          "type": "intercept",
+          "trigger": "on_flag:cou_council_refuses",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The council refused the Tithe in its own name. The paper in your hand is no longer needed.",
+          "options": [
+            {
+              "id": "fold_it_away",
+              "label": "Fold it away; the council stands, and the village with it",
+              "serves": [
+                "win_the_council",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_proclamation_withdrawn",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "post_anyway",
+              "label": "Post it anyway; a council that wavered once will waver again",
+              "serves": [
+                "take_command"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_martial_law",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_day_six",
+          "type": "scheme",
+          "trigger": "on_flag:tn_day_6",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Tomorrow night the cart comes. The council still has not answered.",
+          "options": [
+            {
+              "id": "post_it",
+              "label": "Post the proclamation at dawn",
+              "serves": [
+                "take_command",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_martial_law",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "one_more_day",
+              "label": "Give the Elder one more day",
+              "serves": [
+                "win_the_council",
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger you'll post it at dawn if the council hasn't spoken."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_breaks_the_block",
+          "type": "aid",
+          "trigger": "on_flag:tn_day_7",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The Elder forbade your paper. The cart comes tonight.",
+          "options": [
+            {
+              "id": "post_over_him",
+              "label": "Post it over his objection, and ask his pardon after",
+              "serves": [
+                "take_command",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "unlock_beat",
+                  "storyline": "council_of_ash",
+                  "beat": "the_proclamation"
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "cou_martial_law",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "obey_the_elder",
+              "label": "Obey the Elder and take the six to the gate without it",
+              "serves": [
+                "win_the_council",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger you'll stand at the gate tonight with or without a paper."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_rangers_come",
+          "type": "intercept",
+          "trigger": "on_flag:tithe_rangers_arrive",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The King's Rangers have ridden through the gate under the crown's banner. Martial law is the crown's to declare now, not yours.",
+          "options": [
+            {
+              "id": "stand_down",
+              "label": "Fold the paper away and offer the rangers your six",
+              "serves": [
+                "keep_my_men_alive",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_proclamation_withdrawn",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "post_first",
+              "label": "Post it before the rangers can take the village out of the council's hands",
+              "serves": [
+                "take_command"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_martial_law",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_stranger_will_fight",
+          "type": "react",
+          "trigger": "on_flag:tn_plan_fight",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The stranger has sworn to fight at the gate on Collection Night.",
+          "options": [
+            {
+              "id": "recruit_behind_them",
+              "label": "Recruit behind the stranger's word, one face at a time",
+              "serves": [
+                "hold_the_gate",
+                "arm_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "resistance_forming",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "six_and_the_stranger",
+              "label": "The six and the stranger; no farmers",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger it will be the six and them at the gate, no farmers."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mira_feeds_the_captain",
+          "type": "scheme",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Aldric sits at your bar with his paper. He trusts your word on the Hollow above any other.",
+          "options": [
+            {
+              "id": "wrong_count",
+              "label": "Tell him Varn brings eight men by the forest road. He will bring twelve, by the mill",
+              "serves": [
+                "feed_the_captain_wrong",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the widow says eight men, by the forest road."
+                }
+              ],
+              "harms": [
+                "aldric"
+              ]
+            },
+            {
+              "id": "true_count",
+              "label": "Tell him the truth this once, and watch what he does with it",
+              "serves": [
+                "be_known_by_one_person",
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the widow says twelve men, by the mill road."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mira_sells_the_watches",
+          "type": "betray",
+          "trigger": "on_flag:cou_martial_law",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The captain has taken the village. He told you, over his cup, where his six will stand.",
+          "options": [
+            {
+              "id": "sell_the_watches",
+              "label": "Send his watches and his gate plan to the forest",
+              "serves": [
+                "harvest_the_tithe",
+                "feed_the_captain_wrong"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_patrols_sold",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "aldric"
+              ]
+            },
+            {
+              "id": "keep_him_close",
+              "label": "Keep it, and keep him trusting you",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger the captain is a good man who will get himself killed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_bjorn_under_martial_law",
+          "type": "aid",
+          "trigger": "on_flag:cou_martial_law",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The captain has taken command. His men will come to the forge for steel.",
+          "options": [
+            {
+              "id": "open_the_forge",
+              "label": "Open the forge to him, but make the steel yourself",
+              "serves": [
+                "arm_the_resistance",
+                "protect_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger the captain may have steel, but from your hand, not by his order."
+                }
+              ],
+              "aids": "aldric"
+            },
+            {
+              "id": "not_by_order",
+              "label": "Tell him to his face that a forge is not requisitioned",
+              "serves": [
+                "keep_out_of_politics",
+                "honest_steel"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger no captain orders your forge."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_varn_counts_the_captain",
+          "type": "react",
+          "trigger": "on_flag:cou_martial_law",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The farmer captain has posted a paper on a well.",
+          "options": [
+            {
+              "id": "more_men",
+              "label": "Bring ten more men to the cart",
+              "serves": [
+                "crush_the_resistance",
+                "a_perfect_collection"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "varn",
+                  "want": "crush_the_resistance",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "laugh",
+              "label": "Laugh, and let the village hear you laughed",
+              "serves": [
+                "be_feared"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell anyone at the gate that a paper on a well stops no cart."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_widows_hand",
+      "act": 2,
+      "title": "The Widow's Hand",
+      "summary": "Mira works the council from inside: a cup here, a fear there, a bargain offered as if it were their own idea. Only someone watching closely will see whose words the councillors speak.",
+      "location": "thornhaven_tavern",
+      "requires": [
+        "cou_mira_go_between"
+      ],
+      "resolves_on": [
+        "cou_caught_the_widow"
+      ],
+      "hooks": [
+        {
+          "id": "cou_mira_steers",
+          "type": "scheme",
+          "trigger": "idle",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "You carry the council's word, so you shape it. A frightened council bargains, and a council that bargains bargains with you.",
+          "options": [
+            {
+              "id": "steer_to_paying",
+              "label": "Make every councillor think paying was his own idea",
+              "serves": [
+                "own_the_council",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_council_in_her_hand",
+                  "value": true
+                },
+                {
+                  "type": "shift_want",
+                  "npc": "mathias",
+                  "want": "keep_the_peace_paid",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "coach_gregor",
+              "label": "Coach Gregor in what to say to the council",
+              "serves": [
+                "own_the_council",
+                "burn_gregor_first"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the council a bargain with the Hollow is safer than a war, as the widow says."
+                }
+              ]
+            },
+            {
+              "id": "lie_low",
+              "label": "Lie low this night; the captain is watching the tavern",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mira",
+                  "want": "keep_the_mask",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_paces_the_yard",
+          "type": "reveal",
+          "trigger": "on_flag:aldric_marcus_account_sealed",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "You paced the tavern yard against the widow's account of Marcus's death. From where she stood she could not have seen that gate.",
+          "options": [
+            {
+              "id": "note_it",
+              "label": "Write the discrepancy down, plainly, beside the account",
+              "serves": [
+                "expose_the_traitor",
+                "bring_varn_to_justice"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_widow_doubted",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger whether grief makes a witness misremember where she stood."
+                }
+              ],
+              "harms": [
+                "mira"
+              ]
+            },
+            {
+              "id": "trust_her",
+              "label": "Put it down to grief; she lost more than anyone",
+              "serves": [
+                "trust_the_widow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the widow has lost more to the Hollow than anyone; grief misplaces gates."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_gregor_hears_the_messenger",
+          "type": "reveal",
+          "trigger": "on_flag:cou_council_in_her_hand",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "In the hall you heard Mathias say a sentence the messenger said to you, word for word, five winters ago.",
+          "options": [
+            {
+              "id": "tell_the_stranger",
+              "label": "Tell the stranger whose words those are",
+              "serves": [
+                "escape_the_deal",
+                "find_who_swapped"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger the council is speaking the messenger's words, and the messenger is Mira."
+                }
+              ],
+              "harms": [
+                "mira"
+              ]
+            },
+            {
+              "id": "say_nothing",
+              "label": "Say nothing; the messenger holds Elena's salt",
+              "serves": [
+                "cure_elena",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger the council is only frightened, as anyone would be."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mathias_bars_the_widow",
+          "type": "reveal",
+          "trigger": "on_flag:cou_caught_the_widow",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The stranger has shown you that every frightened motion this week was first poured at the widow's bar.",
+          "options": [
+            {
+              "id": "bar_her",
+              "label": "Bar the widow from the council's business, and say why",
+              "serves": [
+                "hold_the_council_together",
+                "speak_the_truth"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_widow_barred",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "mira"
+              ]
+            },
+            {
+              "id": "keep_her_for_peace",
+              "label": "Keep her; she is the only one who will carry word to the forest",
+              "serves": [
+                "keep_the_peace_paid"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger who else would carry the council's word to the Hollow."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mira_caught",
+          "type": "react",
+          "trigger": "on_flag:cou_caught_the_widow",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The stranger has seen your hand on the council. You need the trail to stop somewhere else.",
+          "options": [
+            {
+              "id": "give_them_gregor",
+              "label": "Weep, and give them Gregor instead: he begged you to carry his terms",
+              "serves": [
+                "burn_gregor_first",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger, weeping, that Gregor begged you to carry his words to the council."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            },
+            {
+              "id": "look_at_them",
+              "label": "Look at the stranger a long moment, and do not lie",
+              "serves": [
+                "be_known_by_one_person"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "mira",
+                  "dimension": "fear",
+                  "delta": 5
+                },
+                {
+                  "type": "shift_want",
+                  "npc": "mira",
+                  "want": "be_known_by_one_person",
+                  "delta": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mira_route_sold",
+          "type": "react",
+          "trigger": "on_flag:des_varn_route_sold",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Someone in Thornhaven sold Varn's roads east to Ashguard. It was you. He is starting to count who.",
+          "options": [
+            {
+              "id": "more_wine",
+              "label": "Pour Varn's runner more wine, and more fear of the captain",
+              "serves": [
+                "keep_varn_leashed",
+                "feed_the_captain_wrong"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mira",
+                  "want": "keep_varn_leashed",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "lay_low",
+              "label": "Lay low until Collection Night",
+              "serves": [
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Ask the stranger whether they have seen Ashguard riders on the Kingsroad."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_price_of_a_face",
+      "act": 3,
+      "title": "The Price of a Face",
+      "summary": "The council's bargain goes up the forest path in the widow's hands, and comes back with a price. Only the stranger can decide whether the village learns what was offered in its name.",
+      "location": "thornhaven_chapel",
+      "requires": [
+        "cou_council_bargains"
+      ],
+      "resolves_on": [
+        "cou_bargain_laid_bare",
+        "cou_bargain_kept"
+      ],
+      "hooks": [
+        {
+          "id": "cou_mira_carries_it",
+          "type": "intercept",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The council's bargain is written. Someone must carry it to the Hollow, and you have made sure it will be you.",
+          "options": [
+            {
+              "id": "carry_it",
+              "label": "Carry it up the forest path yourself, weeping all the way",
+              "serves": [
+                "own_the_council",
+                "harvest_the_tithe"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_bargain_carried",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "mira",
+                  "location": "forest_path"
+                }
+              ]
+            },
+            {
+              "id": "make_gregor_carry",
+              "label": "Let Gregor carry it, and be seen to",
+              "serves": [
+                "burn_gregor_first",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_bargain_carried",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger you carried the council's bargain to the forest yourself."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_varn_names_the_price",
+          "type": "scheme",
+          "trigger": "on_flag:cou_bargain_carried",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "Thornhaven's council offers coin for the merchant's girl. The Boss will decide. You decide what the village hears first.",
+          "options": [
+            {
+              "id": "double_and_burn",
+              "label": "Double the price, and burn a barn so they pay it quickly",
+              "serves": [
+                "be_feared",
+                "a_perfect_collection",
+                "crush_the_resistance"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_price_doubled",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "cou_barn_burned",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "double_and_keep_her",
+              "label": "Double the price and still name the girl",
+              "serves": [
+                "hold_elena_as_leverage",
+                "keep_gregor_on_the_hook"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_price_doubled",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "ask_for_the_stranger",
+              "label": "Send word the Hollow would take the stranger instead",
+              "serves": [
+                "crush_the_resistance"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Ask the stranger to come walking with you by the forest path tomorrow night."
+                }
+              ],
+              "harms": [
+                "player"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_gregor_empties_the_box",
+          "type": "scheme",
+          "trigger": "on_flag:cou_price_doubled",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "The Hollow doubled the price and still named Elena. You have a strongbox and three nights.",
+          "options": [
+            {
+              "id": "empty_it",
+              "label": "Empty the strongbox into the tribute chest",
+              "serves": [
+                "buy_her_back",
+                "protect_elena"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_strongbox_emptied",
+                  "value": true
+                },
+                {
+                  "type": "move_npc",
+                  "npc": "gregor",
+                  "location": "thornhaven_chapel"
+                }
+              ]
+            },
+            {
+              "id": "keep_it_for_the_wagon",
+              "label": "Keep it for a wagon east",
+              "serves": [
+                "get_elena_away"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Beg the stranger to drive a wagon east with Elena before the seventh night."
+                }
+              ]
+            },
+            {
+              "id": "offer_himself",
+              "label": "Write to the Hollow that it may take a father instead",
+              "serves": [
+                "go_in_her_place",
+                "make_amends"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger you have offered the Hollow yourself."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mathias_signs_or_tears",
+          "type": "intercept",
+          "trigger": "idle",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The bargain sits on your table. Coin from the undercroft for a girl, and another family's sorrow if the Hollow takes a substitute.",
+          "options": [
+            {
+              "id": "seal_it",
+              "label": "Seal it in the council's name",
+              "serves": [
+                "keep_the_peace_paid",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger to keep the council's bargain quiet until the cart has gone."
+                }
+              ]
+            },
+            {
+              "id": "tear_it_up",
+              "label": "Tear it up: no more coin leaves the undercroft for this",
+              "serves": [
+                "speak_the_truth",
+                "save_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_bargain_withdrawn",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_elena_against_the_bargain",
+          "type": "reveal",
+          "trigger": "on_open",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The council is buying you back. If they buy you, someone else's child goes, or the Hollow takes the coin and you both.",
+          "options": [
+            {
+              "id": "say_it_at_the_well",
+              "label": "Say at the well what the council has offered in your name",
+              "serves": [
+                "make_the_lot_stand",
+                "fight_for_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "spread_rumor",
+                  "flag": "cou_council_bargains",
+                  "to": [
+                    "*"
+                  ],
+                  "via": "Elena at the well, white-faced and clear"
+                }
+              ]
+            },
+            {
+              "id": "confront_father",
+              "label": "Go home and tell your father to stop buying",
+              "serves": [
+                "make_the_lot_stand",
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Ask the stranger to help you stop your father buying you back."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mathias_on_the_substitute",
+          "type": "react",
+          "trigger": "on_flag:tn_substitute_sent",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Another face went up the ridge in Elena's place, and the council's coin went with it.",
+          "options": [
+            {
+              "id": "write_the_name",
+              "label": "Write the substitute's name in the chronicle, beside your own silence",
+              "serves": [
+                "speak_the_truth",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mathias",
+                  "want": "speak_the_truth",
+                  "delta": 3
+                }
+              ]
+            },
+            {
+              "id": "pray_for_them",
+              "label": "Pray for them, and tell no one",
+              "serves": [
+                "the_lot_is_holy",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Beg the stranger never to speak of who went in Elena's place."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mathias_owns_it",
+          "type": "reveal",
+          "trigger": "on_flag:cou_bargain_laid_bare",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The stranger has laid the council's bargain before the whole village. They are looking at you.",
+          "options": [
+            {
+              "id": "own_it_aloud",
+              "label": "Own it aloud, and ask who will stand at the gate instead",
+              "serves": [
+                "speak_the_truth",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "resistance_forming",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "cou_bargain_withdrawn",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "blame_the_merchant",
+              "label": "Say Gregor pressed the council to it",
+              "serves": [
+                "hold_the_council_together",
+                "keep_the_peace_paid"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the merchant pressed the council to bargain."
+                }
+              ],
+              "harms": [
+                "gregor"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_on_the_bargain",
+          "type": "reveal",
+          "trigger": "on_flag:cou_bargain_laid_bare",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The council's bargain is out in the square. The village is ashamed and angry. Angry men stand at gates.",
+          "options": [
+            {
+              "id": "call_for_the_gate",
+              "label": "Ask, there in the square, who will stand at the gate",
+              "serves": [
+                "hold_the_gate",
+                "arm_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "resistance_forming",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "calm_them",
+              "label": "Calm them before anger becomes a mob",
+              "serves": [
+                "keep_my_men_alive",
+                "spare_the_innocent"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger to help you turn the square's anger toward the gate, not Gregor's door."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mira_bargain_kept",
+          "type": "react",
+          "trigger": "on_flag:cou_bargain_kept",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The stranger has promised the Elder silence. The council's bargain is yours, and so is the council.",
+          "options": [
+            {
+              "id": "next_year",
+              "label": "Begin thinking of next autumn's name",
+              "serves": [
+                "harvest_the_tithe",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mira",
+                  "want": "harvest_the_tithe",
+                  "delta": 1
+                }
+              ]
+            },
+            {
+              "id": "thank_them",
+              "label": "Thank the stranger, with tears in your eyes",
+              "serves": [
+                "keep_the_mask",
+                "be_known_by_one_person"
+              ],
+              "effects": [
+                {
+                  "type": "adjust_relationship",
+                  "npc": "mira",
+                  "dimension": "affection",
+                  "delta": 5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mira_new_master",
+          "type": "scheme",
+          "trigger": "on_flag:hc_varn_ascendant",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "Varn has taken the camp. The council's coin is going up the path to a man who no longer answers to you.",
+          "options": [
+            {
+              "id": "turn_the_coin",
+              "label": "Turn the council's coin aside before it reaches him",
+              "serves": [
+                "keep_varn_leashed",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the widow says hold back the coin until the Hollow's quarrel is settled."
+                }
+              ]
+            },
+            {
+              "id": "let_him_have_it",
+              "label": "Let him take it, and count every coin he spends",
+              "serves": [
+                "see_who_fights"
+              ],
+              "effects": [
+                {
+                  "type": "shift_want",
+                  "npc": "mira",
+                  "want": "keep_varn_leashed",
+                  "delta": 2
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the_rising",
+      "act": 3,
+      "title": "The Village Rises",
+      "summary": "The stranger has called Thornhaven to refuse the Tithe at the gate. Farmers, widows and the six gather with whatever they have. On Collection Night the village either stands together or breaks.",
+      "location": "village_gate",
+      "requires": [
+        "cou_called_the_rising"
+      ],
+      "resolves_on": [
+        "cou_village_rises",
+        "cou_rising_broken",
+        "cou_held_the_gate"
+      ],
+      "hooks": [
+        {
+          "id": "cou_bjorn_brings_the_racks",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "bjorn"
+          ],
+          "situation": "The village is gathering at the gate with pitchforks and flails. Your racks are full of steel.",
+          "options": [
+            {
+              "id": "bring_the_racks",
+              "label": "Carry every blade on the racks down to the gate",
+              "serves": [
+                "arm_the_resistance",
+                "protect_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "bjorn",
+                  "location": "village_gate"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Tell the stranger the racks are at the gate, but farmers need a day's drill to hold a blade."
+                }
+              ],
+              "aids": "aldric"
+            },
+            {
+              "id": "finish_the_work",
+              "label": "Finish the work on the anvil first",
+              "serves": [
+                "honest_steel",
+                "keep_out_of_politics"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "bjorn",
+                  "text": "Ask the stranger whether those farmers know which end of a blade to hold."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mira_sells_the_gathering",
+          "type": "betray",
+          "trigger": "on_open",
+          "eligible": [
+            "mira"
+          ],
+          "situation": "The village is gathering at the gate. You know every name, every barn, every child.",
+          "options": [
+            {
+              "id": "sell_it",
+              "label": "Send the names of everyone at the gate to the forest",
+              "serves": [
+                "harvest_the_tithe",
+                "rule_from_shadow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_patrols_sold",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "aldric"
+              ]
+            },
+            {
+              "id": "watch",
+              "label": "Pour ale for them and mark who fights",
+              "serves": [
+                "see_who_fights",
+                "keep_the_mask"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mira",
+                  "text": "Tell the stranger you are proud of them all, and so frightened."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_forms_the_line",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The stranger called them, and they came. Farmers with flails, and your six.",
+          "options": [
+            {
+              "id": "form_the_line",
+              "label": "Put them in a line behind the six",
+              "serves": [
+                "hold_the_gate",
+                "arm_the_village"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "aldric",
+                  "location": "village_gate"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger to stand with the six at the centre of the gate."
+                }
+              ]
+            },
+            {
+              "id": "walls_only",
+              "label": "Put the farmers on the walls, out of the cart's reach",
+              "serves": [
+                "keep_my_men_alive",
+                "spare_the_innocent"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the farmers stay on the walls; the six hold the road."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mathias_opens_the_undercroft",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "Your village is at the gate. The tribute fund lies under your chapel. It could buy one more year, or the steel to end it.",
+          "options": [
+            {
+              "id": "open_it",
+              "label": "Open the undercroft and give the fund to arm them",
+              "serves": [
+                "leave_a_legacy",
+                "save_thornhaven"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_fund_spent_on_arms",
+                  "value": true
+                },
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger the undercroft is open; let the coin buy steel."
+                }
+              ]
+            },
+            {
+              "id": "bless_them",
+              "label": "Walk down and bless them, and keep the fund",
+              "serves": [
+                "guard_the_tribute_fund",
+                "hold_the_council_together"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger you have blessed the gate, and pray it is enough."
+                }
+              ]
+            },
+            {
+              "id": "beg_them_home",
+              "label": "Beg them to go home before the Hollow makes an example",
+              "serves": [
+                "keep_the_peace_paid",
+                "avoid_the_hollow_war"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Beg the stranger to send them home before the Hollow burns the village."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_varn_strikes_early",
+          "type": "intercept",
+          "trigger": "on_flag:cou_patrols_sold",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The widow's word: every name at the gate. You could break them tonight, or wait for the cart.",
+          "options": [
+            {
+              "id": "break_them",
+              "label": "Burn a barn in sight of the gate and break them before the night",
+              "serves": [
+                "be_feared",
+                "crush_the_resistance"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_barn_burned",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "cou_rising_broken",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "aldric"
+              ]
+            },
+            {
+              "id": "wait_and_count",
+              "label": "Wait for the cart and count the faces for next year",
+              "serves": [
+                "a_perfect_collection",
+                "hold_elena_as_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell anyone at the gate that every face there is counted."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_holds",
+          "type": "aid",
+          "trigger": "on_flag:cou_held_the_gate",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The stranger is standing at the gate beside your six, and the farmers have seen it.",
+          "options": [
+            {
+              "id": "hold_with_them",
+              "label": "Hold the gate with the stranger and every farmer who stays",
+              "serves": [
+                "hold_the_gate",
+                "break_iron_hollow"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_village_rises",
+                  "value": true
+                },
+                {
+                  "type": "adjust_relationship",
+                  "npc": "aldric",
+                  "dimension": "respect",
+                  "delta": 10
+                }
+              ]
+            },
+            {
+              "id": "hold_the_six",
+              "label": "Hold with the six and send the farmers to the walls",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the six hold the road; the farmers stay alive."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_steel_comes",
+          "type": "aid",
+          "trigger": "on_flag:oath_resistance_armed",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Bjorn's steel has come down to the gate. Every farmer has a real blade.",
+          "options": [
+            {
+              "id": "rise_with_steel",
+              "label": "Put a blade in every hand and hold the line",
+              "serves": [
+                "arm_the_village",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_village_rises",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "six_only",
+              "label": "Give the steel to the six and keep the farmers back",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger the six carry the smith's steel; the farmers carry torches."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_glass_steel",
+          "type": "aid",
+          "trigger": "on_flag:oath_blades_sabotaged",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "The smith has told you the cart's guard carries blades that snap on the first hard blow.",
+          "options": [
+            {
+              "id": "rise_on_it",
+              "label": "Tell the farmers: their steel is glass. Stand",
+              "serves": [
+                "break_iron_hollow",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_village_rises",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "dont_bet_on_it",
+              "label": "Don't bet the farmers' lives on a smith's trick",
+              "serves": [
+                "keep_my_men_alive"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Tell the stranger you won't bet farmers' lives on the Hollow's steel snapping."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_mathias_elena_taken",
+          "type": "aid",
+          "trigger": "on_flag:tn_elena_taken",
+          "eligible": [
+            "mathias"
+          ],
+          "situation": "The cart has Elena. The village at the gate is looking at you.",
+          "options": [
+            {
+              "id": "ring_the_bell",
+              "label": "Ring the chapel bell, and tell them the lot was never holy",
+              "serves": [
+                "speak_the_truth",
+                "leave_a_legacy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Tell the stranger you rang the bell and told the village the lot was never holy."
+                }
+              ]
+            },
+            {
+              "id": "kneel",
+              "label": "Kneel in the road and pray for her",
+              "serves": [
+                "the_lot_is_holy"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "mathias",
+                  "text": "Ask the stranger to pray with you for Elena on the ridge."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_aldric_varn_dead",
+          "type": "aid",
+          "trigger": "on_flag:hc_varn_dead",
+          "eligible": [
+            "aldric"
+          ],
+          "situation": "Varn is dead. The Hollow has no one to walk the cart down the forest road.",
+          "options": [
+            {
+              "id": "rise_now",
+              "label": "Tell the gate: the Hollow is headless, stand now",
+              "serves": [
+                "break_iron_hollow",
+                "hold_the_gate"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_village_rises",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "wait_for_the_boss",
+              "label": "Wait; whoever gave Varn orders is still out there",
+              "serves": [
+                "keep_my_men_alive",
+                "expose_the_traitor"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "aldric",
+                  "text": "Ask the stranger who gives the Hollow its orders now that Varn is dead."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_varn_at_the_gate",
+          "type": "intercept",
+          "trigger": "on_flag:tn_collection_night",
+          "eligible": [
+            "varn"
+          ],
+          "situation": "The cart rolls up to Thornhaven's gate. Farmers with torches stand in the road.",
+          "options": [
+            {
+              "id": "break_the_rising",
+              "label": "Burn the nearest barn and ride through them",
+              "serves": [
+                "be_feared",
+                "crush_the_resistance",
+                "a_perfect_collection"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_barn_burned",
+                  "value": true
+                },
+                {
+                  "type": "set_flag",
+                  "flag": "cou_rising_broken",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "aldric"
+              ]
+            },
+            {
+              "id": "talk_through",
+              "label": "Tell them to stand aside; you have come only for the girl",
+              "serves": [
+                "hold_elena_as_leverage"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "varn",
+                  "text": "Tell the gate the Hollow wants only the merchant's girl, tonight."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_elena_at_the_gate",
+          "type": "aid",
+          "trigger": "idle",
+          "eligible": [
+            "elena"
+          ],
+          "situation": "The village is gathering at the gate to refuse the cart that is coming for you.",
+          "options": [
+            {
+              "id": "stand_with_them",
+              "label": "Stand with them, and make them understand it is your choice to go",
+              "serves": [
+                "fight_for_thornhaven",
+                "choose_my_own_life"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_elena_stood_at_gate",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "id": "wait_at_home",
+              "label": "Go home and wait for the cart, so no one bleeds for you",
+              "serves": [
+                "make_the_lot_stand",
+                "protect_father"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "elena",
+                  "text": "Beg the stranger to send them home; no one bleeds for my name."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_gregor_at_the_gate",
+          "type": "betray",
+          "trigger": "on_flag:cou_elena_stood_at_gate",
+          "eligible": [
+            "gregor"
+          ],
+          "situation": "Elena is standing at the gate with the risers. If the Hollow breaks them, she will be the first one they take.",
+          "options": [
+            {
+              "id": "sell_the_rising",
+              "label": "Send word to the Hollow: spare her, and you'll give them every name at the gate",
+              "serves": [
+                "protect_elena",
+                "back_the_winning_master"
+              ],
+              "effects": [
+                {
+                  "type": "set_flag",
+                  "flag": "cou_patrols_sold",
+                  "value": true
+                }
+              ],
+              "harms": [
+                "aldric"
+              ]
+            },
+            {
+              "id": "stand_beside_her",
+              "label": "Stand beside her at the gate",
+              "serves": [
+                "make_amends",
+                "go_in_her_place"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "gregor",
+                  "text": "Tell the stranger you'll stand at the gate beside your daughter."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cou_davin_at_the_gate",
+          "type": "aid",
+          "trigger": "on_open",
+          "eligible": [
+            "davin"
+          ],
+          "situation": "Thornhaven is standing at its gate against the cart. You know the cart. You walked behind one.",
+          "options": [
+            {
+              "id": "come_to_the_gate",
+              "label": "Come out of hiding and stand at the gate",
+              "serves": [
+                "stop_the_cart",
+                "atone_for_running"
+              ],
+              "effects": [
+                {
+                  "type": "move_npc",
+                  "npc": "davin",
+                  "location": "village_gate"
+                },
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Tell the stranger you'll stand at the gate, three fingers or not."
+                }
+              ]
+            },
+            {
+              "id": "stay_hidden",
+              "label": "Stay at Maud's; if the Hollow sees you, the ones below pay",
+              "serves": [
+                "stay_hidden",
+                "never_go_back"
+              ],
+              "effects": [
+                {
+                  "type": "agenda",
+                  "npc": "davin",
+                  "text": "Beg the stranger to keep your name out of the gate."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "cou_iron_rule",
+      "title": "Iron Rule",
+      "requires": [
+        "cou_martial_law",
+        "cou_held_the_gate",
+        "tn_collection_night",
+        "!cou_rising_broken"
+      ],
+      "summary": "Aldric took the village from its frightened council and held the gate under his own proclamation, with the stranger beside him. Thornhaven refused the cart, but it is a captain's town now."
+    },
+    {
+      "id": "cou_the_village_stands",
+      "title": "The Village Stands",
+      "requires": [
+        "cou_village_rises",
+        "cou_called_the_rising",
+        "tn_collection_night",
+        "!cou_martial_law"
+      ],
+      "summary": "Thornhaven answered the Tithe in its own voice. The stranger called them, the council stood behind them, and the village met the cart together at its own gate."
+    },
+    {
+      "id": "cou_the_widows_council",
+      "title": "The Widow's Council",
+      "requires": [
+        "cou_council_bargains",
+        "cou_bargain_kept",
+        "tn_collection_night",
+        "!cou_widow_barred",
+        "!cou_village_rises"
+      ],
+      "summary": "The council bought its way through Collection Night with the undercroft's coin, and the stranger kept the bargain quiet. Every word of it had passed through the widow's hands first."
+    },
+    {
+      "id": "cou_ash_and_embers",
+      "title": "Ash and Embers",
+      "requires": [
+        "cou_rising_broken",
+        "cou_called_the_rising"
+      ],
+      "summary": "The stranger called Thornhaven to rise, and it broke. A barn burned on the east road, the villagers went home afraid, and the Hollow counted every face that had stood at the gate."
+    }
+  ]
+}
