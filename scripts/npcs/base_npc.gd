@@ -2058,6 +2058,10 @@ const COMBAT_SPEED = 90.0
 const COMBAT_REACH = 48.0
 const NPC_ATTACK_SECONDS = 1.4
 
+const BASE_POISE = 40.0
+## Combat (scripts/combat/combat.gd) reads get_combat_profile: a weapons.json id and armour.json ids
+@export var combat_weapon: String = "fists"
+@export var combat_armour: Array = []
 var max_health: float = BASE_HEALTH
 var health: float = BASE_HEALTH
 var morale: float = CombatAIScript.BASE_MORALE
@@ -2082,9 +2086,23 @@ func get_resistances() -> Dictionary:
 func is_staggered() -> bool:
 	return Time.get_ticks_msec() < staggered_until_ms
 
+## What Combat resolves hits on this body with (weapon, armour, resistances, poise, health, minor)
+func get_combat_profile() -> Dictionary:
+	return {"weapon": combat_weapon, "armour": combat_armour.duplicate(), "resist": get_resistances(), "poise": BASE_POISE,
+		"health": max_health, "skills": {}, "difficulty": 1.0, "minor": CombatAIScript.is_minor(combat_key())}
+
+## Combat.apply_hit_to's entry point. Combat records the harm deed itself, so this one does not
+func take_combat_hit(result: Dictionary, attacker) -> Dictionary:
+	return take_hit(result, attacker, true)
+
+## Combat staggered this body (poise broken, a parry, a guard given way)
+func on_staggered(seconds: float) -> void:
+	staggered_until_ms = maxi(staggered_until_ms, Time.get_ticks_msec() + int(seconds * 1000.0))
+
 ## A resolved hit lands: result {damage, type, staggered, killed} from Combat.resolve_hit.
+## from_combat: it came through Combat, which records the harm deed and closes its own fight record.
 ## Returns {health, staggered, dead, state} or {refused, reason} (children, the dead)
-func take_hit(result: Dictionary, attacker) -> Dictionary:
+func take_hit(result: Dictionary, attacker, from_combat: bool = false) -> Dictionary:
 	if not is_alive:
 		return {"refused": true, "reason": "dead"}
 	var key = combat_key()
@@ -2106,11 +2124,12 @@ func take_hit(result: Dictionary, attacker) -> Dictionary:
 		CombatAIScript.record_help(CombatAIScript.key_of(combat_foe), key, _scene_root(), global_position,
 			{"witnesses": [CombatAIScript.key_of(combat_foe), key], "location": get_current_location()})
 	if bool(result.get("killed", false)) or health <= 0.0:
-		_die_in_combat(attacker, foe_key, result)
+		_die_in_combat(attacker, foe_key, result, from_combat)
 		return {"health": 0.0, "staggered": false, "dead": true, "state": ""}
 	if by_player and not _fight.harm_recorded:
 		_fight.harm_recorded = true
-		CombatAIScript.record_harm(key, _scene_root(), global_position, {"witnesses": [key], "location": get_current_location()})
+		if not from_combat:
+			CombatAIScript.record_harm(key, _scene_root(), global_position, {"witnesses": [key], "location": get_current_location()})
 	if first:
 		_tell_onlookers(attacker)
 	react_to_hit(attacker)
@@ -2157,8 +2176,11 @@ func spare(by = null) -> bool:
 	end_fight("spared")
 	return true
 
-func end_fight(how: String = "over") -> void:
+## how: spared | fled | yielded | talked_down | killed | over. tell_combat: close Combat's own record of
+## the fight (it emits fight_ended), false when Combat is the one closing it
+func end_fight(how: String = "over", tell_combat: bool = true) -> void:
 	var info = {"npc": combat_key(), "foe": str(_fight.get("foe_key", CombatAIScript.key_of(combat_foe))), "how": how, "state": combat_state}
+	var foe = combat_foe if is_instance_valid(combat_foe) else null
 	combat_state = ""
 	combat_foe = null
 	combat_side = ""
@@ -2167,7 +2189,11 @@ func end_fight(how: String = "over") -> void:
 	morale = maxf(morale, CombatAIScript.WAVER)
 	combat_state_changed.emit(npc_id, "")
 	var combat = get_node_or_null("/root/Combat") if is_inside_tree() else null
-	if combat and combat.has_signal("fight_ended"):
+	if not tell_combat or combat == null:
+		return
+	if combat.has_method("end_fight") and foe != null:
+		combat.end_fight(self, foe, how, info)
+	elif combat.has_signal("fight_ended") and not combat.has_method("end_fight"):
 		combat.fight_ended.emit(info)
 
 func _set_combat_state(d: Dictionary, foe) -> void:
@@ -2179,7 +2205,9 @@ func _set_combat_state(d: Dictionary, foe) -> void:
 	if combat_state == "call_for_help":
 		called_for_help.emit(npc_id, CombatAIScript.key_of(foe))
 
-func _die_in_combat(attacker, foe_key: String, result: Dictionary) -> void:
+## Combat records no kill and calls no die(): both are this body's (a killing blow through Combat ends
+## Combat's fight record with reason "killed" itself)
+func _die_in_combat(attacker, foe_key: String, result: Dictionary, from_combat: bool = false) -> void:
 	var key = combat_key()
 	var cause = "%s wounds from a fight" % str(result.get("type", "")) if str(result.get("type", "")) != "" else "wounds from a fight"
 	if foe_key == CombatAIScript.PLAYER:
@@ -2187,7 +2215,7 @@ func _die_in_combat(attacker, foe_key: String, result: Dictionary) -> void:
 	else:
 		CombatAIScript.register_death(key, cause, foe_key if foe_key != "" else "unknown")
 	if not _fight.is_empty():
-		end_fight("killed")
+		end_fight("killed", not from_combat)
 	die(cause, foe_key if foe_key != "" else "unknown")
 
 ## Everyone who can see this body is drawn into the fight (once, on its first blow)
@@ -2239,7 +2267,7 @@ func combat_tick(delta: float) -> void:
 		"fight":
 			if foe_key == CombatAIScript.PLAYER and to_foe.length() > FIGHT_LEAVE_DISTANCE:
 				CombatAIScript.record_fled([combat_key()], _scene_root(), global_position, {"witnesses": [combat_key()], "location": get_current_location()})
-				end_fight("player fled")
+				end_fight("fled")
 				return
 			if is_staggered():
 				pass
@@ -2261,7 +2289,7 @@ func combat_tick(delta: float) -> void:
 				return
 		_:
 			if quiet_ms >= CALM_MS:
-				end_fight(combat_state)
+				end_fight("talked_down" if combat_state == "talk" else "parted")
 				return
 	if velocity != Vector2.ZERO and is_inside_tree():
 		move_and_slide()
