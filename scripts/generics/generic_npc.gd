@@ -71,6 +71,14 @@ func refresh_from_instance() -> void:
 		if personality_resource:
 			system_prompt = personality_resource.generate_system_prompt()
 
+## A generic dies like anyone (any adult can, lead's ruling); its instance remembers how
+func die(cause: String = "unknown", killer: String = "unknown"):
+	var was_alive = is_alive
+	await super.die(cause, killer)
+	var manager = _manager()
+	if was_alive and manager and manager.has_method("note_death"):
+		manager.note_death(npc_id, cause, killer)
+
 ## Promoted or demoted: switch memory (own collection vs residue-only layers) and personality
 func on_tier_changed() -> void:
 	refresh_from_instance()

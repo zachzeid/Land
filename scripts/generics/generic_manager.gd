@@ -19,6 +19,7 @@ const Archetype = preload("res://scripts/generics/archetype.gd")
 const GenericInstance = preload("res://scripts/generics/generic_instance.gd")
 const SoulBuilder = preload("res://scripts/generics/generic_soul_builder.gd")
 const RelationshipLedger = preload("res://scripts/generics/relationship_ledger.gd")
+const CreatureSpawner = preload("res://scripts/combat/creature_spawner.gd")
 
 const DEFAULT_ARCHETYPE_DIR = "res://resources/generics/archetypes"
 const DEFAULT_NAMES_PATH = "res://resources/generics/names.json"
@@ -75,6 +76,9 @@ var test_now: int = -1               # tests pin the clock (minutes); -1 = World
 
 var archetypes: Dictionary = {}      # id -> Archetype (valid only)
 var archetype_errors: Dictionary = {}  # file -> Array of errors
+var minor_archetypes: Dictionary = {}  # archetype id -> true: header `minor: true` (children are never combat targets)
+## Creatures by location (docs/PLAYER_SYSTEMS.md §3): the world's other population, spawned per scene
+var creature_spawner: Node = null
 var name_pools: Dictionary = {}      # region -> {"given": [], "family": []}
 var population: Array = []           # [{location, archetype, count, hours}]
 var instances: Dictionary = {}       # id -> GenericInstance
@@ -99,6 +103,16 @@ func _ready():
 	if auto_boot:
 		boot()
 	call_deferred("_connect_director")
+	if auto_boot:
+		_start_creature_spawner()
+
+## Creatures follow the player's scene changes (SceneManager), like the generics the NpcSpawner places
+func _start_creature_spawner() -> void:
+	if creature_spawner != null:
+		return
+	creature_spawner = CreatureSpawner.new()
+	creature_spawner.name = "CreatureSpawner"
+	add_child(creature_spawner)
 
 ## Fresh content + either the saved state (WorldState.generics_state) or a new population
 func boot() -> void:
@@ -147,6 +161,7 @@ func load_content(arch_dir: String = "", names_file: String = "", population_fil
 		population_path = population_file
 	archetypes.clear()
 	archetype_errors.clear()
+	minor_archetypes.clear()
 	var dir = DirAccess.open(archetype_dir)
 	if dir:
 		var files: Array = []
@@ -166,6 +181,8 @@ func load_content(arch_dir: String = "", names_file: String = "", population_fil
 				archetype_errors[f] = ["duplicate archetype id '%s'" % arch.id]
 				continue
 			archetypes[arch.id] = arch
+			if _header_says(arch.source_path, "minor"):
+				minor_archetypes[arch.id] = true
 	name_pools = _parse_names(_read_json(names_path))
 	population = _parse_population(_read_json(population_path))
 
@@ -309,6 +326,38 @@ func _record_location(inst) -> void:
 
 func get_instance(id: String):
 	return instances.get(id)
+
+## Children are never combat targets (docs/PLAYER_SYSTEMS.md §1.4): an instance (or archetype) whose
+## archetype header says `minor: true`. WorldRegistry.is_minor asks this for generic ids
+func is_minor(id_or_archetype: String) -> bool:
+	var inst = instances.get(id_or_archetype)
+	var arch_id = str(inst.archetype_id) if inst else id_or_archetype
+	return minor_archetypes.has(arch_id)
+
+## A header line `<name>: true|yes` before the first section of an archetype file
+static func _header_says(path: String, header: String) -> bool:
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return false
+	var text = file.get_as_text()
+	file.close()
+	for raw in text.split("\n"):
+		var line = raw.strip_edges()
+		if line.begins_with("## "):
+			break
+		if line.to_lower().begins_with(header + ":"):
+			return line.substr(header.length() + 1).strip_edges().to_lower() in ["true", "yes"]
+	return false
+
+## A generic died (combat, or anything that calls die): its history says so; WorldState already holds
+## the death, so presence, the spawner and the Director treat it as gone
+func note_death(id: String, cause: String = "", killer: String = "") -> void:
+	var inst = instances.get(id)
+	if inst == null:
+		return
+	inst.note_history("died", now_minutes(), {"cause": cause, "killed_by": killer})
+	_presence_cache.erase(id)
+	_log("%s died (%s, by %s)" % [id, cause, killer])
 
 func is_generic(npc_id: String) -> bool:
 	return instances.has(npc_id)

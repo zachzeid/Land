@@ -262,7 +262,12 @@ func die(cause: String = "unknown", killer: String = "unknown"):
 	death_timestamp = Time.get_unix_time_from_system()
 	
 	print("[%s] NPC has died: %s (killed by: %s)" % [npc_name, cause, killer])
-	
+	combat_state = ""
+	# WorldState is what storylines, emergence and the spawner read (a combat death registered it already)
+	var world_state = get_node_or_null("/root/WorldState") if is_inside_tree() else null
+	if world_state and npc_id != "" and world_state.is_npc_alive(npc_id):
+		world_state.register_npc_death(npc_id, {"cause": cause, "killed_by": killer})
+
 	# Store death state in ChromaDB (replaces old state)
 	if rag_memory:
 		await rag_memory.store_npc_state(false, {
@@ -2033,3 +2038,230 @@ func debug_print_state():
 		print("  Is known: %s" % WorldEvents.is_player_known())
 
 	print("=== END STATE ===\n")
+
+# =============================================================================
+# COMBAT IN THE WORLD (docs/PLAYER_SYSTEMS.md §3): health, morale, being hit, staggering, yielding,
+# dying. Combat resolves a hit and its hitbox calls take_hit(result, attacker); what the person does
+# next is their soul's choice (CombatAI.decide). Endings become the player's deeds through CombatAI
+# =============================================================================
+
+signal combat_state_changed(npc_id: String, state: String)
+signal called_for_help(npc_id: String, foe_key: String)
+
+const CombatAIScript = preload("res://scripts/combat/combat_ai.gd")
+const BASE_HEALTH = 100.0
+const STAGGER_MS = 800
+const SPARE_MS = 8000              # a yielded person left unhit this long has been let go
+const CALM_MS = 10000              # talk / call for help: unhit this long, the fight is over
+const FIGHT_LEAVE_DISTANCE = 700.0 # the player this far from someone still fighting them has fled
+const COMBAT_SPEED = 90.0
+const COMBAT_REACH = 48.0
+const NPC_ATTACK_SECONDS = 1.4
+
+var max_health: float = BASE_HEALTH
+var health: float = BASE_HEALTH
+var morale: float = CombatAIScript.BASE_MORALE
+## "" (not fighting) | fight | yield | flee | call_for_help | talk
+var combat_state: String = ""
+var combat_foe: Node = null         # whom they fight, flee or yielded to
+var combat_side: String = ""        # an onlooker's side: defend | join
+var last_combat_decision: Dictionary = {}
+var staggered_until_ms: int = 0
+var _fight: Dictionary = {}         # {foe_key, band, harm_recorded, help_recorded, last_hit_ms}
+var _deciding: bool = false
+var _attack_cooldown: float = 0.0
+
+## Combat key: npc key for the roster ("bjorn"), the instance id for generics
+func combat_key() -> String:
+	return CombatAIScript.key_of(self)
+
+## Resistances by damage type (fraction shrugged off); Combat reads them when it resolves a hit
+func get_resistances() -> Dictionary:
+	return {}
+
+func is_staggered() -> bool:
+	return Time.get_ticks_msec() < staggered_until_ms
+
+## A resolved hit lands: result {damage, type, staggered, killed} from Combat.resolve_hit.
+## Returns {health, staggered, dead, state} or {refused, reason} (children, the dead)
+func take_hit(result: Dictionary, attacker) -> Dictionary:
+	if not is_alive:
+		return {"refused": true, "reason": "dead"}
+	var key = combat_key()
+	if not CombatAIScript.can_target(key):
+		return {"refused": true, "reason": "never a target (a child)"}
+	var now = Time.get_ticks_msec()
+	var foe_key = CombatAIScript.key_of(attacker)
+	var by_player = foe_key == CombatAIScript.PLAYER
+	var first = _fight.is_empty()
+	if first:
+		_fight = {"foe_key": foe_key, "band": "", "harm_recorded": false, "help_recorded": false}
+	_fight["last_hit_ms"] = now
+	health = maxf(health - maxf(float(result.get("damage", 0.0)), 0.0), 0.0)
+	if bool(result.get("staggered", false)):
+		staggered_until_ms = now + STAGGER_MS
+	# Struck while fighting someone else: the player has stood up for that someone
+	if by_player and combat_state == "fight" and is_instance_valid(combat_foe) and combat_foe != attacker and not _fight.help_recorded:
+		_fight.help_recorded = true
+		CombatAIScript.record_help(CombatAIScript.key_of(combat_foe), key, _scene_root(), global_position,
+			{"witnesses": [CombatAIScript.key_of(combat_foe), key], "location": get_current_location()})
+	if bool(result.get("killed", false)) or health <= 0.0:
+		_die_in_combat(attacker, foe_key, result)
+		return {"health": 0.0, "staggered": false, "dead": true, "state": ""}
+	if by_player and not _fight.harm_recorded:
+		_fight.harm_recorded = true
+		CombatAIScript.record_harm(key, _scene_root(), global_position, {"witnesses": [key], "location": get_current_location()})
+	if first:
+		_tell_onlookers(attacker)
+	react_to_hit(attacker)
+	return {"health": health, "staggered": is_staggered(), "dead": false, "state": combat_state}
+
+## Morale after this hit; the soul decides again when it falls into a new band (steady, wavering, broken)
+func react_to_hit(attacker) -> void:
+	var situation = {"kind": "attacked", "attacker": CombatAIScript.key_of(attacker),
+		"health_fraction": health / maxf(max_health, 1.0), "allies_down": _allies_down(attacker)}
+	morale = CombatAIScript.morale_for(combat_key(), situation)
+	var b = CombatAIScript.band(morale)
+	if _deciding or (b == str(_fight.get("band", "")) and combat_state != ""):
+		return
+	_fight["band"] = b
+	_deciding = true
+	situation["morale"] = morale
+	var d: Dictionary = await CombatAIScript.decide_full(combat_key(), situation)
+	_deciding = false
+	if is_alive:
+		_set_combat_state(d, attacker)
+
+## An onlooker sees `attacker` strike `victim` (bodies: the player, an NPC)
+func see_fight(attacker, victim) -> void:
+	if not is_alive or combat_state != "" or _deciding or attacker == self or victim == self:
+		return
+	var situation = {"kind": "witness", "attacker": CombatAIScript.key_of(attacker), "victim": CombatAIScript.key_of(victim),
+		"health_fraction": health / maxf(max_health, 1.0)}
+	_deciding = true
+	var d: Dictionary = await CombatAIScript.decide_full(combat_key(), situation)
+	_deciding = false
+	if not is_alive:
+		return
+	_fight = {"foe_key": "", "band": str(d.band), "harm_recorded": false, "help_recorded": false, "last_hit_ms": Time.get_ticks_msec()}
+	var foe = attacker if str(d.side) != "join" else victim
+	_set_combat_state(d, foe)
+
+## The player lets a yielded person go: `spared`. False when they had not yielded
+func spare(by = null) -> bool:
+	if not is_alive or combat_state != "yield":
+		return false
+	var by_key = CombatAIScript.key_of(by if by != null else combat_foe)
+	if by_key == CombatAIScript.PLAYER:
+		CombatAIScript.record_spared(combat_key(), _scene_root(), global_position, {"witnesses": [combat_key()], "location": get_current_location()})
+	end_fight("spared")
+	return true
+
+func end_fight(how: String = "over") -> void:
+	var info = {"npc": combat_key(), "foe": str(_fight.get("foe_key", CombatAIScript.key_of(combat_foe))), "how": how, "state": combat_state}
+	combat_state = ""
+	combat_foe = null
+	combat_side = ""
+	_fight = {}
+	velocity = Vector2.ZERO
+	morale = maxf(morale, CombatAIScript.WAVER)
+	combat_state_changed.emit(npc_id, "")
+	var combat = get_node_or_null("/root/Combat") if is_inside_tree() else null
+	if combat and combat.has_signal("fight_ended"):
+		combat.fight_ended.emit(info)
+
+func _set_combat_state(d: Dictionary, foe) -> void:
+	last_combat_decision = d
+	combat_state = str(d.action)
+	combat_side = str(d.get("side", ""))
+	combat_foe = foe
+	combat_state_changed.emit(npc_id, combat_state)
+	if combat_state == "call_for_help":
+		called_for_help.emit(npc_id, CombatAIScript.key_of(foe))
+
+func _die_in_combat(attacker, foe_key: String, result: Dictionary) -> void:
+	var key = combat_key()
+	var cause = "%s wounds from a fight" % str(result.get("type", "")) if str(result.get("type", "")) != "" else "wounds from a fight"
+	if foe_key == CombatAIScript.PLAYER:
+		CombatAIScript.record_kill(key, _scene_root(), global_position, {"location": get_current_location(), "cause": cause})
+	else:
+		CombatAIScript.register_death(key, cause, foe_key if foe_key != "" else "unknown")
+	if not _fight.is_empty():
+		end_fight("killed")
+	die(cause, foe_key if foe_key != "" else "unknown")
+
+## Everyone who can see this body is drawn into the fight (once, on its first blow)
+func _tell_onlookers(attacker) -> void:
+	var root = _scene_root()
+	if root == null:
+		return
+	var ids = CombatAIScript.Witnesses.in_sight(root, global_position, {"exclude": [npc_id]})
+	for npc in get_tree().get_nodes_in_group("npcs"):
+		if npc != self and npc != attacker and str(npc.get("npc_id")) in ids and npc.has_method("see_fight"):
+			npc.see_fight(attacker, self)
+
+## People on this side of the fight who are down (dead or yielded) to the same foe
+func _allies_down(foe) -> int:
+	if not is_inside_tree() or foe == null:
+		return 0
+	var n = 0
+	for npc in get_tree().get_nodes_in_group("npcs"):
+		if npc != self and npc.get("combat_foe") == foe and (npc.get("is_alive") == false or npc.get("combat_state") == "yield"):
+			n += 1
+	return n
+
+## The loaded scene this body stands in (the topmost node under the tree root)
+func _scene_root() -> Node:
+	if not is_inside_tree():
+		return null
+	var node: Node = self
+	while node.get_parent() and node.get_parent() != get_tree().root:
+		node = node.get_parent()
+	return node
+
+func _physics_process(delta: float) -> void:
+	if combat_state == "" or not is_alive:
+		return
+	combat_tick(delta)
+
+## One step of a fight: close and strike, run, or stand yielded; and notice how it ends
+func combat_tick(delta: float) -> void:
+	var now = Time.get_ticks_msec()
+	if not is_instance_valid(combat_foe) or combat_foe.get("is_alive") == false:
+		end_fight("over")
+		return
+	var foe_key = CombatAIScript.key_of(combat_foe)
+	var to_foe: Vector2 = combat_foe.global_position - global_position
+	var quiet_ms = now - int(_fight.get("last_hit_ms", now))
+	_attack_cooldown = maxf(_attack_cooldown - delta, 0.0)
+	velocity = Vector2.ZERO
+	match combat_state:
+		"fight":
+			if foe_key == CombatAIScript.PLAYER and to_foe.length() > FIGHT_LEAVE_DISTANCE:
+				CombatAIScript.record_fled([combat_key()], _scene_root(), global_position, {"witnesses": [combat_key()], "location": get_current_location()})
+				end_fight("player fled")
+				return
+			if is_staggered():
+				pass
+			elif to_foe.length() > COMBAT_REACH:
+				velocity = to_foe.normalized() * COMBAT_SPEED
+			elif _attack_cooldown <= 0.0 and CombatAIScript.can_target(foe_key):
+				_attack_cooldown = NPC_ATTACK_SECONDS
+				var combat = get_node_or_null("/root/Combat")
+				if combat and combat.has_method("attack"):
+					combat.attack(self, combat_foe, "light")
+		"flee":
+			if to_foe.length() > FIGHT_LEAVE_DISTANCE:
+				end_fight("fled")
+				return
+			velocity = -to_foe.normalized() * COMBAT_SPEED * 1.2
+		"yield":
+			if foe_key == CombatAIScript.PLAYER and (quiet_ms >= SPARE_MS or to_foe.length() > FIGHT_LEAVE_DISTANCE):
+				spare(combat_foe)
+				return
+		_:
+			if quiet_ms >= CALM_MS:
+				end_fight(combat_state)
+				return
+	if velocity != Vector2.ZERO and is_inside_tree():
+		move_and_slide()

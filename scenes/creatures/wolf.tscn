@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/creature.gd" id="1_creature"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(40, 22)
+
+[node name="Wolf" type="CharacterBody2D" groups=["creatures"]]
+collision_layer = 2
+collision_mask = 12
+motion_mode = 1
+script = ExtResource("1_creature")
+creature_id = "wolf"
+
+[node name="Body" type="Polygon2D" parent="."]
+color = Color(0.55, 0.55, 0.58, 1)
+polygon = PackedVector2Array(-20.0, -11.0, 20.0, -11.0, 20.0, 11.0, -20.0, 11.0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_body")
