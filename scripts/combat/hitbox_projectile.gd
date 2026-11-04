@@ -31,6 +31,17 @@ func _ready() -> void:
 	shape.shape = circle
 	add_child(shape)
 	rotation = direction.angle()
+	z_index = 20  # over the people it flies past, so it can be seen in flight
+
+## Seen in flight: an arrow's shaft and head along +x (rotation is the direction), or a sling stone
+func _draw() -> void:
+	if str(weapon.get("ammo", "arrows")) == "sling_stones":
+		draw_circle(Vector2.ZERO, 3.0, Color(0.55, 0.52, 0.48))
+		return
+	draw_line(Vector2(-16, 0), Vector2(2, 0), Color(0.45, 0.3, 0.16), 2.0)
+	draw_colored_polygon(PackedVector2Array([Vector2(6, 0), Vector2(1, -3), Vector2(1, 3)]), Color(0.75, 0.75, 0.78))
+	draw_line(Vector2(-16, -3), Vector2(-12, 0), Color(0.9, 0.9, 0.85), 1.5)
+	draw_line(Vector2(-16, 3), Vector2(-12, 0), Color(0.9, 0.9, 0.85), 1.5)
 
 func _physics_process(delta: float) -> void:
 	if not outcome.is_empty():

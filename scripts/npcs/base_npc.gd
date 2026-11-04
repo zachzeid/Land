@@ -2093,6 +2093,21 @@ var arrows: int = -1
 var wielding_sidearm: bool = false
 const SIDEARM_BACK_OFF = 1.8       # the bow comes back out once the foe is this many close_ranges away
 const MINOR_IN_LINE = 20.0         # pixels: a child this near the line of a shot holds the shot
+## Steering in a fight: a step that would run into a tree or a wall turns aside, keeping to one side
+## a while so a body works round the trunk instead of dithering at it
+const DETOUR_LOOKAHEAD = 0.25      # seconds of travel tested ahead
+const DETOUR_HOLD_MS = 600
+var _detour_side: int = 0
+var _detour_until_ms: int = 0
+## Closing on a foe the straight way is shut (a well, a house, benches): a short grid path round it,
+## found against this body's own shape and planned again as the foe moves
+const PATH_CELL = 16.0
+const PATH_MARGIN = 160.0          # how far past the body and the foe the grid reaches
+const PATH_MAX_CELLS = 6000        # bigger than this (a foe across the map) and it only sidesteps
+const PATH_REPLAN_MS = 500
+var _path: PackedVector2Array = PackedVector2Array()
+var _path_goal: Vector2 = Vector2.INF
+var _path_at_ms: int = 0
 
 ## Combat key: npc key for the roster ("bjorn"), the instance id for generics
 func combat_key() -> String:
@@ -2329,6 +2344,16 @@ func combat_tick(delta: float) -> void:
 	velocity = Vector2.ZERO
 	match combat_state:
 		"fight":
+			if _foe_yielded():
+				# They do not fight to the death (combat_ai.gd): nobody strikes a person who has yielded,
+				# and one who yielded to this body is let go
+				if combat_foe.get("combat_foe") == self and combat_foe.has_method("spare"):
+					combat_foe.spare(self)
+				end_fight("yielded")
+				return
+			if not CombatAIScript.can_target(foe_key):
+				end_fight("over")  # set on a child by any road: nobody fights a child, so there is no fight
+				return
 			if foe_key == CombatAIScript.PLAYER and to_foe.length() > FIGHT_LEAVE_DISTANCE:
 				CombatAIScript.record_fled([combat_key()], _scene_root(), global_position, {"witnesses": [combat_key()], "location": get_current_location()})
 				end_fight("fled")
@@ -2353,7 +2378,120 @@ func combat_tick(delta: float) -> void:
 				end_fight("talked_down" if combat_state == "talk" else "parted")
 				return
 	if velocity != Vector2.ZERO and is_inside_tree():
+		velocity = steer_round(velocity, delta)
 		move_and_slide()
+
+## The foe is a person who has yielded (the player never yields; they walk away)
+func _foe_yielded() -> bool:
+	return is_instance_valid(combat_foe) and combat_foe != self and combat_foe.get("combat_state") == "yield"
+
+## The step to take for velocity v: v itself when the way ahead is clear. Blocked while closing on the
+## foe, it follows a short path round the obstacle (path_to); otherwise (giving ground, no path) it
+## turns 45, 90 or 135 degrees, keeping to the side it last turned to while that side is open
+func steer_round(v: Vector2, delta: float) -> Vector2:
+	var ahead = maxf(DETOUR_LOOKAHEAD, delta)
+	var closing = is_instance_valid(combat_foe) and v.dot(combat_foe.global_position - global_position) > 0.0
+	if not closing:
+		_path = PackedVector2Array()
+	elif not _path.is_empty():
+		# once round an obstacle it keeps to the path (planned again as it goes) rather than turning
+		# back at every gap the straight way shows
+		var along = _follow_path(combat_foe.global_position)
+		if along != Vector2.ZERO:
+			return along * v.length()
+	if not test_move(global_transform, v * ahead):
+		if Time.get_ticks_msec() > _detour_until_ms:
+			_detour_side = 0
+		return v
+	if closing:
+		var step = _follow_path(combat_foe.global_position)
+		if step != Vector2.ZERO:
+			return step * v.length()
+	var order = [1, -1] if _detour_side == 0 else [_detour_side, -_detour_side]
+	var open: Dictionary = {}  # side -> [smallest open turn in degrees, the turned step]
+	for side in order:
+		for deg in [45.0, 90.0, 135.0]:
+			var turned = v.rotated(deg_to_rad(deg) * side)
+			if not test_move(global_transform, turned * ahead):
+				open[side] = [deg, turned]
+				break
+	if open.is_empty():
+		return v
+	var side = order[0]
+	if not open.has(side) or (_detour_side == 0 and open.has(-side) and open[-side][0] < open[side][0]):
+		side = -side  # a fresh detour takes the smaller turn; a held one switches only when shut
+	_detour_side = side
+	_detour_until_ms = Time.get_ticks_msec() + DETOUR_HOLD_MS
+	return open[side][1]
+
+## Unit direction along the path to goal (planned again when stale or the goal has moved), ZERO
+## when there is none
+func _follow_path(goal: Vector2) -> Vector2:
+	var now = Time.get_ticks_msec()
+	# at most every PATH_REPLAN_MS, sooner if the foe has moved: a grid plan is a thousand shape queries
+	if now - _path_at_ms > PATH_REPLAN_MS or goal.distance_to(_path_goal) > PATH_CELL * 4.0:
+		_path = path_to(goal)
+		_path_goal = goal
+		_path_at_ms = now
+	# drop waypoints reached, and one already passed (closer to the next than it is to us)
+	while _path.size() > 0 and (global_position.distance_to(_path[0]) < PATH_CELL * 0.75 or \
+			(_path.size() > 1 and global_position.distance_to(_path[1]) <= _path[0].distance_to(_path[1]))):
+		_path.remove_at(0)
+	if _path.is_empty():
+		return Vector2.ZERO
+	return (_path[0] - global_position).normalized()
+
+## Waypoints (global) from here to the free cell nearest goal, round whatever this body collides with
+## (its own collision_mask: walls, buildings, trees, props), on a PATH_CELL grid; empty when there is
+## no way within reach of the grid or no shape to plan with
+func path_to(goal: Vector2) -> PackedVector2Array:
+	var cs: CollisionShape2D = null
+	for c in get_children():
+		if c is CollisionShape2D and c.shape and not c.disabled:
+			cs = c
+			break
+	if cs == null or not is_inside_tree():
+		return PackedVector2Array()
+	var box = Rect2(global_position, Vector2.ZERO).expand(goal).grow(PATH_MARGIN)
+	var size = Vector2i(ceili(box.size.x / PATH_CELL), ceili(box.size.y / PATH_CELL))
+	if size.x * size.y > PATH_MAX_CELLS:
+		return PackedVector2Array()
+	var grid = AStarGrid2D.new()
+	grid.region = Rect2i(Vector2i.ZERO, size)
+	grid.cell_size = Vector2(PATH_CELL, PATH_CELL)
+	grid.offset = box.position
+	grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ONLY_IF_NO_OBSTACLES
+	grid.update()
+	var space = get_world_2d().direct_space_state
+	var query = PhysicsShapeQueryParameters2D.new()
+	query.shape = cs.shape
+	query.collision_mask = collision_mask
+	query.exclude = [get_rid()]
+	for x in size.x:
+		for y in size.y:
+			query.transform = Transform2D(cs.global_rotation, box.position + Vector2(x, y) * PATH_CELL + cs.position)
+			if not space.intersect_shape(query, 1).is_empty():
+				grid.set_point_solid(Vector2i(x, y))
+	var from = Vector2i(((global_position - box.position) / PATH_CELL).round())
+	var to = Vector2i(((goal - box.position) / PATH_CELL).round())
+	grid.set_point_solid(from, false)  # standing against something: still a place to start from
+	if grid.is_point_solid(to):
+		var best = Vector2i(-1, -1)
+		for r in range(1, 6):
+			for dx in range(-r, r + 1):
+				for dy in range(-r, r + 1):
+					var c = to + Vector2i(dx, dy)
+					if grid.is_in_boundsv(c) and not grid.is_point_solid(c) and (best.x < 0 or Vector2(c - to).length() < Vector2(best - to).length()):
+						best = c
+			if best.x >= 0:
+				break
+		if best.x < 0:
+			return PackedVector2Array()
+		to = best
+	var points = grid.get_point_path(from, to)
+	if points.size() > 0:
+		points.remove_at(0)  # the cell it stands in
+	return points
 
 ## Close and strike with what is in hand
 func _melee_step(to_foe: Vector2, foe_key: String) -> void:
