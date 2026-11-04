@@ -96,6 +96,19 @@ func _test_corrupt_falls_back():
 	world_state.load_game()
 	_check("Loaded from the backup", world_state.loaded_from_save and world_state.world_flags.get("test_save_marker") == 1)
 	world_state.world_flags.erase("test_save_marker")
+	_test_mid_session_load()
+
+## Loading during play puts the player systems back too, not only the world (startup defers that part)
+func _test_mid_session_load():
+	print("A save loaded mid-session restores the player systems")
+	var inv = root.get_node("Inventory")
+	var coin_before = inv.get_coin()
+	inv.coin = 37
+	_check("Save with 37 copper", world_state.save_game())
+	inv.coin = 5
+	world_state.load_game()
+	_check("Loading gives the 37 copper back", inv.get_coin() == 37)
+	inv.coin = coin_before
 
 func _test_coalesced():
 	print("Autosave requests coalesce")

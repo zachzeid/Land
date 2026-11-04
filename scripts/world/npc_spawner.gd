@@ -19,6 +19,8 @@ const MIN_SPACING = 48.0    # nobody is placed closer than this to another NPC o
 const RING_STEP = 56.0      # further rings, when the near ones are full
 const RING_SLOTS = 16       # places per ring
 const FLOOR_MARGIN = 40.0   # keep clear of an interior's walls
+const BLOCK_BOX = Vector2(30, 46)       # an NPC's footprint, for _blocked
+const BLOCK_OFFSET = Vector2(0, -24)    # its centre above the feet
 
 ## Initialize spawned NPCs the way GameWorld does: initialize(use_chromadb, false)
 @export var use_chromadb: bool = true
@@ -179,6 +181,8 @@ func _free_spot(scene_root: Node, center: Vector2, radius: float, start_degrees:
 			var spot = center + Vector2(cos(angle), sin(angle) * 0.6) * (radius + RING_STEP * ring)
 			if bounds.size != Vector2.ZERO and not bounds.has_point(spot):
 				continue
+			if _blocked(scene_root, spot):
+				continue
 			if first_inside == Vector2.INF:
 				first_inside = spot
 			if taken.all(func(t): return t.distance_to(spot) >= MIN_SPACING):
@@ -187,6 +191,27 @@ func _free_spot(scene_root: Node, center: Vector2, radius: float, start_degrees:
 	var fallback = first_inside if first_inside != Vector2.INF else center
 	taken.append(fallback)
 	return fallback  # a full room: crowded, but inside it
+
+## Whether an NPC standing at spot (scene-root space) would be inside a wall, building or prop
+## (layers 3-4, the NPC's own mask) or in a doorway or travel point (areas on layers 5-6)
+func _blocked(scene_root: Node, spot: Vector2) -> bool:
+	if not (scene_root is Node2D) or not scene_root.is_inside_tree():
+		return false
+	var space = scene_root.get_world_2d().direct_space_state
+	if space == null:
+		return false
+	var q = PhysicsShapeQueryParameters2D.new()
+	var box = RectangleShape2D.new()
+	box.size = BLOCK_BOX
+	q.shape = box
+	q.transform = Transform2D(0.0, scene_root.to_global(spot) + BLOCK_OFFSET)
+	q.collision_mask = 12
+	if not space.intersect_shape(q, 1).is_empty():
+		return true
+	q.collision_mask = 48
+	q.collide_with_bodies = false
+	q.collide_with_areas = true
+	return not space.intersect_shape(q, 1).is_empty()
 
 ## An interior's walkable floor (its Floor ColorRect, less FLOOR_MARGIN); zero size = no limit
 func _floor_bounds(scene_root: Node) -> Rect2:
@@ -252,7 +277,8 @@ func _spawn_position(scene_root: Node, key: String, index: int, taken: Array = [
 	# A line just above the default spawn, as before, when that spot is free; else the nearest free slot
 	var spot = _default_spawn(scene_root) + Vector2(0, -64) + SPAWN_OFFSET * (index + 1)
 	var bounds = _floor_bounds(scene_root)
-	if taken.all(func(t): return t.distance_to(spot) >= MIN_SPACING) and (bounds.size == Vector2.ZERO or bounds.has_point(spot)):
+	if taken.all(func(t): return t.distance_to(spot) >= MIN_SPACING) and (bounds.size == Vector2.ZERO or bounds.has_point(spot)) \
+			and not _blocked(scene_root, spot):
 		taken.append(spot)
 		return spot
 	return _free_spot(scene_root, _default_spawn(scene_root), SPAWN_OFFSET.x * 1.5, index * 45, taken)

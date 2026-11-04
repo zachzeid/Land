@@ -197,13 +197,11 @@ func generate_asset(asset_id: String, prompt: String, options: Dictionary = {}) 
 	request.negative_prompt = options.get("negative", "blurry, low quality, modern, sci-fi")
 	request.seed = options.get("seed", -1)
 
-	# Track pending request
-	var req_id = active_backend.generate(request)
-	if req_id != "":
-		pending[req_id] = {"asset_id": asset_id, "options": options}
-		return true
-
-	return false
+	# Track the request before starting it: a backend reports a failure (no key) synchronously, and a
+	# slow one (mock) awaits, so its return value is not the id. Results arrive keyed by request.id
+	pending[request.id] = {"asset_id": asset_id, "options": options}
+	active_backend.generate(request)
+	return pending.has(request.id) or asset_cache.has(asset_id)  # false when it already failed
 
 ## Generate building asset with standard options
 func generate_building(building_id: String, building_type: String, seed: int = -1) -> bool:

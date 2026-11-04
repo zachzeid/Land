@@ -25,6 +25,9 @@ var asset_label: Label = null
 
 ## Timeout for individual asset generation (ms)
 const ASSET_TIMEOUT_MS = 90000  # 90 seconds per asset
+## When the last asset finished (or loading began): with no result for ASSET_TIMEOUT_MS, the rest
+## count as failed, so a request that never reports back cannot hold the loading screen up for good
+var _last_progress_ms: int = 0
 
 func _ready():
 	_create_loading_ui()
@@ -241,6 +244,7 @@ func _start_loading(assets: Array[Node]):
 	loaded_assets = 0
 	failed_assets = 0
 	pending_asset_ids.clear()
+	_last_progress_ms = Time.get_ticks_msec()
 
 	# Show loading screen
 	loading_screen.visible = true
@@ -252,6 +256,8 @@ func _start_loading(assets: Array[Node]):
 	for asset in assets:
 		var asset_id = asset.asset_id if asset.asset_id != "" else _generate_asset_id(asset)
 		pending_asset_ids.append(asset_id)
+		if asset.asset_id == "":
+			asset.asset_id = asset_id  # so the result comes back under the id waited on
 
 		# Disable auto_generate since we're handling it
 		asset.auto_generate = false
@@ -274,6 +280,7 @@ func _on_asset_generated(asset_id: String, _texture: Texture2D):
 
 		print("[AssetPreloader] Loaded: %s (%d/%d)" % [asset_id, loaded_assets, total_assets])
 
+		_last_progress_ms = Time.get_ticks_msec()
 		asset_loaded.emit(asset_id)
 		preload_progress.emit(loaded_assets + failed_assets, total_assets, asset_id)
 		_update_progress()
@@ -290,11 +297,20 @@ func _on_asset_failed(asset_id: String, error: String):
 
 		print("[AssetPreloader] Failed: %s - %s (%d/%d)" % [asset_id, error, loaded_assets + failed_assets, total_assets])
 
+		_last_progress_ms = Time.get_ticks_msec()
 		asset_failed.emit(asset_id, error)
 		preload_progress.emit(loaded_assets + failed_assets, total_assets, asset_id)
 		_update_progress()
 
 		_check_completion()
+
+func _process(_delta: float) -> void:
+	if not is_loading or pending_asset_ids.is_empty():
+		return
+	if Time.get_ticks_msec() - _last_progress_ms < ASSET_TIMEOUT_MS:
+		return
+	for asset_id in pending_asset_ids.duplicate():
+		_on_asset_failed(asset_id, "no result in %d s" % (ASSET_TIMEOUT_MS / 1000))
 
 func _update_progress():
 	var completed = loaded_assets + failed_assets

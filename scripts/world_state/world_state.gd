@@ -935,6 +935,8 @@ func load_game():
 		loaded_from_save = true
 		print("[WorldState] Game loaded from: %s" % path)
 		print("[WorldState] Loaded %d NPC states" % npc_states.size())
+		if is_node_ready():
+			_apply_late_save_state()  # mid-session: the player systems are up, restore them now (startup defers it)
 		return
 	print("[WorldState] No save file found, starting fresh")
 
