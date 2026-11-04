@@ -145,6 +145,16 @@ static func concealment(kind: Dictionary, outdoors: bool) -> float:
 	var s = skill(kind, "stealth")
 	return s if outdoors and has_trait(kind, "woodwise") else s * OUTDOOR_STEALTH_SHARE
 
+## 0-100, how hard they are for the player to make out on screen (scripts/npcs/concealment.gd): the
+## woodwise in the wilds only (outdoors and outside any settlement); 0 under a roof, in a town, or for
+## anyone without woodwise or stealth, who are drawn as usual
+static func wild_concealment(kind: Dictionary, wild: bool) -> float:
+	return skill(kind, "stealth") if wild and has_trait(kind, "woodwise") else 0.0
+
+## Whether this kind can ever hide from the player's eye (Concealment attaches only to these)
+static func can_hide(kind: Dictionary) -> bool:
+	return wild_concealment(kind, true) > 0.0
+
 ## How well someone who comes upon a body knows who did it. A trail reader reads the stranger's tracks
 ## (PlayerEvents.check_traces: FOUND_ANON -> at least TRAIL_BASE, more with woodcraft)
 static func trail_fidelity(kind: Dictionary, found_fidelity: float) -> float:
