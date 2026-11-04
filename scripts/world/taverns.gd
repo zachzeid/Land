@@ -25,9 +25,11 @@ const COMPANION_ARCHETYPE = "house_companion"
 const TRAVELLER_ARCHETYPES = ["courier", "pilgrim", "carter"]
 const LODGE_FROM_HOUR = 21     # travellers go up to their rooms
 const CHECKOUT_HOUR = 10       # a night's rent runs to this hour of the next morning
+const SETTLED_META = "tavern_settled_from"  # where a lodger's body stood before it went up
 const REFUSE_BELOW = -30.0     # a keeper's opinion of the player under which no room is let
 const COMPANY_COPPER = 15      # a companion's usual fee (about a day and a half's labour)
 const COMPANY_MINUTES = 60
+const FADE_SECONDS = 0.6       # the back room's fade to black, each way
 const COMPANY_REFUSE_BELOW = -20.0
 const PILLOW_TALK_VIA = "talk in the back rooms"
 const PILLOW_TALK_MAX = 3      # events a night's talk carries on
@@ -273,6 +275,7 @@ func company(who: String, location: String, price: int = -1) -> Dictionary:
 	var ws = _node("WorldState")
 	if ws and ws.has_method("advance_time"):
 		ws.advance_time(COMPANY_MINUTES, "company")
+	_fade_to_black()
 	_narrate("The door of the back room closes behind you. Later, you come back down to the common room.")
 	out.ok = true
 	out.reason = "company"
@@ -333,21 +336,31 @@ func pillow_talk(location: String) -> Array:
 # THE SCENE: lodgers go up to their rooms
 # =============================================================================
 
-## Put tonight's lodgers in this scene at their rooms' spawn markers
+## Put tonight's lodgers in this scene at their rooms' spawn markers; out of the lodging hours (or
+## no longer a lodger) a body settle moved goes back to where it stood before it went up. Returns
+## how many bodies stand in a room
 func settle(scene_root: Node, location: String) -> int:
 	if scene_root == null or not is_tavern(location):
 		return 0
 	var placed = 0
 	var spawns = scene_root.find_child("SpawnPoints", true, false)
 	var by_room: Dictionary = lodgers(location)
+	var room_of: Dictionary = {}  # who -> room
 	for room in by_room:
-		var marker = spawns.get_node_or_null(str(room)) if spawns else null
-		if not marker is Node2D:
+		room_of[str(by_room[room])] = str(room)
+	for npc in scene_root.get_tree().get_nodes_in_group("npcs"):
+		if not (npc is Node2D and scene_root.is_ancestor_of(npc)):
 			continue
-		for npc in scene_root.get_tree().get_nodes_in_group("npcs"):
-			if npc is Node2D and scene_root.is_ancestor_of(npc) and _body_who(npc) == str(by_room[room]):
-				npc.global_position = marker.global_position
-				placed += 1
+		var who = _body_who(npc)
+		var marker = spawns.get_node_or_null(room_of[who]) if spawns and room_of.has(who) else null
+		if marker is Node2D:
+			if not npc.has_meta(SETTLED_META):
+				npc.set_meta(SETTLED_META, npc.global_position)
+			npc.global_position = marker.global_position
+			placed += 1
+		elif npc.has_meta(SETTLED_META):
+			npc.global_position = npc.get_meta(SETTLED_META)  # morning: down from the room again
+			npc.remove_meta(SETTLED_META)
 	return placed
 
 func _on_arrived(location: String) -> void:
@@ -360,11 +373,11 @@ func _settle_current(location: String) -> void:
 		settle(tree.current_scene, location)
 
 func _on_time_advanced(_minutes: int, _total: int, _reason: String) -> void:
-	if not _is_lodging_hour():
-		return
-	for location in tavern_ids():
-		if is_brothel(location):
-			pillow_talk(location)
+	if _is_lodging_hour():
+		for location in tavern_ids():
+			if is_brothel(location):
+				pillow_talk(location)
+	# Settle every hour of the day: by night lodgers go up, by morning they come down again
 	var scenes = _node("SceneManager")
 	var here = str(scenes.get_current_location_id()) if scenes and scenes.has_method("get_current_location_id") else ""
 	if is_tavern(here):
@@ -459,6 +472,15 @@ func _core_values(npc_id: String) -> Array:
 						_values_cache[str(res.npc_id)] = Array(res.core_values)
 		_values_cache["_read"] = []
 	return _values_cache.get(npc_id, [])
+
+## The screen goes dark for the hour and comes back (SceneManager's fade overlay); nothing is shown
+func _fade_to_black() -> void:
+	var scenes = _node("SceneManager")
+	if scenes == null or not scenes.has_method("_fade_out") or scenes.get("fade_overlay") == null or not is_inside_tree():
+		return
+	await scenes._fade_out(FADE_SECONDS)
+	await get_tree().create_timer(FADE_SECONDS * 2.0).timeout
+	await scenes._fade_in(FADE_SECONDS)
 
 ## A line of narration in the scene's dialogue UI (as StoryItem does), else the log
 func _narrate(text: String) -> void:

@@ -806,7 +806,7 @@ visible = false
 [connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]
 
 [node name="RoomDoor" type="Area2D" parent="Rooms/Room1"]
-position = Vector2(-314.7, -209.0)
+position = Vector2(-314.7, -231.0)
 script = ExtResource("90_room_door")
 location_id = "capitol_docks_tavern"
 room = "room_1"
@@ -815,7 +815,7 @@ room = "room_1"
 shape = SubResource("RectangleShape2D_room_door")
 
 [node name="RoomDoor" type="Area2D" parent="Rooms/Room2"]
-position = Vector2(0.0, -209.0)
+position = Vector2(0.0, -231.0)
 script = ExtResource("90_room_door")
 location_id = "capitol_docks_tavern"
 room = "room_2"
@@ -824,7 +824,7 @@ room = "room_2"
 shape = SubResource("RectangleShape2D_room_door")
 
 [node name="RoomDoor" type="Area2D" parent="Rooms/Room3"]
-position = Vector2(314.7, -209.0)
+position = Vector2(314.7, -231.0)
 script = ExtResource("90_room_door")
 location_id = "capitol_docks_tavern"
 room = "room_3"
