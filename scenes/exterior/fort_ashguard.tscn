@@ -765,6 +765,23 @@ visible = false
 
 [node name="DebugConsole" parent="." instance=ExtResource("7_debug_console")]
 
+[node name="NPCMarkers" type="Node2D" parent="."]
+
+[node name="npc_gen_garrison_soldier_1" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(-110, 400)
+
+[node name="npc_gen_garrison_soldier_2" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(110, 400)
+
+[node name="npc_gen_garrison_soldier_3" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(-200, 300)
+
+[node name="npc_gen_garrison_soldier_4" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(200, 300)
+
+[node name="npc_gen_garrison_soldier_5" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(0, 200)
+
 [connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
 [connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
 [connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]

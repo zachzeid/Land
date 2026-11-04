@@ -870,6 +870,26 @@ visible = false
 
 [node name="DebugConsole" parent="." instance=ExtResource("8_debug_console")]
 
+[node name="NPCMarkers" type="Node2D" parent="."]
+
+[node name="npc_gen_carter_4" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(-90, 440)
+
+[node name="npc_gen_miner_1" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(-60, -300)
+
+[node name="npc_gen_miner_2" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(60, -300)
+
+[node name="npc_gen_miner_3" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(-140, -200)
+
+[node name="npc_gen_miner_4" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(120, -220)
+
+[node name="npc_gen_miner_5" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(-40, 120)
+
 [connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
 [connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
 [connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/EndButton" to="DialogueUI" method="_on_end_button_pressed"]
