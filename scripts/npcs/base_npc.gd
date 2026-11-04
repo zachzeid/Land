@@ -69,6 +69,12 @@ func _ready():
 	# Call initialize() manually after creation
 	pass
 
+## Every script level gets NOTIFICATION_READY (subclasses override _ready without super): a woodwise
+## body gets its Concealment from the player's eye here
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_READY:
+		ConcealmentScript.attach(self)
+
 ## Initialize NPC manually (call this after creating NPC in code)
 ## use_chromadb: Whether to use ChromaDB or in-memory storage
 ## enable_kpi_tracking: Whether to track personality consistency KPIs
@@ -1245,11 +1251,17 @@ func _on_interaction_area_body_exited(body):
 
 func _show_interaction_prompt(show: bool):
 	if has_node("InteractionPrompt"):
-		get_node("InteractionPrompt").visible = show
+		get_node("InteractionPrompt").visible = show and is_seen_by_player()
+
+## Whether the player can make this body out (a woodwise watcher in the wilds may be hidden,
+## scripts/npcs/concealment.gd); anyone else always. Unseen, there is no prompt and no talking
+func is_seen_by_player() -> bool:
+	var c = get_node_or_null("Concealment")
+	return c == null or bool(c.seen)
 
 func _unhandled_input(event):
 	# Check for both interact action (E key) and ui_accept (Enter/Space) for flexibility
-	if player_nearby and (event.is_action_pressed("interact") or event.is_action_pressed("ui_accept")):
+	if player_nearby and is_seen_by_player() and (event.is_action_pressed("interact") or event.is_action_pressed("ui_accept")):
 		print("[%s] Interaction key pressed! In convo: %s" % [npc_name, is_in_conversation])
 		if not is_in_conversation:
 			# Emit signal for DialogueUI to handle
@@ -2062,6 +2074,7 @@ signal called_for_help(npc_id: String, foe_key: String)
 const CombatAIScript = preload("res://scripts/combat/combat_ai.gd")
 const LoadoutsScript = preload("res://scripts/combat/loadouts.gd")
 const CharacterTypesScript = preload("res://scripts/npcs/character_types.gd")
+const ConcealmentScript = preload("res://scripts/npcs/concealment.gd")
 const BASE_HEALTH = 100.0
 const STAGGER_MS = 800
 const SPARE_MS = 8000              # a yielded person left unhit this long has been let go

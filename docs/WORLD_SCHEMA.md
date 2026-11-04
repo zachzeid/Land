@@ -490,6 +490,9 @@ every query answers neutral for them. Minors never have a type.
   found fidelity to at least 0.5 (as if the stranger had been seen there), more with woodcraft.
 - `woodwise`: under the sky sees farther (`sight_factor`) and is harder to see (`concealment`, the
   stealth skill in full outdoors, half under a roof).
+  On screen too (`scripts/npcs/concealment.gd`, `CharacterTypes.wild_concealment`): anyone with
+  `woodwise` and some `stealth` (not only rangers) is hard for the player to see in the wilds. See
+  **Concealment** below.
 - `keeps_distance`: with a bow gives ground to hold a foe inside `keep_range`.
 - `beast_and_herb_lore`: knows the creatures that range where they stand (creatures.json `where`)
   and what grows there this season (Herbcraft); it goes in their conversation prompt.
@@ -503,6 +506,29 @@ gives ground inside `keep_range[0]` when it `keeps_distance`, looses when the dr
 the shot while a child stands near the line. Closed on (`close_range`) or out of arrows it draws the
 sidearm, and puts it away once the foe is well clear again. Combat refuses an NPC shot from an empty
 quiver and spends an arrow per shot; the projectile passes through children and stops on walls.
+
+**Concealment from the player's eye.** A body whose kind can hide (`CharacterTypes.can_hide`:
+`woodwise` and `stealth` > 0) gets a `Concealment` child (attached by BaseNPC on ready). In the
+wilds (outdoors, at a world.json exterior with no `settlement`; never under a roof, in a village, town
+or the city, or in a scene the registry does not know) it is drawn in full within 70% of a spot
+range and fades to nothing at its edge (smoothly, 2.0 alpha a second, no popping):
+
+`spot = 520 × sight × glare × (1 − 0.9 × hide) × (1 + 0.5 × player stealth / 100)`, where
+`hide = stealth / 100 × lerp(0.5, 1.8, cover)` (capped at 1). `cover` is 0 on open ground, 0.5 with
+one prop on world_obstacle (layer 4: trees, brush, carts) within 72 px, 1 with two. `sight` is
+`WorldPhysics.sight_factor` at their spot (night shrinks it; a lit lamp or fire near them undoes the
+dark and gives them away) and `glare` is `glare_factor` on the player's eyes. The player's own
+`stealth` skill is the perception: it takes one who hides to know where one would hide. A ranger
+(stealth 40-45) among trees is made out by day at about 140 px, on open ground at about 420, at night
+in cover only within a few paces.
+
+Moving shows them (no concealment while they move), and so does an arrow they loose (4 s: the shot
+shows where it came from), a blow taken (8 s, `Combat.hit_landed`), and speaking to the player
+(10 s after any line, and for the whole conversation). Unseen (drawn under half) their name label is
+gone, the interaction prompt is hidden and the player cannot start a conversation
+(`BaseNPC.is_seen_by_player`). It is only the player's eye: a hidden watcher still sees and witnesses
+deeds through `Witnesses.in_sight` as before, so the player can be watched unaware. The dead hide
+nothing.
 
 **Postings.** A population entry may carry `"posted_after": "<flag>", "until_then": "<location>"`:
 the instance waits at `until_then` and goes to its post when the flag holds (rangers ride west when the
