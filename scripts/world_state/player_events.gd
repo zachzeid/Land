@@ -559,7 +559,7 @@ func _deliver_heard(item: Dictionary) -> void:
 		how += " from " + _display_name(str(item.from))
 	if str(item.get("via", "")) != "":
 		how += " (%s)" % str(item.via)
-	_store_memory(target, ev, "%s: %s" % [how, text], "heard")
+	_store_memory(target, ev, "%s: %s%s" % [how, text, _view_suffix(ev, target, f)], "heard")
 	player_event_heard.emit(str(ev.id), target, f)
 
 ## Witnesses remember the deed (and its known status) as they saw it. A conversation partner (source)
@@ -572,7 +572,7 @@ func _tell_witnesses(ev: Dictionary, witnesses: Array, from_presence: bool) -> v
 		if gm and gm.is_generic(w) and not knows_self_defence(ev, w):
 			generic_witnesses.append(w)
 		elif w != ev.source:
-			_store_memory(w, ev, "I saw it myself: " + compose(ev, "plain", 1.0, 0, knows_self_defence(ev, w)), "witnessed")
+			_store_memory(w, ev, "I saw it myself: " + compose(ev, "plain", 1.0, 0, knows_self_defence(ev, w)) + _view_suffix(ev, w, 1.0), "witnessed")
 	if gm and not generic_witnesses.is_empty() and gm.has_method("on_news_spread"):
 		if from_presence:
 			gm.on_news_spread(_source_flag(ev), text, "witnessed", [], _region_of(ev.location), ev.location)
@@ -692,6 +692,18 @@ func compose(ev: Dictionary, tone: String, fidelity: float, seed: int = 0, self_
 		text = "I only half heard it, but " + _decapitalize(text)
 	return text
 
+## Someone's own view of a deed people judge by their nature (`morals`: Taverns.judge), in their own
+## words; "" for other deeds, for a child, or when they cannot tell who did it
+func view_of(ev: Dictionary, who: String, fidelity: float = 1.0) -> String:
+	if not ev.has("morals") or fidelity < ANON_BELOW or who == "":
+		return ""
+	var taverns = get_node_or_null("/root/Taverns")
+	return str(taverns.reaction(who, str(ev.morals))) if taverns and taverns.has_method("reaction") else ""
+
+func _view_suffix(ev: Dictionary, who: String, fidelity: float) -> String:
+	var view = view_of(ev, who, fidelity)
+	return " " + view if view != "" else ""
+
 func _status_suffix(ev: Dictionary) -> String:
 	match str(ev.status):
 		"broken":
@@ -741,14 +753,14 @@ func _knowledge(ev: Dictionary, who: String) -> Dictionary:
 		return {"id": ev.id, "kind": ev.kind, "status": ev.status, "truth": ev.truth, "about": ev.about.duplicate(),
 			"minute": int(ev.minute), "learned": int(ev.minute), "fidelity": 1.0, "how": "witnessed", "from": "",
 			"text": compose(ev, "plain", 1.0, 0, knows_self_defence(ev, who)), "anonymous": false,
-			"self_defence": knows_self_defence(ev, who)}
+			"self_defence": knows_self_defence(ev, who), "view": view_of(ev, who, 1.0)}
 	if ev.heard_by.has(who):
 		var h: Dictionary = ev.heard_by[who]
 		var f = float(h.fidelity)
 		return {"id": ev.id, "kind": ev.kind, "status": ev.status, "truth": ev.truth, "about": ev.about.duplicate(),
 			"minute": int(ev.minute), "learned": int(h.minute), "fidelity": f, "how": "found" if h.get("found", false) else "heard",
 			"from": str(h.from), "text": compose(ev, str(h.get("tone", "plain")), f, abs(hash(str(ev.id) + who)), knows_self_defence(ev, who)),
-			"anonymous": f < ANON_BELOW, "self_defence": knows_self_defence(ev, who)}
+			"anonymous": f < ANON_BELOW, "self_defence": knows_self_defence(ev, who), "view": view_of(ev, who, f)}
 	return {}
 
 ## Union of what a set of people know: event id -> {"event": ev, "fidelity": best, "learned": minute}
@@ -802,6 +814,8 @@ func get_heard_block(npc_id: String, max_events: int = PROMPT_MAX_EVENTS) -> Str
 		if line.length() > PROMPT_LINE_MAX:
 			line = line.substr(0, PROMPT_LINE_MAX - 3) + "..."
 		block += line + "\n"
+		if str(k.get("view", "")) != "":
+			block += "  Your own view of it: \"%s\"\n" % str(k.view)
 	var standing = Rep.standing_line(who)
 	if standing != "":
 		block += standing + "\n"
@@ -811,6 +825,9 @@ func get_heard_block(npc_id: String, max_events: int = PROMPT_MAX_EVENTS) -> Str
 func _salience(k: Dictionary, now: int, who: String = "") -> float:
 	var ev: Dictionary = events.get(str(k.id), {})
 	var w = absf(Rep.kind_weight(ev, bool(k.get("self_defence", false)))) + 1.0
+	var taverns = get_node_or_null("/root/Taverns") if ev.has("morals") and who != "" else null
+	if taverns and taverns.has_method("judge"):
+		w += absf(float(taverns.judge(who, str(ev.morals)).weight))  # what it means to them, by their nature
 	if str(ev.get("kind", "")) == "promise" and str(ev.get("status", "")) == "open":
 		w = maxf(w, 10.0)
 	if who != "" and who in ev.get("about", []):

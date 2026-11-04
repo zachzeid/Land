@@ -1,0 +1,94 @@
+{
+	"_doc": "How a person judges a deed people weigh by their own nature (PlayerEvents opts.morals; docs/WORLD_SCHEMA.md §16). Taverns.judge(who, morals) reads the person's own data: a main NPC's soul (resources/npc_personalities: core_values, dislikes, interests, Big Five, flags, romance fields), world.json role, and the relationship with the player; a generic's archetype, its rolled Voice variant and rolled Big Five. Each rule lists conditions that must ALL hold; a word list matches when any word is found (lower case, substring) in any entry of that field. Within a group only the strongest rule (largest |weight|) counts; groups add up and the sum is clamped to range. A `tone` rule weighs nothing: it only gives its `feels` line in place of the strongest rule's. `courting` beats everything: someone courting the player is hurt, whatever else they think. Children are never asked (they weigh 0 and their knowledge carries no reaction). `reason` is for people reading the tables (debug, tests); `feels` is the person's own view, in the first person, put beside what they know of the deed in their prompt. Nothing here is ever explicit.",
+	"morals": {
+		"company": {
+			"range": [-12, 3],
+			"default": {
+				"reason": "nothing in their nature cares what a stranger does behind a closed door",
+				"feels": "What a stranger does behind a closed door is their own business, not mine."
+			},
+			"courting": {
+				"_doc": "A main NPC who could love the player (is_romantic_available, an orientation not in never) and either has the romance (one of flags set, or their soul's romance thresholds met) weighs styles[relationship_style]; one only growing fond (affection >= affection_share x their own romance_affection_threshold) weighs that times budding_scale",
+				"never": ["none", "asexual"],
+				"flags": ["{key}_romance_started"],
+				"affection_share": 0.75,
+				"budding_scale": 0.67,
+				"styles": {"monogamous": -12, "romance_only": -12, "polyamorous": -4, "casual_only": 0, "aromantic": 0},
+				"reason": "they are courting the player, and it hurts",
+				"feels": "It hurts more than I will say, after what has passed between us."
+			},
+			"rules": [
+				{
+					"id": "faith", "group": "faith", "weight": -6, "values": ["faith", "piety", "prayer", "devotion", "chastity", "virtue", "the dawn"],
+					"reason": "faith is among their values",
+					"feels": "It sits ill with me. That is no way to live before the Dawn, and I think the less of them for it."
+				},
+				{
+					"id": "church_calling", "group": "faith", "weight": -6, "roles": ["cathedral", "abbey", "priest", "monk", "nun", "acolyte", "chaplain"],
+					"reason": "their calling is the church",
+					"feels": "It sits ill with me. That is no way to live before the Dawn, and I think the less of them for it."
+				},
+				{
+					"id": "churchgoer", "group": "faith", "weight": -4, "archetypes": ["cathedral_acolyte", "novice_monk", "pilgrim"],
+					"reason": "they walk the Dawn's road",
+					"feels": "It is not how the Dawn would have us live. I will pray for them, but I think the less of them."
+				},
+				{
+					"id": "devout", "group": "faith", "weight": -6, "voices": ["devout"],
+					"reason": "they are devout",
+					"feels": "It is a shameful thing, and I will say so if they ask me. I will pray for them."
+				},
+				{
+					"id": "mercy", "group": "tone", "weight": 0, "tone": true, "values": ["mercy"], "flags": {"is_trusting": true},
+					"reason": "mercy among their values: they disapprove without casting anyone out",
+					"feels": "It sits ill with me, before the Dawn. But I have nursed worse sinners than that, and I will not turn them from my door."
+				},
+				{
+					"id": "propriety", "group": "propriety", "weight": -3, "values": ["family honor", "family honour", "respectability", "propriety", "decency", "modesty", "elegance"],
+					"reason": "they keep to propriety and standing",
+					"feels": "It is not a thing a decent person is seen doing, and I mark it."
+				},
+				{
+					"id": "strait_laced", "group": "propriety", "weight": -3, "scope": "main", "traits": {"conscientiousness": [85, 100], "openness": [0, 30]},
+					"reason": "strait-laced: a dutiful, set-in-their-ways soul",
+					"feels": "I have no time for that sort of carrying on, and I think the less of them for it."
+				},
+				{
+					"id": "strait_laced", "group": "propriety", "weight": -2, "scope": "generic", "traits": {"conscientiousness": [20, 100], "openness": [-100, -20]},
+					"reason": "strait-laced: dutiful and set in their ways",
+					"feels": "Not the sort of thing I hold with."
+				},
+				{
+					"id": "prim", "group": "propriety", "weight": -4, "voices": ["prim", "disapproving"],
+					"reason": "prim, and disapproving of anyone who is not",
+					"feels": "Well. I know what I think of that, and so will they."
+				},
+				{
+					"id": "not_one_to_talk", "group": "worldly", "weight": 0, "flags": {"is_flirtatious": true},
+					"reason": "they have an eye for others themselves: not one to talk",
+					"feels": "I am hardly one to talk."
+				},
+				{
+					"id": "worldly", "group": "worldly", "weight": 1, "voices": ["jovial", "cocky", "brassy", "flirts", "wicked"],
+					"reason": "worldly and easy-going",
+					"feels": "Good luck to them. A stranger who likes their comforts is easier company."
+				},
+				{
+					"id": "coin", "group": "trade", "weight": 1, "values": ["coin", "profit"],
+					"reason": "coin spent is coin earned, to them",
+					"feels": "Coin spent is coin moving, and that is no shame to anyone."
+				},
+				{
+					"id": "keeps_the_house", "group": "trade", "weight": 1, "keeps_back_rooms": true,
+					"reason": "they keep the house whose back rooms it is: good custom",
+					"feels": "Good custom for the house. They paid and kept the house's terms."
+				},
+				{
+					"id": "companion", "group": "trade", "weight": 2, "archetypes": ["house_companion"],
+					"reason": "it is their own living, and the stranger paid fair",
+					"feels": "They paid fair and minded the house's terms. What passes behind the door stays there."
+				}
+			]
+		}
+	}
+}

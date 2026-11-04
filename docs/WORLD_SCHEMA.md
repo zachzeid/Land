@@ -734,14 +734,36 @@ one for company in conversation; the companion alone decides (trade action
 `{"type":"company","price":N}`, usual fee 15 copper). It costs coin, an hour passes, and the scene
 fades to black: nothing behind the door is ever described, in any prompt, line or soul, and the
 validator refuses explicit words in the archetype. The visit is a `seen_at` deed ("went through to
-the back rooms at ...") recorded with `opts.morals = "company"`: weightless for most, judged by
-those whose nature disapproves (devout archetypes, church callings, faith among a soul's core
-values); PlayerEvents keeps `morals` on the event and Reputation adds `Taverns.judgement(parties)`
-to its weight. Those present may remember it and talk of it in their own voice. The back rooms
+the back rooms at ...") recorded with `opts.morals = "company"`, which each person who learns of it judges by
+their own nature (**Who judges a visit**, below). The back rooms
 shut, and company is not even offered, while any child is in the house; no child may live in a
 brothel tavern (validator). Each night the companions hear what the lodgers
 know of the stranger (`Taverns.pillow_talk`: PlayerEvents.spread, via "talk in the back rooms"),
 and their own `spread_rumor` and Life arcs carry it on.
+
+**Who judges a visit.** Nobody is on a fixed list: `Taverns.judge(who, morals)` reads the person's
+own data by the rules in `resources/characters/judgement.json` (validated by
+`tools/validators/judgement.py`) and returns a signed weight in the rules' `range` (-12..+3), a
+stance (`disapproves`, `indifferent`, `approves`, `hurt`), a short reason and `feels`, their view
+in the first person. A main NPC is read through their soul (core_values, dislikes, interests, Big
+Five, flags such as `is_flirtatious`/`is_trusting`, romance fields) and world.json `role`; a generic
+through its archetype, the Voice variant it rolled and its rolled Big Five. Each rule's conditions
+must all hold (a word list matches a word inside any entry); within a `group` only the strongest
+rule counts; groups add up, then clamp. Today: faith among a soul's values, a church calling, a
+devout archetype or voice disapprove (-6, -4 for a churchgoer whose voice is not devout); propriety
+and standing (family honour, respectability, elegance) or a strait-laced temperament -3, a prim
+voice -4; a flirt is "not one to talk" (0); worldly voices and those who value coin +1; whoever keeps
+the house +1; the companion +2. A `tone` rule (mercy, for a trusting soul) changes the words, not the
+weight. **Courting beats everything:** a main NPC who could love the player (`is_romantic_available`,
+an orientation other than none) and has the romance (`<key>_romance_started`, or their own romance
+thresholds met) is hurt by their `relationship_style` (-12 monogamous or romance_only, -4
+polyamorous, 0 casual); one only growing fond (affection at 3/4 of their threshold) two-thirds of
+that. Judged live, so a visit weighs more on someone who comes to love the player later. Children are
+never asked (no weight, no view). Reputation adds `Taverns.judgement(parties, morals)` to the deed's
+weight: the mean of judge() over the scope's people (children left out). What a person knows of the
+visit carries their view: their heard block adds `Your own view of it: "..."` under the line, the
+memory a main NPC stores of it ends with it, and the deed's salience in their prompt grows with how
+much it weighs to them. Nothing in any of it is explicit (the validator refuses explicit words).
 
 ## 17. Settlements and their taverns
 
