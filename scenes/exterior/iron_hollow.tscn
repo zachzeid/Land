@@ -421,7 +421,7 @@ position_smoothing_speed = 5.0
 
 [node name="VarnBandit" parent="." groups=["npcs", "bandits", "enemies"] instance=ExtResource("2_varn")]
 z_index = 10
-position = Vector2(0, 0)
+position = Vector2(88, 0)
 
 [node name="DialogueUI" type="CanvasLayer" parent="."]
 script = ExtResource("3_dialogue_ui")
@@ -578,6 +578,23 @@ horizontal_alignment = 1
 
 [node name="from_travel" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(220, -110)
+
+[node name="NPCMarkers" type="Node2D" parent="."]
+
+[node name="npc_gen_hollow_grunt_3" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(-70, 110)
+
+[node name="npc_gen_hollow_grunt_2" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(70, 110)
+
+[node name="npc_gen_hollow_grunt_4" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(-200, 20)
+
+[node name="npc_gen_hollow_grunt_5" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(200, 60)
+
+[node name="npc_gen_hollow_grunt_6" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(-100, -160)
 
 [connection signal="text_submitted" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/PlayerInput" to="DialogueUI" method="_on_player_input_text_submitted"]
 [connection signal="pressed" from="DialogueUI/DialoguePanel/VBoxContainer/InputContainer/SendButton" to="DialogueUI" method="_on_send_button_pressed"]
