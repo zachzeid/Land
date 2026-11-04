@@ -70,6 +70,8 @@ func _init():
 	_test_rooms_exist()
 	_test_renting_at_the_bed()
 	_test_lodgers_and_trespass()
+	_test_settle()
+	_test_doors_in_doorways()
 	_test_keeper_refuses()
 	_test_renting_in_conversation()
 	_test_back_rooms()
@@ -215,6 +217,100 @@ func _test_lodgers_and_trespass() -> void:
 	r = taverns.rent(WAY)
 	_check("Renting takes a free room, never the lodger's (%s)" % str(r.get("room", "")), r.ok and r.room != taken and r.paid == 4)
 	_check("...and the lodgers keep theirs", taverns.lodgers(WAY).get(taken, "") == courier)
+
+# =============================================================================
+# 3b. LODGERS GO UP TO THEIR ROOMS, AND COME DOWN IN THE MORNING (Taverns.settle)
+# =============================================================================
+
+const FERRIS = "ferrisford_tavern"
+
+func _body(scene: Node, who: String, at: Vector2) -> Node2D:
+	var b = Node2D.new()
+	b.set_meta("generic_id", who)
+	b.position = at
+	scene.add_child(b)
+	b.add_to_group("npcs")
+	return b
+
+func _test_settle() -> void:
+	print("\nLodgers go up to their rooms (settle)")
+	_fresh()
+	var scene: Node = load(str(registry.get_location(FERRIS).scene)).instantiate()
+	root.add_child(scene)
+	var spawns = scene.get_node("SpawnPoints")
+	var carters: Array = gm.get_ids_at(FERRIS).filter(func(id): return str(gm.get_instance(id).archetype_id) == "carter") if gm else []
+	var child = _first_of("warrens_urchin")
+	var keeper = str(taverns.tavern(FERRIS).keeper)
+	_check("The Tarred Rope has two carters on the road (%s)" % str(carters), carters.size() == 2 and child != "")
+	if carters.size() < 2:
+		scene.free()
+		return
+	var a = _body(scene, carters[0], Vector2(100, 360))
+	var b = _body(scene, carters[1], Vector2(140, 420))
+	var c = _body(scene, child, Vector2(-100, 450))
+	var k = _body(scene, keeper, Vector2(300, -130))
+	taverns.present_override[FERRIS] = [keeper, carters[0], carters[1], child]
+	_clock(_at(12, 19))
+	_check("Before the lodging hour nobody goes up", taverns.settle(scene, FERRIS) == 0 and a.position == Vector2(100, 360))
+	_clock(_at(12, 22))
+	var placed = taverns.settle(scene, FERRIS)
+	var rooms: Dictionary = taverns.lodgers(FERRIS)
+	_check("At night each lodger stands at their own room's marker (%s)" % str(rooms), placed == 2 \
+		and a.global_position == spawns.get_node(str(rooms.keys()[rooms.values().find(carters[0])])).global_position \
+		and b.global_position == spawns.get_node(str(rooms.keys()[rooms.values().find(carters[1])])).global_position)
+	_check("...not stacked", a.global_position.distance_to(b.global_position) > 48.0)
+	_check("...the child and the keeper stay downstairs", c.position == Vector2(-100, 450) and k.position == Vector2(300, -130))
+	_check("...settling again moves nobody twice", taverns.settle(scene, FERRIS) == 2 and a.get_meta(taverns.SETTLED_META) == Vector2(100, 360))
+	_clock(_at(13, 7))
+	_check("In the morning the lodgers come down to where they stood", taverns.settle(scene, FERRIS) == 0 \
+		and a.position == Vector2(100, 360) and b.position == Vector2(140, 420) and not a.has_meta(taverns.SETTLED_META))
+	_clock(_at(13, 22))
+	taverns.present_override[FERRIS] = [keeper, carters[1], child]
+	taverns.settle(scene, FERRIS)
+	_clock(_at(13, 23))
+	taverns.present_override[FERRIS] = [keeper, child]
+	taverns.settle(scene, FERRIS)
+	_check("A lodger who is no longer one comes down too", b.position == Vector2(140, 420))
+	scene.free()
+	taverns.present_override = {}
+
+## Every RoomDoor's area starts inside its doorway, not out in the common room: a player walking along
+## the outside of the wall past the door does not set it off (the four new taverns had them 1px out)
+func _test_doors_in_doorways() -> void:
+	print("\nRoom doors sit in their doorways")
+	for loc in taverns.tavern_ids():
+		var scene: Node = load(str(registry.get_location(loc).scene)).instantiate()
+		root.add_child(scene)
+		var walls: Array = []
+		for body in scene.find_children("*", "StaticBody2D", true, false):
+			if body.collision_layer & 4:
+				for cs in body.get_children():
+					if cs is CollisionShape2D and cs.shape is RectangleShape2D:
+						walls.append(Rect2(cs.global_position - cs.shape.size / 2.0, cs.shape.size))
+		var beds = {}
+		for bed in scene.find_children("*", "Area2D", true, false):
+			if bed is Bed:
+				beds[bed.spawn_point] = bed.global_position
+		var bad: Array = []
+		var doors = scene.find_children("*", "Area2D", true, false).filter(func(d): return d.get_script() and d.get_script().resource_path.ends_with("room_door.gd"))
+		for d in doors:
+			var size: Vector2 = d.get_node("CollisionShape2D").shape.size
+			var c: Vector2 = d.global_position
+			var n = Vector2(0, signf(beds[d.room].y - c.y)) if size.x >= size.y else Vector2(signf(beds[d.room].x - c.x), 0)
+			var along = Vector2(absf(n.y), absf(n.x))
+			var half = (size * along).length() / 2.0
+			var depth = (size * n.abs()).length() / 2.0
+			# The flanking wall's outer face, beside the door
+			var side = c + along * (half + 8.0)
+			var outer = INF
+			for s in range(-80, 81):
+				var p = side + n * s
+				if walls.any(func(r): return r.has_point(p)):
+					outer = minf(outer, (p - c).dot(n))
+			if outer == INF or -depth < outer + 4.0:
+				bad.append("%s (outer edge %.0f, wall face %.0f)" % [d.room, -depth, outer])
+		_check("%s: %d doors, each inside its doorway %s" % [loc, doors.size(), str(bad)], not doors.is_empty() and bad.is_empty())
+		scene.free()
 
 # =============================================================================
 # 4. A KEEPER'S REFUSAL
